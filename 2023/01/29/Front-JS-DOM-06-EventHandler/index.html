@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Front-JS-DOM-06-이벤트 헨들러(Event Handler) 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">즐겨찾기</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying/">
+          <a href="/wisesaying/">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/column/">
+          <a href="/column/">읽을컬럼</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Front-JS-DOM-06-이벤트 헨들러(Event Handler)</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-29 14:47:02
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/js/" title="JS"> <b>#</b> JS </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/js/dom-event/" title="DOM-Event"> <b>#</b> DOM-Event </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/js/" title="JS"> #JS </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-Event-종류"><a href="#1-Event-종류" class="headerlink" title="1. Event 종류"></a>1. Event 종류</h1><p>브라우저 위에 발생할 수 있는 이벤트는 굉장히 다양합니다.</p>
+<ul>
+<li>mouse click</li>
+<li>keyboard</li>
+<li>resizing window</li>
+<li>close window</li>
+<li>page loading</li>
+<li>form submission : 사용자가 입력한 내용을 제출할 때</li>
+<li>video is being played</li>
+<li>error 등등</li>
+<li>cf. <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events">MDN Events 개념</a></li>
+<li>cf. <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/Events">MDN Events 종류</a></li>
+</ul>
+<p>웹 브라우저에서 사용자와의 상호작용으로 발생하는 이벤트는 200여 가지가 넘기 때문에 모든 이벤트를 다루기는 불가능합니다.<br>그래서 여기에서는 꼭 알아야 하는 중요한 이벤트를 몇 가지만 살펴보겠습니다.<br>실무에서는 상황에 맞는 이벤트 종류를 확인하고 사용해 보세요.</p>
+<table>
+<thead>
+<tr>
+<th align="center">구분</th>
+<th align="center">이벤트</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">마우스 이벤트</td>
+<td align="center">onclick</td>
+<td>마우스로 클릭하면 발생합니다.</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">ondblclick</td>
+<td>마우스로 빠르게 두 번 클릭하면 발생합니다.</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">onmouseover</td>
+<td>마우스 포인터를 올리면 발생합니다.</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">onmouseout</td>
+<td>마우스 포인터가 빠져나가면 발생합니다.</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">onmousemove</td>
+<td>마우스 포인터가 움직이면 발생합니다.</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">onwheel</td>
+<td>마우스 휠(wheel)을 움직이면 발생합니다.</td>
+</tr>
+<tr>
+<td align="center">키보드 이벤트</td>
+<td align="center">onkeypress</td>
+<td>키보드 버튼을 누르고 있는 동안 발생합니다.</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">onkeydown</td>
+<td>키보드 버튼을 누른 순간 발생합니다.</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">onkeyup</td>
+<td>키보드 버튼을 눌렀다가 뗀 순간 발생합니다.</td>
+</tr>
+<tr>
+<td align="center">포커스 이벤트</td>
+<td align="center">onfocus</td>
+<td>요소에 포커스가 되면 발생합니다.</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">onblur</td>
+<td>요소가 포커스를 잃으면 발생합니다.</td>
+</tr>
+<tr>
+<td align="center">폼 이벤트</td>
+<td align="center">onsubmit</td>
+<td>폼이 전송될 때 발생합니다.</td>
+</tr>
+<tr>
+<td align="center">리소스 이벤트</td>
+<td align="center">onload</td>
+<td>웹 브라우저의 리소스 로드가 끝나면 발생합니다.</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="1-1-이벤트-등록하는-법"><a href="#1-1-이벤트-등록하는-법" class="headerlink" title="1.1 이벤트 등록하는 법"></a>1.1 이벤트 등록하는 법</h2><p><strong>이벤트가 발생할 때 어떤 작업을 할지 자바스크립트 코드로 작성하는 것</strong>을 <code>이벤트 등록</code>이라고 합니다.<br>이벤트를 등록하는 방법은 크게 3가지로 정리할 수 있습니다.<br>인라인, 프로퍼티 리스너, 이벤트 등록 메서드로 이벤트를 등록하는 것을 자세히 알아봅시다.</p>
+<h3 id="1-1-1-인라인-방식"><a href="#1-1-1-인라인-방식" class="headerlink" title="1.1.1 인라인 방식"></a>1.1.1 인라인 방식</h3><p>인라인 방식은 HTML 태그에 속성으로 이벤트를 등록하는 방법입니다.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;ko&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;IE=edge&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>inline event<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 📝 인라인 방식 : HTML 태그에 속성으로 이벤트를 등록하는 방법 --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 속성값으로는 이벤트가 발생할 때 실행될 함수를 지정 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">onclick</span>=<span class="string">&quot;clickEvent()&quot;</span>&gt;</span>클릭<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 웹 브라우저에 경고창이 출력</span></span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">function</span> <span class="title function_">clickEvent</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="title function_">alert</span>(<span class="string">&#x27;click&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">      &#125;</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>이벤트를 여러 가지 사용하면 사용한 만큼 이벤트를 제어할 수 있습니다.<br>예를 들어, 다음 코드는 입력창을 클릭해서 커서를 활성화하면 onfocus 이벤트가 발생합니다.<br>그리고 입력창 외부 영역을 클릭하면 onblur 이벤트가 발생해 커서가 빠져나가면서 블러(focus out) 상태가 됩니다.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;ko&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;IE=edge&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>inline event2<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">form</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- 입력창을 클릭해서 커서를 활성화하면 onfocus 이벤트가 발생 --&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- 입력창 외부 영역을 클릭하면 onblur 이벤트가 발생해 블러(focus out) 상태 --&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">onfocus</span>=<span class="string">&quot;focusEvent()&quot;</span> <span class="attr">onblur</span>=<span class="string">&quot;blurEvent()&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">function</span> <span class="title function_">focusEvent</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;focus on&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">      &#125;</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">function</span> <span class="title function_">blurEvent</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;focus out&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">      &#125;</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>💡 포커스 이벤트 사용 시 주의할 점</p>
+<p>포커스 이벤트를 사용할 때 코드 내부에 경고창을 나타내는 alert() 메서드를 사용하면 안 됩니다.<br>경고창을 클릭하는 순간 입력창에서 커서가 빠져나갔다고 판단해 onblur 이벤트가 발생합니다.<br>그리고 경고창이 닫히면 다시 커서가 입력창으로 들어가서 onfocus 이벤트가 발생합니다.<br>따라서 경고창이 무한으로 뜨는 현상이 발생할 수 있습니다.</p>
+</blockquote>
+<hr>
+<h3 id="1-1-2-프로퍼티-리스너-방식"><a href="#1-1-2-프로퍼티-리스너-방식" class="headerlink" title="1.1.2 프로퍼티 리스너 방식"></a>1.1.2 프로퍼티 리스너 방식</h3><p>프로퍼티 리스너(property listener)는 요소 노드에 직접 속성으로 이벤트를 등록하는 방법입니다.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;ko&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;IE=edge&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>property listener<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span>&gt;</span>클릭<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 📝 버튼을 클릭했을 때 요소 노드에 등록된 이벤트 속성에 할당된 함수가 실행</span></span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">const</span> btnEl = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;button&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">      btnEl.<span class="property">onclick</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="title function_">alert</span>(<span class="string">&#x27;click&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">      &#125;;</span></span><br><span class="line"><span class="language-javascript">      </span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 📝 화살표 함수로 작성 가능</span></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// btnEl.onclick = () =&gt; &#123;</span></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">//   alert(&#x27;arrow click&#x27;);</span></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// &#125;;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 📝 함수를 별도로 정의하고 함수명을 이용해 이벤트와 연결</span></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// btnEl.onclick = clickEvent;</span></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// function clickEvent() &#123;</span></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">//   alert(&#x27;click&#x27;);</span></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// &#125;</span></span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="1-1-3-이벤트-등록-메서드⭐"><a href="#1-1-3-이벤트-등록-메서드⭐" class="headerlink" title="1.1.3 이벤트 등록 메서드⭐"></a>1.1.3 이벤트 등록 메서드⭐</h3><p><code>addEventListener()</code>를 사용해서 이벤트를 등록할 수도 있습니다. 3가지 방법 중 가장 권장하는 방식입니다.<br><code>addEventListener()</code>의 매개변수에 이벤트 타입과 이벤트 함수를 전달하면 되는데,<br>이벤트 타입은 이벤트 종류에서 on만 빼면 됩니다.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;ko&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;IE=edge&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>addEventListener<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span>&gt;</span>클릭<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">const</span> btnEl = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;button&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">      </span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 📝 노드.addEventListener(&quot;이벤트타입&quot;, 이벤트함수)</span></span></span><br><span class="line"><span class="language-javascript">      btnEl.<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="keyword">function</span> (<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="title function_">alert</span>(<span class="string">&#x27;button Click&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">      &#125;);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 📝 이벤트 함수에 화살표 함수도 사용 가능</span></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 또는 함수 선언문이나 함수 표현식으로 정의한 함수명으로 연결 가능</span></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// const clickEvent = () =&gt; &#123;</span></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">//   alert(&#x27;button Click&#x27;);</span></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// &#125;;</span></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// btnEl.addEventListener(&#x27;click&#x27;, clickEvent);</span></span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>함수 표현식으로 정의된 함수는 호이스팅에 의해 선언과 할당이 분리되므로<br>참조하려는 함수가 addEventListener() 메서드보다 반드시 위에 작성되어야 합니다.</p>
+<hr>
+<h1 id="2-연습-1"><a href="#2-연습-1" class="headerlink" title="2. 연습 1"></a>2. 연습 1</h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;btn&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">function</span> <span class="title function_">sayHello</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="title function_">alert</span>(<span class="string">&#x27;Hello&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">  &#125;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">const</span> el = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;btn&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">  el.<span class="property">onclick</span> = sayHello;</span></span><br><span class="line"><span class="language-javascript">  <span class="comment">// 이때 함수에 괄호가 없어야 함. 괄호가 있다면 반환값이 할당</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  el.<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, sayHello);</span></span><br><span class="line"><span class="language-javascript">  <span class="comment">// 이런 식으로 addEventListener(감지하는 이벤트, 실행할 함수) 를 활용해 작성을 많이 함</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  el.<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="title function_">alert</span>(<span class="string">&#x27;hi&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">  &#125;);</span></span><br><span class="line"><span class="language-javascript">  <span class="comment">// 함수를 직접 작성할 수도 있음</span></span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="3-DOMcontentLoaded-문서-로드가-완료되었을-때-이벤트"><a href="#3-DOMcontentLoaded-문서-로드가-완료되었을-때-이벤트" class="headerlink" title="3. DOMcontentLoaded : 문서 로드가 완료되었을 때 이벤트"></a>3. DOMcontentLoaded : 문서 로드가 완료되었을 때 이벤트</h1><p>문서 로드가 완료되었을 때 이벤트 <code>DOMcontentLoaded</code> 는 아래 처럼 작성해야 동작합니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">document</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;DomcontentLoaded&#x27;</span>, <span class="function">()=&gt;</span>&#123;</span><br><span class="line">	<span class="variable language_">document</span>.<span class="property">body</span>.<span class="property">style</span>.<span class="property">backgroundColor</span> = <span class="string">&#x27;red&#x27;</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>자주 사용하는 이벤트를 살펴보면 더블클릭, <code>dblclick</code> 과 키를 눌렀다 땔 때 <code>keyup</code> 이 있습니다.</p>
+<p>모든 이벤트는 이벤트 값들을 객체의 모양으로 반환합니다. 아래처럼 콘솔을 찍어보면 확인할 수 있습니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">input.<span class="title function_">addEventLietener</span>(<span class="string">&quot;keyup&quot;</span>, <span class="function"><span class="params">event</span> =&gt;</span> &#123;</span><br><span class="line">	<span class="variable language_">console</span>.<span class="title function_">log</span>(event);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>아래처럼 <code>event.key</code> 를 하면 해당 이벤트의 <code>key</code> 에 해당하는 값이 반환됩니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">input.<span class="title function_">addEventLietener</span>(<span class="string">&quot;keyup&quot;</span>, <span class="function"><span class="params">event</span> =&gt;</span> &#123;</span><br><span class="line">	<span class="variable language_">console</span>.<span class="title function_">log</span>(event.<span class="property">key</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><code>focus</code> 는 인풋창에 포커스가 되었을 대 <code>blur</code> 는 포커스를 잃었을 때 사용합니다.<br>마우스 무브 이벤트로 <code>mousemove</code> 는 해당 영역에서 마우스가 이동할 때마다 값이 찍힙니다.<br><code>clientX</code> 와 <code>clientY</code> 값을 사용하면 현재 마우스 위치 확인할 수 있습니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">box.<span class="title function_">addEventListener</span>(<span class="string">&#x27;mousemove&#x27;</span>, <span class="function"><span class="params">event</span> =&gt;</span> &#123;</span><br><span class="line">	circle.<span class="property">style</span>.<span class="property">top</span> = <span class="string">&#x27;$&#123;event.clientY&#125;px&#x27;</span>(백틱);</span><br><span class="line">	circle.<span class="property">style</span>.<span class="property">left</span> = <span class="string">&#x27;$&#123;event.clientX&#125;px&#x27;</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// box 위에 마우스가 움직일 때 circle 이 마우스 이벤트로 위치값을 받아서 같이 움직인다. box 와 circle 은 position 으로 연결되어 있어서 top, left 값으로 조정한 것</span></span><br></pre></td></tr></table></figure>
+
+<p>윈도우 리사이즈 이벤트는 아래처럼 적용할 수 있습니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&quot;resize&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">	<span class="variable language_">document</span>.<span class="property">body</span>.<span class="property">innerText</span> = <span class="string">&#x27;현재 창 크기는 $&#123;window.innerWidth&#125; x $&#123;window.innerHeight&#125;&#x27;</span>; (백틱)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+
+
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/29/Front-JS-DOM-05-StyleClass.md/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-29 14:47:02
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/js/" title="JS"> <b>#</b> JS </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/js/dom-event/" title="DOM-Event"> <b>#</b> DOM-Event </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/js/" title="JS"> #JS </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/29/Front-JS-DOM-07-EventBubbling/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Event-%EC%A2%85%EB%A5%98"><span class="toc-text">1. Event 종류</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%93%B1%EB%A1%9D%ED%95%98%EB%8A%94-%EB%B2%95"><span class="toc-text">1.1 이벤트 등록하는 법</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-1-%EC%9D%B8%EB%9D%BC%EC%9D%B8-%EB%B0%A9%EC%8B%9D"><span class="toc-text">1.1.1 인라인 방식</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-2-%ED%94%84%EB%A1%9C%ED%8D%BC%ED%8B%B0-%EB%A6%AC%EC%8A%A4%EB%84%88-%EB%B0%A9%EC%8B%9D"><span class="toc-text">1.1.2 프로퍼티 리스너 방식</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-3-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%93%B1%EB%A1%9D-%EB%A9%94%EC%84%9C%EB%93%9C%E2%AD%90"><span class="toc-text">1.1.3 이벤트 등록 메서드⭐</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%EC%97%B0%EC%8A%B5-1"><span class="toc-text">2. 연습 1</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-DOMcontentLoaded-%EB%AC%B8%EC%84%9C-%EB%A1%9C%EB%93%9C%EA%B0%80-%EC%99%84%EB%A3%8C%EB%90%98%EC%97%88%EC%9D%84-%EB%95%8C-%EC%9D%B4%EB%B2%A4%ED%8A%B8"><span class="toc-text">3. DOMcontentLoaded : 문서 로드가 완료되었을 때 이벤트</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Front-JS-DOM-06-%EC%9D%B4%EB%B2%A4%ED%8A%B8%20%ED%97%A8%EB%93%A4%EB%9F%AC(Event%20Handler) + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F29%2FFront-JS-DOM-06-EventHandler%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/29/Front-JS-DOM-06-EventHandler/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Start-CSS- 10 - CSS Coding Convention(관습) 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">즐겨찾기</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying/">
+          <a href="/wisesaying/">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/column/">
+          <a href="/column/">읽을컬럼</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Start-CSS- 10 - CSS Coding Convention(관습)</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-03-01 13:47:55
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/html-css-js/" title="HTML-CSS-JS"> <b>#</b> HTML-CSS-JS </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/html-css-js/css/" title="CSS"> <b>#</b> CSS </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/css/" title="CSS"> #CSS </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-CSS-작성순서"><a href="#1-CSS-작성순서" class="headerlink" title="1. CSS 작성순서"></a>1. CSS 작성순서</h1><p>기본적으로 스타일시트 속성은 정해진 우선순위가 없고, 올바른 작성법이라고 권고하는 공신력 있는 규칙도 없기 때문에,<br>순전히 스타일시트를 작성하는 개발자가 편한대로 적는 것이 맞는 것입니다.</p>
+<p>사실, 직업적으로 스타일시트를 만지는 사람이라면 누구나 어느정도는 자신만의 규칙을 세우고 그에 맞춰 작성합니다.<br>재미있는 것은, 자기가 세운 규칙을 누가 배낀 마냥 다른 사람들도 크게 다르지 않게 사용하고 있다는 점입니다.</p>
+<hr>
+<h1 id="2-코딩-컨벤션-Coding-Convention"><a href="#2-코딩-컨벤션-Coding-Convention" class="headerlink" title="2. 코딩 컨벤션(Coding Convention)"></a>2. 코딩 컨벤션(Coding Convention)</h1><p>언어를 개발한 단체나 기업에서 딱히 공식적인 규칙으로 지정하지 않은 번외의 내용에 대해 개인의 코딩 습관을 통일하여,<br>작업상의 가독성과 판독능력을 높여, <strong>일의 능률을 증진시키기 위한 내부적인 공동의 약속</strong>을 <code>코딩 컨벤션</code>이라 합니다.<br><a target="_blank" rel="noopener" href="http://google-styleguide.googlecode.com/svn/trunk/htmlcssguide.xml">구글 코드 가이드</a>나 <a target="_blank" rel="noopener" href="http://nuli.nhncorp.com/data/convention/NHN_Coding_Conventions_for_Markup_Languages-v2.75_open.pdf">NHN 코딩 컨벤션</a> 같은 것들이 그것입니다.</p>
+<p>오랜 노하우를 가진 사람들이 신경써서 만든 것들이기 때문에 참고할 만한 좋은 이야기가 많지만,<br>내부 공동체에 속하지 않은 사람에게는 강제력이 없는 상태에서 규칙이나 제약이 많아,<br>개인에게는 자유로운 기호에 대한 배려가 부족하므로, 이 글에서는 각종 컨벤션의 규칙등을 기준으로 삼지 않습니다.</p>
+<hr>
+<h1 id="3-모질라-CSS-Coding-Convention"><a href="#3-모질라-CSS-Coding-Convention" class="headerlink" title="3. 모질라 CSS Coding Convention"></a>3. 모질라 CSS Coding Convention</h1><p>웹 브라우저 제조사인 모질라(Mozilla) 혹은,<br>여러가지 코딩 컨벤션에서는 CSS 속성을 기술할 때 다음과 같은 순서로 작성할 것을 제안하고 있습니다.</p>
+<ol>
+<li>display</li>
+<li>list-style</li>
+<li>position</li>
+<li>float</li>
+<li>clear</li>
+<li>width &#x2F; height</li>
+<li>padding &#x2F; margin</li>
+<li>border &#x2F; background</li>
+<li>color &#x2F; font</li>
+<li>text-decoration</li>
+<li>text-align &#x2F; vertical-align</li>
+<li>white-space</li>
+<li>other text</li>
+<li>content</li>
+</ol>
+<p>이 순서는 우리가 일상에서 접한 상식 그 자체일 뿐입니다. 그림을 그릴때도 그렇고 건축을 할 때도 그렇습니다.<br>항상 위치 선정, 윤곽 스케치, 외곽 디테일링, 채색, 타이포그라피. 바깥에서 안쪽으로의 흐름은<br>우리가 자연스럽게 느끼고 배운 그대로의 상식이고, 이것이 반영된 것 뿐 아닐까요.<br>그래서 우리는 모두 비슷비슷한 순서대로 속성을 써 내려가는 것이 아닐까요.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">.myClass &#123;</span><br><span class="line"> ├── 객체의 노출여부와 표현방식</span><br><span class="line"> │   ├── display</span><br><span class="line"> │   └── list-style</span><br><span class="line"> │</span><br><span class="line"> ├── 위치와 좌표</span><br><span class="line"> │   ├── position</span><br><span class="line"> │   ├── float</span><br><span class="line"> │   └── clear</span><br><span class="line"> │</span><br><span class="line"> ├── 크기와 여백</span><br><span class="line"> │   ├── width / height</span><br><span class="line"> │   └── padding / margin</span><br><span class="line"> │</span><br><span class="line"> ├── 윤곽과 배경</span><br><span class="line"> │   └── border / background</span><br><span class="line"> │</span><br><span class="line"> ├── 글자와 정렬</span><br><span class="line"> │   ├── corlor / font</span><br><span class="line"> │   ├── text-decoration</span><br><span class="line"> │   ├── text-align / vertical-align</span><br><span class="line"> │   └── white-space</span><br><span class="line"> │</span><br><span class="line"> └── 내용</span><br><span class="line">     └── content</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>💡 content 속성</p>
+<ul>
+<li><code>플로팅 드롭(Floating drop : 단 떨어짐 현상)</code>을 막기 위해 가상선택자 안에서 주로 사용되다 보니, </li>
+<li>많은 부분 속성의 의미를 포지셔닝 쪽으로 인지하는 경우가 있을 수 있지만, </li>
+<li>본래는 HTML 태그 안에 실제로 텍스트와 같은 컨텐츠를 다이나믹하게 삽입해 주거나, </li>
+<li>기존 컨텐츠를 보조하는 역할을 합니다.</li>
+</ul>
+</blockquote>
+<p>순서에 대해 이해가 됐다고 하더라도 너무 이것에 얽메여서 원활한 작업에 방해가 되서는 안되겠죠.<br>때에 따라서는 배경색을 먼저 정의해서 시각적인 도움을 미리 받아야 하는 때도 있습니다.<br>편한 방식대로 쭉쭉 써 내려가고나서 나중에 조금 수고를 들여 순서를 바꿔주는 것으로 충분하다 하겠습니다.</p>
+<hr>
+<h1 id="4-장점"><a href="#4-장점" class="headerlink" title="4. 장점"></a>4. 장점</h1><p>속성에 순서를 정해놓음으로 해서 얻는 이점으로는 역시 <strong>특정 속성을 찾기 쉽다</strong>는 것에 있습니다.<br>이것은 속성을 개행하지 않고, 한 줄에 모두 기술하는 인라인 코딩 방식을 쓰는 작성자에게 특히 효과가 있습니다.<br>순위가 정해진 속성은 처음과 끝만 살펴봐도 대강의 위치를 짐작할 수 있기 때문입니다.</p>
+<p>속성을 써 내려가는 것에 반드시 옳고 그름이 없다는 것은 전제되어 있었습니다.<br>기술방식을 완전히 거꾸로 해 놓아도 그것이 편하다고 생각한다면 맞는 것이겠죠.<br>다만, 다른 사람과 함께 작업해야 한다거나,<br>혹은 다른 사람이 만든 CSS를 판독한다거나 할 때는 분명 좋은 습관이 가져다 주는 이점은 충분히 있습니다.</p>
+<p>아직도 남아있는 속성들이 몇 가지 있습니다.  <code>z-index</code>, <code>line-height</code>, <code>overflow</code>는 어디에 둘 것이고,<br>CSS3에서 새로 생긴 수많은 속성들은 또 어디에 두어야 할까요? 나머지는 당신의 몫입니다.<br>올바른 것도 없고 틀린 것도 없습니다.</p>
+<hr>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://nuli.navercorp.com/data/convention/NHN_Coding_Conventions_for_Markup_Languages.pdf">NHN 코딩 컨벤션 (navercorp.com)</a></li>
+<li><a target="_blank" rel="noopener" href="https://beautifulcss.com/archives/203">Beautiful CSS » CSS 속성을 순서대로 정리하기</a></li>
+</ul>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/02/28/Front-Start-HTML-Emmet/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-03-01 13:47:55
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/html-css-js/" title="HTML-CSS-JS"> <b>#</b> HTML-CSS-JS </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/html-css-js/css/" title="CSS"> <b>#</b> CSS </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/css/" title="CSS"> #CSS </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/03/01/Front-Start-CSS-11-Comment/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-CSS-%EC%9E%91%EC%84%B1%EC%88%9C%EC%84%9C"><span class="toc-text">1. CSS 작성순서</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%EC%BD%94%EB%94%A9-%EC%BB%A8%EB%B2%A4%EC%85%98-Coding-Convention"><span class="toc-text">2. 코딩 컨벤션(Coding Convention)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%EB%AA%A8%EC%A7%88%EB%9D%BC-CSS-Coding-Convention"><span class="toc-text">3. 모질라 CSS Coding Convention</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%EC%9E%A5%EC%A0%90"><span class="toc-text">4. 장점</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Start-CSS-%2010%20-%20CSS%20Coding%20Convention(%EA%B4%80%EC%8A%B5) + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F03%2F01%2FFront-Start-CSS-10-Convention%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/03/01/Front-Start-CSS-10-Convention/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

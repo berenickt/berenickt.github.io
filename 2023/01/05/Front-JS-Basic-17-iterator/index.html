@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Front-JS-Basic-17-iterators and generators 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">즐겨찾기</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying/">
+          <a href="/wisesaying/">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/column/">
+          <a href="/column/">읽을컬럼</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Front-JS-Basic-17-iterators and generators</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-05 12:37:17
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/js/" title="JS"> <b>#</b> JS </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/js/basic/" title="Basic"> <b>#</b> Basic </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/js/" title="JS"> #JS </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-이터러블-iterable"><a href="#1-이터러블-iterable" class="headerlink" title="1. 이터러블(iterable)"></a>1. 이터러블(iterable)</h1><p>이터레이션을 JS에서는 <code>이터레이션 프로토콜(Iteration Protocol)</code>이라 부릅니다. </p>
+<ul>
+<li><code>이터레이션(iteration)</code>는 “반복, 순회”라는 뜻입니다. </li>
+<li><code>프로토콜</code>은 “규격, 약속, 인터페이스”와 동일한 말입니다.</li>
+</ul>
+<p>그래서 <strong>이터레이션 프로토콜을 따른다</strong>는 것은 <strong>“순회가 가능하다”</strong>라고도 말할 수 있습니다.<br>JS에서 이터레이션 프로토콜을 따르는 객체는 <code>for...of</code>, <code>spread</code> 연산자를 사용할 수 있습니다.<br>즉, 이들은 순회가 가능한 연산자입니다.</p>
+<p>이터레이션 프로토콜을 따르는 기본 JS 자료 구조는 <code>Array, String, Map, Set</code>으로<br>이들은 모두 이터레이션 프로토콜을 따르기 때문에 <code>for...of</code>, <code>spread</code> 연산자를 사용할 수 있습니다. </p>
+<p>그런데 프로토콜(규격)을 준수한다는 것은 무슨 의미일까요?<br>규격을 따른다는 것은 어떤 객체든지 순회가 가능하기 위해서는 첫 번째로는 이터러블 프로토콜을 따라야 합니다. </p>
+<p>이터러블 프로토콜을 다른 프로그래밍 언어에서는 프로토콜 대신에 <strong>인터페이스</strong>라는 말을 더 많이 사용합니다.<br>순회하고 싶은 순회가 가능한 객체가 되려면 이터러블 프로토콜을 따르면 되는데,<br>그 어떤 객체 안에서도 <code>symbo.iterater</code>라는 함수를 호출했을 때, 이터러블 프로토콜을 따르는 객체를 반환만 하면,<br>선언한 객체는 “순회가 가능한 객체다. 이터레이션 프로토콜을 따르는 객체다.”라고 부를 수 있습니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  [<span class="title class_">Symbol</span>.<span class="property">iterator</span>]() : iterator 프로토콜 &#123; </span><br><span class="line">    <span class="title function_">next</span>(): 다음값 </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>즉, 순회가 가능한 오브젝트가 되려면 내 오브젝트 안에 <code>symbo.iterater</code>라는 함수를 만들고,<br>그 함수에서 이터레이션 프로토콜을 따르는 순회하는 반복자를 리턴하는 객체를 만들면 된다고 이해하면 됩니다.<br>기본적인 규격 사항만 따르면, <code>for...of</code>, <code>spread</code> 연산자를 사용할 수 있습니다.</p>
+<p>JavaScript에서 이터레이션 프로토콜을 따르기 위해서는 총 2가지 프로토콜을 따라야 합니다.</p>
+<ol>
+<li>이터러블 프로토콜을 따라야 한다.<ul>
+<li>이터러블 프로토콜을 따른다는 말은 <code>Symbol.iterator</code>를 호출하면, 이터레이터 프로토콜을 따르는 객체를 리턴해야 함</li>
+</ul>
+</li>
+<li>이터레이터 프로토콜은 next라는 함수가 있어서 다음 값을 계속 리턴하도록 만들어야 한다.</li>
+</ol>
+<p>cf. <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols">MDN iteration protocols</a></p>
+<hr>
+<h2 id="1-1-예제-1"><a href="#1-1-예제-1" class="headerlink" title="1.1 예제 1"></a>1.1 예제 1</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Iterable 하다는건? 순회가 가능하다!</span></span><br><span class="line"><span class="comment">// [Symbol.iterator](): IterableIterator&lt;T&gt;;</span></span><br><span class="line"><span class="comment">// 심볼정의를 가진 객체나, 특정한 함수가 IterableIterator&lt;T&gt;를 리턴한다는 것은</span></span><br><span class="line"><span class="comment">// 순회 가능한 객체다! 라는것을 의미</span></span><br><span class="line"><span class="comment">// 순회가 가능하면 무엇을 할 수 있나? for..of, spread 연산자 사용 가능</span></span><br><span class="line"><span class="keyword">const</span> array = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 📝 for...of 연산자 : 배열 안에 있는 아이템을 순회하면서 가져옴</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> item <span class="keyword">of</span> array) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(item); <span class="comment">// 1, 2, 3</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// for...in : key를 출력</span></span><br><span class="line"><span class="keyword">const</span> obj = &#123; <span class="number">0</span>: <span class="number">1</span>, <span class="number">1</span>: <span class="number">2</span> &#125;;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> item <span class="keyword">in</span> obj) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(item); <span class="comment">// obj안에 있는 key를 출력</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="1-2-예제-2"><a href="#1-2-예제-2" class="headerlink" title="1.2 예제 2"></a>1.2 예제 2</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Iterable 하다는건? 순회가 가능하다!</span></span><br><span class="line"><span class="comment">// [Symbol.iterator](): IterableIterator&lt;T&gt;;</span></span><br><span class="line"><span class="comment">// 심볼정의를 가진 객체나, 특정한 함수가 IterableIterator&lt;T&gt;를 리턴한다는 것은</span></span><br><span class="line"><span class="comment">// 순회 가능한 객체다! 라는것을 의미</span></span><br><span class="line"><span class="comment">// 순회가 가능하면 무엇을 할 수 있나? for..of, spread 연산자 사용 가능</span></span><br><span class="line"><span class="keyword">const</span> array = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 📝 for...of 연산자 : 배열 안에 있는 아이템을 순회하면서 가져옴</span></span><br><span class="line"><span class="comment">// 📝 array.entries() : [키, 값] 형태로 출력</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">const</span> item <span class="keyword">of</span> array.<span class="title function_">entries</span>()) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(item);</span><br><span class="line">  <span class="comment">/*</span></span><br><span class="line"><span class="comment">  [ 0, 1 ]</span></span><br><span class="line"><span class="comment">  [ 1, 2 ]</span></span><br><span class="line"><span class="comment">  [ 2, 3 ]</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// for...in : key를 출력</span></span><br><span class="line"><span class="keyword">const</span> obj = &#123; <span class="number">0</span>: <span class="number">1</span>, <span class="number">1</span>: <span class="number">2</span> &#125;;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">const</span> item <span class="keyword">in</span> obj) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(item); <span class="comment">// obj안에 있는 key를 출력 -&gt; 0, 1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> iterator = array.<span class="title function_">values</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// done은 반복이 끝나면 true, 안끝나면 false</span></span><br><span class="line"><span class="comment">// console.log(iterator.next()); // &#123; value: 1, done: false &#125;</span></span><br><span class="line"><span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> item = iterator.<span class="title function_">next</span>();</span><br><span class="line">  <span class="keyword">if</span> (item.<span class="property">done</span>) <span class="keyword">break</span>;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(item.<span class="property">value</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// console.log(iterator.next().value); // 1</span></span><br><span class="line"><span class="comment">// console.log(iterator.next().value); // 2</span></span><br><span class="line"><span class="comment">// console.log(iterator.next().value); // 3</span></span><br><span class="line"><span class="comment">// console.log(iterator.next().done); // true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// for (let item of iterator) &#123;</span></span><br><span class="line"><span class="comment">//   console.log(item); // 1, 2, 3</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="1-3-예제-3"><a href="#1-3-예제-3" class="headerlink" title="1.3 예제 3"></a>1.3 예제 3</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// [Symbol.iterator](): IterableIterator&lt;T&gt;;</span></span><br><span class="line"><span class="comment">// 0부터 10이하까지 숫자의 2배를 순회하는 이터레이터(반복자) 만들기!</span></span><br><span class="line"><span class="comment">// 0, 1, 2, 3, ..., 9</span></span><br><span class="line"><span class="comment">// 0, 2, 4, 6, ..., 18</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> multiple = &#123;</span><br><span class="line">  <span class="comment">// [Symbol.iterator] 함수</span></span><br><span class="line">  [<span class="title class_">Symbol</span>.<span class="property">iterator</span>]: <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> max = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">let</span> num = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 오브젝트가 반환됨</span></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      <span class="comment">// next 함수가 반드시 있어야 함</span></span><br><span class="line">      <span class="title function_">next</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="comment">// 10 초과되면 done이 true가 되어 순환이 정지</span></span><br><span class="line">        <span class="keyword">return</span> &#123; <span class="attr">value</span>: num++ * <span class="number">2</span>, <span class="attr">done</span>: num &gt; max &#125;;</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">clear</span>();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">const</span> num <span class="keyword">of</span> multiple) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(num);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h1 id="2-제너레이터-Generator"><a href="#2-제너레이터-Generator" class="headerlink" title="2. 제너레이터(Generator)"></a>2. 제너레이터(Generator)</h1><p>이터레이터를 쉽게 바꾼 것이 제너레이터(Generator)입니다.<br>Generator도 이터레이션 프로토콜을 준수하지만, 조금 더 간편한 방법으로 이터레이터를 만들 수 있습니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 📝 제너레이터(생성기) : 값을 생성</span></span><br><span class="line"><span class="comment">// function다음에 *를 붙이면 제너레이터로 인식</span></span><br><span class="line"><span class="keyword">function</span>* <span class="title function_">multipleGenerator</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(i); <span class="comment">// 0까지만 출력</span></span><br><span class="line">      <span class="comment">// return : 바로 값을 리턴</span></span><br><span class="line">      <span class="keyword">yield</span> i ** <span class="number">2</span>; <span class="comment">// yield : 사용자가 next를 호출할 떄까지 기다렸다가 하나씩 리턴</span></span><br><span class="line">      <span class="comment">// 사용자에게 제어권을 양도 = yield</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(error);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> multiple = <span class="title function_">multipleGenerator</span>();</span><br><span class="line"><span class="keyword">let</span> next = multiple.<span class="title function_">next</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(next.<span class="property">value</span>, next.<span class="property">done</span>); <span class="comment">// 0 false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// multiple.return();</span></span><br><span class="line">multiple.<span class="keyword">throw</span>(<span class="string">&#x27;Error!&#x27;</span>); <span class="comment">// Error!</span></span><br><span class="line"></span><br><span class="line">next = multiple.<span class="title function_">next</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(next.<span class="property">value</span>, next.<span class="property">done</span>); <span class="comment">// undefined true</span></span><br></pre></td></tr></table></figure>
+
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/05/Front-JS-Basic-16-Class/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-05 12:37:17
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/js/" title="JS"> <b>#</b> JS </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/js/basic/" title="Basic"> <b>#</b> Basic </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/js/" title="JS"> #JS </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/05/Front-JS-Basic-19-module/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%EC%9D%B4%ED%84%B0%EB%9F%AC%EB%B8%94-iterable"><span class="toc-text">1. 이터러블(iterable)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%EC%98%88%EC%A0%9C-1"><span class="toc-text">1.1 예제 1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%EC%98%88%EC%A0%9C-2"><span class="toc-text">1.2 예제 2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%EC%98%88%EC%A0%9C-3"><span class="toc-text">1.3 예제 3</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%EC%A0%9C%EB%84%88%EB%A0%88%EC%9D%B4%ED%84%B0-Generator"><span class="toc-text">2. 제너레이터(Generator)</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Front-JS-Basic-17-iterators%20and%20generators + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F05%2FFront-JS-Basic-17-iterator%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/05/Front-JS-Basic-17-iterator/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      CS-JS-DataAlgo-06-큐(Queue) 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">즐겨찾기</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying/">
+          <a href="/wisesaying/">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/column/">
+          <a href="/column/">읽을컬럼</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">CS-JS-DataAlgo-06-큐(Queue)</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-11 06:43:14
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/cs-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="CS-자료구조-알고리즘"> <b>#</b> CS-자료구조-알고리즘 </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/cs-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/js-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="JS-자료구조-알고리즘"> <b>#</b> JS-자료구조-알고리즘 </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/js-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="JS-자료구조-알고리즘"> #JS-자료구조-알고리즘 </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-큐"><a href="#1-큐" class="headerlink" title="1. 큐"></a>1. 큐</h1><ul>
+<li>**FIFO(First In First Out)**이라는 개념을 가진 선형 자료구조</li>
+<li>먼저 들어간 것이 먼저 나오고, 나중에 들어간 것이 나중에 나온다.</li>
+<li>Linear Queue와 Circular Queue가 존재한다.<ul>
+<li>e.g.줄서기를 생각하면 편하다.</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_6_1.png" alt="Data Structure_6_1"></p>
+<hr>
+<h2 id="1-1-큐의-기본-연산"><a href="#1-1-큐의-기본-연산" class="headerlink" title="1.1 큐의 기본 연산"></a>1.1 큐의 기본 연산</h2><p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_6_2.png" alt="Data Structure_6_2"></p>
+<ul>
+<li><code>Enqueue</code>: 큐 맨 뒤에 요소를 추가</li>
+<li><code>Dequeue</code>: 큐 맨 앞의 요소를 삭제</li>
+<li><code>Peek</code>: front에 위치한 데이터를 확인</li>
+<li><code>front</code>: 큐의 맨 앞 위치</li>
+<li><code>rear</code>: 큐의 맨 뒤 위치</li>
+</ul>
+<hr>
+<h1 id="2-선형-큐-Linear-Queue"><a href="#2-선형-큐-Linear-Queue" class="headerlink" title="2. 선형 큐(Linear Queue)"></a>2. 선형 큐(Linear Queue)</h1><h2 id="2-1-표현"><a href="#2-1-표현" class="headerlink" title="2.1 표현"></a>2.1 표현</h2><h3 id="2-1-1-Array로-표현하기"><a href="#2-1-1-Array로-표현하기" class="headerlink" title="2.1.1 Array로 표현하기"></a>2.1.1 Array로 표현하기</h3><ul>
+<li>Linear Queue를 Array로 표현할 수 있다.</li>
+<li>배열이기 때문에 빈 공간은 메꿔지지 않습니다.</li>
+<li><strong>선언한 배열만큼만 사용</strong>할 수 있기 때문에 <strong>가득 차면 문제가 발생</strong></li>
+<li><strong>JavaScript에서는 배열이 자유롭게 증감</strong>되기 때문에 이런 문제는 없겠지만, Font와 Rear가 무한정 커질 수 있다는 문제점이 존재</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_6_3.png" alt="Data Structure_6_3"></p>
+<hr>
+<h3 id="2-1-2-Linked-List로-표현하기"><a href="#2-1-2-Linked-List로-표현하기" class="headerlink" title="2.1.2 Linked List로 표현하기"></a>2.1.2 Linked List로 표현하기</h3><ul>
+<li>Linear Queue를 Linked List로 표현할 수 있다.</li>
+<li><strong>Array 구현의 단점을 해결한 방식</strong>으로 인덱스의 고민은 할 필요가 없음</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_6_4.png" alt="Data Structure_6_4"></p>
+<hr>
+<h2 id="2-3-구현"><a href="#2-3-구현" class="headerlink" title="2.3 구현"></a>2.3 구현</h2><h3 id="2-3-1-Array로-구현"><a href="#2-3-1-Array로-구현" class="headerlink" title="2.3.1 Array로 구현"></a>2.3.1 Array로 구현</h3><p>구현이 간단하기 때문에 코딩테스트에 구현할 떄 추천!<br>단, 앞서 말한 것처럼 Font와 Rear가 무한정 커질 수 있다는 문제점이 존재합니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Queue</span> &#123;</span><br><span class="line">  <span class="comment">// 생성자: new 키워드로 객체를 생성할때 호출되는 함수</span></span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">queue</span> = []; <span class="comment">// 요소를 넣을 배열 변수</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">front</span> = <span class="number">0</span>; <span class="comment">// front 포인터</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">rear</span> = <span class="number">0</span>; <span class="comment">// rear 포인터</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 📝 넣기</span></span><br><span class="line">  <span class="title function_">enqueue</span>(<span class="params">value</span>) &#123;</span><br><span class="line">    <span class="comment">// 실행노드[rear변수 증감] = 입력받은 값</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">queue</span>[<span class="variable language_">this</span>.<span class="property">rear</span>++] = value;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 📝 빼기</span></span><br><span class="line">  <span class="title function_">dequeue</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> value = <span class="variable language_">this</span>.<span class="property">queue</span>[<span class="variable language_">this</span>.<span class="property">front</span>]; <span class="comment">// 실행노드[front값]을 받아오기</span></span><br><span class="line">    <span class="keyword">delete</span> <span class="variable language_">this</span>.<span class="property">queue</span>[<span class="variable language_">this</span>.<span class="property">front</span>]; <span class="comment">// 실행노드의 front 삭제</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">front</span> += <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> value;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 📝 큐의 가장 앞에 있는 노드 반환</span></span><br><span class="line">  <span class="title function_">peek</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">queue</span>[<span class="variable language_">this</span>.<span class="property">front</span>];</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 📝 큐의 크기 반환</span></span><br><span class="line">  <span class="title function_">size</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">rear</span> - <span class="variable language_">this</span>.<span class="property">front</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> <span class="title class_">Queue</span>();</span><br><span class="line">queue.<span class="title function_">enqueue</span>(<span class="number">1</span>);</span><br><span class="line">queue.<span class="title function_">enqueue</span>(<span class="number">2</span>);</span><br><span class="line">queue.<span class="title function_">enqueue</span>(<span class="number">4</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(queue.<span class="title function_">dequeue</span>()); <span class="comment">// 1</span></span><br><span class="line">queue.<span class="title function_">enqueue</span>(<span class="number">8</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(queue.<span class="title function_">size</span>()); <span class="comment">// 3</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(queue.<span class="title function_">peek</span>()); <span class="comment">// 2</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(queue.<span class="title function_">dequeue</span>()); <span class="comment">// 2</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(queue.<span class="title function_">dequeue</span>()); <span class="comment">// 4</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="2-3-2-Linked-List로-구현"><a href="#2-3-2-Linked-List로-구현" class="headerlink" title="2.3.2 Linked List로 구현"></a>2.3.2 Linked List로 구현</h3><p>Array 구현의 단점을 해결한 방식입니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Node</span> &#123;</span><br><span class="line">  <span class="comment">// 생성자: new 키워드로 객체를 생성할때 호출되는 함수</span></span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">value</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">value</span> = value;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">next</span> = <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Queue</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">head</span> = <span class="literal">null</span>;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">tail</span> = <span class="literal">null</span>;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">size</span> = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 📝 넣기</span></span><br><span class="line">  <span class="title function_">enqueue</span>(<span class="params">newValue</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> newNode = <span class="keyword">new</span> <span class="title class_">Node</span>(newValue);</span><br><span class="line">    <span class="comment">// 해당 큐가 빈 노드라면</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">head</span> == <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">head</span> = <span class="variable language_">this</span>.<span class="property">tail</span> = newNode;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">tail</span>.<span class="property">next</span> = newNode;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">tail</span> = newNode;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">size</span> += <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 📝 빼기</span></span><br><span class="line">  <span class="title function_">dequeue</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> value = <span class="variable language_">this</span>.<span class="property">head</span>.<span class="property">value</span>;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">head</span> = <span class="variable language_">this</span>.<span class="property">head</span>.<span class="property">next</span>;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">size</span> -= <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> value;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 📝 큐의 가장 앞에 있는 노드 반환</span></span><br><span class="line">  <span class="title function_">peek</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">head</span>.<span class="property">value</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 📝 큐의 크기 반환</span></span><br><span class="line">  <span class="title function_">size</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">rear</span> - <span class="variable language_">this</span>.<span class="property">front</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> <span class="title class_">Queue</span>();</span><br><span class="line">queue.<span class="title function_">enqueue</span>(<span class="number">1</span>);</span><br><span class="line">queue.<span class="title function_">enqueue</span>(<span class="number">2</span>);</span><br><span class="line">queue.<span class="title function_">enqueue</span>(<span class="number">4</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(queue.<span class="title function_">dequeue</span>()); <span class="comment">// 1</span></span><br><span class="line">queue.<span class="title function_">enqueue</span>(<span class="number">8</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(queue.<span class="title function_">size</span>()); <span class="comment">// 3</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(queue.<span class="title function_">peek</span>()); <span class="comment">// 2</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(queue.<span class="title function_">dequeue</span>()); <span class="comment">// 2</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(queue.<span class="title function_">dequeue</span>()); <span class="comment">// 4</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-3-shift"><a href="#2-3-3-shift" class="headerlink" title="2.3.3 shift"></a>2.3.3 shift</h3><p>간혹 JS에서 큐 구현을 검색하면, shift()로 큐를 구현할 수 있는 경우가 많습니다. 그러나 이는 잘못된 정보입니다.<br>JS에서 shift는 선형 시간이 걸리기 때문에 큐엑서 기대하는 로직이 수행되지 않습니다. 따라서 큐를 쓸 떄 shift 함수는 쓰지 마세요.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> queue = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">queue.<span class="title function_">push</span>(<span class="number">4</span>);</span><br><span class="line"><span class="keyword">const</span> value = queue.<span class="title function_">shift</span>(); <span class="comment">// O(n) !!</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(value); <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="3-환형-큐-Circular-Queue"><a href="#3-환형-큐-Circular-Queue" class="headerlink" title="3. 환형 큐(Circular Queue)"></a>3. 환형 큐(Circular Queue)</h1><ul>
+<li>Front와 Rear가 이어져 있는 Queue</li>
+<li>Circular Queue는 한정된 공간을 효율적으로 사용할 떄 사용</li>
+<li>Circular Queue는 <strong>Linked List로 구현했을 때 이점이 없다</strong>.</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_6_5.png" alt="Data Structure_6_5"></p>
+<hr>
+<h2 id="3-1-구현"><a href="#3-1-구현" class="headerlink" title="3.1 구현"></a>3.1 구현</h2><h3 id="3-1-1-Array로-구현"><a href="#3-1-1-Array로-구현" class="headerlink" title="3.1.1 Array로 구현"></a>3.1.1 Array로 구현</h3><p>코딩테스트에서 환형 큐를 사용하는 경우는 많지 않습니다. 따라서 꼭 외울 필요는 없습니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Queue</span> &#123;</span><br><span class="line">  <span class="comment">// 생성자: new 키워드로 객체를 생성할때 호출되는 함수</span></span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">maxSize</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">maxSize</span> = maxSize;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">queue</span> = [];</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">front</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">rear</span> = <span class="number">0</span>;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">size</span> = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 📝 넣기</span></span><br><span class="line">  <span class="title function_">enqueue</span>(<span class="params">value</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="title function_">isFull</span>()) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Queue is full.&#x27;</span>);</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">queue</span>[<span class="variable language_">this</span>.<span class="property">rear</span>] = value;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">rear</span> = (<span class="variable language_">this</span>.<span class="property">rear</span> + <span class="number">1</span>) % <span class="variable language_">this</span>.<span class="property">maxSize</span>;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">size</span> += <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 📝 빼기</span></span><br><span class="line">  <span class="title function_">dequeue</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> value = <span class="variable language_">this</span>.<span class="property">queue</span>[<span class="variable language_">this</span>.<span class="property">front</span>];</span><br><span class="line">    <span class="keyword">delete</span> <span class="variable language_">this</span>.<span class="property">queue</span>[<span class="variable language_">this</span>.<span class="property">front</span>];</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">front</span> = (<span class="variable language_">this</span>.<span class="property">front</span> + <span class="number">1</span>) % <span class="variable language_">this</span>.<span class="property">maxSize</span>;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">size</span> -= <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> value;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="title function_">isFull</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">size</span> === <span class="variable language_">this</span>.<span class="property">maxSize</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 📝 큐의 가장 앞에 있는 노드 반환</span></span><br><span class="line">  <span class="title function_">peek</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">queue</span>[<span class="variable language_">this</span>.<span class="property">front</span>];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> queue = <span class="keyword">new</span> <span class="title class_">Queue</span>(<span class="number">4</span>);</span><br><span class="line">queue.<span class="title function_">enqueue</span>(<span class="number">1</span>);</span><br><span class="line">queue.<span class="title function_">enqueue</span>(<span class="number">2</span>);</span><br><span class="line">queue.<span class="title function_">enqueue</span>(<span class="number">4</span>);</span><br><span class="line">queue.<span class="title function_">enqueue</span>(<span class="number">8</span>);</span><br><span class="line">queue.<span class="title function_">enqueue</span>(<span class="number">16</span>); <span class="comment">// Queue is full.</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(queue.<span class="title function_">dequeue</span>()); <span class="comment">// 1</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(queue.<span class="title function_">dequeue</span>()); <span class="comment">// 2</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(queue.<span class="property">size</span>); <span class="comment">// 2</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(queue.<span class="title function_">peek</span>()); <span class="comment">// 4</span></span><br><span class="line">queue.<span class="title function_">enqueue</span>(<span class="number">16</span>);</span><br><span class="line">queue.<span class="title function_">enqueue</span>(<span class="number">32</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(queue.<span class="title function_">isFull</span>()); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="4-큐-실습-프린터"><a href="#4-큐-실습-프린터" class="headerlink" title="4. 큐 실습 : 프린터"></a>4. 큐 실습 : 프린터</h1><h2 id="4-1-문제"><a href="#4-1-문제" class="headerlink" title="4.1 문제"></a>4.1 문제</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://school.programmers.co.kr/learn/courses/30/lessons/42587">https://school.programmers.co.kr/learn/courses/30/lessons/42587</a></li>
+</ul>
+<hr>
+<h2 id="4-2-풀이"><a href="#4-2-풀이" class="headerlink" title="4.2 풀이"></a>4.2 풀이</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Node</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">value</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">value</span> = value;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">next</span> = <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Queue</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">head</span> = <span class="literal">null</span>;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">tail</span> = <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">enqueue</span>(<span class="params">newValue</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> newNode = <span class="keyword">new</span> <span class="title class_">Node</span>(newValue);</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">head</span> === <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">head</span> = <span class="variable language_">this</span>.<span class="property">tail</span> = newNode;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">tail</span>.<span class="property">next</span> = newNode;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">tail</span> = newNode;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">dequeue</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> value = <span class="variable language_">this</span>.<span class="property">head</span>.<span class="property">value</span>;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">head</span> = <span class="variable language_">this</span>.<span class="property">head</span>.<span class="property">next</span>;</span><br><span class="line">    <span class="keyword">return</span> value;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">peek</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">head</span>.<span class="property">value</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">solution</span>(<span class="params">priorities, location</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> queue = <span class="keyword">new</span> <span class="title class_">Queue</span>(); <span class="comment">// 큐 생성</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 대기목록만큼 순회</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; priorities.<span class="property">length</span>; i += <span class="number">1</span>) &#123;</span><br><span class="line">    queue.<span class="title function_">enqueue</span>([priorities[i], i]); <span class="comment">// 각각의 우선순위와 인덱스</span></span><br><span class="line">  &#125;</span><br><span class="line">  priorities.<span class="title function_">sort</span>(<span class="function">(<span class="params">a, b</span>) =&gt;</span> b - a); <span class="comment">// 내림차순 정렬</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> count = <span class="number">0</span>; <span class="comment">// 내가 인쇄를 요청한 문서가 몇 번째로 인쇄되는지</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 큐가 비어있을 떄까지 반복</span></span><br><span class="line">  <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> currentValue = queue.<span class="title function_">peek</span>(); <span class="comment">// 가장 앞에 노드 반환</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 지금까지 수행한 우선순위보다 작은 경우</span></span><br><span class="line">    <span class="keyword">if</span> (currentValue[<span class="number">0</span>] &lt; priorities[count]) &#123;</span><br><span class="line">      queue.<span class="title function_">enqueue</span>(queue.<span class="title function_">dequeue</span>()); <span class="comment">// 그 값을 맨 뒤에 넣기</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> value = queue.<span class="title function_">dequeue</span>(); <span class="comment">// 우선순위가 더 큰 경우, 바로 dequeue</span></span><br><span class="line">      count += <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 뽑은 문서가 내가 찾은 문서라면</span></span><br><span class="line">      <span class="keyword">if</span> (location === value[<span class="number">1</span>]) &#123;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="참고"><a href="#참고" class="headerlink" title="[참고]"></a>[참고]</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://laboputer.github.io/ps/2017/09/15/queue/">https://laboputer.github.io/ps/2017/09/15/queue/</a></li>
+</ul>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/11/CS-JS-DataAlgo-05/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-11 06:43:14
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/cs-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="CS-자료구조-알고리즘"> <b>#</b> CS-자료구조-알고리즘 </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/cs-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/js-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="JS-자료구조-알고리즘"> <b>#</b> JS-자료구조-알고리즘 </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/js-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="JS-자료구조-알고리즘"> #JS-자료구조-알고리즘 </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/11/CS-JS-DataAlgo-07/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%ED%81%90"><span class="toc-text">1. 큐</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%ED%81%90%EC%9D%98-%EA%B8%B0%EB%B3%B8-%EC%97%B0%EC%82%B0"><span class="toc-text">1.1 큐의 기본 연산</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%EC%84%A0%ED%98%95-%ED%81%90-Linear-Queue"><span class="toc-text">2. 선형 큐(Linear Queue)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%ED%91%9C%ED%98%84"><span class="toc-text">2.1 표현</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-Array%EB%A1%9C-%ED%91%9C%ED%98%84%ED%95%98%EA%B8%B0"><span class="toc-text">2.1.1 Array로 표현하기</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-2-Linked-List%EB%A1%9C-%ED%91%9C%ED%98%84%ED%95%98%EA%B8%B0"><span class="toc-text">2.1.2 Linked List로 표현하기</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%EA%B5%AC%ED%98%84"><span class="toc-text">2.3 구현</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-Array%EB%A1%9C-%EA%B5%AC%ED%98%84"><span class="toc-text">2.3.1 Array로 구현</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-2-Linked-List%EB%A1%9C-%EA%B5%AC%ED%98%84"><span class="toc-text">2.3.2 Linked List로 구현</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-3-shift"><span class="toc-text">2.3.3 shift</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%ED%99%98%ED%98%95-%ED%81%90-Circular-Queue"><span class="toc-text">3. 환형 큐(Circular Queue)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%EA%B5%AC%ED%98%84"><span class="toc-text">3.1 구현</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-1-Array%EB%A1%9C-%EA%B5%AC%ED%98%84"><span class="toc-text">3.1.1 Array로 구현</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%ED%81%90-%EC%8B%A4%EC%8A%B5-%ED%94%84%EB%A6%B0%ED%84%B0"><span class="toc-text">4. 큐 실습 : 프린터</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%EB%AC%B8%EC%A0%9C"><span class="toc-text">4.1 문제</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%ED%92%80%EC%9D%B4"><span class="toc-text">4.2 풀이</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%EC%B0%B8%EA%B3%A0"><span class="toc-text">[참고]</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + CS-JS-DataAlgo-06-%ED%81%90(Queue) + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F11%2FCS-JS-DataAlgo-06%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/11/CS-JS-DataAlgo-06/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

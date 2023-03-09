@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Start-CSS- 09 - 미디어쿼리(fMedia Query) 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">즐겨찾기</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying/">
+          <a href="/wisesaying/">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/column/">
+          <a href="/column/">읽을컬럼</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Start-CSS- 09 - 미디어쿼리(fMedia Query)</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-02-06 21:33:55
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/html-css-js/" title="HTML-CSS-JS"> <b>#</b> HTML-CSS-JS </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/html-css-js/css/" title="CSS"> <b>#</b> CSS </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/css/" title="CSS"> #CSS </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-반응형-웹과-적응형-웹"><a href="#1-반응형-웹과-적응형-웹" class="headerlink" title="1. 반응형 웹과 적응형 웹"></a>1. 반응형 웹과 적응형 웹</h1><p>과거에는 웹 페이지를 접속할 수 있는 방법이 컴퓨터에 설치된 웹 브라우저에서만 가능했지만, 현대에는 컴퓨터를 비롯해서 휴대폰, 태블릿, 네비게이션 등 다양한 기기를 사용해서 웹 페이지에 접근할 수 있게 되었습니다. 그래서 개발자들이 웹페이지를 만들 떄, 다양한 디바이스 환경에 맞춰 최적화된 웹 페이지를 사용자에게 보여줄 수 있도록 다양한 방법으로 웹 페이지를 제작해야 합니다.</p>
+<p>대표적인 방법으로 크게 <code>반응형 웹(responsive web)</code>과 <code>적응형 웹(adaptive web)</code>이 있습니다. </p>
+<ul>
+<li><code>반응형 웹(responsive web)</code><ul>
+<li><code>다양한 디바이스의 해상도에 반응</code>하여 최적화된 웹 페이지를 보여주는 방법으로 제작한 웹페이지</li>
+<li>e.g. Apple 공식 홈페이지</li>
+</ul>
+</li>
+<li><code>적응형 웹(adaptive web)</code><ul>
+<li><code>디바이스의 종류별로 최적화된 웹 페이지</code>를 보여줄 수 있도록 제작한 웹 페이지</li>
+<li>반응형이 아니기 떄문에, 웹 페이지를 방문할 떄, 사용한 디바이스 종류별(device type)로 다르게 </li>
+<li>보이는 것이 반응형 웹과 구분되는 차이점</li>
+<li>e.g. Naver 포털 사이트 : 네이버의 포털 사이트는 컴퓨터, 휴대폰 등 접속기기에 따라 화면이 변경됨</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="2-미디어쿼리-Media-Query"><a href="#2-미디어쿼리-Media-Query" class="headerlink" title="2. 미디어쿼리(Media Query)"></a>2. 미디어쿼리(Media Query)</h1><p>미디어쿼리(media query)는 단말기의 유형(출력물, 화면), 어떤 특성이나 수치(해상도, 뷰포트 기준)에 따라 웹 사이트나 앱의 스타일을 수정할 때 유용합니다.</p>
+<ul>
+<li>CSS @media @import 규칙을 사용해 특정 조건에 따라 스타일을 적용할 경우</li>
+<li><code>&lt;style&gt;, &lt;link&gt;, &lt;source&gt;</code> 기타 다양한 HTML 요소에 media 특성을 이용하여 선택할 경우</li>
+<li>window.matchMedia(), MediaQueryList.addListener() JS 메서드를 사용해 미디어 상태를 확인할 경우</li>
+</ul>
+<p>미디어 쿼리(media query)는 다음과 같은 문법을 가집니다.</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@media</span> 미디어유형 <span class="keyword">and</span> (조건) &#123;</span><br><span class="line">	<span class="comment">/* 📝 미디어 유형의 값 */</span></span><br><span class="line">  <span class="comment">/* - all(모든 기기), print(인쇄형 기기) */</span></span><br><span class="line">  <span class="comment">/* - screen(컴퓨터, 휴대폰, 테프릿 등 스크린 기기), speech(음성이 출력되는 기기) */</span></span><br><span class="line">  <span class="comment">/* 📝 조건 = 어떤 상황에서 미디어쿼리가 적용되어야 하는 지 정의 */</span></span><br><span class="line">  <span class="comment">/* min-width(화면의 최소 넓이), max-width(화면의 최대 넓이), orientation(화면 방향) */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>미디어쿼리에 대한 쿼리를 보겠습니다.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;ko&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;IE=edge&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>미디어쿼리<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="comment">/* 📝 min-width는 1번만 사용해야 하고, max-width는 여러 번 사용 가능 */</span></span></span><br><span class="line"><span class="language-css">      <span class="comment">/* 모든 기기에서, 화면의 최소 넓이가 1140px 이상일 떄 */</span></span></span><br><span class="line"><span class="language-css">      <span class="keyword">@media</span> all <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">1140px</span>) &#123;</span></span><br><span class="line"><span class="language-css">        <span class="selector-tag">h1</span> &#123;</span></span><br><span class="line"><span class="language-css">          <span class="attribute">color</span>: green;</span></span><br><span class="line"><span class="language-css">        &#125;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">      <span class="comment">/* 📝 max-width는 큰 것부터 먼저 작성하고, 그 뒤에 작은 것을 작성해야 함  */</span></span></span><br><span class="line"><span class="language-css">      <span class="comment">/* CSS 적용 우선순위때문 */</span></span></span><br><span class="line"><span class="language-css">      <span class="comment">/* 모든 기기에서, 화면의 최대 넓이가 1140px 이하일 떄 */</span></span></span><br><span class="line"><span class="language-css">      <span class="keyword">@media</span> all <span class="keyword">and</span> (<span class="attribute">max-width</span>: <span class="number">1139px</span>) &#123;</span></span><br><span class="line"><span class="language-css">        <span class="selector-tag">h1</span> &#123;</span></span><br><span class="line"><span class="language-css">          <span class="attribute">color</span>: blue;</span></span><br><span class="line"><span class="language-css">        &#125;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">      <span class="comment">/* 모든 기기에서, 화면의 최대 넓이가 640px 이하일 떄 */</span></span></span><br><span class="line"><span class="language-css">      <span class="keyword">@media</span> all <span class="keyword">and</span> (<span class="attribute">max-width</span>: <span class="number">640px</span>) &#123;</span></span><br><span class="line"><span class="language-css">        <span class="selector-tag">h1</span> &#123;</span></span><br><span class="line"><span class="language-css">          <span class="attribute">color</span>: pink;</span></span><br><span class="line"><span class="language-css">        &#125;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">      <span class="comment">/* 프린트 기기에서, 화면의 최소 넓이가 0px 이하일 떄 */</span></span></span><br><span class="line"><span class="language-css">      <span class="comment">/* 웹 브라우저에서는 변화가 없고, 프린터에서만 변함 */</span></span></span><br><span class="line"><span class="language-css">      <span class="comment">/* 📝 인쇄까지 고려하는 경우는 적어서, 보통 all, screen을 많이 사용 */</span></span></span><br><span class="line"><span class="language-css">      <span class="keyword">@media</span> print <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">0px</span>) &#123;</span></span><br><span class="line"><span class="language-css">        <span class="selector-tag">h1</span> &#123;</span></span><br><span class="line"><span class="language-css">          <span class="attribute">color</span>: orange;</span></span><br><span class="line"><span class="language-css">        &#125;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Media Query<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>반응형 웹을 구현할 떄 필수로 사용해야 하는 CSS 속성<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="3-orientation-특정-방향만-미디어쿼리-적용"><a href="#3-orientation-특정-방향만-미디어쿼리-적용" class="headerlink" title="3. orientation 특정 방향만 미디어쿼리 적용"></a>3. orientation 특정 방향만 미디어쿼리 적용</h1><p>미디어 쿼리(media query)의 조건을 지정하는 방법 중 가장 많이 사용하는 법은 <code>min-width와 max-width를 사용</code>하는 것입니다. 다만, 이와 더불어 드물게 <code>화면 방향에 대한 조건</code>도 같이 사용하는 경우가 있습니다. 그럴 떄 사용하는 조건이 <code>orientation</code>입니다.</p>
+<p>태블릿이나 휴대폰을 사용할 경우, 화면을 가로 또는 세로 방향으로 회전하여 화면을 사용합니다. <code>orientation</code>조건을 사용해 화면의 특정 방향에서만 미디어쿼리가 적용되도록 조건을 지정할 수 있습니다.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;ko&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;IE=edge&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>미디어쿼리<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="comment">/* orientation 값을 따로 지정하지 않은 경우, 모든 방향에 적용 */</span></span></span><br><span class="line"><span class="language-css">      <span class="comment">/* orientation 값 : landscape(가로 방향), portrait(세로 방향) */</span></span></span><br><span class="line"><span class="language-css">      <span class="keyword">@media</span> all <span class="keyword">and</span> (<span class="attribute">max-width</span>: <span class="number">1139px</span>) <span class="keyword">and</span> (<span class="attribute">orientation</span>: portrait) &#123;</span></span><br><span class="line"><span class="language-css">        <span class="selector-tag">h1</span> &#123;</span></span><br><span class="line"><span class="language-css">          <span class="attribute">color</span>: orange;</span></span><br><span class="line"><span class="language-css">        &#125;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Media Query<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>반응형 웹을 구현할 떄 필수로 사용해야 하는 CSS 속성<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="4-브레이크-포인트"><a href="#4-브레이크-포인트" class="headerlink" title="4. 브레이크 포인트"></a>4. 브레이크 포인트</h1><p>반응형 웹은 결국 미디어 쿼리를 사용해서 특정 화면 조건에서 별도의 스타일을 적용하면서 만들 수 있습니다. 그러다보면 결국  “휴대폰, 태블릿, pc는 각각 화면의 넓이를 얼마를 기준으로 작업해야 하지?”와 같은 의문이 생기기 마련입니다.</p>
+<p>미디어 쿼리에서는 특정 화면 넓이를 기준으로 미디어 쿼리를 나눌 때 사용하는 화면 넓이 기준을  “브레이크 포인트(break points)”라고 하는데, 일반적으로 사용되는 브레이크 포인트는 아래와 같습니다.</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Extra small devices (phones, 600px and down) */</span></span><br><span class="line"><span class="keyword">@media</span> <span class="keyword">only</span> screen <span class="keyword">and</span> (<span class="attribute">max-width</span>: <span class="number">600px</span>) &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Small devices (portrait tablets and large phones, 600px and up) */</span></span><br><span class="line"><span class="keyword">@media</span> <span class="keyword">only</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">600px</span>) &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Medium devices (landscape tablets, 768px and up) */</span></span><br><span class="line"><span class="keyword">@media</span> <span class="keyword">only</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">768px</span>) &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Large devices (laptops/desktops, 992px and up) */</span></span><br><span class="line"><span class="keyword">@media</span> <span class="keyword">only</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">992px</span>) &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Extra large devices (large laptops and desktops, 1200px and up) */</span></span><br><span class="line"><span class="keyword">@media</span> <span class="keyword">only</span> screen <span class="keyword">and</span> (<span class="attribute">min-width</span>: <span class="number">1200px</span>) &#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<p>단, 브레이크 포인트에는 절대적인 기준이 없기 때문에 본인이 작업하는 상황&#x2F;환경에 따라서 충분히 달라질 수 있습니다.</p>
+<ul>
+<li><code>320 ~ 480px</code> : 모바일</li>
+<li><code>481 ~ 768px</code> : 태블릿</li>
+<li><code>769 ~ 1024px</code> : 노트북</li>
+<li><code>1025 ~ 1200px</code> : 데스크탑</li>
+<li><code>1201px ~(이상)</code> : 데스크탑 및 TV 등</li>
+</ul>
+<hr>
+<h1 id="5-뷰포트-viewport"><a href="#5-뷰포트-viewport" class="headerlink" title="5. 뷰포트(viewport)"></a>5. 뷰포트(viewport)</h1><p><code>뷰포트</code>는 <code>웹 페이지가 화면에 보여지는 영역</code>을 의미합니다. PC는 브라우저에서 웹페이지가 보여지기 때문에 웹 브라우저의 크기가 뷰포트의 크기입니다. 그 외의 모바일 디바이스 기기에서는 모바일 디바이스 기기 화면 자체가 뷰포트가 됩니다.</p>
+<p>모든 웹페이지는 가로의 크기가 980px로 뷰포트의 기준이 정해져 있습니다. 따라서 이러한 웹페이지의 뷰포트 기준 크기와 웹페이지에 접속할 때, 사용한 디바이스의 뷰포트가 정확히 일치해야만 최적화된 사이즈의 웹 페이지를 사용자에게 보여줄 수 있습니다.</p>
+<p>웹 브라우저 같은 경우는 웹 브라우저의 크기가 변경될 때마다 웹 페이지의 뷰포트 기준이 웹 브라우저 크기에 맞춰서 재설정됩니다. 그래서 우리가 PC만 사용할 때는 뷰포트와 관련된 부분을 신경쓰지 않아도 됩니다. 하지만 <code>PC를 제외한 나머지 디바이스에서는 문제</code>가 되는데요. </p>
+<p>위에서 언급한 것처럼 웹 페이지의 뷰포트는 가로의 크기가 980px이 기준이 되지만, 다른  디바이스에서는 디바이스마다 정해진 뷰포트의 크기가 있어서 웹 페이지의 기본적인 기준 크기인 980px과 일치하지 않는 경우가 많기 때문입니다.</p>
+<p>그래서 항상 PC를 제외한 다른 디바이스에서도 최적화된 웹 페이지를 보여주기 위해 웹페이지의 기본 뷰포트 크기(980px)를 접속한 디바이스의 뷰포트 크기로 재설정해야 하는데요, 그럴 때 사용할 수 있는 태그가 뷰포트 관련  meta 태그입니다.</p>
+<p>뷰포트는 HTML의 meta 태그를 사용해서 설정할 수 있습니다.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- px단위로 숫자를 작성하며 단위표시는 생략, e.g.) 300  --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width:너비값&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 웹 페이지에 뷰포트가 디바이스의 뷰포트 크기와 일치하게 재설정 ⭐ --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 디바이스 높이 기준 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;height=device-height&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 초기 화면 배율 설정 (100%) ⭐ --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 최소 / 최대 화면 배율 설정 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;minimum-scale=1.0&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;maximum-scale=1.0&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 사용자의 크기 조절 막기 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;user-scaleble=no&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>예시를 보겠습니다.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;ko&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;IE=edge&quot;</span> /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- viewport 관련 meta 태그 --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- content의 넓이가 접속한 기기에 일치하도록 해줌, 스마트폰 손가락으로 줌 배율을 1배율로 설정 --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 이 태그가 없으면 휴대폰에서 웹브라우저 기준 크기 등으로 크기가 맞지 않음 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>미디어쿼리<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="keyword">@media</span> all <span class="keyword">and</span> (<span class="attribute">max-width</span>: <span class="number">1139px</span>) <span class="keyword">and</span> (<span class="attribute">orientation</span>: portrait) &#123;</span></span><br><span class="line"><span class="language-css">        <span class="selector-tag">h1</span> &#123;</span></span><br><span class="line"><span class="language-css">          <span class="attribute">color</span>: orange;</span></span><br><span class="line"><span class="language-css">        &#125;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Media Query<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>반응형 웹을 구현할 떄 필수로 사용해야 하는 CSS 속성<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/02/06/Front-Start-CSS-08-Grid-Layout/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-02-06 21:33:55
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/html-css-js/" title="HTML-CSS-JS"> <b>#</b> HTML-CSS-JS </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/html-css-js/css/" title="CSS"> <b>#</b> CSS </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/css/" title="CSS"> #CSS </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/02/07/CS-JS-DataAlgo-16/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%EB%B0%98%EC%9D%91%ED%98%95-%EC%9B%B9%EA%B3%BC-%EC%A0%81%EC%9D%91%ED%98%95-%EC%9B%B9"><span class="toc-text">1. 반응형 웹과 적응형 웹</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%EB%AF%B8%EB%94%94%EC%96%B4%EC%BF%BC%EB%A6%AC-Media-Query"><span class="toc-text">2. 미디어쿼리(Media Query)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-orientation-%ED%8A%B9%EC%A0%95-%EB%B0%A9%ED%96%A5%EB%A7%8C-%EB%AF%B8%EB%94%94%EC%96%B4%EC%BF%BC%EB%A6%AC-%EC%A0%81%EC%9A%A9"><span class="toc-text">3. orientation 특정 방향만 미디어쿼리 적용</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%EB%B8%8C%EB%A0%88%EC%9D%B4%ED%81%AC-%ED%8F%AC%EC%9D%B8%ED%8A%B8"><span class="toc-text">4. 브레이크 포인트</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%EB%B7%B0%ED%8F%AC%ED%8A%B8-viewport"><span class="toc-text">5. 뷰포트(viewport)</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Start-CSS-%2009%20-%20%EB%AF%B8%EB%94%94%EC%96%B4%EC%BF%BC%EB%A6%AC(fMedia%20Query) + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F02%2F06%2FFront-Start-CSS-09-MediaQuery%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/02/06/Front-Start-CSS-09-MediaQuery/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

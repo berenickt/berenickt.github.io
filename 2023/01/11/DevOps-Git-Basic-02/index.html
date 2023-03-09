@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      DevOps-Git-Basic--02-저장 - add, commit, diff 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">즐겨찾기</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying/">
+          <a href="/wisesaying/">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/column/">
+          <a href="/column/">읽을컬럼</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">DevOps-Git-Basic--02-저장 - add, commit, diff</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-11 04:13:23
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/git/" title="Git"> <b>#</b> Git </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/git/basic/" title="Basic"> <b>#</b> Basic </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/git/" title="Git"> #Git </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-작업폴더에서-git-사용"><a href="#1-작업폴더에서-git-사용" class="headerlink" title="1. 작업폴더에서 git 사용"></a>1. 작업폴더에서 git 사용</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init <span class="comment"># git이 여러분이 파일생성하는거, 코드작성하는걸 추적하기 시작</span></span><br></pre></td></tr></table></figure>
+
+<p>git의 commit 기능을 쓰면 쓰면 파일의 현재상태를 매일매일 <strong>기록</strong>해둘 수 있습니다.<br>정확히 말하면 <strong>파일의 스냅샷</strong>을 저장해줍니다.</p>
+<hr>
+<h1 id="2-git-add-commit"><a href="#2-git-add-commit" class="headerlink" title="2. git add, commit"></a>2. git add, commit</h1><p>VSCode에서 <strong>app.txt</strong> 파일을 생성해서 대충 코드짭니다. 작성한 코드가 맘에 들어서 따로 기록을 해두고 싶으면,</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># app.txt -------------------</span></span><br><span class="line">aaaaaaaaaaaaa</span><br></pre></td></tr></table></figure>
+
+<p>git을 이용해서 해당 파일 현재상태를 기록하려면,</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 파일의 현재상태를 기록</span></span><br><span class="line"><span class="comment"># git add 파일명</span></span><br><span class="line"><span class="comment"># git commit -m &#x27;아무메세지&#x27;</span></span><br><span class="line"></span><br><span class="line">git add app.txt </span><br><span class="line">git commit -m <span class="string">&#x27;첫 파일 만듬&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>이제부터 이 파일상태 그대로 되돌리거나 그럴 수 있고 나중에 파일변경 히스토리가 궁금하면 열람할 수도 있습니다.<br>“기록”이라기보다는 “버전생성”이라고 부르는 경우가 많습니다.</p>
+<hr>
+<h2 id="2-1-staging-area-amp-repository"><a href="#2-1-staging-area-amp-repository" class="headerlink" title="2.1 staging area &amp; repository"></a>2.1 staging area &amp; repository</h2><p>버전만들 땐 <code>(1) git add</code>, <code>(2) git commit</code> 순서대로 하면 됩니다. 그림을 그려보면,</p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/git_2_1.png" alt="git_2_1"></p>
+<ul>
+<li><code>staging area</code><ul>
+<li>commit을 하기 전에 <strong>commit할 파일들을 골라놓는 곳</strong></li>
+<li>staging area에 파일넣는 행위를 <strong>staging</strong>이라고 함</li>
+<li><code>git add</code> 명령어로 staging 할 수 있음</li>
+</ul>
+</li>
+<li><code>repository(저장소)</code><ul>
+<li>commit된 <strong>파일의 버전들을 모아놓는 곳</strong></li>
+<li>repository의 실체를 구경하고 싶으면 작업폴더안에 숨겨져 있는 <code>.gi</code>t 폴더 열어보면 됨</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="2-2-명령어-정리"><a href="#2-2-명령어-정리" class="headerlink" title="2.2 명령어 정리"></a>2.2 명령어 정리</h2><p>이렇게 여러 파일을 동시에 스테이징할 수 있습니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">git add 파일명1 파일명2 <span class="comment"># 여러 파일을 동시에 스테이징</span></span><br><span class="line">git add . <span class="comment"># 작업폴더의 모든 파일을 전부 스테이징</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 요즘 젊은이들은 인생이 힘들고 복잡할 때 &quot;상태창!!&quot;을 외치는데,</span></span><br><span class="line"><span class="comment"># git도 마찬가지로 힘들고 복잡할 때 상태창을 띄울 수 있음 </span></span><br><span class="line"><span class="comment"># git status : 지금 뭐 하는지 까먹었을 때도 자주 입력</span></span><br><span class="line">git status <span class="comment"># 지금 변경된 파일, 스테이징된 파일 이런걸 쭉 알려줌</span></span><br><span class="line"></span><br><span class="line">git restore --staged 파일명 <span class="comment"># 스테이징된 파일을 취소</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># commit 할 때 -m 뒤에 메세지 입력가능</span></span><br><span class="line"><span class="comment"># 메세지에 코드에 무슨기능 추가했는지 이런거 적으면 됩니다. </span></span><br><span class="line">git commit -m <span class="string">&#x27;메세지&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># commit 기록을 한 눈에 파악하고 싶으면 git log 명령어 입력</span></span><br><span class="line"><span class="comment"># --graph 옵션을 넣으면 그래프로 그려줌</span></span><br><span class="line">git <span class="built_in">log</span> --all --oneline</span><br><span class="line">git <span class="built_in">log</span> --all --oneline --graph</span><br><span class="line"></span><br><span class="line"><span class="comment"># 입력 후엔 Vim 에디터가 켜져서 j, k 키로 위아래 스크롤이 가능하고 q 키로 종료</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>❓ 얼마나 자주 commit 하는게 좋나?</p>
+<p>ctrl + s 누르는 것 처럼 습관적으로 할 이유는 없고 간단한 기능을 하나 추가할 때마다 commit하면 됩니다. </p>
+<p>예를 들어, 회원가입 기능을 만든다고 하면,</p>
+<ul>
+<li>회원가입 폼 레이아웃을 만들면 commit</li>
+<li>입력한 이메일이 맞는지 검증하는 기능을 만들었으면 commit</li>
+<li>서버에 전송하는 기능을 만들었으면 commit</li>
+</ul>
+<p>대충 작은 작업하나 마쳤으면 commit하는게 좋습니다.</p>
+</blockquote>
+<hr>
+<h2 id="2-3-에디터-부가기능"><a href="#2-3-에디터-부가기능" class="headerlink" title="2.3 에디터 부가기능"></a>2.3 에디터 부가기능</h2><p>웬만한 에디터들 보면 git 기능이 내장되어 있어서 그거 쓰면 터미널 켤 필요없이 편리하게 add, commit 가능합니다.<br>(git 기능없는 에디터면 git 부가기능 설치하면 됩니다.)</p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/git_2_2.png" alt="git_2_2"></p>
+<p>VSCode 에디터의 경우 왼쪽 git 처럼 생긴 메뉴 들어가보면 지금 어떤 파일이 변경되고 추가되었는지 알려줍니다.<br> <strong>+</strong> 누르면 <code>git add</code> 한거랑 똑같고, <strong>체크마크</strong> 누르면 <code>git commit</code> 한거랑 똑같습니다.<br>파일이 많고 복잡하면 이거 쓰는게 더 나을 수도 있습니다.</p>
+<hr>
+<h1 id="3-git-diff"><a href="#3-git-diff" class="headerlink" title="3. git diff"></a>3. git diff</h1><p>commit 하기 전에 이전과 현재 코드가 어떤 차이가 있는지 알고 싶으면, <code>git diff</code> 명령어 쓰면 됩니다.<br><strong>바로 전 commit과 현재 코드의 차이점</strong>을 비교해줍니다.</p>
+<p>하지만 터미널의 한계로 차이점보기가 힘들고, 추가로 설정하지 않으면 불편해서 보통 git diff를 쌩으로 사용하진 않습니다.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># git diff 커밋id</span></span><br><span class="line">$ git diff</span><br></pre></td></tr></table></figure>
+
+<p>최근 commit과 비교하는게 아니라 <strong>과거의 특정 commit과 현재 파일을 비교하고 싶으면</strong> 커밋ID를 명시해주면 됩니다.<br>(커밋ID는 <code>git log --oneline</code>입력하면, 볼 수 있음)</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git diff 커밋id1 커밋id2</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-1-git-difftool"><a href="#3-1-git-difftool" class="headerlink" title="3.1 git difftool"></a>3.1 git difftool</h2><p>이거 쓰면 비주얼적으로 훌륭하게 차이점을 분석해줍니다. </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git difftool <span class="comment"># 입력하면 현재 파일과 최근 commit의 차이점을 비교</span></span><br><span class="line">git difftool 커밋<span class="built_in">id</span> <span class="comment"># 현재 파일과 특정 commit의 차이점을 비교</span></span><br><span class="line">git difftool 커밋id1 커밋id2 <span class="comment"># 입력하면 특정 commit 2개의 차이점을 비교</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/git_2_3.png" alt="git_2_3"></p>
+<p>이것도 Vim 에디터가 뜨는데, <code>hjkl</code> 키로 이동가능하고, <code>:q</code> 여러번 입력해야 나갈 수 있습니다.<br>아니면 <code>:qa</code> 입력하셈. 실은 Vim 에디터와 터미널의 한계로 그렇게 편리하진 않습니다. </p>
+<blockquote>
+<p>💡 git difftool을 Vim 말고 VSCode로 열고 싶으면</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global diff.tool vscode</span><br><span class="line">git config --global difftool.vscode.cmd <span class="string">&#x27;code --wait --diff $LOCAL $REMOTE&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>터미널에 차례로 2개 입력하면 됩니다.</p>
+</blockquote>
+<hr>
+<h2 id="3-2-에디터-부가기능"><a href="#3-2-에디터-부가기능" class="headerlink" title="3.2 에디터 부가기능"></a>3.2 에디터 부가기능</h2><p>VSCode 에디터의 경우 좌측 Extensions 메뉴에서 Git 관련 부가기능 설치하면, 더 편리하게 git diff 할 수 있습니다.</p>
+<p><a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph">https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph</a></p>
+<p>VSCode 에디터 <strong>extension 메뉴에서 git 검색</strong>해서, <strong>Git graph</strong> 부가기능을 설치합니다.</p>
+<p>[왼쪽 Git 메뉴] - [Git graph 버튼]누르면 commit 내역을 한 눈에 쭉 살펴볼 수 있고,<br>파일명 우클릭하면 git diff도 가능하니, 과거 내역을 살펴보고 싶으면 이런 GUI 툴을 주로 활용 가능.</p>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/11/DevOps-Git-Basic-01/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-11 04:13:23
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/git/" title="Git"> <b>#</b> Git </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/git/basic/" title="Basic"> <b>#</b> Basic </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/git/" title="Git"> #Git </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/11/DevOps-Git-Basic-03/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%EC%9E%91%EC%97%85%ED%8F%B4%EB%8D%94%EC%97%90%EC%84%9C-git-%EC%82%AC%EC%9A%A9"><span class="toc-text">1. 작업폴더에서 git 사용</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-git-add-commit"><span class="toc-text">2. git add, commit</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-staging-area-amp-repository"><span class="toc-text">2.1 staging area &amp; repository</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%EB%AA%85%EB%A0%B9%EC%96%B4-%EC%A0%95%EB%A6%AC"><span class="toc-text">2.2 명령어 정리</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%EC%97%90%EB%94%94%ED%84%B0-%EB%B6%80%EA%B0%80%EA%B8%B0%EB%8A%A5"><span class="toc-text">2.3 에디터 부가기능</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-git-diff"><span class="toc-text">3. git diff</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-git-difftool"><span class="toc-text">3.1 git difftool</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%EC%97%90%EB%94%94%ED%84%B0-%EB%B6%80%EA%B0%80%EA%B8%B0%EB%8A%A5"><span class="toc-text">3.2 에디터 부가기능</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + DevOps-Git-Basic--02-%EC%A0%80%EC%9E%A5%20-%20add%2C%20commit%2C%20diff + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F11%2FDevOps-Git-Basic-02%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/11/DevOps-Git-Basic-02/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Front-JS-DOM-01-Web API 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">즐겨찾기</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying/">
+          <a href="/wisesaying/">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/column/">
+          <a href="/column/">읽을컬럼</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Front-JS-DOM-01-Web API</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-29 12:37:01
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/js/" title="JS"> <b>#</b> JS </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/js/dom-event/" title="DOM-Event"> <b>#</b> DOM-Event </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/js/" title="JS"> #JS </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-Web-APIs란"><a href="#1-Web-APIs란" class="headerlink" title="1. Web APIs란?"></a>1. Web APIs란?</h1><p>브라우저 자체에서 제공하는 API이 굉장히 많습니다.</p>
+<ul>
+<li><code>DOM APIs</code><ul>
+<li>Document Object Model의 약자</li>
+<li>웹 페이지에 있는 요소들을 생성하거나 삭제하거나 또는 스타일은 이런 조작하는 기능을 제공</li>
+</ul>
+</li>
+<li><code>Network APIs</code> :  서버와 통신할 수 있는 기능들을 제공</li>
+<li><code>Graphics APIs</code> : Canvas나 WebGL같은 그래픽에 관련된 API들도 제공</li>
+<li><code>Audio/Video APIs</code> : 오디오나 비디오를 재생하거나 중지하는 등 다양한 멀티미디어에 관련 API 제공</li>
+<li><code>Device APIs</code> : 디바이스 사용자가 온라인인지 오프라인인지 디바이스의 상태 정보를 받아올 수 있는 API 제공</li>
+<li><code>File APIs</code> : 사용자의 파일을 읽거나 저장하는 API</li>
+<li><code>Storage APIs</code> : 사용자의 정보를 저장할 수 있는 스토리지에 관련된 API</li>
+</ul>
+<blockquote>
+<p>cf</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Introduction">MDN Web API</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API">MDN Web API collection</a></li>
+</ul>
+</blockquote>
+<hr>
+<h1 id="2-HTTP와-HTTPS"><a href="#2-HTTP와-HTTPS" class="headerlink" title="2. HTTP와 HTTPS"></a>2. HTTP와 HTTPS</h1><p><code>HTTP</code>는 웹 클라이언트와 서버가 어떻게 통신할지에 대한 통신 규약을 정해놓은 것으로, Hypertext Transfer Protocol의 약자로써 클라이언트가 서버에게 정보를 요청하고, 다시 서버에서 정보를 받아오는 request를 하고 respence를 받아오는 방식으로 이루어져 있습니다.</p>
+<p><code>HTTPS</code>는 HTTP에 S가 더해진 것으로 Hypertext Transfer Protocal Secure의 약자입니다. 즉, 정보를 주고받는 것들이 보안 처리가 된 http라는 뜻입니다.</p>
+<p><code>HTTP</code>에서 패스워드를 입력해서 서버에게 보내게 되면, 아무런 encryption이 일어나지 않고, 즉 아무런 보안처리가 되지 않아서 ‘dream’이라는 글자가 그대로 전송되어서 해커가 네트워크가 어떻게 전송됐는지를 들여다볼 수 있는 반면에, <code>HTTPS</code>는 secure하게 encrypt가 되어서, 즉 ‘drame’이라는 글자가 사용자가 알아볼 수 없는 ‘암호키’를 이용해서 보안 처리가 되기 때문에 해커가 함부로 볼 수가 없습니다. </p>
+<p>그래서 HTTP는 보안 처리가 되지 않고 HTTPS는 보안 처리가 되어 있기 때문에, 몇몇 Web APIs는 HTTPS 환경에서만 동작합니다. 이러한 부분은 MDN 사이트에서 확인해서 찾아서 쓰면 되고, 이런 Web APIs에서 제공하는 API 뿐만 아니라, 트위터, 트렐러, 유튜브, 핀터레스 등의 서비스, 나아가 굉장히 다양한 회사에서 자신들의 백엔드 API를 제공합니다.</p>
+<hr>
+<h1 id="3-Browser-구조"><a href="#3-Browser-구조" class="headerlink" title="3. Browser 구조"></a>3. Browser 구조</h1><p>브라우저에서 웹 페이지를 열게 되면 <code>Window</code>라는 전체적인 오브젝트가 존재하고, <code>Window</code>는 여러분들의 페이지뿐만 아니라 브라우저에서 현재 열려있는 전체적인 창을 의미합니다.</p>
+<p>그리고 Window 안에 즉 페이지가 표기되는 부분이 <code>Document</code> 오브젝트입니다. 즉, <code>Document</code>는 HTML에서 작성한 요소들이 표기되는 부분이라고 볼 수 있습니다. 그리고 사용자 눈에는 보이진 않지만 전체적으로 윈도우에 관련된 즉 브라우저 자체에 관련된 정보들이 담겨 있는 <code>Navigator</code>라는 오브젝트도 있습니다.</p>
+<table>
+<thead>
+<tr>
+<th align="center">종류</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">window</td>
+<td>웹 브라우저가 열릴 때마다 생성되는 최상위 관리 객체 <code>(브라우저 창)</code></td>
+</tr>
+<tr>
+<td align="center">document</td>
+<td>웹 브라우저에 표시되는 HTML 문서 정보가 포함된 객체 <code>(브라우저 내용)</code></td>
+</tr>
+<tr>
+<td align="center">location</td>
+<td>웹 브라우저에 현재 표시된 페이지에 대한 URL 정보가 포함된 객체</td>
+</tr>
+<tr>
+<td align="center">history</td>
+<td>웹 브라우저에 저장된 방문 기록이 포함된 객체</td>
+</tr>
+<tr>
+<td align="center">navigator</td>
+<td>웹 브라우저 정보가 포함된 객체</td>
+</tr>
+<tr>
+<td align="center">screen</td>
+<td>웹 브라우저의 화면 정보가 포함된 객체</td>
+</tr>
+</tbody></table>
+<p>그래서 HTML, CSS, JavaScript를 포함한 웹 페이지를 브라우저에서 실행되면 <code>Window</code>라는 전체적인 오브젝트가 있고, <code>Window</code> 안에는 <code>DOM(Document 모델)</code>이 들어있고, DOM을 이용해서 새로운 요소를 추가하고, 빼거나 움직이고 이런 것들이 가능하게 됩니다. 또 <code>BOM</code>은 Browser Object Model의 약자로 브라우저에 관련된 Navigator나 Location이나 Fetch나 Storage같은 Web APIs 등이 들어있습니다. MDN 사이트에서 Web APIs와 관련된 모든 오브젝트들이 BOM에 해당됩니다.</p>
+<p>그리고 이제 작성한 자바스크립트가 함께 포함이 되어져 있습니다. 그래서 자바스크립트로 브라우저 위에서 동작하는 걸 만들 때는 이런 DOM 관련 API도 쓸 수 있고, BOM 관련 API도 쓸 수 있습니다.</p>
+<p>실제로 브라우저 콘솔 창에서 다음 명령어를 작성하고 확인해보세요.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ document</span><br><span class="line">$ window</span><br></pre></td></tr></table></figure>
+
+<p>콘솔창을 이용해서 확인해도 되지만 MDN Window에 가면 더 자세히 알 수 있습니다. Window는 인터페이스인데, DOM의 document가 포함된 Window를 나타내는 것이라 설명하면서, Window는 무엇이고, 그 안에 어떤 것들이 들어있는 지도 확인해볼 수 있습니다.</p>
+<p>cf. <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/Window">MDN Window</a></p>
+<hr>
+<h1 id="4-window-객체"><a href="#4-window-객체" class="headerlink" title="4. window 객체"></a>4. window 객체</h1><h2 id="4-1-window-객체-기본-속성"><a href="#4-1-window-객체-기본-속성" class="headerlink" title="4.1 window 객체 기본 속성"></a>4.1 window 객체 기본 속성</h2><table>
+<thead>
+<tr>
+<th align="center">속성</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">innerWidth</td>
+<td>웹 브라우저 화면의 너비를 px(픽셀) 단위로 나타냄</td>
+</tr>
+<tr>
+<td align="center">innerHeight</td>
+<td>웹 브라우저 화면의 높이를 px 단위로 나타냄</td>
+</tr>
+<tr>
+<td align="center">outerWidth</td>
+<td>웹 브라우저 창의 너비를 px 단위로 나타냄</td>
+</tr>
+<tr>
+<td align="center">outerHeight</td>
+<td>웹 브라우저 창의 높이를 px 단위로 나타냄</td>
+</tr>
+<tr>
+<td align="center">screenTop &#x2F; screenY</td>
+<td>웹 브라우저 위쪽 면과 모니터의 간격을 px 단위로 나타냄</td>
+</tr>
+<tr>
+<td align="center">screenLeft &#x2F; screenX</td>
+<td>웹 브라우저 왼쪽 면과 모니터의 간격을 px 단위로 나타냄</td>
+</tr>
+<tr>
+<td align="center">pageXOffset &#x2F; scrollX</td>
+<td>웹 브라우저의 수평 스크롤 위치를 px 단위로 나타냄</td>
+</tr>
+<tr>
+<td align="center">pageYOffset &#x2F; scrollY</td>
+<td>웹 브라우저의 수직 스크롤 위치를 px 단위로 나타냄</td>
+</tr>
+</tbody></table>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">onclick</span>=<span class="string">&quot;printInfo()&quot;</span>&gt;</span>window 객체 속성<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">function</span> <span class="title function_">printInfo</span>(<span class="params"></span>)&#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`웹 브라우저의 너비: <span class="subst">$&#123;<span class="variable language_">window</span>.innerWidth&#125;</span>`</span>);</span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`웹 브라우저의 높이: <span class="subst">$&#123;<span class="variable language_">window</span>.innerHeight&#125;</span>`</span>);</span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`웹 브라우저 창의 너비: <span class="subst">$&#123;<span class="variable language_">window</span>.outerWidth&#125;</span>`</span>);</span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`웹 브라우저 창의 높이: <span class="subst">$&#123;<span class="variable language_">window</span>.outerHeight&#125;</span>`</span>);</span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`웹 브라우저 창 위쪽 면과 모니터 사이의 간격: <span class="subst">$&#123;<span class="variable language_">window</span>.screen Top&#125;</span>/<span class="subst">$&#123;<span class="variable language_">window</span>.screenY&#125;</span>`</span>);</span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`웹 브라우저 창 왼쪽 면과 모니터 사이의 간격: <span class="subst">$&#123;<span class="variable language_">window</span>.screen Left&#125;</span>/<span class="subst">$&#123;<span class="variable language_">window</span>.screenX&#125;</span>`</span>);</span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`웹 브라우저 창의 스크롤 가로 위치: <span class="subst">$&#123;<span class="variable language_">window</span>.scrollX&#125;</span>`</span>);</span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`웹 브라우저 창의 스크롤 세로 위치: <span class="subst">$&#123;<span class="variable language_">window</span>.scrollY&#125;</span>`</span>);</span></span><br><span class="line"><span class="language-javascript">    &#125;</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>코드를 웹 브라우저로 실행하고 개발자 도구를 엽니다.<br>웹 브라우저를 가로와 세로 방향으로 어느 정도 스크롤한 다음 화면에 보이는 window 객체 속성 버튼을 눌러보면,<br>콘솔창에 속성값이 출력되는 것을 볼 수 있습니다.</p>
+<hr>
+<h1 id="5-window-객체-기본-메서드"><a href="#5-window-객체-기본-메서드" class="headerlink" title="5. window 객체 기본 메서드"></a>5. window 객체 기본 메서드</h1><table>
+<thead>
+<tr>
+<th align="center">메서드</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">alert()</td>
+<td>알림창을 표시함</td>
+</tr>
+<tr>
+<td align="center">confirm()</td>
+<td>확인창을 표시함</td>
+</tr>
+<tr>
+<td align="center">prompt()</td>
+<td>입력창을 표시함</td>
+</tr>
+<tr>
+<td align="center">open()</td>
+<td>새로운 웹 브라우저 창을 연다.</td>
+</tr>
+<tr>
+<td align="center">close()</td>
+<td>웹 브라우저 창을 닫음</td>
+</tr>
+<tr>
+<td align="center">setTimeout()</td>
+<td>일정 시간(ms) 뒤에 콜백 함수를 한 번만 실행함</td>
+</tr>
+<tr>
+<td align="center">setInterval()</td>
+<td>일정 시간(ms)마다 콜백 함수를 반복적으로 실행함</td>
+</tr>
+<tr>
+<td align="center">clearInterval</td>
+<td>setInterval() 메서드로 반복 실행되는 함수를 중지함</td>
+</tr>
+<tr>
+<td align="center">scrollTo()</td>
+<td>웹 브라우저의 스크롤을 특정 위치만큼 이동함</td>
+</tr>
+<tr>
+<td align="center">scrollBy()</td>
+<td>웹 브라우저의 스크롤을 현재 위치에서 상대적 위치로 이동함</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="5-1-open-웹-브라우저에서-새-창-제어"><a href="#5-1-open-웹-브라우저에서-새-창-제어" class="headerlink" title="5.1 open() : 웹 브라우저에서 새 창 제어"></a>5.1 open() : 웹 브라우저에서 새 창 제어</h2><p>코드를 실행해 보면 팝업 버튼이 보입니다. 버튼을 클릭하면 popup() 함수가 호출되어 window 객체의 open() 메서드가 실행됩니다.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- open.html --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">onclick</span>=<span class="string">&quot;popup()&quot;</span>&gt;</span>팝업<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">function</span> <span class="title function_">popup</span>(<span class="params"></span>)&#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// window.open(경로, 이름, 속성);</span></span></span><br><span class="line"><span class="language-javascript">      <span class="variable language_">window</span>.<span class="title function_">open</span>(<span class="string">&#x27;popup.html&#x27;</span>, <span class="string">&#x27;팝업&#x27;</span>, <span class="string">&#x27;width=200, height=100&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// popup.html : 새창에서 열릴 파일의 경로</span></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// 팝업 : 브라우저 탭의 이름이 아니라 open()에서 내부적으로 구분하는 용도로 사용하는 이름</span></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// width=200, height=100 : 새창의 속성 값</span></span></span><br><span class="line"><span class="language-javascript">    &#125;</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>window.open() 메서드로 열리는 새 창을 ‘팝업창’이라고도 합니다.</p>
+</blockquote>
+<p>이렇게 열린 창은 window 객체의 <code>close()</code>로 닫을 수 있습니다.<br>보통 <code>open()</code>로 열린 새로운 창을 닫는 용도로 사용합니다.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- popup.html --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">onclick</span>=<span class="string">&quot;window.close()&quot;</span>&gt;</span>팝업 닫기<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="5-2-scrollTo-웹-브라우저의-스크롤-이동"><a href="#5-2-scrollTo-웹-브라우저의-스크롤-이동" class="headerlink" title="5.2 scrollTo() : 웹 브라우저의 스크롤 이동"></a>5.2 scrollTo() : 웹 브라우저의 스크롤 이동</h2><ul>
+<li><code>scrollTo()</code> : 웹 브라우저의 스크롤을 특정 위치만큼 이동함</li>
+<li><code>scrollBy()</code> :  웹 브라우저의 스크롤을 현재 위치에서 상대적 위치로 이동함</li>
+</ul>
+<p>두 메서드는 기본으로 매개변수에 x좌표와 y좌표를 전달받습니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 📌 몇 번을 호출하더라도 가로는 100px, 세로는 200px의 위치로 스크롤이 이동됨</span></span><br><span class="line"><span class="variable language_">window</span>.<span class="title function_">scrollTo</span>(<span class="number">100</span>, <span class="number">200</span>); </span><br><span class="line"></span><br><span class="line"><span class="comment">// 웹 브라우저 스크롤의 현재 위치에서 상대적인 위치로 움직이기 때문에</span></span><br><span class="line"><span class="comment">// 호출할 때마다 웹 브라우저의 스크롤이 가로 방향으로 100px, 세로 방향으로 200px씩 계속 이동</span></span><br><span class="line"><span class="variable language_">window</span>.<span class="title function_">scrollBy</span>(<span class="number">100</span>, <span class="number">200</span>); <span class="comment">// window.scrollBy(x좌표, y좌표);</span></span><br></pre></td></tr></table></figure>
+
+<p>또는 다음처럼 객체 리터럴을 전달받을 수도 있습니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="title function_">scrollTo</span>(&#123;<span class="attr">left</span>:<span class="number">100</span>, <span class="attr">top</span>:<span class="number">200</span>&#125;);</span><br><span class="line"><span class="variable language_">window</span>.<span class="title function_">scrollBy</span>(&#123;<span class="attr">left</span>:<span class="number">100</span>, <span class="attr">top</span>:<span class="number">200</span>&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>scrollTo() 메서드나 scrollBy() 메서드의 매개변수에 객체 리터럴을 전달할 때,<br>behavior 속성을 전달할 수 있습니다.<br>behavior 속성값을 smooth로 하면 웹 브라우저 스크롤이 해당 위치로 마우스 휠을 굴리듯이 부드럽게 이동합니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="title function_">scrollTo</span>(&#123;<span class="attr">top</span>:<span class="number">4000</span>, <span class="attr">behavior</span>:<span class="string">&#x27;smooth&#x27;</span>&#125;);</span><br><span class="line"><span class="variable language_">window</span>.<span class="title function_">scrollBy</span>(&#123;<span class="attr">top</span>:<span class="number">600</span>, <span class="attr">behavior</span>:<span class="string">&#x27;smooth&#x27;</span>&#125;);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>다른 브라우저 모델 객체는 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/ko/docs/Web/API">https://developer.mozilla.org/ko/docs/Web/API</a> 참고</p>
+</blockquote>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/24/CS-Network-basic01/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-29 12:37:01
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/js/" title="JS"> <b>#</b> JS </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/js/dom-event/" title="DOM-Event"> <b>#</b> DOM-Event </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/js/" title="JS"> #JS </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/29/Front-JS-DOM-02-DOM/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Web-APIs%EB%9E%80"><span class="toc-text">1. Web APIs란?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-HTTP%EC%99%80-HTTPS"><span class="toc-text">2. HTTP와 HTTPS</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Browser-%EA%B5%AC%EC%A1%B0"><span class="toc-text">3. Browser 구조</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-window-%EA%B0%9D%EC%B2%B4"><span class="toc-text">4. window 객체</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-window-%EA%B0%9D%EC%B2%B4-%EA%B8%B0%EB%B3%B8-%EC%86%8D%EC%84%B1"><span class="toc-text">4.1 window 객체 기본 속성</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-window-%EA%B0%9D%EC%B2%B4-%EA%B8%B0%EB%B3%B8-%EB%A9%94%EC%84%9C%EB%93%9C"><span class="toc-text">5. window 객체 기본 메서드</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-open-%EC%9B%B9-%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80%EC%97%90%EC%84%9C-%EC%83%88-%EC%B0%BD-%EC%A0%9C%EC%96%B4"><span class="toc-text">5.1 open() : 웹 브라우저에서 새 창 제어</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-scrollTo-%EC%9B%B9-%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80%EC%9D%98-%EC%8A%A4%ED%81%AC%EB%A1%A4-%EC%9D%B4%EB%8F%99"><span class="toc-text">5.2 scrollTo() : 웹 브라우저의 스크롤 이동</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Front-JS-DOM-01-Web%20API + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F29%2FFront-JS-DOM-01-Web%2520API%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/29/Front-JS-DOM-01-Web%20API/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

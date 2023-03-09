@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Start-CSS-07 - Flexbox 레이아웃 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">즐겨찾기</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying/">
+          <a href="/wisesaying/">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/column/">
+          <a href="/column/">읽을컬럼</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Start-CSS-07 - Flexbox 레이아웃</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-02-06 17:37:55
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/html-css-js/" title="HTML-CSS-JS"> <b>#</b> HTML-CSS-JS </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/html-css-js/css/" title="CSS"> <b>#</b> CSS </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/css/" title="CSS"> #CSS </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-실습-워밍업"><a href="#1-실습-워밍업" class="headerlink" title="1. 실습 - 워밍업"></a>1. 실습 - 워밍업</h1><p>본격적으로 Flexible Box Layout을 공부하기 전에 워밍업 차원에서 실습 문제를 하나 풀어보겠습니다.<br>기본으로 제공되는 실습 코드를 실행하면 아래와 같이 보입니다.</p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/CSS_7_1.png" alt="CSS_7_1"></p>
+<p>이를 아래와 같이 보일 수 있도록 CSS 스타일을 적용해주세요.</p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/CSS_7_2.png" alt="CSS_7_2"></p>
+<hr>
+<h2 id="1-1-HTML"><a href="#1-1-HTML" class="headerlink" title="1.1 HTML"></a>1.1 HTML</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;ko&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;IE=edge&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>[실습] 워밍업<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">href</span>=<span class="string">&quot;style.css&quot;</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 기본 제공 HTML 코드 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;flex-container&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;flex-item red-box&quot;</span>&gt;</span>A<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;flex-item blue-box&quot;</span>&gt;</span>B<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;flex-item green-box&quot;</span>&gt;</span>C<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="1-2-CSS"><a href="#1-2-CSS" class="headerlink" title="1.2 CSS"></a>1.2 CSS</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 기본 제공 CSS 코드 */</span></span><br><span class="line"><span class="selector-class">.flex-container</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">4px</span> solid black;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.flex-item</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">50px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">50px</span>;</span><br><span class="line">  <span class="attribute">color</span>: white;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.red-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.blue-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: blue;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.green-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: green;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>문제를 푸는 방법은 크게 두 가지가 있습니다.</p>
+<ol>
+<li><code>float 속성을 사용해서 정렬하는 방법</code><ul>
+<li>텍스트는 text-align 속성을 사용해서 center 값으로 지정하면 수평 방향에서 중앙으로 정렬할 수 있습니다.</li>
+<li>그리고 수직 방향에서 중앙 정렬은 line-height 속성의 값을 HTML 요소의 높이 값과 똑같이 지정하면 됩니다.</li>
+<li>(1.3)의 방법</li>
+</ul>
+</li>
+<li><code>display 속성의 값으로 inline-block으로 지정하는 방법</code></li>
+</ol>
+<hr>
+<h2 id="1-3-CSS-정답-float"><a href="#1-3-CSS-정답-float" class="headerlink" title="1.3 CSS 정답 - float"></a>1.3 CSS 정답 - float</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.flex-container</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">4px</span> solid black;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.flex-item</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">50px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">50px</span>;</span><br><span class="line">  <span class="attribute">color</span>: white;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">  <span class="comment">/* ⭐ 정렬을 위한 속성 추가 */</span></span><br><span class="line">  <span class="attribute">float</span>: left;</span><br><span class="line">  <span class="attribute">text-align</span>: center;</span><br><span class="line">  <span class="attribute">line-height</span>: <span class="number">50px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.red-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.blue-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: blue;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.green-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: green;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="2-Flexible-Box-Layout이란"><a href="#2-Flexible-Box-Layout이란" class="headerlink" title="2. Flexible Box Layout이란?"></a>2. Flexible Box Layout이란?</h1><blockquote>
+<p>MDN Flexbox : <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Flexbox">https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Flexbox</a></p>
+</blockquote>
+<p><code>Flexible Box Layout</code>은 흔히 <code>Flexible Layout</code>라고도 불리며 <code>1차원 방식</code>으로 효과적으로 레이아웃을 설계할 수 있도록 고안된 레이아웃 스타일입니다. 여기서 <code>1차원</code>이란 <code>수평(가로, row)이나 수직(세로, column) 방향 중 한 방향으로만</code> 레이아웃을 설계하는 방식을 말합니다.</p>
+<p><code>Flexible Box Layout</code>에는 이런 1차원 방식으로 HTML 요소를 디자인하는 속성들이 많이 추가되어서 과거보다 훨씬 간단하게 1차원 레이아웃을 구성할 수 있게 되었습니다. 워밍업으로 풀었던 CSS를 다시 보겠습니다.</p>
+<hr>
+<h2 id="2-1-CSS-정답-Flexbox"><a href="#2-1-CSS-정답-Flexbox" class="headerlink" title="2.1 CSS 정답 - Flexbox"></a>2.1 CSS 정답 - Flexbox</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.flex-container</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">4px</span> solid black;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="comment">/* 자식관계에 있는 요소만 flex되기 떄문에 자식의 자식에서 또 flex 적용 가능 */</span></span><br><span class="line">  <span class="attribute">display</span>: flex; <span class="comment">/* parent의 자식요소인 .box를 수평 정렬 */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.flex-item</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">50px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">50px</span>;</span><br><span class="line">  <span class="attribute">color</span>: white;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">  <span class="comment">/* .box의 자식요소인 text를 정렬 */</span></span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">justify-content</span>: center;</span><br><span class="line">  <span class="attribute">align-items</span>: center;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.red-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.blue-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: blue;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.green-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: green;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="3-Flex-Container"><a href="#3-Flex-Container" class="headerlink" title="3. Flex Container"></a>3. Flex Container</h1><h2 id="3-1-display"><a href="#3-1-display" class="headerlink" title="3.1 display"></a>3.1 display</h2><p><code>display</code> 속성으로 Flex Container를 정의합니다.</p>
+<table>
+<thead>
+<tr>
+<th align="center">값</th>
+<th>의미</th>
+<th align="center">기본값</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">flex</td>
+<td>Block 특성의 Flex Container를 정의</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">inline-flex</td>
+<td>Inline 특성의 Flex Container를 정의</td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<p><code>flex</code>와 <code>inline-flex</code>는 차이는 단순합니다.<br><code>display: flex;</code>로 지정된 Flex Container는 Block 요소와 같은 성향(수직 쌓임)을 가지며,<br><code>display: inline-flex</code>로 지정된 Flex Container는 Inline(Inline Block) 요소와 같은 성향(수평 쌓임)을 가집니다.</p>
+<p>여기서 말하는 수직과 수평 쌓임은 Items가 아니라 Container라는 것에 주의합시다.<br>두 값의 차이는 내부에 Items에는 영향을 주지 않습니다.</p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/CSS_7_3.png" alt="CSS_7_3"></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.flex-container</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">4px</span> solid black;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="comment">/* 플렉스 박스 레이아웃이 되고, 관련 속성을 사용할 수 있게 만듬 */</span></span><br><span class="line">  <span class="comment">/* 정렬을 적용하려는 요소의 부모 요소에 flex를 지정 */</span></span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.flex-item</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">50px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">50px</span>;</span><br><span class="line">  <span class="attribute">color</span>: white;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.red-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.blue-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: blue;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.green-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: green;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-2-메인-축과-교차-축"><a href="#3-2-메인-축과-교차-축" class="headerlink" title="3.2 메인 축과 교차 축"></a>3.2 메인 축과 교차 축</h2><p>이렇게 수평정렬이 되는 이유를 알려면, Flexible Box Layout의 기본 개념이 필요합니다.</p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/CSS_7_4.png" alt="CSS_7_4"></p>
+<ul>
+<li><code>flex container</code><ul>
+<li>메인축(main axis)과 교차축(cross axis) 개념이 생김</li>
+<li>메인축의 기본값은 왼쪽에서 오른쪽으로</li>
+<li>교차축의 기본값은 위에서 아래로</li>
+</ul>
+</li>
+<li><code>flex item</code><ul>
+<li>flex container의 자식 관계에 있는 아이템</li>
+<li>메인축의 방향으로 배치됨</li>
+<li>메인축의 방향이 바뀌게 되면, flex item의 배치도 변경됨 (<code>flex-direction</code>)</li>
+</ul>
+</li>
+<li><code>시작점(flex-start)</code>과 <code>끝점(flex-end)</code></li>
+</ul>
+<hr>
+<h3 id="3-2-1-flex-direction-메인-축-방향-결정"><a href="#3-2-1-flex-direction-메인-축-방향-결정" class="headerlink" title="3.2.1 flex-direction: 메인 축 방향 결정"></a>3.2.1 flex-direction: 메인 축 방향 결정</h3><p><code>container에 적용하는 속성</code>으로 container안의 item의 메인축 방향을 설정합니다.</p>
+<table>
+<thead>
+<tr>
+<th align="center">값</th>
+<th>의미</th>
+<th align="center">기본값</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">row</td>
+<td>Itmes를 수평축(왼쪽에서 오른쪽으로)으로 표시</td>
+<td align="center"><code>row</code></td>
+</tr>
+<tr>
+<td align="center">row-reverse</td>
+<td>Items를 <code>row</code>의 반대 축으로 표시</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">column</td>
+<td>Items를 수직축(위에서 아래로)으로 표시</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">column-reverse</td>
+<td>Items를 <code>column</code>의 반대 축으로 표시</td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<p>플렉스 박스 레이아웃은 기본으로 flex-direction 속성값이 row로 적용됩니다.<br>flex-direction 속성값에 따라 주축 방향과 플렉스 아이템 배치가 다음 그림처럼 달라집니다.</p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/CSS_7_5.png" alt="CSS_7_5"></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.flex-container</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">4px</span> solid black;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="comment">/* 플렉스 박스 레이아웃이 되고, 관련 속성을 사용할 수 있게 만듬 */</span></span><br><span class="line">  <span class="comment">/* 정렬을 적용하려는 요소의 부모 요소에 flex를 지정 */</span></span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="comment">/* 📝 flex-direction : 플렉스 컨테이너의 주축을 변경할 떄 사용 */</span></span><br><span class="line">  <span class="attribute">flex-direction</span>: row;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.flex-item</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">50px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">50px</span>;</span><br><span class="line">  <span class="attribute">color</span>: white;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.red-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.blue-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: blue;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.green-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: green;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-2-2-justify-content-메인-축-정렬"><a href="#3-2-2-justify-content-메인-축-정렬" class="headerlink" title="3.2.2 justify-content: 메인 축 정렬"></a>3.2.2 justify-content: 메인 축 정렬</h3><p>주 축(main-axis)의 정렬 방법을 설정합니다.</p>
+<table>
+<thead>
+<tr>
+<th align="center">값</th>
+<th>의미</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">flex-start</td>
+<td>Items를 시작점(flex-start)으로 정렬 (기본값)</td>
+</tr>
+<tr>
+<td align="center">flex-end</td>
+<td>Items를 끝점(flex-end)으로 정렬</td>
+</tr>
+<tr>
+<td align="center">center</td>
+<td>Items를 가운데 정렬</td>
+</tr>
+<tr>
+<td align="center">space-between</td>
+<td>시작 Item은 시작점에, 마지막 Item은 끝점에 정렬되고 나머지 Items는 사이에 고르게 정렬됨</td>
+</tr>
+<tr>
+<td align="center">space-around</td>
+<td>Items를 균등한 여백을 포함하여 정렬</td>
+</tr>
+<tr>
+<td align="center">space-evenly</td>
+<td>플렉스 아이템 사이와 양끝의 간격이 균일하도록 정렬합니다.</td>
+</tr>
+</tbody></table>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/CSS_7_6.png" alt="CSS_7_6"></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.flex-container</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">4px</span> solid black;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">flex-direction</span>: row;</span><br><span class="line">  <span class="comment">/* 📝 justify-content : 주축의 방향에서 좌, 우, 중앙 정렬을 할 떄 사용 */</span></span><br><span class="line">  <span class="attribute">justify-content</span>: center;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.flex-item</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">50px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">50px</span>;</span><br><span class="line">  <span class="attribute">color</span>: white;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.red-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.blue-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: blue;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.green-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: green;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-2-3-flex-wrap-줄바꿈"><a href="#3-2-3-flex-wrap-줄바꿈" class="headerlink" title="3.2.3 flex-wrap: 줄바꿈"></a>3.2.3 flex-wrap: 줄바꿈</h3><p>Items의 여러 줄 묶음(줄 바꿈)을 설정합니다.</p>
+<table>
+<thead>
+<tr>
+<th align="center">값</th>
+<th>의미</th>
+<th align="center">기본값</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">nowrap</td>
+<td>모든 Itmes를 여러 줄로 묶지 않음(한 줄에 표시)</td>
+<td align="center"><code>nowrap</code></td>
+</tr>
+<tr>
+<td align="center">wrap</td>
+<td>Items를 여러 줄로 묶음</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">wrap-reverse</td>
+<td>Items를 <code>wrap</code>의 역 방향으로 여러 줄로 묶음</td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/CSS_7_7.png" alt="CSS_7_7"></p>
+<p>플렉스 박스 레이아웃은 플렉스 아이템의 개수를 늘려 플렉스 컨테이너를 초과하게 해도 플렉스 아이템이 절대로 줄 바꿈되지 않습니다.</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.flex-container</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">4px</span> solid black;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">flex-wrap</span>: wrap;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.flex-item</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">101px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">50px</span>;</span><br><span class="line">  <span class="attribute">color</span>: white;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.red-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.blue-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: blue;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.green-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: green;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-3-align-content-교차축-정렬-2줄-이상"><a href="#3-3-align-content-교차축-정렬-2줄-이상" class="headerlink" title="3.3 align-content: 교차축 정렬 (2줄 이상)"></a>3.3 align-content: 교차축 정렬 (2줄 이상)</h2><p>교차 축(cross-axis)의 정렬 방법을 설정합니다. 주의할 점은 <code>flex-wrap</code> 속성을 통해 Items가 여러 줄(2줄 이상)이고 여백이 있을 경우만 사용할 수 있습니다.</p>
+<blockquote>
+<p>Items가 한 줄일 경우 <code>align-items</code> 속성을 사용하세요.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">값</th>
+<th>의미</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">stretch</td>
+<td>Container의 교차 축을 채우기 위해 Items를 늘림 (기본값)</td>
+</tr>
+<tr>
+<td align="center">flex-start</td>
+<td>Items를 시작점(flex-start)으로 정렬</td>
+</tr>
+<tr>
+<td align="center">flex-end</td>
+<td>Items를 끝점(flex-end)으로 정렬</td>
+</tr>
+<tr>
+<td align="center">center</td>
+<td>Items를 가운데 정렬</td>
+</tr>
+<tr>
+<td align="center">space-between</td>
+<td>시작 Item은 시작점에, 마지막 Item은 끝점에 정렬되고 나머지 Items는 사이에 고르게 정렬됨</td>
+</tr>
+<tr>
+<td align="center">space-around</td>
+<td>Items를 균등한 여백을 포함하여 정렬</td>
+</tr>
+</tbody></table>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/CSS_7_8.png" alt="CSS_7_8"></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.flex-container</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">4px</span> solid black;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="comment">/* 📝 align-content : 2줄 이상일 떄, 교차축 정렬 */</span></span><br><span class="line">  <span class="attribute">align-content</span>: center;</span><br><span class="line">  <span class="attribute">flex-wrap</span>: wrap;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.flex-item</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">101px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">50px</span>;</span><br><span class="line">  <span class="attribute">color</span>: white;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.red-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.blue-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: blue;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.green-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: green;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-4-align-items-교차축-정렬-1줄"><a href="#3-4-align-items-교차축-정렬-1줄" class="headerlink" title="3.4 align-items: 교차축 정렬 (1줄)"></a>3.4 align-items: 교차축 정렬 (1줄)</h2><p>교차 축(cross-axis)에서 Items의 정렬 방법을 설정합니다. Items가 한 줄일 경우 많이 사용합니다.</p>
+<blockquote>
+<p>주의할 점은 Items가 <code>flex-wrap</code>을 통해 여러 줄(2줄 이상)일 경우에는 <code>align-content</code> 속성이 우선합니다.<br>따라서 <code>align-items</code>를 사용하려면 <code>align-content</code> 속성을 기본값(<code>stretch</code>)으로 설정해야 합니다.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">값</th>
+<th>의미</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">stretch</td>
+<td>Container의 교차 축을 채우기 위해 Items를 늘림 (기본값)</td>
+</tr>
+<tr>
+<td align="center">flex-start</td>
+<td>Items를 각 줄의 시작점(flex-start)으로 정렬</td>
+</tr>
+<tr>
+<td align="center">flex-end</td>
+<td>Items를 각 줄의 끝점(flex-end)으로 정렬</td>
+</tr>
+<tr>
+<td align="center">center</td>
+<td>Items를 가운데 정렬</td>
+</tr>
+<tr>
+<td align="center">baseline</td>
+<td>Items를 문자 기준선에 정렬</td>
+</tr>
+</tbody></table>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/CSS_7_9.png" alt="CSS_7_9"></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.flex-container</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">4px</span> solid black;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">flex-direction</span>: row;</span><br><span class="line">  <span class="attribute">justify-content</span>: center;</span><br><span class="line">  <span class="comment">/* 📝 align-items : 교차축 방향에서 플렉스 아이템을 정렬할 떄 사용 */</span></span><br><span class="line">  <span class="comment">/* stretch : 교차축 방향을 꽉차게 늘리라는 의미, height가 지정되어 있으면 무시됨 */</span></span><br><span class="line">  <span class="attribute">align-items</span>: center;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.flex-item</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">50px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">50px</span>; <span class="comment">/* stretch 속성값을 위해 height 지워보기 */</span></span><br><span class="line">  <span class="attribute">color</span>: white;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.red-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.blue-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: blue;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.green-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: green;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-5-flex-flow-단축-속성"><a href="#3-5-flex-flow-단축-속성" class="headerlink" title="3.5 flex-flow: 단축 속성"></a>3.5 flex-flow: 단축 속성</h2><p><code>container에 적용하는 속성</code>으로 flex-direction 속성과 flex-wrap 속성을 한 번에 사용할 수 있는 단축 속성입니다.<br>다음처럼 작성된 flex 속성이 있다고 해 봅시다.</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.flex-container</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">4px</span> solid black;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="comment">/* flex-direction: column; */</span></span><br><span class="line">  <span class="comment">/* flex-wrap: nowrap; */</span></span><br><span class="line">  <span class="comment">/* flex-direction 속성과 flex-wrap 속성을 한 번에 사용할 수 있는 단축 속성 */</span></span><br><span class="line">  <span class="attribute">flex-flow</span>: column nowrap;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.flex-item</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">101px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">50px</span>;</span><br><span class="line">  <span class="attribute">color</span>: white;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.red-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.blue-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: blue;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.green-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: green;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="4-Flex-Items"><a href="#4-Flex-Items" class="headerlink" title="4. Flex Items"></a>4. Flex Items</h1><p>HTML을 다음과 같이 수정하겠습니다.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;ko&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;IE=edge&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>flexbox<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">href</span>=<span class="string">&quot;style.css&quot;</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;flex-container&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;flex-item red-box&quot;</span>&gt;</span>A<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;flex-item blue-box&quot;</span>&gt;</span>BBBBB<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;flex-item green-box&quot;</span>&gt;</span>C<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-1-order-Item의-순서를-설정"><a href="#4-1-order-Item의-순서를-설정" class="headerlink" title="4.1 order: Item의 순서를 설정"></a>4.1 order: Item의 순서를 설정</h2><p>Item의 순서를 설정합니다. Item에 숫자를 지정하고 숫자가 클수록 순서가 밀립니다. 음수가 허용됩니다.</p>
+<blockquote>
+<p>HTML 구조와 상관없이 순서를 변경할 수 있기 때문에 유용합니다.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">값</th>
+<th>의미</th>
+<th align="center">기본값</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">숫자</td>
+<td>Item의 순서를 설정</td>
+<td align="center"><code>0</code></td>
+</tr>
+</tbody></table>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/CSS_7_10.png" alt="CSS_7_10"></p>
+<hr>
+<h2 id="4-2-flex-단축-속성"><a href="#4-2-flex-단축-속성" class="headerlink" title="4.2 flex 단축 속성"></a>4.2 flex 단축 속성</h2><p>Item의 너비(증가, 감소, 기본)를 설정하는 단축 속성입니다.</p>
+<table>
+<thead>
+<tr>
+<th align="center">값</th>
+<th>의미</th>
+<th align="center">기본값</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">flex-grow</td>
+<td>Item의 증가 너비 비율을 설정</td>
+<td align="center"><code>0</code></td>
+</tr>
+<tr>
+<td align="center">flex-shrink</td>
+<td>Item의 감소 너비 비율을 설정</td>
+<td align="center"><code>1</code></td>
+</tr>
+<tr>
+<td align="center">flex-basis</td>
+<td>Item의 (공간 배분 전) 기본 너비 설정</td>
+<td align="center"><code>auto</code></td>
+</tr>
+</tbody></table>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* flex: 증가너비 감소너비 기본너비; */</span></span><br><span class="line"><span class="attribute">flex</span>: <span class="number">1</span> <span class="number">1</span> <span class="number">20px</span>;  <span class="comment">/* 증가너비 감소너비 기본너비 */</span></span><br><span class="line"><span class="attribute">flex</span>: <span class="number">1</span> <span class="number">1</span>;  <span class="comment">/* 증가너비 감소너비 */</span></span><br><span class="line"><span class="attribute">flex</span>: <span class="number">1</span> <span class="number">20px</span>;  <span class="comment">/* 증가너비 기본너비 (단위를 사용하면 flex-basis가 적용됩니다) */</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="4-2-1-flex-basis-기본-너비-설정"><a href="#4-2-1-flex-basis-기본-너비-설정" class="headerlink" title="4.2.1 flex-basis: 기본 너비 설정"></a>4.2.1 flex-basis: 기본 너비 설정</h3><p>Item이 감소하는 너비의 비율을 설정합니다. 숫자가 크면 더 많은 너비가 감소합니다.<br>Item이 가변 너비가 아니거나, 값이 0이면 효과가 없습니다.</p>
+<table>
+<thead>
+<tr>
+<th>값</th>
+<th>의미</th>
+<th>기본값</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>숫자</td>
+<td>Item의 감소 너비 비율을 설정</td>
+<td><code>1</code></td>
+</tr>
+</tbody></table>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/CSS_7_11.png" alt="CSS_7_11"></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">* &#123;</span><br><span class="line">  <span class="attribute">box-sizing</span>: border-box;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.flex-container</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">4px</span> solid black;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.flex-item</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: white;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">  <span class="comment">/* 📝 flex-basis : flex-item의 기본 크기를 50으로 지정 */</span></span><br><span class="line">  <span class="comment">/* flex-item의 너비는 자동으로 content 너비만큼 적용됨 */</span></span><br><span class="line">  <span class="comment">/* 50px이 되지 않는 플렉스 아이템들은 50px로, 50px이 넘는 플렉스 아이템은 콘텐츠 너비만큼 적용  */</span></span><br><span class="line">  <span class="attribute">flex-basis</span>: <span class="number">50px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.red-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.blue-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: blue;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.green-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: green;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="4-2-2-flex-grow-증가-너비-비율-설정"><a href="#4-2-2-flex-grow-증가-너비-비율-설정" class="headerlink" title="4.2.2 flex-grow: 증가 너비 비율 설정"></a>4.2.2 flex-grow: 증가 너비 비율 설정</h3><p>Item의 증가 너비 비율을 설정합니다. 숫자가 크면 더 많은 너비를 가집니다. Item이 가변 너비가 아니거나, 값이 <code>0</code>일 경우 효과가 없습니다.</p>
+<table>
+<thead>
+<tr>
+<th align="center">값</th>
+<th>의미</th>
+<th align="center">기본값</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">숫자</td>
+<td>Item의 증가 너비 비율을 설정</td>
+<td align="center"><code>0</code></td>
+</tr>
+</tbody></table>
+<p>모든 Items의 총 증가 너비(<code>flex-grow</code>)에서 각 Item의 증가 너비의 비율 만큼 너비를 가질 수 있습니다. 예를 들어, Item이 3개이고 증가 너비가 각각 <code>1</code>, <code>2</code>, <code>1</code>이라면,</p>
+<ul>
+<li>첫 번째 Item은 총 너비의 25%(1&#x2F;4)을,</li>
+<li>두 번째 Item은 총 너비의 50%(2&#x2F;4)를,</li>
+<li>세 번째 Item은 총 너비의 25%(1&#x2F;4)을 가지게 됩니다.</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/CSS_7_12.png" alt="CSS_7_12"></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">* &#123;</span><br><span class="line">  <span class="attribute">box-sizing</span>: border-box;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.flex-container</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">4px</span> solid black;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.flex-item</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: white;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">  <span class="attribute">flex-basis</span>: <span class="number">50px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 📝 flex-grow : flex-basis의 크기 값을 제외하고 나머지 여백을 일정한 비율로 나눠가지는 속성 */</span></span><br><span class="line"><span class="comment">/* 속성값으로는 비율에 해당하는 값을 적용 */</span></span><br><span class="line"><span class="comment">/* 자식 요소에 1:2:1 비율로 적용함 */</span></span><br><span class="line"><span class="selector-class">.red-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: red;</span><br><span class="line">  <span class="attribute">flex-grow</span>: <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.blue-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: blue;</span><br><span class="line">  <span class="attribute">flex-grow</span>: <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.green-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: green;</span><br><span class="line">  <span class="attribute">flex-grow</span>: <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="4-2-3-flex-shrink-감소-너비-비율을-설정"><a href="#4-2-3-flex-shrink-감소-너비-비율을-설정" class="headerlink" title="4.2.3 flex-shrink: 감소 너비 비율을 설정"></a>4.2.3 flex-shrink: 감소 너비 비율을 설정</h3><p>Item이 감소하는 너비의 비율을 설정합니다. 숫자가 크면 더 많은 너비가 감소합니다.<br>Item이 가변 너비가 아니거나, 값이 0이면 효과가 없습니다.</p>
+<table>
+<thead>
+<tr>
+<th align="center">값</th>
+<th>의미</th>
+<th align="center">기본값</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">숫자</td>
+<td>Item의 감소 너비 비율을 설정</td>
+<td align="center"><code>1</code></td>
+</tr>
+</tbody></table>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/CSS_7_13.png" alt="CSS_7_13"></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">* &#123;</span><br><span class="line">  <span class="attribute">box-sizing</span>: border-box;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.flex-container</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">4px</span> solid black;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.flex-item</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: white;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">  <span class="attribute">flex-basis</span>: <span class="number">50px</span>;</span><br><span class="line">  <span class="comment">/* 📝 flex-shrink : flex-item이 flex-basis 속성으로 설정된 크기보다 더 작아질 수 있는지 결정 */</span></span><br><span class="line">  <span class="comment">/* 속성값은 0 또는 1(기본값)을 사용 */</span></span><br><span class="line">  <span class="comment">/* 0은 작아질 수 없다, 1은 작아질 수 있다 */</span></span><br><span class="line">  <span class="comment">/* 브라우저의 너비가 줄어들어, flex-basis의 값이 보장되지 않을 떄 자동으로 줄어듬 */</span></span><br><span class="line">  <span class="comment">/* 이는 flex-shrink의 기본값이 1이기 때문 */</span></span><br><span class="line">  <span class="comment">/* 0으로 지정하면, 브라우저의 넓이가 flex-basis의 값이 보장되지 않을 때, 최소 크기를 보장받습니다. */</span></span><br><span class="line">  <span class="comment">/* 단, flexbox의 전체적인 영역은 브라우저 영역을 빠져나가면서 적용됨 */</span></span><br><span class="line">  <span class="attribute">flex-shrink</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.red-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.blue-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: blue;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.green-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: green;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-3-align-self-교차축에서-개별-item-정렬"><a href="#4-3-align-self-교차축에서-개별-item-정렬" class="headerlink" title="4.3 align-self : 교차축에서 개별 item 정렬"></a>4.3 align-self : 교차축에서 개별 item 정렬</h2><p>교차 축(cross-axis)에서 개별 Item의 정렬 방법을 설정합니다.<br><code>align-items</code>는 Container 내 모든 Items의 정렬 방법을 설정합니다.<br>필요에 의해 일부 Item만 정렬 방법을 변경하려고 할 경우 <code>align-self</code>를 사용할 수 있습니다.<br>이 속성은 <code>align-items</code> 속성보다 우선합니다.</p>
+<table>
+<thead>
+<tr>
+<th align="center">값</th>
+<th>의미</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">auto</td>
+<td>Container의 <code>align-items</code> 속성을 상속받음 (기본값)</td>
+</tr>
+<tr>
+<td align="center">stretch</td>
+<td>Container의 교차 축을 채우기 위해 Item을 늘림</td>
+</tr>
+<tr>
+<td align="center">flex-start</td>
+<td>Item을 각 줄의 시작점(flex-start)으로 정렬</td>
+</tr>
+<tr>
+<td align="center">flex-end</td>
+<td>Item을 각 줄의 끝점(flex-end)으로 정렬</td>
+</tr>
+<tr>
+<td align="center">center</td>
+<td>Item을 가운데 정렬</td>
+</tr>
+<tr>
+<td align="center">baseline</td>
+<td>Item을 문자 기준선에 정렬</td>
+</tr>
+</tbody></table>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/CSS_7_14.png" alt="CSS_7_14"></p>
+<hr>
+<h2 id="4-4-word-break-콘텐츠-짤리면-줄넘김"><a href="#4-4-word-break-콘텐츠-짤리면-줄넘김" class="headerlink" title="4.4 word-break: 콘텐츠 짤리면 줄넘김"></a>4.4 word-break: 콘텐츠 짤리면 줄넘김</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">* &#123;</span><br><span class="line">  <span class="attribute">box-sizing</span>: border-box;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.flex-container</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">4px</span> solid black;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.flex-item</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: white;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">20px</span>;</span><br><span class="line">  <span class="attribute">flex-basis</span>: <span class="number">50px</span>;</span><br><span class="line">  <span class="comment">/* 📝 모든 플렉스 아이템에 강제로 동일한 너비를 갖게하고 싶다면 */</span></span><br><span class="line">  <span class="attribute">width</span>: <span class="number">40px</span>;</span><br><span class="line">  <span class="comment">/* 이때, 콘텐츠가 짤리는 경우에 발생하는데, 이를 해결하려면 아래 코드 적용 */</span></span><br><span class="line">  <span class="attribute">word-break</span>: break-all;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.red-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.blue-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: blue;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.green-box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: green;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="5-출처"><a href="#5-출처" class="headerlink" title="5. 출처"></a>5. 출처</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://heropy.blog/2018/11/24/css-flexible-box/">Heropy Tech CSS Flex 완벽가이드</a></li>
+</ul>
+<hr>
+<h1 id="6-Flex-게임-Flexbox-Froggy"><a href="#6-Flex-게임-Flexbox-Froggy" class="headerlink" title="6. Flex 게임 : Flexbox Froggy"></a>6. Flex 게임 : Flexbox Froggy</h1><p><a target="_blank" rel="noopener" href="https://flexboxfroggy.com/#ko">https://flexboxfroggy.com/#ko</a></p>
+<hr>
+<h1 id="Level-1-4-justify-content"><a href="#Level-1-4-justify-content" class="headerlink" title="Level 1 ~ 4 : justify-content"></a>Level 1 ~ 4 : <strong>justify-content</strong></h1><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">parent &#123;</span><br><span class="line">  <span class="attribute">justify-content</span>: flex-start; <span class="comment">/* flex-end, center, space-between, space-around, space-evenly */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>기본 축으로 정렬</strong>한다.</p>
+<p>기본값은 flex-start로 자식 요소의 시작 방향으로 정렬한다.</p>
+<ul>
+<li><code>flex-end</code>은 종료 방향, center는 가운데 방향, </li>
+<li><code>space-between</code>은 좌우 사이 간격을 균일하게, space-around는 주위 간격을 균일하게,</li>
+<li><code>space-evenly</code>는 균일하게 배치하면서 양 끝의 간격에도 여백을 적용한다.</li>
+</ul>
+<hr>
+<h1 id="Level-5-7-align-items"><a href="#Level-5-7-align-items" class="headerlink" title="Level 5 ~ 7 : align-items"></a>Level 5 ~ 7 : <strong>align-items</strong></h1><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">parent &#123;</span><br><span class="line">  <span class="attribute">align-items</span>: flex-start; <span class="comment">/* flex-end, center, space-between, space-around, space-evenly */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>반대 축으로 정렬</strong>한다. 값은<code> justy-content</code>와 동일하다.</p>
+<hr>
+<h1 id="Level-8-13-flex-direction"><a href="#Level-8-13-flex-direction" class="headerlink" title="Level 8 ~ 13 : flex-direction"></a>Level 8 ~ 13 : <strong>flex-direction</strong></h1><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">parent &#123;</span><br><span class="line">  <span class="attribute">flex-direction</span>: row; <span class="comment">/* row-reverse, column, column-reverse */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>자식 요소의 기본축 정렬 방향을 변경한다. 기본값은 row로 기본축을 가로로 지정한다.</p>
+<ul>
+<li><code>column</code>은 세로,</li>
+<li><code>row-reverse</code>와 <code>column-reverse</code>는 각각 가로, 세로 역순으로 정렬한다.</li>
+</ul>
+<hr>
+<h1 id="Level-14-15-order"><a href="#Level-14-15-order" class="headerlink" title="Level 14, 15 : order"></a>Level 14, 15 : <strong>order</strong></h1><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">child &#123;</span><br><span class="line">  <span class="attribute">order</span>: 숫자;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>자식 요소의 순서를 지정한다.</p>
+<hr>
+<h1 id="Level-16-17-align-self"><a href="#Level-16-17-align-self" class="headerlink" title="Level 16, 17 : align-self"></a>Level 16, 17 : <strong>align-self</strong></h1><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">child &#123;</span><br><span class="line">  <span class="attribute">align-self</span>: flex-start; <span class="comment">/* flex-end, center, space-between, space-around, space-evenly */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>선택한 자식 요소만 정렬을 바꿀 수 있다.</p>
+<hr>
+<h1 id="Level-18-19-flex-wrap"><a href="#Level-18-19-flex-wrap" class="headerlink" title="Level 18, 19 : flex-wrap"></a>Level 18, 19 : <strong>flex-wrap</strong></h1><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">parent &#123;</span><br><span class="line">  <span class="attribute">flex-wrap</span>: nowrap; <span class="comment">/* wrap */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>자식 요소에 줄 바꿈을 할지 적용한다. 기본값은 <code>nowrap</code>으로 줄 바꿈을 하지 않는다.<br>값을 <code>wrap</code>으로 하면 자식 요소들이 줄 바꿈을 한다.</p>
+<hr>
+<h1 id="Level-20-flex-flow"><a href="#Level-20-flex-flow" class="headerlink" title="Level 20 : flex-flow"></a>Level 20 : <strong>flex-flow</strong></h1><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">parent &#123;</span><br><span class="line">  <span class="attribute">flex-flow</span>: flex-direction flex-wrap;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>flex-direction</code>과 <code>flex-wrap</code>을 한꺼번에 적용한다.</p>
+<hr>
+<h1 id="Level-21-24-align-content"><a href="#Level-21-24-align-content" class="headerlink" title="Level 21 ~ 24 : align-content"></a>Level 21 ~ 24 : <strong>align-content</strong></h1><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">parent &#123;</span><br><span class="line">  <span class="attribute">align-content</span>: flex-start; <span class="comment">/* flex-end, center, space-between, space-around, space-evenly */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>align-items</code>와 같은 축으로 정렬한다.</p>
+<p>차이점은 <code>align-items</code>은 줄 바꿈이 없을 때 사용하고, <code>align-content</code>는 줄 바꿈이 있을 때 사용한다.</p>
+<hr>
+<h1 id="추가-flex-grow와-flex-shrink"><a href="#추가-flex-grow와-flex-shrink" class="headerlink" title="추가 : flex-grow와 flex-shrink"></a>추가 : flex-grow와 flex-shrink</h1><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">child &#123;</span><br><span class="line">  <span class="attribute">flex-grow</span>: 숫자;</span><br><span class="line">  <span class="attribute">flex-shrink</span>: 숫자;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>flex-grow</code>는 기본값은 0으로, <ul>
+<li>해당 숫자를 늘리면, 크기를 늘렸을 때 남은 공간만큼 다른 자식 요소들의 크기 대비 더 많이 늘어난다.</li>
+</ul>
+</li>
+<li><code>flex-shrink</code>는 기본값은 1로, </li>
+<li>해당 숫자를 늘리면 크기를 줄였을 때 다른 자식 요소들의 크기 대비 더 많이 줄어든다.</li>
+</ul>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/02/06/Front-Start-CSS-06-Transform/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-02-06 17:37:55
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/html-css-js/" title="HTML-CSS-JS"> <b>#</b> HTML-CSS-JS </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/html-css-js/css/" title="CSS"> <b>#</b> CSS </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/css/" title="CSS"> #CSS </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/02/06/Front-Start-JS-DOM/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%EC%8B%A4%EC%8A%B5-%EC%9B%8C%EB%B0%8D%EC%97%85"><span class="toc-text">1. 실습 - 워밍업</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-HTML"><span class="toc-text">1.1 HTML</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-CSS"><span class="toc-text">1.2 CSS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-CSS-%EC%A0%95%EB%8B%B5-float"><span class="toc-text">1.3 CSS 정답 - float</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Flexible-Box-Layout%EC%9D%B4%EB%9E%80"><span class="toc-text">2. Flexible Box Layout이란?</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-CSS-%EC%A0%95%EB%8B%B5-Flexbox"><span class="toc-text">2.1 CSS 정답 - Flexbox</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Flex-Container"><span class="toc-text">3. Flex Container</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-display"><span class="toc-text">3.1 display</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%EB%A9%94%EC%9D%B8-%EC%B6%95%EA%B3%BC-%EA%B5%90%EC%B0%A8-%EC%B6%95"><span class="toc-text">3.2 메인 축과 교차 축</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-1-flex-direction-%EB%A9%94%EC%9D%B8-%EC%B6%95-%EB%B0%A9%ED%96%A5-%EA%B2%B0%EC%A0%95"><span class="toc-text">3.2.1 flex-direction: 메인 축 방향 결정</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-2-justify-content-%EB%A9%94%EC%9D%B8-%EC%B6%95-%EC%A0%95%EB%A0%AC"><span class="toc-text">3.2.2 justify-content: 메인 축 정렬</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-3-flex-wrap-%EC%A4%84%EB%B0%94%EA%BF%88"><span class="toc-text">3.2.3 flex-wrap: 줄바꿈</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-align-content-%EA%B5%90%EC%B0%A8%EC%B6%95-%EC%A0%95%EB%A0%AC-2%EC%A4%84-%EC%9D%B4%EC%83%81"><span class="toc-text">3.3 align-content: 교차축 정렬 (2줄 이상)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-align-items-%EA%B5%90%EC%B0%A8%EC%B6%95-%EC%A0%95%EB%A0%AC-1%EC%A4%84"><span class="toc-text">3.4 align-items: 교차축 정렬 (1줄)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-5-flex-flow-%EB%8B%A8%EC%B6%95-%EC%86%8D%EC%84%B1"><span class="toc-text">3.5 flex-flow: 단축 속성</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-Flex-Items"><span class="toc-text">4. Flex Items</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-order-Item%EC%9D%98-%EC%88%9C%EC%84%9C%EB%A5%BC-%EC%84%A4%EC%A0%95"><span class="toc-text">4.1 order: Item의 순서를 설정</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-flex-%EB%8B%A8%EC%B6%95-%EC%86%8D%EC%84%B1"><span class="toc-text">4.2 flex 단축 속성</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-1-flex-basis-%EA%B8%B0%EB%B3%B8-%EB%84%88%EB%B9%84-%EC%84%A4%EC%A0%95"><span class="toc-text">4.2.1 flex-basis: 기본 너비 설정</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-2-flex-grow-%EC%A6%9D%EA%B0%80-%EB%84%88%EB%B9%84-%EB%B9%84%EC%9C%A8-%EC%84%A4%EC%A0%95"><span class="toc-text">4.2.2 flex-grow: 증가 너비 비율 설정</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-3-flex-shrink-%EA%B0%90%EC%86%8C-%EB%84%88%EB%B9%84-%EB%B9%84%EC%9C%A8%EC%9D%84-%EC%84%A4%EC%A0%95"><span class="toc-text">4.2.3 flex-shrink: 감소 너비 비율을 설정</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-align-self-%EA%B5%90%EC%B0%A8%EC%B6%95%EC%97%90%EC%84%9C-%EA%B0%9C%EB%B3%84-item-%EC%A0%95%EB%A0%AC"><span class="toc-text">4.3 align-self : 교차축에서 개별 item 정렬</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-word-break-%EC%BD%98%ED%85%90%EC%B8%A0-%EC%A7%A4%EB%A6%AC%EB%A9%B4-%EC%A4%84%EB%84%98%EA%B9%80"><span class="toc-text">4.4 word-break: 콘텐츠 짤리면 줄넘김</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%EC%B6%9C%EC%B2%98"><span class="toc-text">5. 출처</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-Flex-%EA%B2%8C%EC%9E%84-Flexbox-Froggy"><span class="toc-text">6. Flex 게임 : Flexbox Froggy</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-1-4-justify-content"><span class="toc-text">Level 1 ~ 4 : justify-content</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-5-7-align-items"><span class="toc-text">Level 5 ~ 7 : align-items</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-8-13-flex-direction"><span class="toc-text">Level 8 ~ 13 : flex-direction</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-14-15-order"><span class="toc-text">Level 14, 15 : order</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-16-17-align-self"><span class="toc-text">Level 16, 17 : align-self</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-18-19-flex-wrap"><span class="toc-text">Level 18, 19 : flex-wrap</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-20-flex-flow"><span class="toc-text">Level 20 : flex-flow</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-21-24-align-content"><span class="toc-text">Level 21 ~ 24 : align-content</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%EC%B6%94%EA%B0%80-flex-grow%EC%99%80-flex-shrink"><span class="toc-text">추가 : flex-grow와 flex-shrink</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Start-CSS-07%20-%20Flexbox%20%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83 + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F02%2F06%2FFront-Start-CSS-07-Flexible-Layout%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/02/06/Front-Start-CSS-07-Flexible-Layout/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

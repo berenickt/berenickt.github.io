@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      wisesaying 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">즐겨찾기</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying/">
+          <a href="/wisesaying/">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/column/">
+          <a href="/column/">읽을컬럼</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+     
+<!-- 关于页 url形式：https://yoursite/about/ -->
+<div class="container about-index">
+  <div class="markdown-body"><h1 id="좋아하는-글귀"><a href="#좋아하는-글귀" class="headerlink" title="좋아하는 글귀"></a>좋아하는 글귀</h1><h2 id="🤔-철학"><a href="#🤔-철학" class="headerlink" title="🤔 철학"></a>🤔 철학</h2><blockquote>
+<p>Simplicity is the Ultimate Sphisitication.<br>단순함이야말로 최고의 세련됨(복잡함, 정교함)이다.</p>
+<p>- 레오나르도 다빈치</p>
+</blockquote>
+<blockquote>
+<p>Imagination is more important than knowledge.<br>For knowledge is limited, whereas imagination embraces the entire world,<br>stimulating progress, giving birth to evolution.</p>
+<p>상상력은 지식보다 더 중요하다.<br>지식은 제한되어 있지만 상상력은 온 세상을 아우르고, 진보를 촉진하며, 진화의 시발점이 되기 때문이다.</p>
+<hr>
+<p>If you can’t explain it simply, you don’t understand it well enough.<br>말로 쉽게 설명할 수 없으면, 제대로 이해하지 못한 것이다.</p>
+<hr>
+<p>Everything should be made as simple as possible, but not simpler<br>모든 것은 가능한 한 단순해야 하지만, 단순해서는 안 됩니다.</p>
+<p>- 아인슈타인</p>
+<blockquote>
+<p>학생이 무언가를 제대로 이해하지 못하는 것은 (많은 경우) 그 학생에게 문제가 있는 게 아니고,<br>학생을 가르치는 사람이나 학생이 읽는 책을 쓴 사람이 애초 그것을 제대로 이해하지 못했기 때문입니다. </p>
+<p>간혹 “머리로 이해는 했는데, 말로 정확히 설명할 수가 없다”고 말하는 사람들이 있습니다.<br>그런 일은 절대로 발생하지 않습니다. </p>
+<p>c.f. <a target="_blank" rel="noopener" href="https://m.blog.naver.com/theelitementor/221997705361">https://m.blog.naver.com/theelitementor/221997705361</a></p>
+</blockquote>
+</blockquote>
+<blockquote>
+<p>내 자신의 무식을 아는 것은 지식으로의 첫걸음이다.</p>
+<p>- 조지 고든 바이런</p>
+</blockquote>
+<blockquote>
+<p>It is easier to make progress on mega-ambitious dreams.<br>Since no one else is crazy enough to do it, you have little competition.<br>어마어마하게 야심찬 꿈을 진행하는 것은 더 쉬운 일이다.<br>왜냐하면 그 누구도 시도할 만큼 정신 나가지 않았기 때문에, 경쟁자가 거의 없기 때문이다.</p>
+<hr>
+<p>Optimism is important. You have to be a little silly about the goals you are going to set.<br>You should try to do things that most people would not do.<br>낙관적인 생각은 중요하다. 당신이 세울 목표가 조금은 터무니 없는 것이어야 한다.<br>다른 사람들이라면 하지 않을 일들을 시도해야 한다.</p>
+<hr>
+<p>If we were motivated by money,<br>we would have sold the company a long time ago and ended up on a beach.<br>만약 우리의 목표가 돈이었다면, 우리는 회사를 아주 오래 전에 팔고 해변에 누워 있었을 것이다.</p>
+<hr>
+<p>It is very hard to fail completely if you aim high enough.<br>당신이 목표를 아주 높게 잡는다면, 완전히 실패하기란 매우 어려울 것이다.</p>
+<p>- 래리 페이지(구글 창업자)</p>
+</blockquote>
+<blockquote>
+<p>지쳤을 때는 반성하지 마라. 일을 끝내고 차분하게 반성한다.<br>하루를 마치고 그 하루를 돌아보며 반성하다 보면,<br>자기 자신과 타인의 잘못을 깨닫고 결국에는 우울해지고 만다.<br>자신의 한심함에 분노를 느끼고 타인에 대한 원망이 생기기도 한다.</p>
+<p>그것은 대개 불쾌하고 어두운 결과로 치닫는다.<br>이렇게 되는 까닭은 당신이 지쳐 있기 때문이다.<br>피로에 젖어 지쳐 있을 때 냉정히 반성하기란 결코 불가능하기에,<br>그 반성은 필연적으로 우울이라는 덫에 걸려들 수 밖에 없다.<br>지쳤을 때에는 반성하는 것도, 되돌아보는 것도, 일기를 쓰는 것도 하지 말아야 한다.</p>
+<p>활기차게 활동하거나 무엇인가에 흠뻑 빠져 힘을 쏟고 있을 때,<br>즐기고 있을 때에는 어느 누구도 반성하거나 되돌아 보지 않는다.<br>그렇기에 스스로가 한심하게 여겨지고 사람에 대한 증오심이 느껴질때에는,<br>자신이 지쳐 있다는 신호라 여기고<br>그저 충분한 휴식을 취하라. 그것이 스스로를 위한 최선의 배려다.</p>
+<p>-니체</p>
+</blockquote>
+<blockquote>
+<p>Every generation imagines itself to be more intelligent than the one that went before it,<br>and wiser than the one that comes after it.<br>모든 세대는 스스로를 이전 세대보다 똑똑하고, 다음 세대보다 현명하다고 생각한다.</p>
+<p>- 조지 오웰</p>
+</blockquote>
+<blockquote>
+<p>배부른 돼지보다는 배고픈 인간이 낫고, 만족스러운 바보보다는 불만족스러운 소크라테스가 낫다.</p>
+<p>- 존 스튜어트 밀</p>
+</blockquote>
+<blockquote>
+<p>언어의 한계가 곧 자기 세계의 한계다.</p>
+<p>- 루트비히 비트겐슈타인</p>
+</blockquote>
+<hr>
+<h2 id="🖥️-소프트웨어"><a href="#🖥️-소프트웨어" class="headerlink" title="🖥️ 소프트웨어"></a>🖥️ 소프트웨어</h2><blockquote>
+<p>Any fool can write code that a computer can understand.<br>Good programmers write code that humans can understand.</p>
+<p>컴퓨터가 인식 가능한 코드는 바보라도 작성할 수 있지만,<br>인간이 이해할 수 있는 코드는 실력있는 프로그래머만 작성할 수 있다.</p>
+<p>- Martin Fowler(리팩토링 저자)</p>
+</blockquote>
+<blockquote>
+<p>삶이 일로써 소비된다면 일을 사랑하는 것이 삶을 사랑하는 가장 중요한 열쇠다.<br>일에 도전하고 동기를 부여하고 보상을 얻는 것은 따분하고 평범한 작업을 하는 것보다 아침에 더 일어나고 싶게 만든다.</p>
+<p>나라면 일을 하는 한 가지 방법만 아는 사람보다는 서로 다른 환경에서 다양한 성공과 실패를 겪은 사람을 고용할 것이다.</p>
+<p><strong>다재다능한 사람은 드물다. 따라서 귀하다. 다재다능한 사람이 되려면 특정한 역할이나 기술에 매여서는 안된다.</strong></p>
+<p>프로그래머 긱에게는 리더십이 부족하고 리더는 해킹을 잘 못한다. 둘 다 잘하는 사람을 찾기는 참 어렵다.</p>
+<p><strong>내 자신을 기술로 정의하지 않았다. 대신 내가 한 말과 다음에 하고 싶은 일로 정의했다.</strong><br>기술은 그저 성공에 이르는 한 방법일 뿐이다.</p>
+<p>여러분이 할 일은 조직이 목표를 이루는데 기여하는 무언가를 만드는 것이다.<br>마지막 성공은 일을 끝맺어 마무리하는 사람의 차지다. 열정에 불을 붙여라.</p>
+<p>작은 부분부터 시작함으로써 회사의 목표 달성에 기여할 수 있다.<br>이를 통해 목적의식이 생기고 자신의 일에 의미가 생길 것이다.</p>
+<p>야망을 품으라. 그러나 드러내지는 말라.</p>
+<p>좋아하는 일을 하면 창조력이 발휘된다.<br>소프트웨어 개발은 창조적인 행위이고 많은 사람이 이 이유 때문에 이 분야에 끌린 것이다.</p>
+<p>자신이 싫어하는 기술이 모두 나쁜 것이 아님을 배우고,<br>사실은 그 기술로도 좋은 코드를 개발할 수 있음을 배우는 것이 가장 중요하다.</p>
+<p>- 채드 파울러 (프로그래머, 열정을 말하다 저자)</p>
+</blockquote>
+<hr>
+<h2 id="😄-행복"><a href="#😄-행복" class="headerlink" title="😄 행복"></a>😄 행복</h2><blockquote>
+<p>You can’t change how people feel about you.<br>So don’t try. Just live your Life and Be Happy.<br>타인이 널 어떻게 느끼는지는 너가 관여할 수 없는 것이다.<br>그러니 바꾸려고 하지 말고, 오로지 너의 인생을 살고 행복하여라.</p>
+<hr>
+<p>In the end, people will judge you anyway, so don’t you anyway,<br>so don’t live your life impressing others live your life impressing yourself.<br>결국엔 타인은 너를 평가하게 될 것이니,<br>타인에게 영감을 주기 위해 네 인생을 살지 말고, 너 자신에게 영감을 주는 인생을 살아라</p>
+<hr>
+<p>Don’t change so people will like you.<br>Be yourself and the right peoplt will love the real you.<br>타인이 널 좋아하도록 너 자신을 바꾸지 마라.<br>오로지 솔직한 너 자신이 된다면 올바른 사람들은 진짜 너의 모습을 사랑하게 될 것이다.</p>
+<hr>
+<p>What people think aobut you is not important.<br>What you think about yourself means everything.<br>타인이 너를 무엇으로 생각하는지는 중요치 않다.<br>스스로 생각하는 너 자신이 너의 모든 것이다.</p>
+<hr>
+<p>Don’t compare your life to others.<br>There’s no comparison between the sun and the moon.<br>They Shine When it’s their time.<br>타인의 삶과 비교하지 마라.<br>해와 달은 서로를 비교하는 법이 없다.<br>그들은 단지 그들의 시간대에서 빛나고 있을 뿐이다.</p>
+<hr>
+<p>Change is never painful, only the resistance to change is painful.<br>변화 그 자체는 결코 고통이 아니지만, 변화에 저항하는 것은 고통 그 자체이다.</p>
+<hr>
+<p>Suffering is not holding you, you are holding suffering.<br>고통이 널 붙잡고 있는게 아니라 너가 고통을 붙잡고 있는 것이다.</p>
+<hr>
+<p>Don’t tell people your plans, show them your results.<br>사람들에게 너의 계획을 말하지 말고, 결과물을 보여주어라.</p>
+<hr>
+<p>Begin Each Day with optimism and end each day with forgiveness.<br>Happiness in life begins and ends within your heart.<br>매일을 낙관의 마인드로 시작하고 용서로 하루를 마무리지어라.<br>행복의 시작과 끝은 너의 마음 속에 있다.</p>
+<p>-부처</p>
+</blockquote>
+<hr>
+<h2 id="🎨-경영-x2F-디자인"><a href="#🎨-경영-x2F-디자인" class="headerlink" title="🎨 경영&#x2F;디자인"></a>🎨 경영&#x2F;디자인</h2><blockquote>
+<p>안 팔릴까봐 걱정하지마, 타협하지마, 당신이 아름답다고 생각하는 바로 그걸 디자인해<br>우리의 안목과 취향이 미국에서 최고야. 티파니가 좋다고 생각하는 걸 손님한테 줘.<br>왜냐고? 우리가 좋아하는 바로 그게, 손님들이 사야 하는 거니까</p>
+<p>- 월터 호빙(Walter Hoving, 1897-1989. 티파니 CEO)</p>
+</blockquote>
+<blockquote>
+<p>소재부터 기능까지 소비자의 경험 그 자체를 디자인한다. </p>
+<p>- 애플 수석 디자이너 조너선 아이브</p>
+</blockquote>
+<blockquote>
+<p>디자인은 그 제품의 본질을 나타내는 핵심이다. </p>
+<hr>
+<p>창의력은 연결하는 능력이다  </p>
+<hr>
+<p>늘 갈망하고 우직하게 나아가라. (Stay hungry, stay foolish.)</p>
+<p>- 스티브 잡스, 2005년 스탠퍼드 졸업식 연설에서</p>
+</blockquote>
+<blockquote>
+<p>부정은 암이고, 부정이 있으면 반드시 망한다.<br>도덕성이 결여된 기업에서는 좋은 물건이 나올 수 없고, 나와도 반갑지 않다.</p>
+<p>- 이건희</p>
+</blockquote>
+<hr>
+<h2 id="🥴-인생"><a href="#🥴-인생" class="headerlink" title="🥴 인생"></a>🥴 인생</h2><blockquote>
+<p>Life is not fair; get used to it.<br>인생은 공평하지 않다. 이에 익숙해져라.</p>
+<p>- 빌 게이츠</p>
+</blockquote>
+<blockquote>
+<p>인생은 멀리서 보면 희극이고 가까이서 보면 비극이다.</p>
+<p>- 찰리 채플린</p>
+</blockquote>
+<hr>
+<h2 id="💥-전쟁"><a href="#💥-전쟁" class="headerlink" title="💥 전쟁"></a>💥 전쟁</h2><blockquote>
+<p>당신은 전쟁에 관심이 없을 수도 있다. 그러나 전쟁은 당신에 관심이 있다.<br>You may not be interested in war, but war is interested in you.</p>
+<p>- 레프 트로츠키</p>
+</blockquote>
+<blockquote>
+<p>우리는 모든 시대를 통틀어 가장 위대한 정치인으로 역사에 이름을 남길 것이다. 아니면 가장 악랄한 범죄자로.</p>
+<p>- 파울 요제프 괴벨스</p>
+</blockquote>
+<blockquote>
+<p>War is sweet to them that know it not.<br>전쟁은 겪어 보지 않은 사람에겐 유쾌한 것이다.</p>
+<p>-핀다르</p>
+</blockquote>
+<blockquote>
+<p>Older men declare war. But it is youth that must fight and die.<br>전쟁을 선포하는 건 늙은이들이지만, 싸워야 하고 죽어야 하는 건 젊은이들이다.</p>
+<p>- 허버트 후버 (미국 31대 대통령)</p>
+</blockquote>
+<blockquote>
+<p>Its glory is all moonshine. It is only those who have neither fired a shot nor heard the shrieks and groans of the wounded who cry aloud for blood, for vengeance, for desolation. War is hellI.</p>
+<p>전쟁의 영광이란 건 완전히 헛소리다. 피, 복수, 초토화를 부르짖는 사람들은 총을 쏴 본 적도, 부상병의 비명과 신음을 들어본 적도 없는 사람들 뿐이다. 전쟁은 지옥이다.</p>
+<p>- 윌리엄 테쿰세 셔먼 (미국 남북전쟁 영웅)</p>
+</blockquote>
+<blockquote>
+<p>Absolute power corrupts absolutely.<br>절대적인 권력은 절대적으로 타락한다.</p>
+<p>- 액턴 경 (Lord Acton, 영국의 정치인, 역사가)</p>
+</blockquote>
+<blockquote>
+<p>Si vis pacem, para bellum.<br>평화를 바란다면 전쟁에 대비하라</p>
+<p>- 베게티우스 (4세기 로마 군사 저술가)</p>
+</blockquote>
+</div>
+</div>
+ 
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + wisesaying + '&url=' + https%3A%2F%2Fberenickt.github.io%2Fwisesaying%2Findex.html + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/wisesaying/index.html" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>
