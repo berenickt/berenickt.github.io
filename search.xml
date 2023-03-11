@@ -85,11 +85,11 @@
     
     
     <entry>
-      <title>TIL(Today I Learned) - 2023년</title>
-      <link href="/2023/03/07/TIL-2023/"/>
-      <url>/2023/03/07/TIL-2023/</url>
+      <title>TIL(Today I Learned) - 2023년 3월</title>
+      <link href="/2023/03/07/TIL-2023-03/"/>
+      <url>/2023/03/07/TIL-2023-03/</url>
       
-        <content type="html"><![CDATA[<h1 id="2023-x2F-03-x2F-07"><a href="#2023-x2F-03-x2F-07" class="headerlink" title="2023&#x2F;03&#x2F;07"></a>2023&#x2F;03&#x2F;07</h1><ul><li>Emotion으로 디자인 실습</li><li>로그인창에 잘못된 입력값을 넣으면, 밑에 띄워줄 메시지</li></ul><h1 id="2023-x2F-03-x2F-08"><a href="#2023-x2F-03-x2F-08" class="headerlink" title="2023&#x2F;03&#x2F;08"></a>2023&#x2F;03&#x2F;08</h1><ul><li>PlayGround를 이용한 GraphQL 요청</li><li>postman&#x2F;swagger를 이용한 REST API 요청</li><li>API 명세서보고 데이터 요청하는 법</li></ul><h1 id="2023-x2F-03-x2F-09"><a href="#2023-x2F-03-x2F-09" class="headerlink" title="2023&#x2F;03&#x2F;09"></a>2023&#x2F;03&#x2F;09</h1><ul><li>동기&#x2F;비동기</li><li>PlayGround를 이용한 GraphQL 요청을 VSCode에서 구현</li><li>Axios를 이용한 REST API 요청 VSCode에서 구현</li></ul>]]></content>
+        <content type="html"><![CDATA[<h1 id="2023-x2F-03-x2F-07"><a href="#2023-x2F-03-x2F-07" class="headerlink" title="2023&#x2F;03&#x2F;07"></a>2023&#x2F;03&#x2F;07</h1><ul><li>Emotion으로 디자인 실습</li><li>로그인창에 잘못된 입력값을 넣으면, 밑에 띄워줄 메시지</li></ul><h1 id="2023-x2F-03-x2F-08"><a href="#2023-x2F-03-x2F-08" class="headerlink" title="2023&#x2F;03&#x2F;08"></a>2023&#x2F;03&#x2F;08</h1><ul><li>PlayGround를 이용한 GraphQL 요청</li><li>postman&#x2F;swagger를 이용한 REST API 요청</li><li>API 명세서보고 데이터 요청하는 법</li></ul><h1 id="2023-x2F-03-x2F-09"><a href="#2023-x2F-03-x2F-09" class="headerlink" title="2023&#x2F;03&#x2F;09"></a>2023&#x2F;03&#x2F;09</h1><ul><li>동기&#x2F;비동기</li><li>PlayGround를 이용한 GraphQL 요청을 VSCode에서 구현</li><li>Axios를 이용한 REST API 요청 VSCode에서 구현</li></ul><h1 id="2023-x2F-03-x2F-10"><a href="#2023-x2F-03-x2F-10" class="headerlink" title="2023&#x2F;03&#x2F;10"></a>2023&#x2F;03&#x2F;10</h1><ul><li>Next.js에서 GraphQL 요청을 정적 라우팅, 동적 라우팅</li><li>조건부 렌더링(삼항연산자, &amp;&amp;연산자, 옵셔널 체이닝)</li></ul>]]></content>
       
       
       <categories>
