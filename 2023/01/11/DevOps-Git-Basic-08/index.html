@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      DevOps-Git-Basic--08-Github - branch로 협업 - pull request 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">DevOps-Git-Basic--08-Github - branch로 협업 - pull request</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-11 04:14:36
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/git/" title="Git"> <b>#</b> Git </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/git/basic/" title="Basic"> <b>#</b> Basic </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/git/" title="Git"> #Git </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-신기능-개발할려고-branch"><a href="#1-신기능-개발할려고-branch" class="headerlink" title="1. 신기능 개발할려고 branch"></a>1. 신기능 개발할려고 branch</h1><p>신기능을 만들고 싶으면 main 브랜치에 코드짜다가 프로젝트 망치지 말고,<br>다른 브랜치를 만들어서 거기에 개발하는 것도 안전하고 좋다고 했습니다.</p>
+<p>원격 repository (저장소)에도 브랜치를 만들 수 있습니다. 브랜치 생성하려면 </p>
+<ol>
+<li><strong>github.com에서 브랜치</strong> 직접 만들어도 되고</li>
+<li>아니면 <strong>로컬에서 만든 브랜치를 올려도</strong> 브랜치생성이 가능합니다.</li>
+</ol>
+<hr>
+<h2 id="1-1-github-사이트에서-브랜치-생성"><a href="#1-1-github-사이트에서-브랜치-생성" class="headerlink" title="1.1 github 사이트에서 브랜치 생성"></a>1.1 github 사이트에서 브랜치 생성</h2><p>main 브랜치명 버튼 누르면 브랜치를 바꾸하거나 새로 만들 수 있습니다. 심심하면 하나 만들어보거나 하면 됩니다.</p>
+<hr>
+<h2 id="1-2-로컬-repository에서-브랜치-생성"><a href="#1-2-로컬-repository에서-브랜치-생성" class="headerlink" title="1.2 로컬 repository에서 브랜치 생성"></a>1.2 로컬 repository에서 브랜치 생성</h2><p>로컬저장소에서 브랜치생성해서 원격저장소로 <code>git push</code> 해도 됩니다.<br>예를 들면, 지금 사이트를 하나 만들고 있는데 사이트 방문자들 컴퓨터에 몰래 비트코인 채굴기를 심는 기능을 만든다고 칩시다. </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># git clone으로 복사해온 작업폴더(GIT 장인3)에서 새 브랜치 생성</span></span><br><span class="line">git branch mining </span><br><span class="line">git switch mining</span><br><span class="line"></span><br><span class="line"><span class="comment"># d 라는 폴더 만들어서 commit</span></span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&#x27;d 만들었음&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># a파일 첫 번쨰 줄 수정</span></span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&#x27;a 수정&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ------------------------------------------</span></span><br><span class="line"><span class="comment"># 충돌 일으키기</span></span><br><span class="line">git switch main</span><br><span class="line"></span><br><span class="line"><span class="comment"># 메인 브랜치에서 a파일 첫 번쨰 줄 수정</span></span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&#x27;a 수정2&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 로컬 브랜치를 원격에 올리고 싶으면</span></span><br><span class="line"><span class="comment"># 📝 git push 원격저장소주소 로컬브랜치명</span></span><br><span class="line">git push origin mining</span><br></pre></td></tr></table></figure>
+
+<p>GitHub의 레포지토리에 가서, 새로고침해보면 mining 브랜치가 올라갑니다.</p>
+<hr>
+<h2 id="1-3-참고"><a href="#1-3-참고" class="headerlink" title="1.3 참고"></a>1.3 참고</h2><p>초급자은 특정 브랜치만 올리는 일이 잦습니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git push 원격저장소주소 로컬브랜치명 <span class="comment"># 특정 로컬저장소 브랜치 -&gt; 원격저장소</span></span><br><span class="line">git push 원격저장소주소 <span class="comment"># 모든 로컬저장소 브랜치 -&gt; 원격저장소</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="3-Pull-request"><a href="#3-Pull-request" class="headerlink" title="3. Pull request"></a>3. Pull request</h1><p>브랜치만들면 뭐합니까. 그걸 main 브랜치와 합쳐야 기능이 완성되지 않겠습니까.<br>합치려면 <code>git merge</code> 명령어로 합치고 <code>git push</code>하면 끝인데,<br>팀끼리 일하는 경우 merge하기 전에 토론하거나 검토하거나 그래야하는 경우가 많습니다.<br>그래서 github.com은 <strong>pull request</strong>라는 기능이 있습니다. 그냥 쉬운 말로 <strong>merge request</strong>입니다. </p>
+<p>이거 누르면 내 브랜치좀 merge 해달라는 요청을 할 수 있고, 팀원끼리 merge전에 코드검토가 가능합니다.<br>github.com 웹사이트에서 pull request를 열고 싶으면</p>
+<ul>
+<li>아무나 상단 Pull requests 메뉴에서 초록버튼 누르면 pull request 생성이 가능</li>
+<li>그 다음 어떤 브랜치를 어디에 합칠 것인지 선택하고, 하단 commit·변경내역을 보고, 초록버튼 누르면 pull request가 열림</li>
+<li>그럼 Pull requests 메뉴에서 이렇게 확인가능한데, 누르면 토론할 수 있는 곳도 있습니다. <ul>
+<li>거기서 코드 리뷰하면 됨</li>
+</ul>
+</li>
+<li>잘 된것 같아 merge하기로 했으면, merge 할 때 여러 옵션이 있는데 택하면 됩니다. <ul>
+<li>이번에는 Squash and mege해보겠습니다.</li>
+</ul>
+</li>
+</ul>
+<p>이제 mining에서 만든 코드가 잘 통합(merge &#x3D; pull request)된 것을 볼 수 있습니다.</p>
+<hr>
+<h2 id="3-1-create-a-merge-commit"><a href="#3-1-create-a-merge-commit" class="headerlink" title="3.1 create a merge commit"></a>3.1 create a merge commit</h2><p>새로운 merge commit을 하나 생성해주는 3-way merge를 실행해줍니다. </p>
+<ul>
+<li><strong>main 브랜치 조회 시 합쳐진 브랜치의 commit 내역도</strong> 전부 나옴 </li>
+<li>터미널에 <code>git log --oneline --graph</code> 해보면 <strong>합쳐진 브랜치도 그림으로 나옴</strong> </li>
+<li>그래서 commit 내역이 많으면 복잡하고 더러워보일 수 있습니다.</li>
+</ul>
+<hr>
+<h2 id="3-2-squash-and-merge"><a href="#3-2-squash-and-merge" class="headerlink" title="3.2 squash and merge"></a>3.2 squash and merge</h2><ul>
+<li><strong>합쳐질 브랜치의 commit 내역을 하나로 합쳐서 main 브랜치에 신규 commit을 생성</strong>해줍니다.</li>
+<li><code>git log --oneline --graph</code>해보면 <strong>합쳐진 브랜치 안나옴</strong> </li>
+<li>commit을 하나로 합쳐서 main 브랜치로 순간이동 시켜주는 행위라 <strong>사람들이 깔끔하다고 좋아합니다</strong>.</li>
+</ul>
+<hr>
+<h2 id="3-3-rebase-and-merge"><a href="#3-3-rebase-and-merge" class="headerlink" title="3.3 rebase and merge"></a>3.3 rebase and merge</h2><ul>
+<li><strong>합쳐질 브랜치를 main 브랜치 최신 commit으로 rebase하고나서 fast-forward merge</strong> 비슷한걸 해줍니다.</li>
+<li>결과는 <strong>squash and merge와 비슷한데 합쳐질 브랜치의 commit 내역이 전부 보존</strong>됩니다. </li>
+<li>애도 <code>git log --oneline --graph</code> 해보면 <strong>합쳐진 브랜치 안나옴</strong></li>
+</ul>
+<hr>
+<h1 id="4-결론"><a href="#4-결론" class="headerlink" title="4. 결론"></a>4. 결론</h1><ul>
+<li>github 등 원격 저장소에도 브랜치만들 수 있습니다. </li>
+<li>Pull request (merge)할 땐 3개 중 맘대로 하면 됩니다.</li>
+</ul>
+<hr>
+<h1 id="5-참고-revert-쓰지말기"><a href="#5-참고-revert-쓰지말기" class="headerlink" title="5. 참고 : revert 쓰지말기"></a>5. 참고 : revert 쓰지말기</h1><p>원격저장소의 commit 내역을 과거로 되돌리고 싶으면,<br>로컬에서 <code>git reset --hard</code> 이런거 쓰고, <code>git push -f</code> 하면 가능하긴 한데,<br>해당 브랜치를 공동작업중인 사람들이 모두 영향받기 때문에 그러지 않는게 좋습니다.<br>github.com 사이트엔 revert 버튼이 있긴 한데, 그거 쓰면 예전 코드로 되돌려주는 commit을 만들어주는 식으로 동작합니다. </p>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/11/DevOps-Git-Basic-07/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-11 04:14:36
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/git/" title="Git"> <b>#</b> Git </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/git/basic/" title="Basic"> <b>#</b> Basic </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/git/" title="Git"> #Git </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/11/DevOps-Git-Basic-09/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%EC%8B%A0%EA%B8%B0%EB%8A%A5-%EA%B0%9C%EB%B0%9C%ED%95%A0%EB%A0%A4%EA%B3%A0-branch"><span class="toc-text">1. 신기능 개발할려고 branch</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-github-%EC%82%AC%EC%9D%B4%ED%8A%B8%EC%97%90%EC%84%9C-%EB%B8%8C%EB%9E%9C%EC%B9%98-%EC%83%9D%EC%84%B1"><span class="toc-text">1.1 github 사이트에서 브랜치 생성</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%EB%A1%9C%EC%BB%AC-repository%EC%97%90%EC%84%9C-%EB%B8%8C%EB%9E%9C%EC%B9%98-%EC%83%9D%EC%84%B1"><span class="toc-text">1.2 로컬 repository에서 브랜치 생성</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%EC%B0%B8%EA%B3%A0"><span class="toc-text">1.3 참고</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Pull-request"><span class="toc-text">3. Pull request</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-create-a-merge-commit"><span class="toc-text">3.1 create a merge commit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-squash-and-merge"><span class="toc-text">3.2 squash and merge</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-rebase-and-merge"><span class="toc-text">3.3 rebase and merge</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%EA%B2%B0%EB%A1%A0"><span class="toc-text">4. 결론</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%EC%B0%B8%EA%B3%A0-revert-%EC%93%B0%EC%A7%80%EB%A7%90%EA%B8%B0"><span class="toc-text">5. 참고 : revert 쓰지말기</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + DevOps-Git-Basic--08-Github%20-%20branch%EB%A1%9C%20%ED%98%91%EC%97%85%20-%20pull%20request + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F11%2FDevOps-Git-Basic-08%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/11/DevOps-Git-Basic-08/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

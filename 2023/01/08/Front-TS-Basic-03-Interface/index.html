@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Front-TS-Basic-03-Type-interface 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Front-TS-Basic-03-Type-interface</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-08 17:33:41
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/ts/" title="TS"> <b>#</b> TS </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/ts/basic/" title="Basic"> <b>#</b> Basic </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/ts/" title="TS"> #TS </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-interface-인터페이스"><a href="#1-interface-인터페이스" class="headerlink" title="1. interface(인터페이스)"></a>1. interface(인터페이스)</h1><p><code>interface</code> 문법을 쓰면, <strong>object 자료형의 타입을 보다 편리하게 지정가능</strong>합니다.</p>
+<ul>
+<li>cf. interface : 상호 간에 정의한 약속 혹은 규칙</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> person = &#123; <span class="attr">name</span>: <span class="string">&#x27;메시&#x27;</span>, <span class="attr">age</span>: <span class="number">36</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// &#x27;age를 속성으로 갖는 객체&#x27;를 파라미터로 받음</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">logAge</span>(<span class="params">obj: &#123; age: <span class="built_in">number</span> &#125;</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(obj.<span class="property">age</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">logAge</span>(person); <span class="comment">// 28</span></span><br></pre></td></tr></table></figure>
+
+<p>이렇게 인자를 받을 때 단순한 타입 뿐만 아니라 객체의 속성 타입까지 정의할 수 있죠.<br>만약 위 코드에 interface를 적용하면 어떤 모습일까요?</p>
+<p><strong>type을 미리 정의하고 싶으면 interface 키워드</strong>를 이렇게 만들어봅시다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. interface로 객체 타입을 정의</span></span><br><span class="line"><span class="keyword">interface</span> personAge &#123;</span><br><span class="line">  <span class="attr">age</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 파라미터는 personAge타입으로 받는다.</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">logAge</span>(<span class="params">obj: personAge</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(obj.<span class="property">age</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. interface 타입 속성의 개수와 일치하지 않아도됨</span></span><br><span class="line"><span class="keyword">let</span> person = &#123; <span class="attr">name</span>: <span class="string">&#x27;메시&#x27;</span>, <span class="attr">age</span>: <span class="number">28</span> &#125;;</span><br><span class="line"><span class="title function_">logAge</span>(person);</span><br></pre></td></tr></table></figure>
+
+<p>그리고 위 코드를 보면, 파라미터로 interface를 받을 때,<br><strong>interface의 속성 개수</strong>와 <strong>파라미터로 받는 객체의 속성 개수</strong>가 일치하지 않아도 됩니다.<br>즉, interface에 정의된 속성, 타입의 조건만 만족하면, 객체의 속성 개수가 많아도 상관없습니다.</p>
+<hr>
+<h1 id="2-옵션-속성"><a href="#2-옵션-속성" class="headerlink" title="2. 옵션 속성 (?)"></a>2. 옵션 속성 (?)</h1><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> interface_이름 &#123;</span><br><span class="line">  속성?: 타입;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>옵션 속성을 사용하면, 정의되어 있는 속성을 꼭 사용하지 않아도 됩니다.</p>
+<ul>
+<li>사용법은 속성의 끝에 <code>?</code>를 붙이면 됩니다.</li>
+<li>Optional Parameter를 사용하는 경우 해당 매개변수는 필수 매개변수의 뒤쪽으로 가야 됨</li>
+</ul>
+<p>예시</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">FootballPlayer</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  age?: <span class="built_in">number</span>; <span class="comment">// 📝 옵션속성(?) : 사용해도 되고, 안해도 되고</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> centerForard = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;메시&#x27;</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// SoccerPlayer 타입을 파라미터로 받는 함수</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Team</span>(<span class="params">player: FootballPlayer</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(player.<span class="property">name</span>); <span class="comment">// 메시</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// age가 없어도 동작함</span></span><br><span class="line"><span class="title class_">Team</span>(centerForard);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-1-장점"><a href="#2-1-장점" class="headerlink" title="2.1 장점"></a>2.1 장점</h2><p>단순히 interface를 사용할 때 속성을 선택적으로 적용할 수 있다는 것 뿐만 아니라,<br>interface에 정의되어 있지 않은 속성에 대해서 인지시켜줄 수 있습니다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">FootballPlayer</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  age?: <span class="built_in">number</span>; <span class="comment">// 📝 옵션속성(?) : 사용해도 되고, 안해도 되고</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> centerForard = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;메시&#x27;</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// SoccerPlayer 타입을 파라미터로 받는 함수</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Team</span>(<span class="params">player: FootballPlayer</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(player.<span class="property">addrees</span>);</span><br><span class="line">  <span class="comment">// ^ Error: Property &#x27;addrees&#x27; does not exist on type &#x27;FootballPlayer&#x27; 🌐</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// age가 없어도 동작함</span></span><br><span class="line"><span class="title class_">Team</span>(centerForard);</span><br></pre></td></tr></table></figure>
+
+<p>interface에 정의되어 있지 않은 속성에 대해서 오류를 표시합니다.<br>마찬가지로 오타가 났어도 알려줍니다.</p>
+<hr>
+<h1 id="3-읽기-전용-속성"><a href="#3-읽기-전용-속성" class="headerlink" title="3. 읽기 전용 속성"></a>3. 읽기 전용 속성</h1><p><code>readonly</code> 속성을 붙이면, <strong>객체를 처음 생성할 때만 값을 할당</strong>하고, 그 이후에는 변경할 수 없습니다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">FootballPlayer</span> &#123;</span><br><span class="line">  <span class="keyword">readonly</span> <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">centerForard</span>: <span class="title class_">FootballPlayer</span> = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;메시&#x27;</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">centerForard.<span class="property">name</span> = <span class="string">&#x27;호날두&#x27;</span>;</span><br><span class="line"><span class="comment">// ^ error: 읽기 전용 속성이므로 &#x27;name&#x27;에 할당할 수 없음</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-1-읽기-전용-배열"><a href="#3-1-읽기-전용-배열" class="headerlink" title="3.1 읽기 전용 배열"></a>3.1 읽기 전용 배열</h2><p>배열을 선언할 때 <code>ReadonlyArray&lt;T&gt;</code> 타입을 사용하면 읽기 전용 배열을 생성할 수 있습니다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ReadonlyArray로 선언하면 배열의 내용을 변경 불가능</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">arr</span>: <span class="title class_">ReadonlyArray</span>&lt;<span class="built_in">number</span>&gt; = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">arr.<span class="title function_">splice</span>(<span class="number">0</span>, <span class="number">1</span>); <span class="comment">// error</span></span><br><span class="line">arr.<span class="title function_">push</span>(<span class="number">4</span>); <span class="comment">// error</span></span><br><span class="line">arr[<span class="number">0</span>] = <span class="number">100</span>; <span class="comment">// error</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="4-객체-선언과-관련된-타입-체크"><a href="#4-객체-선언과-관련된-타입-체크" class="headerlink" title="4. 객체 선언과 관련된 타입 체크"></a>4. 객체 선언과 관련된 타입 체크</h1><p>타입스크립트는 interface를 이용하여 객체를 선언할 때 좀 더 엄밀한 속성 검사를 진행합니다.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">FootballPlayer</span> &#123;</span><br><span class="line">  name?: <span class="built_in">string</span>; <span class="comment">// name이라 적혀있음</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Team</span>(<span class="params">player: FootballPlayer</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(player.<span class="property">name</span>); <span class="comment">// 메시</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 😅 names라고 오타났음</span></span><br><span class="line"><span class="title class_">Team</span>(&#123; <span class="attr">names</span>: <span class="string">&#x27;호날두&#x27;</span> &#125;); <span class="comment">// Error : Object literal에 적혀진 속성만 지정해야 함</span></span><br><span class="line"><span class="comment">// Object literal may only specify known properties,</span></span><br><span class="line"><span class="comment">// but &#x27;names&#x27; does not exist in type &#x27;FootballPlayer&#x27;.</span></span><br><span class="line"><span class="comment">// Did you mean to write &#x27;name&#x27;?</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-1-Type-Assertion-타입-덮어쓰기"><a href="#4-1-Type-Assertion-타입-덮어쓰기" class="headerlink" title="4.1 Type Assertion(타입 덮어쓰기)"></a>4.1 Type Assertion(타입 덮어쓰기)</h2><p>만약 이런 타입 추론을 무시하고 싶다면, <code>as</code> 키워드를 사용해 다음과 같이 선언합니다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">addOne</span>(<span class="params">x: <span class="built_in">number</span> | <span class="built_in">string</span></span>) &#123;</span><br><span class="line">  <span class="comment">// x라는 변수는 number라고 확신</span></span><br><span class="line">  <span class="comment">// 무조건 숫자가 들어올 것이라는 사실을 알고 있어야 안전하게 쓸 수 있음</span></span><br><span class="line">  <span class="keyword">return</span> (x <span class="keyword">as</span> <span class="built_in">number</span>) + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">addOne</span>(<span class="number">2</span>));</span><br></pre></td></tr></table></figure>
+
+<p>as 키워드는 타입을 개발자 맘대로 주장하는 역할이라 때문에 엄격한 타입체크기능을 잠깐 안쓰겠다는 뜻과 동일합니다. 그래서 <strong>as 문법은 이럴 때 쓰도록 합시다</strong>.</p>
+<ul>
+<li>타입에러가 나는지 모르겠는 상황에 <strong>임시로 에러해결용</strong></li>
+<li>어떤 타입이 들어올지 <strong>정말 100% 확실하게 알고 있는데 컴파일러 에러가 방해</strong>할 때</li>
+</ul>
+<p>대부분의 상황에선 as 보다 훨씬 엄격하고 좋은 type narrowing으로 해결할 수 있습니다.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">FootballPlayer</span> &#123;</span><br><span class="line">  name?: <span class="built_in">string</span>; <span class="comment">// name이라 적혀있음</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Team</span>(<span class="params">player: FootballPlayer</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(player.<span class="property">name</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> centerForard = &#123;</span><br><span class="line">  <span class="attr">names</span>: <span class="string">&#x27;호날두&#x27;</span>, <span class="comment">// 😅 names라고 오타났음</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Team</span>(centerForard <span class="keyword">as</span> <span class="title class_">FootballPlayer</span>); <span class="comment">// 호날두</span></span><br></pre></td></tr></table></figure>
+
+<p>만약 interface의 정의하지 않은 속성들을 추가로 사용하고 싶을 때는 아래와 같은 방법을 사용합니다.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">FootballPlayer</span> &#123;</span><br><span class="line">  name?: <span class="built_in">string</span>;</span><br><span class="line">  [<span class="attr">propName</span>: <span class="built_in">string</span>]: <span class="built_in">any</span>; <span class="comment">// 1. 정의하지 않은 속성들을 추가로 사용하고 싶을 때</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Team</span>(<span class="params">player: FootballPlayer</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(player.<span class="property">name</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> centerForard = &#123;</span><br><span class="line">  <span class="attr">names</span>: <span class="string">&#x27;호날두&#x27;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="number">38</span>, <span class="comment">// 2. 정의하지 않은 속성 사용하기</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Team</span>(centerForard <span class="keyword">as</span> <span class="title class_">FootballPlayer</span>);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="5-함수-타입"><a href="#5-함수-타입" class="headerlink" title="5. 함수 타입"></a>5. 함수 타입</h1><p>interface는 함수의 타입을 정의할 때에도 사용할 수 있습니다.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 함수의 타입 정의</span></span><br><span class="line"><span class="keyword">interface</span> login &#123;</span><br><span class="line">  (<span class="attr">id</span>: <span class="built_in">string</span>, <span class="attr">password</span>: <span class="built_in">string</span>): <span class="built_in">boolean</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 함수의 파라미터 타입과 반환값의 타입 정의</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">loginUser</span>: login;</span><br><span class="line">loginUser = <span class="function">(<span class="params">id: <span class="built_in">string</span>, pw: <span class="built_in">string</span></span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;로그인함&#x27;</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="5-1-인터페이스와-함수"><a href="#5-1-인터페이스와-함수" class="headerlink" title="5.1 인터페이스와 함수"></a>5.1 인터페이스와 함수</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Leo</span>: <span class="title class_">User</span> = &#123; <span class="attr">name</span>: <span class="string">&#x27;메시&#x27;</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">showName</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// this가 어떤 타입인지 알 수 없어서 에러 뜸</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>); <span class="comment">// Error : &#x27;this&#x27; implicitly has type &#x27;any&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> a = showName.<span class="title function_">bind</span>(<span class="title class_">Leo</span>);</span><br><span class="line"><span class="title function_">a</span>();</span><br></pre></td></tr></table></figure>
+
+<p>this의 타입을 정의하려면 첫 번째 매개변수로 this의 타입을 정의해야 합니다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Leo</span>: <span class="title class_">User</span> = &#123; <span class="attr">name</span>: <span class="string">&#x27;메시&#x27;</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">showName</span>(<span class="params"><span class="variable language_">this</span>: User</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> a = showName.<span class="title function_">bind</span>(<span class="title class_">Leo</span>);</span><br><span class="line"><span class="title function_">a</span>(); <span class="comment">// 메시</span></span><br></pre></td></tr></table></figure>
+
+<p>만약 다른 매개변수가 있더라도 맨 앞에 this의 타입을 정의해줄 수 있습니다.<br>이 때는 매개변수를 받더라도 this가 아닌 다음 요소에 받은 매개변수가 들어갑니다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Leo</span>: <span class="title class_">User</span> = &#123; <span class="attr">name</span>: <span class="string">&#x27;메시&#x27;</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">showName</span>(<span class="params"><span class="variable language_">this</span>: User, age: <span class="built_in">number</span>, gender: <span class="string">&#x27;m&#x27;</span> | <span class="string">&#x27;f&#x27;</span></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>, age, gender);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> a = showName.<span class="title function_">bind</span>(<span class="title class_">Leo</span>);</span><br><span class="line"><span class="title function_">a</span>(<span class="number">36</span>, <span class="string">&#x27;m&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="5-2-오버로딩"><a href="#5-2-오버로딩" class="headerlink" title="5.2 오버로딩"></a>5.2 오버로딩</h2><p>매개변수로 number 타입의 요소를 받는지, string 타입의 요소를 받는지에 따라 다른 결과값을 반환하고 싶을 수 있습니다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">age</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">join</span>(<span class="params">name: <span class="built_in">string</span>, age: <span class="built_in">number</span> | <span class="built_in">string</span></span>): <span class="title class_">User</span> | <span class="built_in">string</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> age === <span class="string">&#x27;number&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      name,</span><br><span class="line">      age,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;나이를 숫자로 입력하셈&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 둘다 User나 String 객체를 반환하는 것에 확신이 없어서 둘 다 에러</span></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Leo</span>: <span class="title class_">User</span> = <span class="title function_">join</span>(<span class="string">&#x27;메시&#x27;</span>, <span class="number">37</span>); <span class="comment">// Error</span></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Cristiano</span>: <span class="built_in">string</span> = <span class="title function_">join</span>(<span class="string">&#x27;호날두&#x27;</span>, <span class="string">&#x27;39&#x27;</span>); <span class="comment">// Error</span></span><br></pre></td></tr></table></figure>
+
+<p>이 문제를 해결하기 위해서는 함수 오버로딩을 사용합니다. 어떤 타입의 age를 받았을 때 어떤 타입의 리턴값을 반환할 것인지를 명확하게 해줘야 합니다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">age</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// **** 함수 오버로딩</span></span><br><span class="line"><span class="comment">// age가 string이면 string타입의 리턴값,</span></span><br><span class="line"><span class="comment">// age가 number이면 User타입의 리턴값을 반환한다고 명시적으로 작성</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">join</span>(<span class="params">name: <span class="built_in">string</span>, age: <span class="built_in">string</span></span>): <span class="built_in">string</span>;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">join</span>(<span class="params">name: <span class="built_in">string</span>, age: <span class="built_in">number</span></span>): <span class="title class_">User</span>;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">join</span>(<span class="params">name: <span class="built_in">string</span>, age: <span class="built_in">number</span> | <span class="built_in">string</span></span>): <span class="title class_">User</span> | <span class="built_in">string</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> age === <span class="string">&#x27;number&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      name,</span><br><span class="line">      age,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;나이를 숫자로 입력하셈&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Leo</span>: <span class="title class_">User</span> = <span class="title function_">join</span>(<span class="string">&#x27;메시&#x27;</span>, <span class="number">37</span>);</span><br><span class="line"><span class="keyword">const</span> <span class="title class_">Cristiano</span>: <span class="built_in">string</span> = <span class="title function_">join</span>(<span class="string">&#x27;호날두&#x27;</span>, <span class="string">&#x27;39&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="6-class-타입"><a href="#6-class-타입" class="headerlink" title="6. class 타입"></a>6. class 타입</h1><p>C#이나 Java처럼 TS도 클래스가 일정 조건을 만족하도록 타입 규칙을 정할 수 있습니다.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Player</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="title function_">newLeage</span>(<span class="title class_">PlayerName</span>: <span class="built_in">string</span>): <span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">KoreaPlayer</span> <span class="keyword">implements</span> <span class="title class_">Player</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span> = <span class="string">&#x27;손흥민&#x27;</span>;</span><br><span class="line">  <span class="title function_">newLeage</span>(<span class="params">newPlayer: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span> = newPlayer;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="7-interface를-클래스에-상속-implements"><a href="#7-interface를-클래스에-상속-implements" class="headerlink" title="7. interface를 클래스에 상속 : implements"></a>7. interface를 클래스에 상속 : implements</h1><p>만들어준 인터페이스는 implements를 통해 사용할 수 있습니다.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Car</span> &#123;</span><br><span class="line">  <span class="attr">color</span>: <span class="title class_">String</span>;</span><br><span class="line">  <span class="attr">wheels</span>: <span class="title class_">Number</span>;</span><br><span class="line">  <span class="title function_">start</span>(): <span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BMW</span> <span class="keyword">implements</span> <span class="title class_">Car</span> &#123;</span><br><span class="line">  color = <span class="string">&#x27;red&#x27;</span>;</span><br><span class="line">  wheels = <span class="number">4</span>;</span><br><span class="line">  <span class="title function_">start</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;움직이기&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>생성자가 들어가도 큰 차이는 없습니다.</p>
+<ul>
+<li>주의할 점 : 인터페이스에서 선언한 속성들은 모두 들어가야 함</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Car</span> &#123;</span><br><span class="line">  <span class="attr">color</span>: <span class="title class_">String</span>;</span><br><span class="line">  <span class="attr">wheels</span>: <span class="title class_">Number</span>;</span><br><span class="line">  <span class="title function_">start</span>(): <span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BMW</span> <span class="keyword">implements</span> <span class="title class_">Car</span> &#123;</span><br><span class="line">  color = <span class="string">&#x27;red&#x27;</span>;</span><br><span class="line">  wheels = <span class="number">4</span>;</span><br><span class="line">  <span class="comment">// 생성자가 들어가더라도</span></span><br><span class="line">  <span class="comment">// 인터페이스에서 선언한 속성(property)는 모두 들어가야 함</span></span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">c: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">color</span> = c;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">start</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;움직이기&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> b = <span class="keyword">new</span> <span class="title function_">BMW</span>(<span class="string">&#x27;green&#x27;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(b); <span class="comment">// BMW &#123; color: &#x27;green&#x27;, wheels: 4 &#125;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="8-인터페이스-확장-extends"><a href="#8-인터페이스-확장-extends" class="headerlink" title="8. 인터페이스 확장 : extends"></a>8. 인터페이스 확장 : extends</h1><p>class와 마찬가지로 interface도 interface 간 확장이 가능합니다.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Person 인터페이스</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// &#x27;Person 인터페이스&#x27;를 상속받은 &#x27;Developer 인터페이스&#x27;</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Developer</span> <span class="keyword">extends</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="attr">skill</span>: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 두 인터페이스의 속성들을 모두 정의해야 함</span></span><br><span class="line"><span class="keyword">let</span> frontEnd = &#123;&#125; <span class="keyword">as</span> <span class="title class_">Developer</span>;</span><br><span class="line">frontEnd.<span class="property">name</span> = <span class="string">&#x27;메시&#x27;</span>;</span><br><span class="line">frontEnd.<span class="property">skill</span> = <span class="string">&#x27;TypeScript&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>다음과 같이 interface를 여러 개 상속받아 사용할 수 있습니다.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Employee</span> &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="attr">salary</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Person과 Employee 인터페이스들을 상속받음</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Developer</span> <span class="keyword">extends</span> <span class="title class_">Person</span>, <span class="title class_">Employee</span> &#123;</span><br><span class="line">  <span class="attr">language</span>: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">dev</span>: <span class="title class_">Developer</span> = &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="number">10</span>,</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;메시&#x27;</span>,</span><br><span class="line">  <span class="attr">salary</span>: <span class="number">10000</span>,</span><br><span class="line">  <span class="attr">language</span>: <span class="string">&#x27;TypeScript&#x27;</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="8-하이브리드-타입"><a href="#8-하이브리드-타입" class="headerlink" title="8. 하이브리드 타입"></a>8. 하이브리드 타입</h1><p>JS의 유연하고 동적인 타입 특성에 따라, interface도 여러 가지 타입을 조합하여 만들 수 있습니다.<br>e.g. 함수 타입이면서 객체 타입을 정의할 수 있는 interface</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Counter</span> &#123;</span><br><span class="line">  (<span class="attr">start</span>: <span class="built_in">number</span>): <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">interval</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="title function_">reset</span>(): <span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getCounter</span>(<span class="params"></span>): <span class="title class_">Counter</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> counter = <span class="keyword">function</span> (<span class="params">start: <span class="built_in">number</span></span>) &#123;&#125; <span class="keyword">as</span> <span class="title class_">Counter</span>;</span><br><span class="line">  counter.<span class="property">interval</span> = <span class="number">123</span>;</span><br><span class="line">  counter.<span class="property">reset</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;&#125;;</span><br><span class="line">  <span class="keyword">return</span> counter;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> c = <span class="title function_">getCounter</span>();</span><br><span class="line"><span class="title function_">c</span>(<span class="number">10</span>);</span><br><span class="line">c.<span class="title function_">reset</span>();</span><br><span class="line">c.<span class="property">interval</span> = <span class="number">5.0</span>;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="10-type-vs-interface"><a href="#10-type-vs-interface" class="headerlink" title="10. type vs interface"></a>10. type vs interface</h1><p>type과 interface의 가장 큰 차이점은 <strong>타입의 확장 가능 &#x2F; 불가능 여부</strong>입니다.</p>
+<ul>
+<li><code>interface</code> : 확장(extends 키워드) 가능</li>
+<li><code>type</code> : 확장(extends 키워드) 불가능</li>
+</ul>
+<p>따라서, 가능한한 <code>type</code> 보다는 <code>interface</code>로 선언해서 사용하는 것을 추천합니다.</p>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/08/Front-TS-Basic-02-BasicType/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-08 17:33:41
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/ts/" title="TS"> <b>#</b> TS </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/ts/basic/" title="Basic"> <b>#</b> Basic </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/ts/" title="TS"> #TS </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/08/Front-TS-Basic-04-Enum/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-interface-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4"><span class="toc-text">1. interface(인터페이스)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%EC%98%B5%EC%85%98-%EC%86%8D%EC%84%B1"><span class="toc-text">2. 옵션 속성 (?)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%EC%9E%A5%EC%A0%90"><span class="toc-text">2.1 장점</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%EC%9D%BD%EA%B8%B0-%EC%A0%84%EC%9A%A9-%EC%86%8D%EC%84%B1"><span class="toc-text">3. 읽기 전용 속성</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%EC%9D%BD%EA%B8%B0-%EC%A0%84%EC%9A%A9-%EB%B0%B0%EC%97%B4"><span class="toc-text">3.1 읽기 전용 배열</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%EA%B0%9D%EC%B2%B4-%EC%84%A0%EC%96%B8%EA%B3%BC-%EA%B4%80%EB%A0%A8%EB%90%9C-%ED%83%80%EC%9E%85-%EC%B2%B4%ED%81%AC"><span class="toc-text">4. 객체 선언과 관련된 타입 체크</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-Type-Assertion-%ED%83%80%EC%9E%85-%EB%8D%AE%EC%96%B4%EC%93%B0%EA%B8%B0"><span class="toc-text">4.1 Type Assertion(타입 덮어쓰기)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%ED%95%A8%EC%88%98-%ED%83%80%EC%9E%85"><span class="toc-text">5. 함수 타입</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4%EC%99%80-%ED%95%A8%EC%88%98"><span class="toc-text">5.1 인터페이스와 함수</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-%EC%98%A4%EB%B2%84%EB%A1%9C%EB%94%A9"><span class="toc-text">5.2 오버로딩</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-class-%ED%83%80%EC%9E%85"><span class="toc-text">6. class 타입</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-interface%EB%A5%BC-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%97%90-%EC%83%81%EC%86%8D-implements"><span class="toc-text">7. interface를 클래스에 상속 : implements</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4-%ED%99%95%EC%9E%A5-extends"><span class="toc-text">8. 인터페이스 확장 : extends</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-%ED%95%98%EC%9D%B4%EB%B8%8C%EB%A6%AC%EB%93%9C-%ED%83%80%EC%9E%85"><span class="toc-text">8. 하이브리드 타입</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-type-vs-interface"><span class="toc-text">10. type vs interface</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Front-TS-Basic-03-Type-interface + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F08%2FFront-TS-Basic-03-Interface%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/08/Front-TS-Basic-03-Interface/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

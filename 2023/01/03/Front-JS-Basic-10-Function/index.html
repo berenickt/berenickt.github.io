@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Front-JS-Basic-10-함수(Functions) 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Front-JS-Basic-10-함수(Functions)</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-03 12:37:10
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/js/" title="JS"> <b>#</b> JS </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/js/basic/" title="Basic"> <b>#</b> Basic </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/js/" title="JS"> #JS </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-함수"><a href="#1-함수" class="headerlink" title="1. 함수"></a>1. 함수</h1><p>함수는 특정한 일을 수행하는 코드의 집합으로 이렇게 잘 묶어두면 재사용도 가능하고, 가독성도 높고 유지보수성도 높아집니다.</p>
+<ul>
+<li>함수는 <strong>길고 더러운 코드 한 단어로 축약하고 싶을 때</strong> 쓰는 문법</li>
+<li>개발자말로 표현하면 <strong>특정 기능을 다음에도 쓰기 위해 모듈화해놓는 문법</strong></li>
+</ul>
+<p>함수는 특정 박스 안에 주어진 일을 수행하고, 이 안에서 벌어지는 일들은 외부에서 알 수 없습니다.<br>그리고 입력을 받으면 출력 값을 리턴합니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> 함수이름(매개변수A, 매개변수B) &#123;</span><br><span class="line">  <span class="keyword">return</span> 매개변수A + 매개변수B; <span class="comment">// 결과값 반환</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">함수이름(<span class="number">1</span>, <span class="number">2</span>); <span class="comment">// 함수 호출, 인자를 넘겨준다.</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>parameter(매개변수)</code> : <strong>함수를 정의할 때 사용되는 변수</strong></li>
+<li><code>Argument(인자)</code> : <strong>실제로 함수가 호출될 때 넘기는 변수값</strong></li>
+<li>cf. <a target="_blank" rel="noopener" href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Statements/function">MDN 함수</a></li>
+</ul>
+<hr>
+<h2 id="1-1-함수와-메모리"><a href="#1-1-함수와-메모리" class="headerlink" title="1.1 함수와 메모리"></a>1.1 함수와 메모리</h2><p>함수도 결국 객체이기 때문에 함수를 정의하면 Heap이라는 메모리에 저장됩니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 함수의 이름 add는 함수 오브젝트가 담겨있는 메모리 주소를 가지고 있음</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">add</span>(<span class="params">a, b</span>) &#123; </span><br><span class="line">  <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 또 다른 변수에 함수 이름을 할당하면, sum이라는 변수는 동일하게  add가 가리키고 있는 주소를 가리킴</span></span><br><span class="line"><span class="keyword">const</span> sum = add; </span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">sum</span>(<span class="number">1</span>, <span class="number">2</span>)); <span class="comment">// 3</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">add</span>(<span class="number">1</span>, <span class="number">2</span>)); <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="1-2-템플릿-리터럴"><a href="#1-2-템플릿-리터럴" class="headerlink" title="1.2 템플릿 리터럴"></a>1.2 템플릿 리터럴</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">sum</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;function&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> result = <span class="title function_">sum</span>(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(result); <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 사용예제 2</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">fullName</span>(<span class="params">firstName, lastName</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;firstName&#125;</span> <span class="subst">$&#123;lastName&#125;</span> ✋`</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> lastName = <span class="string">&quot;김&quot;</span>;</span><br><span class="line"><span class="keyword">let</span> firstName = <span class="string">&quot;지수&quot;</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">fullName</span>(firstName, lastName)); <span class="comment">// 지수 김 ✋</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> lastName2 = <span class="string">&quot;박&quot;</span>;</span><br><span class="line"><span class="keyword">let</span> firstName2 = <span class="string">&quot;철수&quot;</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">fullName</span>(firstName2, lastName2)); <span class="comment">// 철수 박 ✋</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="1-3-return문-반환"><a href="#1-3-return문-반환" class="headerlink" title="1.3 return문 반환"></a>1.3 return문 반환</h2><p><code>return</code> 문을 명시하지 않으면, 자동으로 <code>undefined</code>이 반환됩니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// return문을 명시하지 않으면 자동으로 undefined이 반환됨!</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">add</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">  <span class="comment">//return a + b;</span></span><br><span class="line">  <span class="keyword">return</span> <span class="literal">undefined</span>; <span class="comment">// return문을 명시하지 않으면 자동 생성됨</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> result = <span class="title function_">add</span>(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(result); <span class="comment">// undefined</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// return을 함수 중간에 하게 되면 함수가 종료됨</span></span><br><span class="line"><span class="comment">// 사용예: 조건이 맞지 않는 경우 함수 도입부분에서 함수를 일찍 종료함!</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">print</span>(<span class="params">num</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (num &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(num);</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">print</span>(<span class="number">12</span>);  <span class="comment">// 12 </span></span><br><span class="line"><span class="title function_">print</span>(-<span class="number">12</span>); <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="1-4-함수의-인자"><a href="#1-4-함수의-인자" class="headerlink" title="1.4 함수의 인자"></a>1.4 함수의 인자</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 매개변수의 기본값은 무조건 undefined</span></span><br><span class="line"><span class="comment">// 매개변수의 정보는 함수 내부에서 접근이 가능한 arguments 객체에 저장됨</span></span><br><span class="line"><span class="comment">// 매개변수 기본값(Default Parameters) : a = 1, b = 1 / 외부에 값이 들어오면 외부값 사용</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">add</span>(<span class="params">a = <span class="number">1</span>, b = <span class="number">1</span></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(a); <span class="comment">// 1</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(b); <span class="comment">// 2</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// arguments 변수는 잘 사용하지는 않음</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">arguments</span>); <span class="comment">// 전달된 매개변수들을 &#x27;키:값&#x27;형태로 출력하는 변수</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">arguments</span>[<span class="number">1</span>]); <span class="comment">// 1번쨰 매개변수 출력</span></span><br><span class="line">  <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">add</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Rest 매개변수(Rest Parameters) : 얼마나 많은 수의 매개변수가 전달될지 모를 떄 사용</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">sum</span>(<span class="params">a, b, ...numbers</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(a); <span class="comment">// 1</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(b); <span class="comment">// 2</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(numbers); <span class="comment">// 그 외 나머지 숫자, [3, 4, 5, 6, 7, 8]</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">sum</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="1-5-함수-표현식"><a href="#1-5-함수-표현식" class="headerlink" title="1.5 함수 표현식"></a>1.5 함수 표현식</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// (1) 함수 선언문 function name() &#123; &#125;</span></span><br><span class="line"><span class="comment">// (2) 함수 표현식 const name = function () &#123; &#125;</span></span><br><span class="line"><span class="comment">// 이는 함수가 객체이기 때문에 가능한 것임!</span></span><br><span class="line"><span class="keyword">let</span> add = <span class="keyword">function</span> (<span class="params">a, b</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">add</span>(<span class="number">1</span>, <span class="number">2</span>)); <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// (3) 화살표 함수 const name = () =&gt; &#123; &#125;</span></span><br><span class="line">add = <span class="function">(<span class="params">a, b</span>) =&gt;</span> a + b; <span class="comment">// 값만 리턴하면 중괄호&#123;&#125; 생략 가능</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">add</span>(<span class="number">1</span>, <span class="number">2</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// (4) 생성자 함수 const object = new Function(); // 뒷장 객체편에서 다룸</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// (5) IIFE (Immediately-Invoked Function Expressions, 즉각적으로 호출되는 함수 표현식)</span></span><br><span class="line"><span class="comment">// 함수를 정의하면서 호출하고 싶을 떄 사용</span></span><br><span class="line"><span class="comment">// 많이 사용하지는 않음</span></span><br><span class="line">(<span class="keyword">function</span> <span class="title function_">run</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;😍&#x27;</span>);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="2-콜백함수"><a href="#2-콜백함수" class="headerlink" title="2. 콜백함수"></a>2. 콜백함수</h1><h2 id="2-1-일급-함수"><a href="#2-1-일급-함수" class="headerlink" title="2.1 일급 함수"></a>2.1 일급 함수</h2><ul>
+<li><code>일급 객체(first-class object)</code> : 일반 객체처럼 모든 연산이 가능한 것<ul>
+<li>함수의 매개변수로 전달</li>
+<li>함수의 반환값</li>
+<li>할당 명령문</li>
+<li>동일 비교 대상</li>
+</ul>
+</li>
+<li><code>일급 함수(first-class function)</code> : 함수가 일반 객체처럼 모든 연산이 가능한 것<ul>
+<li>함수의 매개변수로 전달</li>
+<li>함수의 반환값</li>
+<li>할당 명령문</li>
+<li>동일 비교 대상</li>
+</ul>
+</li>
+</ul>
+<p>일급함수의 기능이 모두 가능할 떄, 해당 프로그래밍 언어는 일급 함수를 지원한다고 말합니다. 일급 함수를 지원하는 언어로는 Java 8+, Python, Swift, Kotlin 등이 있습니다.</p>
+<hr>
+<h2 id="2-2-고차함수-x3D-콜백함수"><a href="#2-2-고차함수-x3D-콜백함수" class="headerlink" title="2.2 고차함수(&#x3D;콜백함수)"></a>2.2 고차함수(&#x3D;콜백함수)</h2><p><code>고차 함수(Higher-order function)</code></p>
+<ul>
+<li>인자로 함수를 받거나(콜백 함수), 함수를 반환하는 함수를 고차함수라고 부름</li>
+<li><code>하나 이상의 함수를 매개변수로 받거나, 함수를 결과로 반환하는 함수</code></li>
+<li>매개변수로 전달되는 함수는 콜백 함수(Callback Function)</li>
+<li>에러 ↓, 가독성↑<ul>
+<li>데이터를 변경 ❌</li>
+<li>변수 사용 ❌</li>
+<li>조건문 ❌</li>
+<li>반복문 ❌</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 콜백함수(callback) : 나중에(back) 호출되는(call) 함수</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">add</span> = (<span class="params">a, b</span>) =&gt; a + b;</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">multiply</span> = (<span class="params">a, b</span>) =&gt; a * b;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 전달된 action은 콜백함수이다.</span></span><br><span class="line"><span class="comment">// 전달될 당시에 함수를 바로 호출해서 반환된 값을 전달하는 것이 아니라</span></span><br><span class="line"><span class="comment">// 함수를 가리키고 있는 함수의 레퍼런스(참조값)가 전달된다.</span></span><br><span class="line"><span class="comment">// 그래서 함수는 고차함수안에서 필요한 순간에 호출이 나중에 됨</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">calculator</span>(<span class="params">a, b, action</span>) &#123; <span class="comment">// action은 콜백함수</span></span><br><span class="line">  <span class="keyword">if</span> (a &lt; <span class="number">0</span> || b &lt; <span class="number">0</span>) &#123; <span class="comment">// a 또는 b가 0보다 작다면 undefined 반환</span></span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">let</span> result = <span class="title function_">action</span>(a, b); <span class="comment">// add함수가 오면 add, multiply함수가 오면 multiply</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(result);</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">calculator</span>(<span class="number">1</span>, <span class="number">1</span>, add);      <span class="comment">// 3, add함수를 콜백함수로 보냄</span></span><br><span class="line"><span class="title function_">calculator</span>(<span class="number">1</span>, <span class="number">2</span>, multiply); <span class="comment">// 2, multiply함수를 콜백함수로 보냄</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="3-고차함수-종류"><a href="#3-고차함수-종류" class="headerlink" title="3. 고차함수 종류"></a>3. 고차함수 종류</h1><h2 id="3-1-forEach-순회"><a href="#3-1-forEach-순회" class="headerlink" title="3.1 forEach() : 순회"></a>3.1 forEach() : 순회</h2><ul>
+<li>for문을 대체하는 고차 함수.</li>
+<li>반복문을 추상화하여 구현된 메서드이고 내부에서 주어진 배열을 순회하면서 연산을 수행</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">arr.<span class="title function_">forEach</span>(<span class="function">(<span class="params">item, index, thisArr</span>) =&gt;</span> &#123;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * item : 배열 요소 값</span></span><br><span class="line"><span class="comment"> * index : 배열 인덱스</span></span><br><span class="line"><span class="comment"> * thisArr : 참조한 배열</span></span><br><span class="line"><span class="comment"> * 리턴값 없음</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> numberArr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line"><span class="keyword">let</span> total = <span class="number">0</span>;</span><br><span class="line"> </span><br><span class="line">numberArr.<span class="title function_">forEach</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">    total += item;</span><br><span class="line">&#125;);</span><br><span class="line"> </span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(total); <span class="comment">// 15</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-2-map-순회하면서-새-배열⭐"><a href="#3-2-map-순회하면서-새-배열⭐" class="headerlink" title="3.2 map() : 순회하면서 새 배열⭐"></a>3.2 map() : 순회하면서 새 배열⭐</h2><ul>
+<li>forEach 같이 순회하면서, 콜백함수에서의 실행결과를 리턴한 값으로 이루어진 새로운 배열을 만들어 반환</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">arr.<span class="title function_">map</span>(<span class="function">(<span class="params">currentValue, index, array</span>) =&gt;</span> &#123;</span><br><span class="line">&#125;, thisArg);</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * currentValue : 현재 배열 요소 값</span></span><br><span class="line"><span class="comment"> * index : 배열 인덱스</span></span><br><span class="line"><span class="comment"> * array : 참조한 배열</span></span><br><span class="line"><span class="comment"> * thisArr : 콜백함수에서 this로 사용할 값</span></span><br><span class="line"><span class="comment"> * 리턴값 : 반환 타입은 찾은 요소의 타입 / 없다면 undefined</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> numberArr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> numberMapArr = numberArr.<span class="title function_">map</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> item % <span class="number">2</span> === <span class="number">0</span> ? <span class="string">&#x27;even&#x27;</span> : <span class="string">&#x27;odd&#x27;</span>; <span class="comment">// 연산한 결과값을 넣어 배열 반환</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(numberMapArr); <span class="comment">// [&#x27;odd&#x27;, &#x27;even&#x27;, &#x27;odd&#x27;, &#x27;even&#x27;, &#x27;odd&#x27;]</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// map 메서드는 콜백 함수를 호출하면서 3개(요소값, 인덱스, this)의 인수를 전달한다.</span></span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].<span class="title function_">map</span>(<span class="function">(<span class="params">item, index, arr</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`요소값: <span class="subst">$&#123;item&#125;</span>, 인덱스: <span class="subst">$&#123;index&#125;</span>, this: <span class="subst">$&#123;<span class="built_in">JSON</span>.stringify(arr)&#125;</span>`</span>);</span><br><span class="line">  <span class="keyword">return</span> item;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 요소값: 1, 인덱스: 0, this: [1,2,3]</span></span><br><span class="line"><span class="comment">// 요소값: 2, 인덱스: 1, this: [1,2,3]</span></span><br><span class="line"><span class="comment">// 요소값: 3, 인덱스: 2, this: [1,2,3]</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-3-find-true인-값-반환"><a href="#3-3-find-true인-값-반환" class="headerlink" title="3.3 find() : true인 값 반환"></a>3.3 find() : true인 값 반환</h2><ul>
+<li><code>indexOf()</code> 가 찾고자 하는 값을 인덱스로 주는거고,<br><code>include()</code>가 찾고자 하는 값을 Bool로 주는거면,<br><code>find()</code>는 찾고자 하는 값을 그대로 반환한다</li>
+<li>주어진 배열을 순회하면서 콜백 함수 실행의 반환값이 true에 해당하는 첫번째 요소를 반환</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">arr.<span class="title function_">find</span>(<span class="function">(<span class="params">element, index, array</span>) =&gt;</span> &#123;</span><br><span class="line">&#125;, thisArg);</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * element : 현재 배열 요소 값</span></span><br><span class="line"><span class="comment"> * index : 배열 인덱스</span></span><br><span class="line"><span class="comment"> * array : 참조한 배열</span></span><br><span class="line"><span class="comment"> * thisArr : 콜백함수에서 this로 사용할 값</span></span><br><span class="line"><span class="comment"> * 리턴값 : 반환 타입은 찾은 요소의 타입 / 없다면 undefined</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> numberArr = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>];</span><br><span class="line"><span class="keyword">const</span> objectArr = [</span><br><span class="line">  &#123; <span class="attr">name</span>: <span class="string">&#x27;Harry&#x27;</span>, <span class="attr">age</span>: <span class="number">20</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">name</span>: <span class="string">&#x27;Kim&#x27;</span>, <span class="attr">age</span>: <span class="number">30</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">name</span>: <span class="string">&#x27;Steve&#x27;</span>, <span class="attr">age</span>: <span class="number">40</span> &#125;,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 해당조건에 부합하면 item값 반환</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(objectArr.<span class="title function_">find</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> item.<span class="property">age</span> === <span class="number">20</span>));</span><br><span class="line"><span class="comment">// &#123; name: &#x27;Harry&#x27;, age: 20 &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// find는 하나만 찾음. 뒤에서 배울 filter은 여러개를 배열로</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(numberArr.<span class="title function_">find</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> item === <span class="number">3</span>)); <span class="comment">// 3</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(numberArr.<span class="title function_">filter</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> item === <span class="number">3</span>)); <span class="comment">// [3, 3]</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-4-findIndex-true인-인덱스-반환"><a href="#3-4-findIndex-true인-인덱스-반환" class="headerlink" title="3.4 findIndex() : true인 인덱스 반환"></a>3.4 findIndex() : true인 인덱스 반환</h2><ul>
+<li>배열 메소드 indexOf() 의 콜백함수 버젼.</li>
+<li>고차함수 find()의 리턴값이 인덱스인 버젼.</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">arr.<span class="title function_">findIndex</span>(<span class="function">(<span class="params">element, index, array</span>) =&gt;</span> &#123;</span><br><span class="line">&#125;, thisArg);</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * element : 현재 배열 요소 값</span></span><br><span class="line"><span class="comment"> * index : 배열 인덱스</span></span><br><span class="line"><span class="comment"> * array : 참조한 배열</span></span><br><span class="line"><span class="comment"> * thisArr : 콜백함수에서 this로 사용할 값</span></span><br><span class="line"><span class="comment"> * 리턴값 : 요소가 테스트를 통과하면 배열의 인덱스 / 그렇지 않다면 -1</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> objectArr = [</span><br><span class="line">  &#123; <span class="attr">name</span>: <span class="string">&#x27;Harry&#x27;</span>, <span class="attr">age</span>: <span class="number">20</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">name</span>: <span class="string">&#x27;Kim&#x27;</span>, <span class="attr">age</span>: <span class="number">30</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">name</span>: <span class="string">&#x27;Steve&#x27;</span>, <span class="attr">age</span>: <span class="number">40</span> &#125;,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 해당조건에 부합하면 item의 인덱스를 반환</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(objectArr.<span class="title function_">findIndex</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> item.<span class="property">age</span> === <span class="number">20</span>)); <span class="comment">// 0</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(objectArr.<span class="title function_">findIndex</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> item.<span class="property">name</span> === <span class="string">&#x27;Kim&#x27;</span>)); <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-5-filter-true인-값-새-배열⭐"><a href="#3-5-filter-true인-값-새-배열⭐" class="headerlink" title="3.5 filter() : true인 값 새 배열⭐"></a>3.5 filter() : true인 값 새 배열⭐</h2><ul>
+<li>주어진 배열을 순회하면서 콜백 함수의 반환값이 true에 해당하는 요소로만 구성된 새로운 배열을 생성하여 반환.</li>
+<li>한마디로 find()의 찾아서 값을 반환하는 기능과 map()의 배열 생성 기능의 융합 버젼.</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">arr.<span class="title function_">filter</span>(<span class="function">(<span class="params">element, index, array</span>) =&gt;</span> &#123;</span><br><span class="line">&#125;, thisArg);</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * element : 현재 배열 요소 값</span></span><br><span class="line"><span class="comment"> * index : 배열 인덱스</span></span><br><span class="line"><span class="comment"> * array : 참조한 배열</span></span><br><span class="line"><span class="comment"> * thisArr : 콜백함수에서 this로 사용할 값</span></span><br><span class="line"><span class="comment"> * 리턴값 : 테스트를 통과한 요소로 이루어진 새로운 배열</span></span><br><span class="line"><span class="comment"> * - 어떤 요소도 테스트를 통과하지 못했다면 빈 배열 반환</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> numberArr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> numberFilterArr = numberArr.<span class="title function_">filter</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> item % <span class="number">2</span> === <span class="number">0</span>; <span class="comment">// 해당조건에 부합으면 item을 넣어 배열 반환</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(numberFilterArr); <span class="comment">// [2, 4]</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-6-reduce-누적값-반환⭐"><a href="#3-6-reduce-누적값-반환⭐" class="headerlink" title="3.6 reduce() : 누적값 반환⭐"></a>3.6 reduce() : 누적값 반환⭐</h2><ul>
+<li><p>콜백 함수의 실행된 반환값(initialValue)을 전달 받아 연산의 결과값이 반환.</p>
+</li>
+<li><p>첫번째 인자(accumulator)서부터 시작해서 </p>
+<ul>
+<li>배열값인 두번째 인자(currentvalue) 을 순회하며 accumulator+&#x3D;currentvalue 을 실행.</li>
+</ul>
+</li>
+<li><p>사실상 forEach, map, filter기능을 reduce로 모두 구현해서 쓸순 있어 고차함수의 부모라고 불림</p>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">arr.<span class="title function_">reduce</span>(<span class="function">(<span class="params">accumulator, currentValue, index, array</span>) =&gt;</span> &#123;</span><br><span class="line">&#125;, initialValue);</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * accumulator : 누산기, 순회하면서 계속 더해져서 합쳐지는 값</span></span><br><span class="line"><span class="comment"> * currentValue : 현재 값</span></span><br><span class="line"><span class="comment"> * index : 배열 인덱스</span></span><br><span class="line"><span class="comment"> * array : 참조한 배열</span></span><br><span class="line"><span class="comment"> * initialValue : 콜백 최초 호출에서 acc 누산기에 제공하는 값</span></span><br><span class="line"><span class="comment"> * - 초기값을 제공하지 않으면 배열의 첫 번쟤 요소를 사용</span></span><br><span class="line"><span class="comment"> * - 빈 배열에서 초기값없이 호출하면 에러</span></span><br><span class="line"><span class="comment"> * 리턴값 : 누적 계산의 결과값</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>reduce()함수 호출시 initialValue 값이 <code>없는 경우</code></p>
+<ul>
+<li>accumulator : 배열의 첫번째 값</li>
+<li>currentValue : 배열의 두번째 값</li>
+</ul>
+<p>reduce()함수 호출시 initialValue 값이 <code>있는 경우</code></p>
+<ul>
+<li>accumulator : initialValue가 지정한 값</li>
+<li>currentValue : 배열의 첫번째 값</li>
+</ul>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> numberArr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> sum = numberArr.<span class="title function_">reduce</span>(<span class="function">(<span class="params">previousValue, currentValue, currentIndex, thisArray</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Current Index: &#x27;</span> + currentIndex + <span class="string">&#x27; / Previous Value: &#x27;</span> + previousValue + <span class="string">&#x27; / Current Value: &#x27;</span> + currentValue);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 연산한 결과값을 누산기previousValue에 넣어 최종값을 얻는다.</span></span><br><span class="line">  <span class="keyword">return</span> previousValue + currentValue; </span><br><span class="line">&#125;, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Sum: &#x27;</span> + sum);</span><br><span class="line"><span class="comment">// Current Index: 0 / Previous Value: 0 / Current Value: 1</span></span><br><span class="line"><span class="comment">// Current Index: 1 / Previous Value: 1 / Current Value: 2</span></span><br><span class="line"><span class="comment">// Current Index: 2 / Previous Value: 3 / Current Value: 3</span></span><br><span class="line"><span class="comment">// Current Index: 3 / Previous Value: 6 / Current Value: 4</span></span><br><span class="line"><span class="comment">// Current Index: 4 / Previous Value: 10 / Current Value: 5</span></span><br><span class="line"><span class="comment">// Sum: 15</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-7-sort-배열-정렬⭐"><a href="#3-7-sort-배열-정렬⭐" class="headerlink" title="3.7 sort() : 배열 정렬⭐"></a>3.7 sort() : 배열 정렬⭐</h2><ul>
+<li>배열 정렬.</li>
+<li>단, 복사본이 만들어지는게 아니라 원 배열이 정렬됨.</li>
+<li><code>요소를 문자열로 변환 한 후, UTF-16 코드 단위 값</code>으로 비교</li>
+<li>콜백 함수를 통해 배열의 원소들을 어느 기준으로 정렬할지 지정해야함 (번거로움)</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">arr.<span class="title function_">sort</span>(<span class="keyword">function</span> (<span class="params">a, b</span>) &#123;</span><br><span class="line">  </span><br><span class="line">&#125;, thisArg);</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * compareFunction : 정렬 순서를 정의하는 함수</span></span><br><span class="line"><span class="comment"> * (이 값이 생략되면, 배열의 element들을 문자열로 취급되어, 유니코드 값 순서대로 정렬)</span></span><br><span class="line"><span class="comment"> * (이 값을 사용하면, 반환 값에 따라 정렬된다.)</span></span><br><span class="line"><span class="comment"> * 리턴 값: sorting된 값</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="string">&#x27;red&#x27;</span>, <span class="string">&#x27;blue&#x27;</span>, <span class="string">&#x27;green&#x27;</span>, <span class="string">&#x27;white&#x27;</span>, <span class="string">&#x27;black&#x27;</span>];</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(arr.<span class="title function_">sort</span>()); <span class="comment">// [ &#x27;black&#x27;, &#x27;blue&#x27;, &#x27;green&#x27;, &#x27;red&#x27;, &#x27;white&#x27; ]</span></span><br></pre></td></tr></table></figure>
+
+<p>문자를 정렬할 때는 문제없지만, <code>숫자를 정렬하는 경우에도 ABC 순으로 정렬</code>이 되기 때문에 콜백함수를 넣어 조작이 필요하다. 콜백함수에서 인자 두개를 받아, 두 수의 차가 양수값(큰값)이냐 음수값(작은값)이냐를 이용하여 정렬한다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">10</span>, <span class="number">50</span>, <span class="number">70</span>, <span class="number">8</span>, <span class="number">4</span>];</span><br><span class="line">arr.<span class="title function_">sort</span>(); <span class="comment">// [ 1, 10, 2, 3, 4, 50, 70, 8 ]</span></span><br><span class="line"></span><br><span class="line">arr.<span class="title function_">sort</span>(<span class="keyword">function</span> (<span class="params">a, b</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(a, b);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">10 1</span></span><br><span class="line"><span class="comment">2 10</span></span><br><span class="line"><span class="comment">3 2</span></span><br><span class="line"><span class="comment">4 3</span></span><br><span class="line"><span class="comment">50 4</span></span><br><span class="line"><span class="comment">70 50</span></span><br><span class="line"><span class="comment">8 70</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> arr2 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">10</span>, <span class="number">50</span>, <span class="number">70</span>, <span class="number">8</span>, <span class="number">4</span>];</span><br><span class="line">arr2.<span class="title function_">sort</span>(<span class="keyword">function</span> (<span class="params">a, b</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (a &gt; b) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">if</span> (a === b) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">if</span> (a &lt; b) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;); <span class="comment">// [ 1, 2, 3, 4, 8, 10, 50, 70 ]</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-7-1-숫자-정렬"><a href="#3-7-1-숫자-정렬" class="headerlink" title="3.7.1 숫자 정렬"></a>3.7.1 숫자 정렬</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">10</span>];</span><br><span class="line"></span><br><span class="line">arr.<span class="title function_">sort</span>(<span class="keyword">function</span> (<span class="params">a, b</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(a, b);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span>; <span class="comment">// 1(양수)은 그대로 출력, -1(음수)은 역순으로 출력</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// a는 2번쨰꺼, b는 비교하고 있는 대상</span></span><br><span class="line">arr.<span class="title function_">sort</span>(<span class="keyword">function</span> (<span class="params">a, b</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(a, b);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">1 2  = -1 | 1</span></span><br><span class="line"><span class="comment">3 1  = 2  | 2</span></span><br><span class="line"><span class="comment">10 3 = 7  | -7</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// sort() : 음수면 자리가 바뀌고, 양수면 그대로</span></span><br><span class="line"><span class="comment">// 숫자가 작으면 앞으로, 크면 뒤로</span></span><br><span class="line">arr.<span class="title function_">sort</span>(<span class="keyword">function</span> (<span class="params">a, b</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> a - b;</span><br><span class="line">&#125;); <span class="comment">// [1, 2, 3, 10] 오름차순</span></span><br><span class="line"></span><br><span class="line">arr.<span class="title function_">sort</span>(<span class="keyword">function</span> (<span class="params">a, b</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> b - a;</span><br><span class="line">&#125;); <span class="comment">// [10, 3, 2, 1] 내립차순</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-7-2-문자-정렬"><a href="#3-7-2-문자-정렬" class="headerlink" title="3.7.2 문자 정렬"></a>3.7.2 문자 정렬</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="string">&#x27;banana&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;boy&#x27;</span>];</span><br><span class="line"></span><br><span class="line">arr.<span class="title function_">sort</span>(); <span class="comment">// [&#x27;b&#x27;, &#x27;banana&#x27;, &#x27;boy&#x27;]</span></span><br><span class="line"></span><br><span class="line">arr.<span class="title function_">sort</span>(<span class="keyword">function</span> (<span class="params">a, b</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (a &lt; b) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">if</span> (a &gt; b) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">  <span class="keyword">if</span> (a === b) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;); <span class="comment">// [&#x27;boy&#x27;, &#x27;banana&#x27;, &#x27;b&#x27;] 내림차순</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-7-3-문자-대소문자-구분없이-정렬"><a href="#3-7-3-문자-대소문자-구분없이-정렬" class="headerlink" title="3.7.3 문자(대소문자 구분없이) 정렬"></a>3.7.3 문자(대소문자 구분없이) 정렬</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="string">&#x27;banana&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;Boy&#x27;</span>];</span><br><span class="line"></span><br><span class="line">arr.<span class="title function_">sort</span>(); <span class="comment">// [&#x27;Boy&#x27;,&#x27;b&#x27;,&#x27;banana&#x27;]</span></span><br><span class="line"><span class="comment">// sort() 함수로 문자열을 정렬하면, 대문자가 소문자보다 앞에 오도록 정렬이 됩니다.</span></span><br><span class="line"><span class="comment">// 유니코드가 대문자가 소문자보다 앞서기 때문입니다.</span></span><br><span class="line"></span><br><span class="line">arr.<span class="title function_">sort</span>(<span class="keyword">function</span> (<span class="params">a, b</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> upperCaseA = a.<span class="title function_">toUpperCase</span>();</span><br><span class="line">  <span class="keyword">const</span> upperCaseB = b.<span class="title function_">toUpperCase</span>();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (upperCaseA &gt; upperCaseB) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">if</span> (upperCaseA &lt; upperCaseB) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">  <span class="keyword">if</span> (upperCaseA === upperCaseB) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;); <span class="comment">// [&#x27;b&#x27;, &#x27;banana&#x27;, &#x27;Boy&#x27;] 오름차순</span></span><br><span class="line"></span><br><span class="line">arr.<span class="title function_">sort</span>(<span class="keyword">function</span> (<span class="params">a, b</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> upperCaseA = a.<span class="title function_">toUpperCase</span>();</span><br><span class="line">  <span class="keyword">const</span> upperCaseB = b.<span class="title function_">toUpperCase</span>();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (upperCaseA &lt; upperCaseB) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">if</span> (upperCaseA &gt; upperCaseB) <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">  <span class="keyword">if</span> (upperCaseA === upperCaseB) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;); <span class="comment">// [&#x27;Boy&#x27;, &#x27;banana&#x27;, &#x27;b&#x27;] 내림차순</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-7-4-객체-정렬"><a href="#3-7-4-객체-정렬" class="headerlink" title="3.7.4 객체 정렬"></a>3.7.4 객체 정렬</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [</span><br><span class="line">  &#123; <span class="attr">name</span>: <span class="string">&#x27;banana&#x27;</span>, <span class="attr">price</span>: <span class="number">3000</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">name</span>: <span class="string">&#x27;apple&#x27;</span>, <span class="attr">price</span>: <span class="number">1000</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">name</span>: <span class="string">&#x27;orange&#x27;</span>, <span class="attr">price</span>: <span class="number">500</span> &#125;,</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">arr.<span class="title function_">sort</span>(<span class="keyword">function</span> (<span class="params">a, b</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> a.<span class="property">price</span> - b.<span class="property">price</span>; <span class="comment">// price 숫자값을 기준으로 정렬</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">&#123;&quot;name&quot;:&quot;orange&quot;,&quot;price&quot;:500&#125;</span></span><br><span class="line"><span class="comment">&#123;&quot;name&quot;:&quot;apple&quot;,&quot;price&quot;:1000&#125;</span></span><br><span class="line"><span class="comment">&#123;&quot;name&quot;:&quot;banana&quot;,&quot;price&quot;:3000&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-8-some-일부만-맞으면-true"><a href="#3-8-some-일부만-맞으면-true" class="headerlink" title="3.8 some() : 일부만 맞으면 true"></a>3.8 some() : 일부만 맞으면 true</h2><ul>
+<li>배열 메소드인 include()의 콜백함수 버전.</li>
+<li>include는 값이 있냐에 따른 bool이면, some은 함수의 로직에 따른 bool.</li>
+<li>배열의 요소들을 주어진 함수(조건)을 통과하는데 한개라도 통과되면 true, 아닐때에는 false를 출력.</li>
+<li>빈 배열로 함수(조건)을 통과하면 무조건 false를 출력.</li>
+<li>이와같이 some이라는 이름은, 함수(조건)에 부합한 갯수가 some이면 true라는 뜻에서 비롯됨.</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">arr.<span class="title function_">some</span>(<span class="function">(<span class="params">currentValue, index, array</span>) =&gt;</span> &#123;</span><br><span class="line">  </span><br><span class="line">&#125;, thisArg);</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * currentValue : 배열 요소 값</span></span><br><span class="line"><span class="comment"> * index : 배열 인덱스</span></span><br><span class="line"><span class="comment"> * array : 참조한 배열</span></span><br><span class="line"><span class="comment"> * thisArr : 콜백함수에서 this로 사용할 값</span></span><br><span class="line"><span class="comment"> * 리턴값 : callback이 어떤 배열 요소라도 대해 참인 값을 반환하는 경우 true, 그 외엔 false</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> array = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 짝수인지 체크</span></span><br><span class="line"><span class="keyword">const</span> result = array.<span class="title function_">some</span>(<span class="function">(<span class="params">currentValue</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> currentValue % <span class="number">2</span> === <span class="number">0</span>;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(result); <span class="comment">// 리턴 값 : false</span></span><br><span class="line"><span class="comment">// 그 이유는 array의 3개의 요소 모두 2로 나눌때 나머지가 0이 아니기 때문이다.</span></span><br><span class="line"><span class="comment">// 하나라도 부합한 조건에 맞으면 true, 모두 부합하지 않으면 false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// -----------------------------------------------</span></span><br><span class="line"><span class="keyword">const</span> array2 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> result2 = array2.<span class="title function_">some</span>(<span class="function">(<span class="params">currentValue</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> currentValue % <span class="number">2</span> === <span class="number">0</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(result2); <span class="comment">// 리턴 값 : true</span></span><br><span class="line"><span class="comment">// 그 이유는 array의 4개의 요소 모두 2로 나눌때 나머지가 0인 요소가 하나라도 있기 때문이다.</span></span><br><span class="line"><span class="comment">// 하나라도 부합한 조건에 맞으면 true, 모두 부합하지 않으면 false</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-9-every-전부-맞아야-true"><a href="#3-9-every-전부-맞아야-true" class="headerlink" title="3.9 every() : 전부 맞아야 true"></a>3.9 every() : 전부 맞아야 true</h2><ul>
+<li>some() 의 반대 버전</li>
+<li>배열안의 모든 요소가 주어진 함수(조건)을 모두 통과하면 true, 한 요소라도 통과하지 못하면 false를 출력.</li>
+<li>빈 배열을 함수에 적용시키면 무조건 true를 반환.</li>
+<li>이와같이 every이라는 이름은, 함수(조건)에 부합한 갯수가 every이면 true라는 뜻에서 비롯됨.</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">arr.<span class="title function_">every</span>(<span class="function">(<span class="params">currentValue, index, array</span>) =&gt;</span> &#123;</span><br><span class="line">  </span><br><span class="line">&#125;, thisArg);</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * currentValue : 배열 요소 값</span></span><br><span class="line"><span class="comment"> * index : 배열 인덱스</span></span><br><span class="line"><span class="comment"> * array : 참조한 배열</span></span><br><span class="line"><span class="comment"> * thisArr : 콜백함수에서 this로 사용할 값</span></span><br><span class="line"><span class="comment"> * 리턴값 : callback이 어떤 배열 요소라도 대해 참인 값을 반환하는 경우 true, 그 외엔 false</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> array = [<span class="number">1</span>, <span class="number">30</span>, <span class="number">39</span>, <span class="number">29</span>, <span class="number">13</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> result = array.<span class="title function_">every</span>(<span class="function">(<span class="params">currentValue</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> currentValue &lt; <span class="number">40</span>;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(result); <span class="comment">// 리턴 값 : true</span></span><br><span class="line"><span class="comment">// 그 이유는 array의 모든 요소가 40보다 작기 때문이다.</span></span><br><span class="line"><span class="comment">// 하나라도 부합한 조건에 맞지 안으면 false, 모두 부합하면 true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// -----------------------------------------------</span></span><br><span class="line"><span class="keyword">const</span> array2 = [<span class="number">1</span>, <span class="number">30</span>, <span class="number">39</span>, <span class="number">29</span>, <span class="number">100</span>, <span class="number">13</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> result2 = array2.<span class="title function_">every</span>(<span class="function">(<span class="params">currentValue</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> currentValue &lt; <span class="number">40</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(result2); <span class="comment">// 리턴 값 : false</span></span><br><span class="line"><span class="comment">// 그 이유는 array의 1개의 요소 100이 40보다 크기 때문이다.</span></span><br><span class="line"><span class="comment">// 하나라도 부합한 조건에 맞지 안으면 false, 모두 부합하면 true</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-10-flatMap-flat-map"><a href="#3-10-flatMap-flat-map" class="headerlink" title="3.10 flatMap() : flat() + map()"></a>3.10 flatMap() : flat() + map()</h2><ul>
+<li>배열을 평탄화하는 <code>flat()의 기능</code>에 배열의 각 요소에 접근하여 사용자 정의 로직을 수행할 수 있는 <code>map()의 기능</code>을 합친 함수</li>
+<li>flat()과 달리 <code>깊이를 최대 1만큼만 평탄</code>하게 만들 수 있음</li>
+<li><code>여러 깊이까지 가려면 flat()를 사용</code>합니다.</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> children = [[<span class="number">1</span>], [<span class="number">2</span>], [<span class="number">3</span>], [<span class="number">4</span>]];</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(children.<span class="title function_">map</span>(<span class="function">(<span class="params">x</span>) =&gt;</span> x * <span class="number">2</span>).<span class="title function_">flat</span>()); <span class="comment">// [ 2, 4, 6, 8 ]</span></span><br><span class="line"><span class="comment">// 위 float과 map 문장을 floatMap을 이용해 만들 수 있다.</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(children.<span class="title function_">flatMap</span>(<span class="function">(<span class="params">x</span>) =&gt;</span> [x * <span class="number">2</span>])); <span class="comment">// [ 2, 4, 6, 8 ]</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-11-from-에서-⭐"><a href="#3-11-from-에서-⭐" class="headerlink" title="3.11 from() : ~에서 ⭐"></a>3.11 from() : ~에서 ⭐</h2><p> 문자열 등 유사 배열(Array-like) 객체나 이터러블한 객체를 배열로 만들어주는 메서드</p>
+<blockquote>
+<p>‘유사 배열 객체’란, 키가 인덱스 값으로 되어있고 길이를 나타내는 length 속성을 갖는 객체를 의미</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 문자열을 배열로 만드는 예시</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Array</span>.<span class="title function_">from</span>(<span class="string">&quot;Hello&quot;</span>));</span><br><span class="line"><span class="comment">// [ &#x27;H&#x27;, &#x27;e&#x27;, &#x27;l&#x27;, &#x27;l&#x27;, &#x27;o&#x27; ]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 유사 배열 객체를 배열로 만드는 예시</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Array</span>.<span class="title function_">from</span>(&#123; <span class="number">0</span>: <span class="string">&quot;찬민&quot;</span>, <span class="number">1</span>: <span class="string">&quot;희진&quot;</span>, <span class="number">2</span>: <span class="string">&quot;태인&quot;</span>, <span class="attr">length</span>: <span class="number">3</span> &#125;));</span><br><span class="line"><span class="comment">// [ &#x27;찬민&#x27;, &#x27;희진&#x27;, &#x27;태인&#x27; ]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. 함수의 매개변수들을 순서대로 배열로 만드는 예시</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">funcA</span> = (<span class="params">...<span class="variable language_">arguments</span></span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">Array</span>.<span class="title function_">from</span>(<span class="variable language_">arguments</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">funcA</span>(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>));</span><br><span class="line"><span class="comment">// [ 1, 2, 3, 4, 5 ]</span></span><br></pre></td></tr></table></figure>
+
+<p><code>Array.from()</code> </p>
+<ul>
+<li>첫 번째 인자는 배열로 만들 이터러블한 객체가 되며,</li>
+<li>두 번째 인자는 생성한 배열의 모든 원소에 대해 수행할 맵핑 함수입니다. (<code>Array.map()</code> 이라고 생각하시면 됩니다.)</li>
+</ul>
+<p> 한번 <code>Array.from()</code>과 반복문을 활용해 1부터 31까지의 수를 원소로 갖는 배열을 생성해 보겠습니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 맵핑 함수의 첫 번째 인자 언더스코어(_) 는 특별한 인자가 아니라,</span></span><br><span class="line"><span class="comment">// 불필요한 인자의 공간을 채우기 위한 용도입니다.</span></span><br><span class="line"><span class="keyword">const</span> arr = <span class="title class_">Array</span>.<span class="title function_">from</span>(<span class="title class_">Array</span>(<span class="number">31</span>), <span class="function">(<span class="params">_, index</span>) =&gt;</span> index + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(arr);</span><br></pre></td></tr></table></figure>
+
+<p>만약 <code>Array.from()</code>을 사용하지 않는다면 아래처럼 고전적인 반복문을 사용해야 합니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [];</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt;= <span class="number">31</span>; i++) &#123;</span><br><span class="line">  arr.<span class="title function_">push</span>(i);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(arr);</span><br></pre></td></tr></table></figure>
+
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/03/Front-JS-Basic-09-ControlFlow/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-03 12:37:10
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/js/" title="JS"> <b>#</b> JS </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/js/basic/" title="Basic"> <b>#</b> Basic </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/js/" title="JS"> #JS </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/04/Front-JS-Basic-11-Logical/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%ED%95%A8%EC%88%98"><span class="toc-text">1. 함수</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%ED%95%A8%EC%88%98%EC%99%80-%EB%A9%94%EB%AA%A8%EB%A6%AC"><span class="toc-text">1.1 함수와 메모리</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%ED%85%9C%ED%94%8C%EB%A6%BF-%EB%A6%AC%ED%84%B0%EB%9F%B4"><span class="toc-text">1.2 템플릿 리터럴</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-return%EB%AC%B8-%EB%B0%98%ED%99%98"><span class="toc-text">1.3 return문 반환</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-%ED%95%A8%EC%88%98%EC%9D%98-%EC%9D%B8%EC%9E%90"><span class="toc-text">1.4 함수의 인자</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-5-%ED%95%A8%EC%88%98-%ED%91%9C%ED%98%84%EC%8B%9D"><span class="toc-text">1.5 함수 표현식</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%EC%BD%9C%EB%B0%B1%ED%95%A8%EC%88%98"><span class="toc-text">2. 콜백함수</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%EC%9D%BC%EA%B8%89-%ED%95%A8%EC%88%98"><span class="toc-text">2.1 일급 함수</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%EA%B3%A0%EC%B0%A8%ED%95%A8%EC%88%98-x3D-%EC%BD%9C%EB%B0%B1%ED%95%A8%EC%88%98"><span class="toc-text">2.2 고차함수(&#x3D;콜백함수)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%EA%B3%A0%EC%B0%A8%ED%95%A8%EC%88%98-%EC%A2%85%EB%A5%98"><span class="toc-text">3. 고차함수 종류</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-forEach-%EC%88%9C%ED%9A%8C"><span class="toc-text">3.1 forEach() : 순회</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-map-%EC%88%9C%ED%9A%8C%ED%95%98%EB%A9%B4%EC%84%9C-%EC%83%88-%EB%B0%B0%EC%97%B4%E2%AD%90"><span class="toc-text">3.2 map() : 순회하면서 새 배열⭐</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-find-true%EC%9D%B8-%EA%B0%92-%EB%B0%98%ED%99%98"><span class="toc-text">3.3 find() : true인 값 반환</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-findIndex-true%EC%9D%B8-%EC%9D%B8%EB%8D%B1%EC%8A%A4-%EB%B0%98%ED%99%98"><span class="toc-text">3.4 findIndex() : true인 인덱스 반환</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-5-filter-true%EC%9D%B8-%EA%B0%92-%EC%83%88-%EB%B0%B0%EC%97%B4%E2%AD%90"><span class="toc-text">3.5 filter() : true인 값 새 배열⭐</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-6-reduce-%EB%88%84%EC%A0%81%EA%B0%92-%EB%B0%98%ED%99%98%E2%AD%90"><span class="toc-text">3.6 reduce() : 누적값 반환⭐</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-7-sort-%EB%B0%B0%EC%97%B4-%EC%A0%95%EB%A0%AC%E2%AD%90"><span class="toc-text">3.7 sort() : 배열 정렬⭐</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-7-1-%EC%88%AB%EC%9E%90-%EC%A0%95%EB%A0%AC"><span class="toc-text">3.7.1 숫자 정렬</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-7-2-%EB%AC%B8%EC%9E%90-%EC%A0%95%EB%A0%AC"><span class="toc-text">3.7.2 문자 정렬</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-7-3-%EB%AC%B8%EC%9E%90-%EB%8C%80%EC%86%8C%EB%AC%B8%EC%9E%90-%EA%B5%AC%EB%B6%84%EC%97%86%EC%9D%B4-%EC%A0%95%EB%A0%AC"><span class="toc-text">3.7.3 문자(대소문자 구분없이) 정렬</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-7-4-%EA%B0%9D%EC%B2%B4-%EC%A0%95%EB%A0%AC"><span class="toc-text">3.7.4 객체 정렬</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-8-some-%EC%9D%BC%EB%B6%80%EB%A7%8C-%EB%A7%9E%EC%9C%BC%EB%A9%B4-true"><span class="toc-text">3.8 some() : 일부만 맞으면 true</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-9-every-%EC%A0%84%EB%B6%80-%EB%A7%9E%EC%95%84%EC%95%BC-true"><span class="toc-text">3.9 every() : 전부 맞아야 true</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-10-flatMap-flat-map"><span class="toc-text">3.10 flatMap() : flat() + map()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-11-from-%EC%97%90%EC%84%9C-%E2%AD%90"><span class="toc-text">3.11 from() : ~에서 ⭐</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Front-JS-Basic-10-%ED%95%A8%EC%88%98(Functions) + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F03%2FFront-JS-Basic-10-Function%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/03/Front-JS-Basic-10-Function/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

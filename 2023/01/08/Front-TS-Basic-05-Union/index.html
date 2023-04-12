@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Front-TS-Basic-05-Type-Union &amp; Intersection 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Front-TS-Basic-05-Type-Union & Intersection</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-08 17:35:44
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/ts/" title="TS"> <b>#</b> TS </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/ts/basic/" title="Basic"> <b>#</b> Basic </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/ts/" title="TS"> #TS </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-Union-합집합"><a href="#1-Union-합집합" class="headerlink" title="1. Union (합집합, |)"></a>1. Union (합집합, |)</h1><p><code>Union(유니언)</code> : 하나로 뭉쳐지는 것, 조합</p>
+<ul>
+<li>e.g. Unit : 하나로 움직이는 최소 단위, (상품의) 1개, (특정 임무를 위한) 부대 | 단체</li>
+<li>e.g. Unity : 하나로 뭉쳐진 사람들의 마음, 정서 등</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 4가지 타입을 가질 수 있는 Direction 타입----------------------</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Direction</span> = <span class="string">&#x27;left&#x27;</span> | <span class="string">&#x27;right&#x27;</span> | <span class="string">&#x27;up&#x27;</span> | <span class="string">&#x27;down&#x27;</span>;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">move</span>(<span class="params">direction: Direction</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(direction);</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">move</span>(<span class="string">&#x27;down&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3가지 타입을 가지는 TileSize타입-------------------------------</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">TileSize</span> = <span class="number">8</span> | <span class="number">16</span> | <span class="number">32</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="attr">tile</span>: <span class="title class_">TileSize</span> = <span class="number">16</span>;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="2-Intersection-교집합-amp"><a href="#2-Intersection-교집합-amp" class="headerlink" title="2. Intersection (교집합, &amp;)"></a>2. Intersection (교집합, &amp;)</h1><p><code>Intersect(인터섹션)</code> : 교차하다[만나다], (어떤 지역을) 가로지르다, 교집합</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> student = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">score</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> father = &#123;</span><br><span class="line">  <span class="attr">empolyeeId</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="attr">work</span>: <span class="function">() =&gt;</span> <span class="built_in">void</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 학생 &amp; 직장인 타입을 모두 작성해야만 하는 경우</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">internWork</span>(<span class="params">집안: student &amp; father</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(집안.<span class="property">name</span>, 집안.<span class="property">empolyeeId</span>, 집안.<span class="title function_">work</span>());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">internWork</span>(&#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;메시&#x27;</span>,</span><br><span class="line">  <span class="attr">score</span>: <span class="number">189</span>,</span><br><span class="line">  <span class="attr">empolyeeId</span>: <span class="number">123</span>,</span><br><span class="line">  <span class="attr">work</span>: <span class="function">() =&gt;</span> &#123;&#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="3-Union-Type을-쓸-때-주의할-점"><a href="#3-Union-Type을-쓸-때-주의할-점" class="headerlink" title="3. Union Type을 쓸 때 주의할 점"></a>3. Union Type을 쓸 때 주의할 점</h1><p>논리적으로 Unio 타입은 OR, Intersection 타입은 AND라고 생각하시는 분들이 있을텐데,<br>Interace와 같은 타입을 다룰 때는 다음와 같은 논리적 사고를 주의해야 합니다. 아래 코드를 보겠습니다.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">age</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Developer</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">skill</span>: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 파라미터 타입을 `Person`, `Developer` 인터페이스의 Union 타입으로 정의</span></span><br><span class="line"><span class="comment">// 파라미터의 타입이 `Person`도 되고 `Developer`도 된다고 생각해서</span></span><br><span class="line"><span class="comment">// 함수 안에 해당 인터페이스들이 제공하는 `age`나 `skill`를 사용할 수 있다라고 생각할 수 있음</span></span><br><span class="line"><span class="comment">// 그러나 introduce() 함수를 호출하는 시점에 `Person` 타입이 올지 `Developer` 타입이 올지 알 수가 없음</span></span><br><span class="line"><span class="comment">// 그래서 TS는 어느 타입이 들어오든 간에 오류가 안 나는 방향으로 타입을 추론함</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">introduce</span>(<span class="params">someone: Person | Developer</span>) &#123;</span><br><span class="line">  someone.<span class="property">name</span>; <span class="comment">// O 정상 동작</span></span><br><span class="line">  someone.<span class="property">age</span>; <span class="comment">// X 타입 오류</span></span><br><span class="line">  someone.<span class="property">skill</span>; <span class="comment">// X 타입 오류</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>결과적으로 <code>introduce()</code>안에서는 별도의 **타입 가드(Type Guard)**를 이용하여 타입의 범위를 좁히지 않는 이상,<br>기본적으로는 <code>Person</code>과 <code>Developer</code> 두 타입에 공통적으로 들어있는 속성인 <code>name</code>만 접근할 수 있게 됩니다.</p>
+<hr>
+<h1 id="4-Type-Narrowing-타입-좁히기"><a href="#4-Type-Narrowing-타입-좁히기" class="headerlink" title="4. Type Narrowing(타입 좁히기)"></a>4. Type Narrowing(타입 좁히기)</h1><p>if문 등으로 타입을 하나로 정해주는 것을 의미합니다.<br>타입이 확실하지 않을 때 생기는 부작용을 막기위한 장치입니다.</p>
+<p>Narrowing으로 판정해주는 문법들</p>
+<ul>
+<li><strong>조건문을 이용한 타입가드</strong></li>
+<li><strong>typeof 타입 가드</strong> : <code>typeof 변수</code></li>
+<li><strong>in 타입 가드</strong> : <code>속성명 in 오브젝트 자료</code></li>
+<li><strong>instanceof 타입 가드</strong> : <code>인스턴스 instanceof 부모</code></li>
+</ul>
+<hr>
+<h2 id="4-1-조건문을-이용한-타입가드"><a href="#4-1-조건문을-이용한-타입가드" class="headerlink" title="4.1 조건문을 이용한 타입가드"></a>4.1 조건문을 이용한 타입가드</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Animal</span> = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  legs?: <span class="built_in">number</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">addLeg</span>(<span class="params">animal: Animal</span>) &#123;</span><br><span class="line">  <span class="comment">// leg 속성이 undefined가 될수 있기 때문에 타입 에러가 발생할 수 있음</span></span><br><span class="line">  <span class="comment">// leg 속성을 사용하기 전에 truthy인지 확인하면 됨</span></span><br><span class="line">  <span class="comment">// 변수에서 null과 undefined를 제외시킴</span></span><br><span class="line">  <span class="keyword">if</span> (animal.<span class="property">legs</span>) &#123;</span><br><span class="line">    animal.<span class="property">legs</span> = animal.<span class="property">legs</span> + <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-2-typeof-타입-가드"><a href="#4-2-typeof-타입-가드" class="headerlink" title="4.2 typeof 타입 가드"></a>4.2 typeof 타입 가드</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">PlusOne</span>(<span class="params">x: <span class="built_in">number</span> | <span class="built_in">string</span></span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> x === <span class="string">&#x27;number&#x27;</span>) <span class="keyword">return</span> x + <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> x === <span class="string">&#x27;string&#x27;</span>) <span class="keyword">return</span> x + <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-3-in-타입-가드"><a href="#4-3-in-타입-가드" class="headerlink" title="4.3 in 타입 가드"></a>4.3 in 타입 가드</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="attr">firstName</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">surname</span>: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Organization</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Contact</span> = <span class="title class_">Person</span> | <span class="title class_">Organization</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">sayHello</span>(<span class="params">contact: Contact</span>) &#123;</span><br><span class="line">  <span class="comment">// 속성명 in 오브젝트 자료</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="string">&#x27;firstName&#x27;</span> <span class="keyword">in</span> contact) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Hello &#x27;</span> + contact.<span class="property">firstName</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-4-instanceof-타입-가드"><a href="#4-4-instanceof-타입-가드" class="headerlink" title="4.4 instanceof 타입 가드"></a>4.4 instanceof 타입 가드</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"><span class="keyword">public</span> firstName: <span class="built_in">string</span>, <span class="keyword">public</span> surname: <span class="built_in">string</span></span>) &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Organisation</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"><span class="keyword">public</span> name: <span class="built_in">string</span></span>) &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Contact</span> = <span class="title class_">Person</span> | <span class="title class_">Organisation</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">sayHello</span>(<span class="params">contact: Contact</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Hello &#x27;</span> + contact.<span class="property">firstName</span>);</span><br><span class="line">  <span class="comment">// 💥 Property &#x27;firstName&#x27; does not exist on type &#x27;Contact&#x27;.</span></span><br><span class="line">  <span class="comment">// 💥 contact가 firstName 속성를 없는 Organisation 타입일 수 있기 때문</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>인스턴스 instanceof 부모</code>를 사용하면, 편합니다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"><span class="keyword">public</span> firstName: <span class="built_in">string</span>, <span class="keyword">public</span> surname: <span class="built_in">string</span></span>) &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Organisation</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"><span class="keyword">public</span> name: <span class="built_in">string</span></span>) &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Contact</span> = <span class="title class_">Person</span> | <span class="title class_">Organisation</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">sayHello</span>(<span class="params">contact: Contact</span>) &#123;</span><br><span class="line">  <span class="comment">// 인스턴스 instanceof 부모</span></span><br><span class="line">  <span class="comment">// if 문안에서 contact의 타입은 Person으로 좁혀짐(narrow)</span></span><br><span class="line">  <span class="keyword">if</span> (contact <span class="keyword">instanceof</span> <span class="title class_">Person</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Hello &#x27;</span> + contact.<span class="property">firstName</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/08/Front-TS-Basic-04-Enum/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-08 17:35:44
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/ts/" title="TS"> <b>#</b> TS </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/ts/basic/" title="Basic"> <b>#</b> Basic </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/ts/" title="TS"> #TS </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/08/Front-TS-Basic-06-Literal.md/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Union-%ED%95%A9%EC%A7%91%ED%95%A9"><span class="toc-text">1. Union (합집합, |)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Intersection-%EA%B5%90%EC%A7%91%ED%95%A9-amp"><span class="toc-text">2. Intersection (교집합, &amp;)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Union-Type%EC%9D%84-%EC%93%B8-%EB%95%8C-%EC%A3%BC%EC%9D%98%ED%95%A0-%EC%A0%90"><span class="toc-text">3. Union Type을 쓸 때 주의할 점</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-Type-Narrowing-%ED%83%80%EC%9E%85-%EC%A2%81%ED%9E%88%EA%B8%B0"><span class="toc-text">4. Type Narrowing(타입 좁히기)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%EC%A1%B0%EA%B1%B4%EB%AC%B8%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%9C-%ED%83%80%EC%9E%85%EA%B0%80%EB%93%9C"><span class="toc-text">4.1 조건문을 이용한 타입가드</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-typeof-%ED%83%80%EC%9E%85-%EA%B0%80%EB%93%9C"><span class="toc-text">4.2 typeof 타입 가드</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-in-%ED%83%80%EC%9E%85-%EA%B0%80%EB%93%9C"><span class="toc-text">4.3 in 타입 가드</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-instanceof-%ED%83%80%EC%9E%85-%EA%B0%80%EB%93%9C"><span class="toc-text">4.4 instanceof 타입 가드</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Front-TS-Basic-05-Type-Union%20%26%20Intersection + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F08%2FFront-TS-Basic-05-Union%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/08/Front-TS-Basic-05-Union/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

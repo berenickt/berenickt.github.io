@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      CS-JS-DataAlgo-11-트라이 (Trie) 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">CS-JS-DataAlgo-11-트라이 (Trie)</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-11 06:43:40
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/cs-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="CS-자료구조-알고리즘"> <b>#</b> CS-자료구조-알고리즘 </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/cs-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/js-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="JS-자료구조-알고리즘"> <b>#</b> JS-자료구조-알고리즘 </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/js-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="JS-자료구조-알고리즘"> #JS-자료구조-알고리즘 </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-트라이-Trie"><a href="#1-트라이-Trie" class="headerlink" title="1. 트라이(Trie)"></a>1. 트라이(Trie)</h1><p>검색 엔진에서 자동완성을 하려면 어떻게 해야할까요?</p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_11_1.png" alt="Data Structure_11_1"></p>
+<ul>
+<li><strong>문자열을 저장하고 효율적으로 탐색하기 위한 트리 형태</strong>의 자료구조</li>
+<li>e.g. 검색엔진 연관 검색어</li>
+</ul>
+<hr>
+<h2 id="1-1-트라이-특징"><a href="#1-1-트라이-특징" class="headerlink" title="1.1 트라이 특징"></a>1.1 트라이 특징</h2><ul>
+<li><strong>검색어 자동완성, 사전 찾기 등에 응용</strong>될 수 있다.</li>
+<li>문자열을 탐색할 떄 단순하게 비교하는 것보다 효율적으로 찾을 수 있다.</li>
+<li><strong>L이 문자열의 길이</strong>일 떄 <strong>탐색, 삽입은 $O(L)$만큼 걸린다</strong>.</li>
+<li>대신 <strong>각 정점이 자식에 대한 링크를 전부</strong> 가지고 있기에 <strong>저장 공간을 더 많이 사용</strong>한다.</li>
+</ul>
+<hr>
+<h2 id="1-2-Trie-생성하기"><a href="#1-2-Trie-생성하기" class="headerlink" title="1.2 Trie 생성하기"></a>1.2 Trie 생성하기</h2><h3 id="1-2-1-트라이-구조"><a href="#1-2-1-트라이-구조" class="headerlink" title="1.2.1 트라이 구조"></a>1.2.1 트라이 구조</h3><ul>
+<li><strong>루트는 비어있다</strong>.</li>
+<li><strong>각 간선(링크)은 추가될 문자를 키로 가진다</strong>.</li>
+<li><strong>각 정점은 이전 정점의 값 + 간선의 키를 값으로 가진다</strong>.</li>
+<li><strong>해시 테이블과 연결 리스트를 이용</strong>하여 구현할 수 있다.</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_11_2.png" alt="Data Structure_11_2"></p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_11_3.png" alt="Data Structure_11_3"></p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_11_4.png" alt="Data Structure_11_4"></p>
+<hr>
+<h1 id="2-구현"><a href="#2-구현" class="headerlink" title="2. 구현"></a>2. 구현</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Node</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">value = <span class="string">&#x27;&#x27;</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">value</span> = value;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">children</span> = <span class="keyword">new</span> <span class="title class_">Map</span>();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Trie</span> &#123;</span><br><span class="line">  <span class="comment">// Trie를 생성하면 루트로 빈 노드를 생성</span></span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">root</span> = <span class="keyword">new</span> <span class="title class_">Node</span>();</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 문자열을 추가하면 탐색을 위해서 루트부터 시작</span></span><br><span class="line">  <span class="title function_">insert</span>(<span class="params">string</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> currentNode = <span class="variable language_">this</span>.<span class="property">root</span>;</span><br><span class="line">    <span class="comment">// 문자열을 앞에서 부터 하나씩 자르면서 순회</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> char <span class="keyword">of</span> string) &#123;</span><br><span class="line">      <span class="comment">// 만약 현재 노드에서 자른 문자열을 간선으로 가지고 있지 않다면 새 노드를 추가</span></span><br><span class="line">      <span class="keyword">if</span> (!currentNode.<span class="property">children</span>.<span class="title function_">has</span>(char)) &#123;</span><br><span class="line">        currentNode.<span class="property">children</span>.<span class="title function_">set</span>(char, <span class="keyword">new</span> <span class="title class_">Node</span>(currentNode.<span class="property">value</span> + char));</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// 다음 정점으로 이동</span></span><br><span class="line">      currentNode = currentNode.<span class="property">children</span>.<span class="title function_">get</span>(char);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 문자열이 존재하는지 체크</span></span><br><span class="line">  <span class="title function_">has</span>(<span class="params">string</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> currentNode = <span class="variable language_">this</span>.<span class="property">root</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> char <span class="keyword">of</span> string) &#123;</span><br><span class="line">      <span class="keyword">if</span> (!currentNode.<span class="property">children</span>.<span class="title function_">has</span>(char)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      currentNode = currentNode.<span class="property">children</span>.<span class="title function_">get</span>(char);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> trie = <span class="keyword">new</span> <span class="title class_">Trie</span>();</span><br><span class="line">trie.<span class="title function_">insert</span>(<span class="string">&#x27;cat&#x27;</span>);</span><br><span class="line">trie.<span class="title function_">insert</span>(<span class="string">&#x27;can&#x27;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(trie.<span class="title function_">has</span>(<span class="string">&#x27;cat&#x27;</span>)); <span class="comment">// true</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(trie.<span class="title function_">has</span>(<span class="string">&#x27;can&#x27;</span>)); <span class="comment">// true</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(trie.<span class="title function_">has</span>(<span class="string">&#x27;cap&#x27;</span>)); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="2-트라이-실습-자동완성"><a href="#2-트라이-실습-자동완성" class="headerlink" title="2. 트라이 실습 : 자동완성"></a>2. 트라이 실습 : 자동완성</h1><h2 id="2-1-문제"><a href="#2-1-문제" class="headerlink" title="2.1 문제"></a>2.1 문제</h2><p><strong>포털 다음에서 검색어 자동완성 기능</strong>을 넣고 싶은 라이언은 한 번 입력된 문자열을 학습해서 다음 입력 때 활용하고 싶어 졌다.<br>예를 들어, <code>go</code> 가 한 번 입력되었다면, 다음 사용자는 <code>g</code> 만 입력해도 <code>go</code>를 추천해주므로 <code>o</code>를 입력할 필요가 없어진다!<br>단, 학습에 사용된 단어들 중 앞부분이 같은 경우에는 어쩔 수 없이 다른 문자가 나올 때까지 입력을 해야 한다.<br>효과가 얼마나 좋을지 알고 싶은 라이언은 학습된 단어들을 찾을 때 몇 글자를 입력해야 하는지 궁금해졌다.</p>
+<p>예를 들어, 학습된 단어들이 아래와 같을 때</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">go</span><br><span class="line">gone</span><br><span class="line">guild</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>go</code>를 찾을 때 <code>go</code>를 모두 입력해야 한다.</li>
+<li><code>gone</code>을 찾을 때 <code>gon</code> 까지 입력해야 한다.  (<code>gon</code>이 입력되기 전까지는 <code>go</code> 인지 <code>gone</code>인지 확신할 수 없다.)</li>
+<li><code>guild</code>를 찾을 때는 <code>gu</code> 까지만 입력하면 <code>guild</code>가 완성된다.</li>
+</ul>
+<p>이 경우 총 입력해야 할 문자의 수는 <code>7</code>이다.</p>
+<p>라이언을 도와 위와 같이 문자열이 입력으로 주어지면 학습을 시킨 후,<br>학습된 단어들을 순서대로 찾을 때 몇 개의 문자를 입력하면 되는지 계산하는 프로그램을 만들어보자.</p>
+<p>[입력 형식]</p>
+<p>학습과 검색에 사용될 중복 없는 단어 <code>N</code>개가 주어진다.<br> 모든 단어는 알파벳 소문자로 구성되며 단어의 수 <code>N</code>과 단어들의 길이의 총합 <code>L</code>의 범위는 다음과 같다.</p>
+<ul>
+<li>2 &lt;&#x3D; <code>N</code> &lt;&#x3D; 100,000</li>
+<li>2 &lt;&#x3D; <code>L</code> &lt;&#x3D; 1,000,000</li>
+</ul>
+<p>[출력 형식]</p>
+<p>단어를 찾을 때 입력해야 할 총 문자수를 리턴한다.</p>
+<p>[입출력 예제]</p>
+<table>
+<thead>
+<tr>
+<th align="center">words</th>
+<th align="center">result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">[“go”,”gone”,”guild”]</td>
+<td align="center">7</td>
+</tr>
+<tr>
+<td align="center">[“abc”,”def”,”ghi”,”jklm”]</td>
+<td align="center">4</td>
+</tr>
+<tr>
+<td align="center">[“word”,”war”,”warrior”,”world”]</td>
+<td align="center">15</td>
+</tr>
+</tbody></table>
+<p>[입출력 설명]</p>
+<ul>
+<li>첫 번째 예제는 본문 설명과 같다.</li>
+<li>두 번째 예제에서는 모든 단어들이 공통된 부분이 없으므로, 가장 앞글자만 입력하면 된다.</li>
+<li>세 번째 예제는 총 15 자를 입력해야 하고 설명은 아래와 같다.<ul>
+<li><code>word</code>는 <code>word</code>모두 입력해야 한다.</li>
+<li><code>war</code>는 <code>war</code> 까지 모두 입력해야 한다.</li>
+<li><code>warrior</code>는 <code>warr</code> 까지만 입력하면 된다.</li>
+<li><code>world</code>는 <code>worl</code>까지 입력해야 한다. (<code>word</code>와 구분되어야 함을 명심하자)</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="2-2-풀이"><a href="#2-2-풀이" class="headerlink" title="2.2 풀이"></a>2.2 풀이</h2><h3 id="2-2-1-문제-유형"><a href="#2-2-1-문제-유형" class="headerlink" title="2.2.1 문제 유형"></a>2.2.1 문제 유형</h3><p>사실 문제 이름부터 <strong>자동완성이기 때문에 바로 Trie</strong>를 떠올릴 수 있습니다.  거기에 문제 내용까지 살펴보면 <strong>자동완성 기능이  되어야 최소 입력 글자를 알 수 있기에 이 문제에선 Trie가 가장 효율적인 자료구조</strong>라는 것을 알 수 있습니다.</p>
+<hr>
+<h3 id="2-2-2-풀이"><a href="#2-2-2-풀이" class="headerlink" title="2.2.2 풀이"></a>2.2.2 풀이</h3><p>Trie 구조를 만들면서 하위에 어떤 문자들이 있는지 미리 알아야 셀 수 있습니다. 예를 들어, <code>guild</code>를 찾을 때 <code>gu</code>만 입력해도 된다는 것을 알기 위해 Trie 구조에 해당 정보들을 넣어놔야 합니다.</p>
+<p>다음과 같이 Trie 구조를 구성할 수 있습니다.</p>
+<ol>
+<li>“go”를 넣는다.</li>
+<li>루트의 자식 노드로 “g”를 추가한다. 이때 “g” 노드에 단어가 추가되었음을 알리기 위해 카운팅을 해준다.<br>(“g”, 1)과 같은 형태로 상태를 저장한다.</li>
+<li>“g”의 자식 노드로 “o”를 추가한다. 이때 “o” 노드에 단어가 추가되었음을 알리기 위해 카운팅을 해준다.<br>“o” 노드는 카운팅이 1이 된다.</li>
+<li>“gone”을 넣는다.</li>
+<li>루트의 자식 노드로 “g”를 추가한다. 이때 “g” 노드에 단어가 추가되었음을 알리기 위해 카운팅을 해준다.<br>“g” 노드는 카운팅이 2가 된다.</li>
+<li>“g”의 자식 노드로 “o”를 추가한다. 이때 “o” 노드에 단어가 추가되었음을 알리기 위해 카운팅을 해준다.<br>“o” 노드는 카운팅이 2가 된다.</li>
+<li>“o”의 자식 노드로 “n”을 추가한다. 이때 “n” 노드에 단어가 추가되었음을 알리기 위해 카운팅을 해준다.<br>“n” 노드는 카운팅이 1이 된다.</li>
+<li>“n”의 자식 노드로 “e”을 추가한다. 이때 “e” 노드에 단어가 추가되었음을 알리기 위해 카운팅을 해준다.<br>“e” 노드는 카운팅이 1이 된다.</li>
+<li>“guild”를 넣는다.</li>
+<li>루트의 자식 노드로 “g”를 추가한다. 이때 “g” 노드에 단어가 추가되었음을 알리기 위해 카운팅을 해준다.<br>“g” 노드는 카운팅이 3가 된다.</li>
+<li>“g”의 자식 노드로 “u”를 추가한다. 이때 “u” 노드에 단어가 추가되었음을 알리기 위해 카운팅을 해준다.<br>“u” 노드는 카운팅이 1이 된다.</li>
+<li>“u”의 자식 노드로 “i”를 추가한다. 이때 “i” 노드에 단어가 추가되었음을 알리기 위해 카운팅을 해준다.<br>“i” 노드는 카운팅이 1이 된다.</li>
+<li>“i”의 자식 노드로 “l”를 추가한다. 이때 “l” 노드에 단어가 추가되었음을 알리기 위해 카운팅을 해준다.<br>“l” 노드는 카운팅이 1이 된다.</li>
+<li>“l”의 자식 노드로 “d”를 추가한다. 이때 “d” 노드에 단어가 추가되었음을 알리기 위해 카운팅을 해준다.<br>“d” 노드는 카운팅이 1이 된다.</li>
+</ol>
+<p>그럼 Trie 구조가 다음과 같이 구성됩니다.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">    [3, &quot;g&quot;]</span><br><span class="line">      /  \</span><br><span class="line">[1, &quot;u&quot;] [2, &quot;o&quot;]</span><br><span class="line">   |        |</span><br><span class="line">[1, &quot;i&quot;] [1, &quot;n&quot;]</span><br><span class="line">   |        |</span><br><span class="line">[1, &quot;l&quot;] [1, &quot;e&quot;]</span><br><span class="line">   |</span><br><span class="line">[1, &quot;d&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>Trie 구조가 완성되었다면 이후 각 단어들을 찾으며 카운팅이 1이라면 이후 글자를 입력하지 않아도 된다는 것을 알 수 있기 때문에 그 지점에서 카운팅을 멈추면 됩니다.</p>
+<hr>
+<h3 id="2-2-3-전체-코드"><a href="#2-2-3-전체-코드" class="headerlink" title="2.2.3 전체 코드"></a>2.2.3 전체 코드</h3><p>위 알고리즘을 구현하면 다음과 같습니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">makeTrie</span>(<span class="params">words</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> root = &#123;&#125;; <span class="comment">// 먼저 루트 노드를 설정할 변수를 만든다.</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> word <span class="keyword">of</span> words) &#123; <span class="comment">// Trie를 구성하기 위한 루프를 돌린다.</span></span><br><span class="line">    <span class="keyword">let</span> current = root; <span class="comment">// 루프부터 시작</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> letter <span class="keyword">of</span> word) &#123; <span class="comment">// 단어의 글자를 하나씩 춫출한 후</span></span><br><span class="line">      <span class="comment">// 값을 넣는다. 리스트의 첫 번째 값은 학습된 단어가 몇 개인지를 카운팅하고 </span></span><br><span class="line">      <span class="comment">// 두 번째 값은 트리 구조로 이용할 노드 값으로 사용한다.</span></span><br><span class="line">      <span class="keyword">if</span> (!current[letter]) current[letter] = [<span class="number">0</span>, &#123;&#125;];</span><br><span class="line">      current[letter][<span class="number">0</span>] = <span class="number">1</span> + (current[letter][<span class="number">0</span>] || <span class="number">0</span>); <span class="comment">// 카운팅을 위해 1 더해준다.</span></span><br><span class="line">      current = current[letter][<span class="number">1</span>]; <span class="comment">// current는 letter에 해당되는 노드로 이동한다.</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> root; <span class="comment">// 반환</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">solution</span>(<span class="params">words</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> answer = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">const</span> trie = <span class="title function_">makeTrie</span>(words); <span class="comment">// Trie 자료구조를 만들어준다.</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> word <span class="keyword">of</span> words) &#123; <span class="comment">// 입력받은 수 만큼 루프</span></span><br><span class="line">    <span class="keyword">let</span> count = <span class="number">0</span>; <span class="comment">// 카운팅을 위한 변수</span></span><br><span class="line">    <span class="keyword">let</span> current = trie; <span class="comment">// 루트부터 시작</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> [index, letter] <span class="keyword">of</span> [...word].<span class="title function_">entries</span>()) &#123;</span><br><span class="line">      count += <span class="number">1</span>;</span><br><span class="line">      <span class="keyword">if</span> (current[letter][<span class="number">0</span>] &lt;= <span class="number">1</span>) &#123; <span class="comment">// 단어가 하나 이하로 남을 경우 종료</span></span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      current = current[letter][<span class="number">1</span>]; <span class="comment">// 다음 노드로 이동</span></span><br><span class="line">    &#125;</span><br><span class="line">    answer += count; <span class="comment">// 카운팅을 더해준다</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> answer; <span class="comment">// 반환</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/11/CS-JS-DataAlgo-10/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-11 06:43:40
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/cs-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="CS-자료구조-알고리즘"> <b>#</b> CS-자료구조-알고리즘 </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/cs-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/js-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="JS-자료구조-알고리즘"> <b>#</b> JS-자료구조-알고리즘 </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/js-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="JS-자료구조-알고리즘"> #JS-자료구조-알고리즘 </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/11/CS-JS-DataAlgo-12/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%ED%8A%B8%EB%9D%BC%EC%9D%B4-Trie"><span class="toc-text">1. 트라이(Trie)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%ED%8A%B8%EB%9D%BC%EC%9D%B4-%ED%8A%B9%EC%A7%95"><span class="toc-text">1.1 트라이 특징</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-Trie-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0"><span class="toc-text">1.2 Trie 생성하기</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-1-%ED%8A%B8%EB%9D%BC%EC%9D%B4-%EA%B5%AC%EC%A1%B0"><span class="toc-text">1.2.1 트라이 구조</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%EA%B5%AC%ED%98%84"><span class="toc-text">2. 구현</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%ED%8A%B8%EB%9D%BC%EC%9D%B4-%EC%8B%A4%EC%8A%B5-%EC%9E%90%EB%8F%99%EC%99%84%EC%84%B1"><span class="toc-text">2. 트라이 실습 : 자동완성</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%EB%AC%B8%EC%A0%9C"><span class="toc-text">2.1 문제</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%ED%92%80%EC%9D%B4"><span class="toc-text">2.2 풀이</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-%EB%AC%B8%EC%A0%9C-%EC%9C%A0%ED%98%95"><span class="toc-text">2.2.1 문제 유형</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-%ED%92%80%EC%9D%B4"><span class="toc-text">2.2.2 풀이</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-3-%EC%A0%84%EC%B2%B4-%EC%BD%94%EB%93%9C"><span class="toc-text">2.2.3 전체 코드</span></a></li></ol></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + CS-JS-DataAlgo-11-%ED%8A%B8%EB%9D%BC%EC%9D%B4%20(Trie) + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F11%2FCS-JS-DataAlgo-11%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/11/CS-JS-DataAlgo-11/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

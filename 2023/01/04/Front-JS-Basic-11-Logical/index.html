@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Front-JS-Basic-11-단축평가 &amp; 옵셔널 체이닝 &amp; null 병합 연산자 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Front-JS-Basic-11-단축평가 & 옵셔널 체이닝 & null 병합 연산자</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-04 12:37:11
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/js/" title="JS"> <b>#</b> JS </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/js/basic/" title="Basic"> <b>#</b> Basic </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/js/" title="JS"> #JS </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-단축평가"><a href="#1-단축평가" class="headerlink" title="1. 단축평가"></a>1. 단축평가</h1><h2 id="1-1-논리-연산자를-사용한-단축평가"><a href="#1-1-논리-연산자를-사용한-단축평가" class="headerlink" title="1.1 논리 연산자를 사용한 단축평가"></a>1.1 논리 연산자를 사용한 단축평가</h2><p>논리합(<code>||</code>) 또는 논리곱 (<code>&amp;&amp;</code>) 연산자 표현식은 언제나 2개의 피연산자 중 어느 한쪽으로 평가됩니다.</p>
+<hr>
+<h3 id="1-1-1-논리곱-amp-amp-연산자"><a href="#1-1-1-논리곱-amp-amp-연산자" class="headerlink" title="1.1.1 논리곱( &amp;&amp; ) 연산자"></a>1.1.1 논리곱( &amp;&amp; ) 연산자</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;Cat&#x27;</span> &amp;&amp; <span class="string">&#x27;Dog&#x27;</span> <span class="comment">// &quot;Dog&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>논리곱(<code>&amp;&amp;</code>) 연산자는 <strong>두 개의 피연산자가 모두 true로 평가될 때 true</strong>를 반환하며, <strong>좌항에서 우항으로 평가가 진행</strong>됩니다.<br>첫 번째 피연산자 ‘Cat’은 Truthy 값이므로 true로 평가됩니다. 하지만 위 표현식은 이 시점에서 평가할 수 없습니다.<br>두 번째 피연산자까지 평가해야합니다.<br>즉, 두 번째 피연산자가 논리곱 연산자 표현식의 평가 결과를 결정하며, 두 번째 피연산자 ‘Dog’를 그대로 반환합니다</p>
+<hr>
+<h3 id="1-1-2-논리합-연산자"><a href="#1-1-2-논리합-연산자" class="headerlink" title="1.1.2 논리합( || ) 연산자"></a>1.1.2 논리합( || ) 연산자</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;Cat&#x27;</span> || <span class="string">&#x27;Dog&#x27;</span> <span class="comment">// &quot;Cat&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>논리합(<code>||</code>) 연산자는 <strong>두 개의 피연산자 중 하나만 true로 평가되어도 true</strong>를 반환하며, <strong>좌항에서 우항으로 평가가 진행</strong>됩니다.<br>첫 번째 피연산자 ‘Cat’은 Truthy 값이므로 true로 평가됩니다.<br>이 시점에 두 번째 피연산자까지 평가하지 않아도 표현식을 평가할 수 있습니다.<br>논리합 연산자는 논리 연산의 결과를 결정한 첫 번째 피연산자, 문자열 ‘Cat’을 그대로  반환합니다. </p>
+<hr>
+<h2 id="1-2-단축-평가란"><a href="#1-2-단축-평가란" class="headerlink" title="1.2 단축 평가란?"></a>1.2 단축 평가란?</h2><p>&amp;&amp; 연산자와 || 연산자는 <strong>논리 연산의 결과를 결정하는 피연산자를 타입 변환하지 않고 그대로 반환</strong>하는데, 이를 <code>단축 평가</code>라고 합니다.<br>단축 평가는 <u>표현식을 평가하는 도중에 평가 결과가 확정된 경우 나머지 평가 과정을 생략하는 것</u>을 말합니다.</p>
+<p>단축 평가는 다음의 규칙을 따릅니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">true</span> || anything <span class="comment">// true</span></span><br><span class="line"><span class="literal">false</span> || anything <span class="comment">// anything</span></span><br><span class="line"><span class="literal">true</span> &amp;&amp; anything <span class="comment">// anything</span></span><br><span class="line"><span class="literal">false</span> &amp;&amp; anything <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="2-undefined-null-체크"><a href="#2-undefined-null-체크" class="headerlink" title="2. undefined, null 체크"></a>2. undefined, null 체크</h1><ul>
+<li><code>undefined</code> : 값이 있는지 없는지 모름</li>
+<li><code>null</code> : 값이 없음</li>
+</ul>
+<hr>
+<h2 id="2-1-일반적인-undefined-체크"><a href="#2-1-일반적인-undefined-체크" class="headerlink" title="2.1 일반적인 undefined 체크"></a>2.1 일반적인 undefined 체크</h2><p>특정 값이 undefined 인지를 체크하기 위해서는 </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">typeof</span> a == <span class="string">&#x27;undefined&#x27;</span>); <span class="comment">// true</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a == <span class="literal">undefined</span>); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-2-일반적인-null-체크"><a href="#2-2-일반적인-null-체크" class="headerlink" title="2.2 일반적인 null 체크"></a>2.2 일반적인 null 체크</h2><p>null 인지를 체크하기 위해서는</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> b = <span class="literal">null</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(b == <span class="literal">null</span>); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>위와 같이 정확하게 값을 체크하는데 사용될 수 있다.</p>
+<hr>
+<h2 id="2-3-간단하게-undefined-null-체크"><a href="#2-3-간단하게-undefined-null-체크" class="headerlink" title="2.3 간단하게 undefined, null 체크"></a>2.3 간단하게 undefined, null 체크</h2><p>하지만, undefined와 null은 논리연산에서는 false로 처리되므로 아래처럼 간단하게 체크하면 되겠다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a); <span class="comment">// undefined</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(!a); <span class="comment">// true</span></span><br><span class="line"><span class="comment">// if (a) &#123;&#125;</span></span><br><span class="line"><span class="comment">// if (!a) &#123;&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> b = <span class="literal">null</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(b); <span class="comment">// null</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(!b); <span class="comment">// true</span></span><br><span class="line"><span class="comment">// if (b) &#123;&#125;</span></span><br><span class="line"><span class="comment">// if (!b) &#123;&#125;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>undefined와 null을 철저히 체크하는 경우가 아니라면, <code>if (!a) &#123;&#125;</code>처럼 간단히 사용하면 되겠다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (a != <span class="literal">undefined</span> &amp;&amp; a != <span class="literal">null</span>) &#123;&#125;</span><br><span class="line"><span class="keyword">if</span> (a != <span class="literal">undefined</span> &amp;&amp; !a) &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>위 두가지 모두 <code>if (!a) &#123;&#125;</code> 와 동일하다.</p>
+<hr>
+<h1 id="3-undefined-null-체크-예시"><a href="#3-undefined-null-체크-예시" class="headerlink" title="3. undefined, null 체크 예시"></a>3. undefined, null 체크 예시</h1><h2 id="예시-1-if문-파라미터의-값이-비어있는지"><a href="#예시-1-if문-파라미터의-값이-비어있는지" class="headerlink" title="예시 1 : if문 파라미터의 값이 비어있는지"></a>예시 1 : if문 파라미터의 값이 비어있는지</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> nIntervId;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">changeColor</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// check if an interval has already been set up</span></span><br><span class="line">  <span class="comment">// nIntervId이 null이거나 undfined 이라면, (=값이 없다면)</span></span><br><span class="line">  <span class="keyword">if</span> (!nIntervId) &#123;</span><br><span class="line">    nIntervId = <span class="built_in">setInterval</span>(flashText, <span class="number">1000</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="예시-2-배열-길이가-0인지-판단"><a href="#예시-2-배열-길이가-0인지-판단" class="headerlink" title="예시 2 : 배열 길이가 0인지 판단"></a>예시 2 : 배열 길이가 0인지 판단</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ( array.<span class="property">length</span> === <span class="number">0</span> ) <span class="comment">// 💩 Bad</span></span><br><span class="line"><span class="keyword">if</span> ( !array.<span class="property">length</span> ) <span class="comment">// array.length 값이 없다면, 👍 Good</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="예시-3-배열-길이가-0보다-큰지-판단"><a href="#예시-3-배열-길이가-0보다-큰지-판단" class="headerlink" title="예시 3 : 배열 길이가 0보다 큰지 판단"></a>예시 3 : 배열 길이가 0보다 큰지 판단</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ( array.<span class="property">length</span> &gt; <span class="number">0</span> ) <span class="comment">// 💩 Bad</span></span><br><span class="line"><span class="keyword">if</span> ( array.<span class="property">length</span> ) <span class="comment">// 👍 Good</span></span><br></pre></td></tr></table></figure>
+
+<p>array.length &gt; 0이 로직은 <code>array.length</code>의 특성상 음수값은 존재하지 않고 양수값만 존재하게된다.<br>그러므로 0이냐 0이 아니냐로 판단이 가능하다.</p>
+<hr>
+<h2 id="예시-4-문자열이-비어있는지-판단"><a href="#예시-4-문자열이-비어있는지-판단" class="headerlink" title="예시 4: 문자열이 비어있는지 판단"></a>예시 4: 문자열이 비어있는지 판단</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ( string === <span class="string">&quot;&quot;</span> ) <span class="comment">// 💩 Bad</span></span><br><span class="line"><span class="keyword">if</span> ( !string ) <span class="comment">// 👍 Good</span></span><br></pre></td></tr></table></figure>
+
+<p>빈문자열은 조건문안에서 false이다.<br>빈문자열임을 확인하고 싶으면 부정(!)을 더해서 false -&gt; true로 만들어주면 된다.</p>
+<hr>
+<h2 id="예시-5-문자열이-값이-있는지-판단"><a href="#예시-5-문자열이-값이-있는지-판단" class="headerlink" title="예시 5 : 문자열이 값이 있는지 판단"></a>예시 5 : 문자열이 값이 있는지 판단</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ( string !== <span class="string">&quot;&quot;</span> ) <span class="comment">// 💩 Bad</span></span><br><span class="line"><span class="keyword">if</span> ( string ) <span class="comment">// 👍 Good</span></span><br></pre></td></tr></table></figure>
+
+<p>빈문자열은 조건문안에서 false이다.<br>그러므로 빈문자열이 아닐때를 판별할때는 빈문자열이 들어올 변수를 조건문안에 넣어주기만 하면된다.</p>
+<hr>
+<h2 id="예시-6-삼항-조건-연산자"><a href="#예시-6-삼항-조건-연산자" class="headerlink" title="예시 6 : 삼항 조건 연산자"></a>예시 6 : 삼항 조건 연산자</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> done = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">let</span> message = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//if...else문</span></span><br><span class="line"><span class="keyword">if</span> (done) message = <span class="string">&#x27;완료&#x27;</span>;</span><br><span class="line"><span class="keyword">else</span> message = <span class="string">&#x27;미완료&#x27;</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(message); <span class="comment">//완료</span></span><br><span class="line"></span><br><span class="line">message = done ? <span class="string">&#x27;완료&#x27;</span> : <span class="string">&#x27;미완료&#x27;</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(message); <span class="comment">//완료</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="4-옵셔널-체이닝"><a href="#4-옵셔널-체이닝" class="headerlink" title="4. 옵셔널 체이닝 ?."></a>4. 옵셔널 체이닝 ?.</h1><ul>
+<li>좌항의 피연산자가 <code>null</code> 또는 <code>undefined</code>인 경우 <code>undefined</code>를 반환하고, </li>
+<li>그렇지 않으면 우항의 프로퍼티 참조를 이어갑니다.</li>
+<li>ES11에서 도입(ECMAScript 2020)</li>
+<li>cf. <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining">MDN 옵셔널 체이닝</a></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> elem = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// elem이 null또는 undefined이면 undefined 반환, 그렇지 않으면 우항의 프로퍼티 참조를 이어감</span></span><br><span class="line"><span class="keyword">let</span> value = elem?.<span class="property">value</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(value); <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
+
+<p><code>?.</code>는 객체를 가리키기를 기대하는 변수가 <code>null</code>또는 <code>undefined</code>가 아닌지 확인하고 프로퍼티를 참조할 때 유용합니다.<br><code>?.</code>가 도입되기 전에는 논리 연산자 <code>&amp;&amp;</code>를 사용한 단축 평가를 통해 변수가 <code>null</code> 또는 <code>undefined</code>인지 확인했습니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> elem = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// elem이 Falsy 값이면 elem으로 평가, elem이 Truthy 값이면 elem.value로 평가</span></span><br><span class="line"><span class="keyword">let</span> value = elem &amp;&amp; elem.<span class="property">value</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(value); <span class="comment">// null</span></span><br></pre></td></tr></table></figure>
+
+<p>논리 연산자 <code>&amp;&amp;</code>는 </p>
+<ul>
+<li>좌항 피연산자가 false로 평가되는 <code>Falsy 값(false, undefined, null, 0, -0, NaN, &#39;&#39;)</code>이면 </li>
+<li>좌항 피연산자를 그대로 반환합니다.</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> str = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> length = str &amp;&amp; str.<span class="property">length</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 문자열의 길이를 참조하지 못함</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(length); <span class="comment">// &#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>하지만 옵셔널 체이닝 연산자<code>?.</code>는 </p>
+<ul>
+<li>좌항 피연산자가 false로 평가되는 Falsy 값이라도 <code>null</code>또는 <code>undefined</code>가 아니면 </li>
+<li>우항의 프로퍼티 참조를 이어갑니다.</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> str = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> length = str?.<span class="property">length</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(length); <span class="comment">// 0</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-1-예제"><a href="#4-1-예제" class="headerlink" title="4.1 예제"></a>4.1 예제</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 옵셔널 체이닝 연산자 (Optional Chaining Operator)</span></span><br><span class="line"><span class="comment">// null 또는 undefined을 확인할때</span></span><br><span class="line"><span class="keyword">let</span> item = &#123; <span class="attr">price</span>: <span class="number">1</span> &#125;;</span><br><span class="line"><span class="comment">// const price = item &amp;&amp; item.price;를 옵셔널 체이닝 연산자로 표현</span></span><br><span class="line"><span class="keyword">const</span> price = item?.<span class="property">price</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(price); <span class="comment">// 1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> obj = &#123; <span class="attr">name</span>: <span class="string">&#x27;🐶&#x27;</span>, <span class="attr">owner</span>: &#123; <span class="attr">name</span>: <span class="string">&#x27;메시&#x27;</span> &#125; &#125;;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">printName</span>(<span class="params">obj</span>) &#123;</span><br><span class="line">  <span class="comment">// 📝 obj 오브젝트가 있다면, owner가 있다면, name이 있다면</span></span><br><span class="line">  <span class="comment">// owner가 없다면 undefined, name이 없다면 undefined</span></span><br><span class="line">  <span class="keyword">const</span> ownerName = obj?.<span class="property">owner</span>?.<span class="property">name</span>;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(ownerName); <span class="comment">// 메시</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">printName</span>(obj);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="5-null-체크하는-깔끔한-법⭐"><a href="#5-null-체크하는-깔끔한-법⭐" class="headerlink" title="5. null 체크하는 깔끔한 법⭐"></a>5. null 체크하는 깔끔한 법⭐</h1><h2 id="3-1-null-병합-연산자"><a href="#3-1-null-병합-연산자" class="headerlink" title="3.1 null 병합 연산자 ??"></a>3.1 null 병합 연산자 ??</h2><p>ES11에서 도입된  <code>??</code>는 좌항의 피연산자가 <code>null</code> 또는 <code>undefined</code>인 경우 우항의 피연산자를 반환하고,<br>그렇지 않으면 좌항의 피연산자를 반환합니다. </p>
+<p>cf. <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_operator">MDN null 병합연산자(Nullish Coalescing Operator)</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> foo = <span class="literal">null</span> ?? <span class="string">&#x27;default string&#x27;</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(foo); <span class="comment">// &quot;default string&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p> <code>??</code>는 변수에 기본값을 설정할 때 유용합니다.<br><code>??</code>가 도입되기 전에는 논리 연산자 <code>||</code>를 사용한 단축 평가를 통해 변수에 기본값을 설정했습니다.</p>
+<p>논리 연산자 <code>||</code>를 사용한 단축 평가의 경우 좌항의 피연산자가 false로 평가되는 Falsy 값이면 우항의 피연산자를 반환합니다.<br>만약 Falsy 값인 <code>0</code>이나 <code>&#39;&#39;</code>도 기본값으로 유효하다면 예기치않은 동작이 발생할 수 있습니다. </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> foo = <span class="string">&#x27;&#x27;</span> || <span class="string">&#x27;default string&#x27;</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(foo); <span class="comment">// &quot;default string&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>하지만 <code>??</code>는 좌항의 연산자가 false로 평가되는 Falsy 값이라도 <code>null</code> 또는 <code>undefined</code>가 아니면,<br>좌항의 피연산자를 그대로 반환합니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> foo = <span class="string">&#x27;&#x27;</span> ?? <span class="string">&#x27;default string&#x27;</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(foo); <span class="comment">// &quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-2-예제"><a href="#3-2-예제" class="headerlink" title="3.2 예제"></a>3.2 예제</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 📝 ?? 연산자 : null, undefined에만</span></span><br><span class="line"><span class="comment">// 📝 || : falshy한 경우 설정(할당) 0, -0, &#x27;&#x27;</span></span><br><span class="line"><span class="keyword">let</span> num = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// num의 값이 없을 때만, -1을 출력하고 싶을 떄</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(num || <span class="string">&#x27;-1&#x27;</span>); <span class="comment">// 0은 falshy에 해당되어 -1이 출력</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(num ?? <span class="string">&#x27;-1&#x27;</span>); <span class="comment">// 0</span></span><br></pre></td></tr></table></figure>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/03/Front-JS-Basic-10-Function/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-04 12:37:11
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/js/" title="JS"> <b>#</b> JS </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/js/basic/" title="Basic"> <b>#</b> Basic </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/js/" title="JS"> #JS </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/04/Front-JS-Basic-12-StrictMode/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%EB%8B%A8%EC%B6%95%ED%8F%89%EA%B0%80"><span class="toc-text">1. 단축평가</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%EB%85%BC%EB%A6%AC-%EC%97%B0%EC%82%B0%EC%9E%90%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%9C-%EB%8B%A8%EC%B6%95%ED%8F%89%EA%B0%80"><span class="toc-text">1.1 논리 연산자를 사용한 단축평가</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-1-%EB%85%BC%EB%A6%AC%EA%B3%B1-amp-amp-%EC%97%B0%EC%82%B0%EC%9E%90"><span class="toc-text">1.1.1 논리곱( &amp;&amp; ) 연산자</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-2-%EB%85%BC%EB%A6%AC%ED%95%A9-%EC%97%B0%EC%82%B0%EC%9E%90"><span class="toc-text">1.1.2 논리합( || ) 연산자</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%EB%8B%A8%EC%B6%95-%ED%8F%89%EA%B0%80%EB%9E%80"><span class="toc-text">1.2 단축 평가란?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-undefined-null-%EC%B2%B4%ED%81%AC"><span class="toc-text">2. undefined, null 체크</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%EC%9D%BC%EB%B0%98%EC%A0%81%EC%9D%B8-undefined-%EC%B2%B4%ED%81%AC"><span class="toc-text">2.1 일반적인 undefined 체크</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%EC%9D%BC%EB%B0%98%EC%A0%81%EC%9D%B8-null-%EC%B2%B4%ED%81%AC"><span class="toc-text">2.2 일반적인 null 체크</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%EA%B0%84%EB%8B%A8%ED%95%98%EA%B2%8C-undefined-null-%EC%B2%B4%ED%81%AC"><span class="toc-text">2.3 간단하게 undefined, null 체크</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-undefined-null-%EC%B2%B4%ED%81%AC-%EC%98%88%EC%8B%9C"><span class="toc-text">3. undefined, null 체크 예시</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%EC%98%88%EC%8B%9C-1-if%EB%AC%B8-%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0%EC%9D%98-%EA%B0%92%EC%9D%B4-%EB%B9%84%EC%96%B4%EC%9E%88%EB%8A%94%EC%A7%80"><span class="toc-text">예시 1 : if문 파라미터의 값이 비어있는지</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EC%98%88%EC%8B%9C-2-%EB%B0%B0%EC%97%B4-%EA%B8%B8%EC%9D%B4%EA%B0%80-0%EC%9D%B8%EC%A7%80-%ED%8C%90%EB%8B%A8"><span class="toc-text">예시 2 : 배열 길이가 0인지 판단</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EC%98%88%EC%8B%9C-3-%EB%B0%B0%EC%97%B4-%EA%B8%B8%EC%9D%B4%EA%B0%80-0%EB%B3%B4%EB%8B%A4-%ED%81%B0%EC%A7%80-%ED%8C%90%EB%8B%A8"><span class="toc-text">예시 3 : 배열 길이가 0보다 큰지 판단</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EC%98%88%EC%8B%9C-4-%EB%AC%B8%EC%9E%90%EC%97%B4%EC%9D%B4-%EB%B9%84%EC%96%B4%EC%9E%88%EB%8A%94%EC%A7%80-%ED%8C%90%EB%8B%A8"><span class="toc-text">예시 4: 문자열이 비어있는지 판단</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EC%98%88%EC%8B%9C-5-%EB%AC%B8%EC%9E%90%EC%97%B4%EC%9D%B4-%EA%B0%92%EC%9D%B4-%EC%9E%88%EB%8A%94%EC%A7%80-%ED%8C%90%EB%8B%A8"><span class="toc-text">예시 5 : 문자열이 값이 있는지 판단</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EC%98%88%EC%8B%9C-6-%EC%82%BC%ED%95%AD-%EC%A1%B0%EA%B1%B4-%EC%97%B0%EC%82%B0%EC%9E%90"><span class="toc-text">예시 6 : 삼항 조건 연산자</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%EC%98%B5%EC%85%94%EB%84%90-%EC%B2%B4%EC%9D%B4%EB%8B%9D"><span class="toc-text">4. 옵셔널 체이닝 ?.</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%EC%98%88%EC%A0%9C"><span class="toc-text">4.1 예제</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-null-%EC%B2%B4%ED%81%AC%ED%95%98%EB%8A%94-%EA%B9%94%EB%81%94%ED%95%9C-%EB%B2%95%E2%AD%90"><span class="toc-text">5. null 체크하는 깔끔한 법⭐</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-null-%EB%B3%91%ED%95%A9-%EC%97%B0%EC%82%B0%EC%9E%90"><span class="toc-text">3.1 null 병합 연산자 ??</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%EC%98%88%EC%A0%9C"><span class="toc-text">3.2 예제</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Front-JS-Basic-11-%EB%8B%A8%EC%B6%95%ED%8F%89%EA%B0%80%20%26%20%EC%98%B5%EC%85%94%EB%84%90%20%EC%B2%B4%EC%9D%B4%EB%8B%9D%20%26%20null%20%EB%B3%91%ED%95%A9%20%EC%97%B0%EC%82%B0%EC%9E%90 + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F04%2FFront-JS-Basic-11-Logical%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/04/Front-JS-Basic-11-Logical/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

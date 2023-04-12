@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      DevOps-Git-Basic--09-branch 전략 - flow, trunk, based 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">DevOps-Git-Basic--09-branch 전략 - flow, trunk, based</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-11 04:14:42
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/git/" title="Git"> <b>#</b> Git </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/git/basic/" title="Basic"> <b>#</b> Basic </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/git/" title="Git"> #Git </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-배경설명"><a href="#1-배경설명" class="headerlink" title="1. 배경설명"></a>1. 배경설명</h1><p>개발자 10명이서 브랜치를 대충 아무렇게나 만들면 개발과정이 매우 복잡해지고 추적도 어려워서,<br>git branch 깔끔하게 만들도록 도와주는 <strong>방법론</strong>같은게 있습니다.<br><strong>Git Flow, Github Flow, Gitlab Flow, Trunk-based</strong> 등 다양한 것들이 있습니다. </p>
+<p>이런걸 적용하면</p>
+<ol>
+<li>브랜치관리가 쉬워지고</li>
+<li>팀원이 아무리 많아도 개발절차가 매끄러워집니다.</li>
+</ol>
+<p>그래서 프로젝트 리드하는 사람들이 알면 좋습니다. </p>
+<hr>
+<h1 id="2-Git-Flow-전략"><a href="#2-Git-Flow-전략" class="headerlink" title="2. Git Flow 전략"></a>2. Git Flow 전략</h1><p>님들이 만드는 프로그램이 항상 안정적인 release를 해야한다면, (e.g. 게임개발) Git Flow 전략을 쓰면 됩니다. </p>
+<p> <strong>Git Flow 전략</strong>(by Vincent Driessen)은 크게 5개 브랜치를 운영합니다.</p>
+<ol>
+<li><code>main</code></li>
+<li><code>develop</code> : 개발용</li>
+<li><code>feature</code> : develop에 기능 추가용</li>
+<li><code>hotfix</code>  : main 브랜치 버그 해결용</li>
+<li>가끔 <code>release</code>  : (develop 브랜치를 main 브랜치에 합치기 전에 최종 테스트용</li>
+</ol>
+<p>게임개발을 예시로 들면, 이제부터 여러분은 게임개발 팀장입니다.</p>
+<ul>
+<li>지금까지는 대충 주먹구구식으로 협업해서 0.9버전까지 만들어놨다고 칩시다.</li>
+<li>근데 1.0 버전부터는 신기능도 많고 해서 제대로 개발을 진행하고 싶은겁니다.</li>
+<li>그래서 이번엔 Git Flow를 도입해서 개발을 진행해봅시다.</li>
+</ul>
+<hr>
+<h2 id="2-1-develop-브랜치부터-생성"><a href="#2-1-develop-브랜치부터-생성" class="headerlink" title="2.1 develop 브랜치부터 생성"></a>2.1 develop 브랜치부터 생성</h2><p>신기능 개발해서 바로 main브랜치에 합칠 것입니까? 절대 안됩니다. 신입 개발자들을 믿을 수 없습니다. </p>
+<ul>
+<li>일단 실험용 프로젝트 사본을 만들고 거기다가 먼저 개발합니다.</li>
+<li>그러기 위해 main 브랜치에 있던 기존 프로젝트를 복사한 develop 브랜치를 생성합니다.</li>
+<li>이제 모든 개발은 develop 브랜치에서 진행하라고 팀원들에게 전파합니다.</li>
+</ul>
+<hr>
+<h2 id="2-2-feature-브랜치에서-신기능개발"><a href="#2-2-feature-브랜치에서-신기능개발" class="headerlink" title="2.2 feature 브랜치에서 신기능개발"></a>2.2 feature 브랜치에서 신기능개발</h2><p>신기능을 만들고 싶으면 develop 브랜치를 복사한 feature 브랜치에서 각각 개발합니다.</p>
+<ul>
+<li>feature&#x2F;guild 브랜치 만들어서 길드기능 만들고 </li>
+<li>feature&#x2F;friend 브랜치 만들어서 친구기능 만들고 하면 됩니다. <ul>
+<li>c.f. 브랜치 작명할 때 여러 단어가 필요하면 보통 대시나 &#x2F; 기호 씁니다</li>
+</ul>
+</li>
+</ul>
+<p> feature(기능)들이 어느정도 완성되면 develop 브랜치에 merge 합니다. 중요한 내용이 아니면 squash and merge도 괜찮습니다. </p>
+<hr>
+<h2 id="2-3-release-브랜치에서-신버전-출시-준비"><a href="#2-3-release-브랜치에서-신버전-출시-준비" class="headerlink" title="2.3 release 브랜치에서 신버전 출시 준비"></a>2.3 release 브랜치에서 신버전 출시 준비</h2><p>develop에서 만든 2개 기능들이 완성된 것 같습니다.<br>이걸 바로 main 브랜치에 합치기엔 또 불안하기 때문에<br>develop -&gt; release 브랜치 이렇게 프로젝트를 복사한 다음 출시준비를 합니다.</p>
+<ul>
+<li>여기서 테스트나 QA같은거 진행하면 됩니다. </li>
+<li>버그를 발견하면 알아서 임시 브랜치 만들어서 수정하거나 합니다.</li>
+<li>release&#x2F;1.0 이런 식으로 이쁘게 브랜치 이름을 짓는 경우가 많습니다.</li>
+</ul>
+<p>완성된 것 같으면 main 브랜치로 merge 합니다.<br>그리고 그거 유저들에게 배포하면 됩니다.<br>개발은 계속 진행되어야하니 완성본은 develop 브랜치에도 merge 해줍시다.</p>
+<hr>
+<h2 id="2-4-hotfix-브랜치에서-버그-수정"><a href="#2-4-hotfix-브랜치에서-버그-수정" class="headerlink" title="2.4 hotfix 브랜치에서 버그 수정"></a>2.4 hotfix 브랜치에서 버그 수정</h2><p>1.0 버전에서 갑자기 골드 무한복사 버그를 발견했습니다.<br>그런 급한 것들은 main 브랜치에서 hotfix 이런 브랜치 하나 만들어서 바로바로 버그수정하면 됩니다.</p>
+<ul>
+<li>수정이 완료되면 main 브랜치에 직접 merge 하면 됩니다. </li>
+<li>당연히 develop 브랜치에도 merge 해줘야합니다.</li>
+</ul>
+<hr>
+<h2 id="2-5-꼭-사용해야-함"><a href="#2-5-꼭-사용해야-함" class="headerlink" title="2.5 꼭 사용해야 함?"></a>2.5 꼭 사용해야 함?</h2><ul>
+<li>장점 : 안정적으로 버전별 배포 가능</li>
+<li>단점 : CI&#x2F;CD 이런거 하는 곳은 안좋아함<ul>
+<li>최근 continuous delivery 이런거 한 때 유행이었는데 그런거 할 땐 적합하지 않을 수 있습니다.</li>
+</ul>
+</li>
+</ul>
+<p>그래서 맨날 남들이 하는거 <strong>따라하지 말고 본인 마음대로 변형해서 쓰면 됨</strong>.<br>예를 들면, release 브랜치 쓰지 않고 바로 main 브랜치에 merge 해서 배포하거나 그래도 됩니다<br> 그 선택에 합당한 이유와 근거가 있으면 됩니다. 물론 책임도 져야합니다. </p>
+<hr>
+<h1 id="3-runk-based-전략"><a href="#3-runk-based-전략" class="headerlink" title="3. runk-based 전략"></a>3. runk-based 전략</h1><p>만드는게 <strong>코드짠걸 바로 대중에 배포를 해도 상관없는 프로그램</strong>이면,<br>그리고 크게 <strong>대격변 업데이트를 안하는 안정적인 프로그램</strong>이면<br>굳이 많은 브랜치를 만들 필요가 없습니다. 그냥 <strong>main 브랜치와 기능추가용 feature 브랜치만 운영</strong>하면 됩니다.<br>이게 <strong>Trunk-based 전략</strong>입니다. <strong>Github Flow도 이거랑 비슷</strong>합니다. </p>
+<hr>
+<h2 id="3-1-브랜치-하나만-잘-관리"><a href="#3-1-브랜치-하나만-잘-관리" class="headerlink" title="3.1 브랜치 하나만 잘 관리"></a>3.1 브랜치 하나만 잘 관리</h2><ol>
+<li>기능추가, 버그픽스가 필요하면 main 브랜치에서 새로운 브랜치를 하나 만들어서 코드짭니다.<ul>
+<li>브랜치마다 작명 잘하는게 중요합니다.</li>
+</ul>
+</li>
+<li>기능이 완성되었으면 main 브랜치에 합칩니다.<ul>
+<li>이제 브랜치 쓸데없으니 삭제합니다.</li>
+</ul>
+</li>
+<li>main 브랜치에 있는 코드를 필요할 때 마다 유저들에게 배포합니다.</li>
+</ol>
+<hr>
+<h2 id="3-2-장단점"><a href="#3-2-장단점" class="headerlink" title="3.2 장단점"></a>3.2 장단점</h2><ul>
+<li>장점<ul>
+<li><strong>코드를 한 브랜치에서만 관리하기 때문에 편리</strong>합니다.</li>
+<li>크게 개발해서 한 번에 merge 하는 것 보다 작은 단위로 merge 하는 것이 더 안전합니다.</li>
+</ul>
+</li>
+<li>단점<ul>
+<li>main 브랜치에 있는 코드가 뻑이나면 큰일나기 때문에 <strong>테스트나 코드리뷰를 자주해야합니다.</strong></li>
+<li>그래서 테스트를 자주하고 자동화해놓는 곳들이 제대로 사용가능합니다.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="4-결론"><a href="#4-결론" class="headerlink" title="4. 결론"></a>4. 결론</h1><p>이미 어느정도 개발이 진척이 되었거나 <strong>프로들로 가득한 팀이면 Trunk-based</strong> 이런거 쓰는게 훨씬 편리합니다.<br>최근 유행한 <strong>CI&#x2F;CD 이런 식으로 개발하는 곳들도 Trunk-based 개발방식을 적용</strong>합니다.<br>출시 버전의 안정성이 중요한 프로그램, <strong>아직 뼈대가 확실하지 않아 연구식으로 개발하는 프로그램들은 Git Flow가 적절</strong>할 수 있습니다. </p>
+<hr>
+<p><strong>Q. merge 할 때 어떤 방법 쓰는게 좋은가요?</strong></p>
+<ul>
+<li><strong>기록을 남겨야하는 중요한 브랜치를 merge</strong>할 땐 <strong>3-way merge</strong></li>
+<li><strong>기록을 남길 필요없는 쓸데없는 브랜치를 merge</strong>할 땐 <strong>squash, rebase</strong> 쓰면 됩니다.</li>
+</ul>
+<p>취향일 뿐이고 알아서합시다.</p>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/11/DevOps-Git-Basic-08/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-11 04:14:42
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/git/" title="Git"> <b>#</b> Git </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/git/basic/" title="Basic"> <b>#</b> Basic </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/git/" title="Git"> #Git </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/11/DevOps-Git-Basic-10/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%EB%B0%B0%EA%B2%BD%EC%84%A4%EB%AA%85"><span class="toc-text">1. 배경설명</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Git-Flow-%EC%A0%84%EB%9E%B5"><span class="toc-text">2. Git Flow 전략</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-develop-%EB%B8%8C%EB%9E%9C%EC%B9%98%EB%B6%80%ED%84%B0-%EC%83%9D%EC%84%B1"><span class="toc-text">2.1 develop 브랜치부터 생성</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-feature-%EB%B8%8C%EB%9E%9C%EC%B9%98%EC%97%90%EC%84%9C-%EC%8B%A0%EA%B8%B0%EB%8A%A5%EA%B0%9C%EB%B0%9C"><span class="toc-text">2.2 feature 브랜치에서 신기능개발</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-release-%EB%B8%8C%EB%9E%9C%EC%B9%98%EC%97%90%EC%84%9C-%EC%8B%A0%EB%B2%84%EC%A0%84-%EC%B6%9C%EC%8B%9C-%EC%A4%80%EB%B9%84"><span class="toc-text">2.3 release 브랜치에서 신버전 출시 준비</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-hotfix-%EB%B8%8C%EB%9E%9C%EC%B9%98%EC%97%90%EC%84%9C-%EB%B2%84%EA%B7%B8-%EC%88%98%EC%A0%95"><span class="toc-text">2.4 hotfix 브랜치에서 버그 수정</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5-%EA%BC%AD-%EC%82%AC%EC%9A%A9%ED%95%B4%EC%95%BC-%ED%95%A8"><span class="toc-text">2.5 꼭 사용해야 함?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-runk-based-%EC%A0%84%EB%9E%B5"><span class="toc-text">3. runk-based 전략</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%EB%B8%8C%EB%9E%9C%EC%B9%98-%ED%95%98%EB%82%98%EB%A7%8C-%EC%9E%98-%EA%B4%80%EB%A6%AC"><span class="toc-text">3.1 브랜치 하나만 잘 관리</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%EC%9E%A5%EB%8B%A8%EC%A0%90"><span class="toc-text">3.2 장단점</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%EA%B2%B0%EB%A1%A0"><span class="toc-text">4. 결론</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + DevOps-Git-Basic--09-branch%20%EC%A0%84%EB%9E%B5%20-%20flow%2C%20trunk%2C%20based + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F11%2FDevOps-Git-Basic-09%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/11/DevOps-Git-Basic-09/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

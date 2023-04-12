@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      DevOps-Git-Basic--05-복구 - revert, reset, restore 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">DevOps-Git-Basic--05-복구 - revert, reset, restore</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-11 04:14:20
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/git/" title="Git"> <b>#</b> Git </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/git/basic/" title="Basic"> <b>#</b> Basic </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/git/" title="Git"> #Git </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-파일-복구하는-법"><a href="#1-파일-복구하는-법" class="headerlink" title="1. 파일 복구하는 법"></a>1. 파일 복구하는 법</h1><p>git은 버전관리 프로그램이기 때문에,<br>언제든지 이전 commit으로 되돌아가거나, 문제가 되는 commit 내역을 취소하거나 그럴 수 있습니다. </p>
+<ul>
+<li><code>git restore</code> : 파일 하나 복구</li>
+<li><code>git revert</code> : commit 복구</li>
+<li><code>git reset</code> : 시간 되돌리기</li>
+</ul>
+<hr>
+<h2 id="1-1-새-프로젝트-생성"><a href="#1-1-새-프로젝트-생성" class="headerlink" title="1.1 새 프로젝트 생성"></a>1.1 새 프로젝트 생성</h2><p>깔끔한 상태에서 시작하기 위해 새 작업폴더 만들어서 다시 시작합시다.<br>새 작업폴더에서 <code>git init</code>하고 commit 몇 번 해봅시다. 저는 파일 3개 만들고 만들 때 마다 commit 합니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Git장인2 라는 새 폴더 생성 후 이동</span></span><br><span class="line">git init</span><br><span class="line"></span><br><span class="line"><span class="comment"># commit 3번 정도</span></span><br><span class="line"><span class="comment"># a파일 만들고 commit</span></span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&#x27;a파일 생성&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># b파일 만들고 commit</span></span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&#x27;b파일 생성&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># c파일 만들고 commit</span></span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&#x27;c파일 생성&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 여러분의 commit 내역을 한 줄로 이쁘게 보여줌</span></span><br><span class="line">git <span class="built_in">log</span> --oneline</span><br></pre></td></tr></table></figure>
+
+<p>노란 문자들은 <strong>commit의 고유 id</strong> 입니다. 고유 id를 이용해야 “그 고유 id로 되돌려주세요~” 이런 명령들이 가능합니다. </p>
+<hr>
+<h1 id="2-git-restore-파일-하나-복구"><a href="#2-git-restore-파일-하나-복구" class="headerlink" title="2. git restore : 파일 하나 복구"></a>2. git restore : 파일 하나 복구</h1><p>파일 하나가 잘못되었을 경우 ctrl + z 여러번 눌러도 되겠지만, 수정사항이 너무 많다면 명령어 하나로 처리할 수 있습니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># c폴더의 내용을 아무렇게나 수정</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 최근 commit 된 상태로 현재 파일의 수정내역을 되돌리기</span></span><br><span class="line"><span class="comment"># 📝 git restore 파일명 </span></span><br><span class="line">git restore c</span><br><span class="line"></span><br><span class="line"><span class="comment"># 입력한 파일이 특정 커밋아이디 시점으로 복구</span></span><br><span class="line"><span class="comment"># 📝 git restore --source 커밋아이디 파일명 </span></span><br><span class="line">git restore --<span class="built_in">source</span> (자기 b파일 커밋 아이디) b</span><br><span class="line"></span><br><span class="line"><span class="comment"># 복구랑 상관없지만 이러면 특정 파일을 staging 취소</span></span><br><span class="line"><span class="comment"># 📝 git restore --staged 파일명</span></span><br><span class="line">git restore --staged c</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="3-git-revert-commit-복구"><a href="#3-git-revert-commit-복구" class="headerlink" title="3. git revert : commit 복구"></a>3. git revert : commit 복구</h1><p>commit 하나를 취소하고 싶으면 <code>git revert</code> 사용하면 됩니다.<br>실은 없애는건 아니고 commit 하나를 취소한 commit을 하나 생성해줍니다. </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 그 커밋아이디에서 일어난 일만 취소</span></span><br><span class="line"><span class="comment"># git revert 커밋아이디 </span></span><br><span class="line">git revert (자기 b파일 커밋 아이디)</span><br></pre></td></tr></table></figure>
+
+<p>실행하면 아마 에디터가 뜰 텐데 맘대로 커밋메세지 수정하고 닫으면 끝입니다.</p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/git_5_1.png" alt="git_5_1"></p>
+<p>revert 명령시 가끔 Vim 에디터가 뜨는 사람들이 있을겁니다.<br>커밋 메세지 수정하라는건데 i 눌러서 수정하고 싶으면 하고, esc 눌러서 나올 수 있습니다.<br>그리고 :wq 누르면 커밋 메세지가 저장됩니다.</p>
+<p>에디터 닫고나면, <code>git log --oneline</code>으로 확인하면, 새로운 커밋이 생성되고 b파일만 삭제되어있습니다.<br>(그 커밋id 이후에 했던 파일이나 커밋들은 영향없이 유지됨)</p>
+<p>git log 다시 해보면 revert 해줬다는 commit이 자동으로 생성되어있고, 작업폴더에서 a, c 파일은 있지만 b 파일은 삭제됩니다.<br>결론은 revert 명령어 쓰면 특정 커밋에서 있던 일을 지워버릴 수 있습니다.</p>
+<hr>
+<h2 id="3-1-기타-명령어"><a href="#3-1-기타-명령어" class="headerlink" title="3.1 기타 명령어"></a>3.1 기타 명령어</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git revert 커밋아이디1 커밋아이디2 <span class="comment"># revert 할 때 동시에 여러개의 commit id 입력가능</span></span><br><span class="line">git reverst HEAD <span class="comment"># 그냥 최근 했던 commit 1개만 revert(취소)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># merge 명령으로 인해 새로 만들어진 commit도 revert 가능</span></span><br><span class="line"><span class="comment"># 그럼 merge가 취소되겠군요. 필요하면 찾아보셈</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="4-git-reset-시간-되돌리기"><a href="#4-git-reset-시간-되돌리기" class="headerlink" title="4. git reset : 시간 되돌리기"></a>4. git reset : 시간 되돌리기</h1><p>git reset 명령어를 사용하면 <strong>특정 commit 시절로 아예 모든걸 되돌릴 수 있습니다</strong>. </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 그 커밋이 생성될 때로 시간을 되돌려줌</span></span><br><span class="line"><span class="comment"># 작업폴더 내의 파일도 그 시절로 돌아감</span></span><br><span class="line"><span class="comment"># 📝 git reset --hard 커밋아이디</span></span><br><span class="line">git reset --hard (자기 b파일 커밋 아이디)</span><br><span class="line"></span><br><span class="line">git <span class="built_in">log</span> --oneline</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>commit2로 <code>reset --hard</code>해버리면, commit2 이후의 미래 기억을 모두 잃습니다.</li>
+</ul>
+<p>지금 기억을 다 포기하고 인생을 7살로 리셋해준다고 하면 돌아갈 것입니까?<br>인생이 어느정도 궤도에 오른 사람들은 돌아가기 힘듭니다.</p>
+<p>마찬가지로 <strong>git reset</strong>은 그냥 <strong>프로젝트 망하면 쓰거나, 아니면 짧은 거리를 돌아갈 때 쓰도록</strong> 합시다. </p>
+<hr>
+<h2 id="4-1-협업-시-reset-사용금지"><a href="#4-1-협업-시-reset-사용금지" class="headerlink" title="4.1 협업 시 reset 사용금지"></a>4.1 협업 시 reset 사용금지</h2><ul>
+<li>여러명이서 협업하는 리포지토리에는 <strong>보통 reset 쓰면 안됩니다.</strong> 갑자기 소스코드가 사라지는거니까요.</li>
+<li>untracked 파일들은 (git add 안해놓은 파일들은) 사라지지않고 유지됩니다. </li>
+<li>git clean 명령어 찾아서 쓰면 untracked 파일들도 다 지울 수 있습니다.</li>
+</ul>
+<hr>
+<h2 id="4-2-reset시-옵션-설정가능"><a href="#4-2-reset시-옵션-설정가능" class="headerlink" title="4.2 reset시 옵션 설정가능"></a>4.2 reset시 옵션 설정가능</h2><p>a, b, c 파일을 만들면서 각각 commit을 했다고 칩시다.<br>git reset 뒤에 hard &#x2F; soft &#x2F; mixed 설정을 넣을 수 있는데 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 그 커밋이 생성될 때로 시간을 되돌려줌</span></span><br><span class="line"><span class="comment"># 작업폴더 내의 파일도 그 시절로 돌아감</span></span><br><span class="line">git reset --hard (자기 b파일 커밋 아이디) <span class="comment"># a, b파일은 남아있고 c 파일이 삭제</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 📝 리셋인데 변동사항 지우지 말고 스테이징 해놓기</span></span><br><span class="line">git reset --soft (자기 b파일 커밋 아이디) <span class="comment"># a, c파일은 남아있고 b 파일은 staging area에 남아있음</span></span><br><span class="line"><span class="comment"># 이제 commit 하거나 그럴 수 있습니다.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 📝 리셋인데 변동사항 지우지 말고 unstage 해놓기</span></span><br><span class="line">git reset --mixed (자기 b파일 커밋 아이디) <span class="comment"># a, c파일은 남아있고 b 파일은 staging 되지 않은 상태</span></span><br><span class="line"><span class="comment"># 이제 git add 하고 commit 하거나 그럴 수 있습니다. </span></span><br></pre></td></tr></table></figure>
+
+<p>결론은 reset하면서 파일을 아예 지워버리는게 아니라,<br>검토하고 다시 commit 하고 싶으면 <code>--soft</code>, <code>--mixed</code> 사용해봅시다.<br>실은 git reset 어쩌구만 하면 –mixed 옵션이 자동으로 발동됩니다.</p>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/11/DevOps-Git-Basic-04/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-11 04:14:20
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/git/" title="Git"> <b>#</b> Git </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/git/basic/" title="Basic"> <b>#</b> Basic </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/git/" title="Git"> #Git </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/11/DevOps-Git-Basic-06/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%ED%8C%8C%EC%9D%BC-%EB%B3%B5%EA%B5%AC%ED%95%98%EB%8A%94-%EB%B2%95"><span class="toc-text">1. 파일 복구하는 법</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%EC%83%88-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%83%9D%EC%84%B1"><span class="toc-text">1.1 새 프로젝트 생성</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-git-restore-%ED%8C%8C%EC%9D%BC-%ED%95%98%EB%82%98-%EB%B3%B5%EA%B5%AC"><span class="toc-text">2. git restore : 파일 하나 복구</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-git-revert-commit-%EB%B3%B5%EA%B5%AC"><span class="toc-text">3. git revert : commit 복구</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%EA%B8%B0%ED%83%80-%EB%AA%85%EB%A0%B9%EC%96%B4"><span class="toc-text">3.1 기타 명령어</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-git-reset-%EC%8B%9C%EA%B0%84-%EB%90%98%EB%8F%8C%EB%A6%AC%EA%B8%B0"><span class="toc-text">4. git reset : 시간 되돌리기</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%ED%98%91%EC%97%85-%EC%8B%9C-reset-%EC%82%AC%EC%9A%A9%EA%B8%88%EC%A7%80"><span class="toc-text">4.1 협업 시 reset 사용금지</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-reset%EC%8B%9C-%EC%98%B5%EC%85%98-%EC%84%A4%EC%A0%95%EA%B0%80%EB%8A%A5"><span class="toc-text">4.2 reset시 옵션 설정가능</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + DevOps-Git-Basic--05-%EB%B3%B5%EA%B5%AC%20-%20revert%2C%20reset%2C%20restore + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F11%2FDevOps-Git-Basic-05%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/11/DevOps-Git-Basic-05/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

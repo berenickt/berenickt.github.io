@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Front-React-Basic-25-React 테스트 주도 개발(TDD) 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Front-React-Basic-25-React 테스트 주도 개발(TDD)</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-08 10:09:22
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/react/" title="React"> <b>#</b> React </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/react/basic/" title="Basic"> <b>#</b> Basic </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/react/" title="React"> #React </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-테스트-주도-개발-TDD"><a href="#1-테스트-주도-개발-TDD" class="headerlink" title="1. 테스트 주도 개발(TDD)"></a>1. 테스트 주도 개발(TDD)</h1><h2 id="1-1-Test-Driven-Development-TDD"><a href="#1-1-Test-Driven-Development-TDD" class="headerlink" title="1.1 Test Driven Development(TDD)"></a>1.1 Test Driven Development(TDD)</h2><ul>
+<li>실제 코드를 작성하기 전에 테스트 코드를 먼저 작성</li>
+<li>테스트 코드를 작성한 후 <strong>그 테스트 코드를 Pass 할 수 있는 실제 코드를 작성</strong></li>
+</ul>
+<hr>
+<h1 id="1-2-TDD를-하면-좋은-점"><a href="#1-2-TDD를-하면-좋은-점" class="headerlink" title="1.2 TDD를 하면 좋은 점"></a>1.2 TDD를 하면 좋은 점</h1><ul>
+<li>TDD를 하면, 코드에 안정감이 부여</li>
+<li>개발하는데 많은 시간이 소요되는 부분은 디버깅 부분이라서, TDD를 사용하면 디버깅 시간이 줄어들고 개발 시간도 줄어듬</li>
+<li>소스 코드 하나하나를 더욱 신중하게 짤 수 있기 때문에 깨끗한 코드가 나올 확률이 높음</li>
+</ul>
+<hr>
+<h1 id="2-React-Testing-Library"><a href="#2-React-Testing-Library" class="headerlink" title="2. React Testing Library"></a>2. React Testing Library</h1><p>Create React App로 리액트 앱을 생성하면 기본적으로 테스팅 할 때, React Testing Library를 사용합니다.</p>
+<ul>
+<li>Airbnb에서 만든 Enzyme을 대처하는 솔루션<ul>
+<li>cf. <code>Enzyme</code> : 다른 테스트 솔루션 , 구성 요소의 세부 정보를 테스트</li>
+<li>차이점<ul>
+<li><code>Enzyme</code> : 구현 주도 테스트 (Implementation Driven Test)</li>
+<li><code>React Testing Library</code> : 행위 주도 테스트 (Behavior Driven Test)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>React 구성 요소 작업을 위한 API를 추가하여 DOM Testing Library 위에 구축</li>
+<li>DOM Testing Library란 Dom 노드(Node)를 테스트하기 위한 가벼운 솔루션</li>
+<li><strong>Create React App으로 생성된 프로젝트는 React Testing Library를 지원</strong></li>
+<li>그렇지 않은 경우 npm으로 추가<ul>
+<li><code>npm install --save-dev @testing-library/react</code></li>
+</ul>
+</li>
+<li>cf. <a target="_blank" rel="noopener" href="https://testing-library.com/docs/react-testing-library/intro/">React Testing Library 공식문서</a></li>
+</ul>
+<hr>
+<h1 id="3-Jest"><a href="#3-Jest" class="headerlink" title="3. Jest"></a>3. Jest</h1><ul>
+<li>FaceBook이 만들어진 테스팅 프레임워크</li>
+<li>React Testing Library와 같이 같이 사용됨</li>
+<li>최소한의 설정으로 동작하며 Test Case를 만들어서 어플리케이션 코드가 잘 돌아가는지 확인</li>
+<li>단위 (Unit) 테스트를 위해서 이용</li>
+<li><strong>Create React App으로 생성된 프로젝트는 Jest를 지원</strong></li>
+<li>그렇지 않은 경우 npm으로 추가<ul>
+<li><code>npm install jest --save-dev</code></li>
+</ul>
+</li>
+<li>Jest가 Test 파일을 찾을 떄 다음 이름 규칙을 가진 파일 등은 전부 Test 파일로 판단함<ul>
+<li><code>파일명.test.js</code></li>
+<li><code>파일명.spec.js</code></li>
+<li><code>tests 폴더</code> 안에 들어있는 파일</li>
+</ul>
+</li>
+<li>cf. <a target="_blank" rel="noopener" href="https://jestjs.io/">Jest 공식문서</a></li>
+</ul>
+<hr>
+<h2 id="3-1-Jest-파일-구조"><a href="#3-1-Jest-파일-구조" class="headerlink" title="3.1 Jest 파일 구조"></a>3.1 Jest 파일 구조</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">📦 describe <span class="comment"># 여러 관련 테스트를 그룹화하는 블록</span></span><br><span class="line">├─ <span class="built_in">test</span>(it) <span class="comment"># 개별 테스트를 수행하는 곳. 각 테스트를 작은 문장처럼 설명</span></span><br><span class="line">│  ├─ expect <span class="comment"># 값을 테스트할 때마다 사용,</span></span><br><span class="line">│  ├─ <span class="comment"># expect 함수 혼자서는 거의 사용 되지 않으며 matcher와 함께 사용</span></span><br><span class="line">│  └─ matcher <span class="comment"># 다른 방법으로 값을 테스트 할 때 사용</span></span><br><span class="line">├─ <span class="built_in">test</span>(it)</span><br><span class="line">├─ <span class="built_in">test</span>(it)</span><br><span class="line">└─ <span class="built_in">test</span>(it)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-1-1-test-it-예시"><a href="#3-1-1-test-it-예시" class="headerlink" title="3.1.1 test(it) 예시"></a>3.1.1 test(it) 예시</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">📦 describe 과일</span><br><span class="line">└─ it 사과</span><br><span class="line">└─ it 바나나</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-1-2-expect-matcher-예시"><a href="#3-1-2-expect-matcher-예시" class="headerlink" title="3.1.2 expect, matcher 예시"></a>3.1.2 expect, matcher 예시</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">test</span>(<span class="string">&quot;2+2는 4임&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">expect</span>(<span class="number">2</span> + <span class="number">2</span>).<span class="title function_">toBe</span>(<span class="number">4</span>); <span class="comment">// toBe(4) 부분이 matcher</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&quot;2+2는 5가 아님&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="title function_">expect</span>(<span class="number">2</span> + <span class="number">2</span>)not.<span class="title function_">toBe</span>(<span class="number">4</span>); <span class="comment">// not.toBe(4) 부분이 matcher</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-2-CRA-Test"><a href="#3-2-CRA-Test" class="headerlink" title="3.2 CRA Test"></a>3.2 CRA Test</h2><ul>
+<li>Create React App으로 생성된 프로젝트의 <code>App.test.js</code>가 기본 테스트가 진행되는 곳임</li>
+<li><code>npm test</code>로 실행<ul>
+<li>실행해보면 a를 누르면 전체 실행</li>
+<li>q를 누르면 빠져나올 수 있음</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// App.test.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; render, screen &#125; <span class="keyword">from</span> <span class="string">&#x27;@testing-library/react&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="title class_">App</span> <span class="keyword">from</span> <span class="string">&#x27;./App&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">test</span>(<span class="string">&#x27;renders learn react link&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// ** render : DOM에 컴포넌트를 랜더링하는 함수</span></span><br><span class="line">  <span class="comment">// 인자로 랜더링할 React 컴포넌트가 들어감</span></span><br><span class="line">  <span class="title function_">render</span>(<span class="language-xml"><span class="tag">&lt;<span class="name">App</span> /&gt;</span></span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// render의 인자로 들어있는 컴포넌트에 learn react라는 텍스트가 들어있는지 없는지 테스트</span></span><br><span class="line">  <span class="keyword">const</span> linkElement = screen.<span class="title function_">getByText</span>(<span class="regexp">/learn react/i</span>);</span><br><span class="line">  <span class="title function_">expect</span>(linkElement).<span class="title function_">toBeInTheDocument</span>();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-3-쿼리-함수"><a href="#3-3-쿼리-함수" class="headerlink" title="3.3 쿼리 함수"></a>3.3 쿼리 함수</h2><ul>
+<li>cf. <a target="_blank" rel="noopener" href="https://testing-library.com/docs/queries/about/">Testing Library 공식 문서 About Queries</a></li>
+<li>쿼리는 페이지에서 요소를 찾기 위해 테스트 라이브러리가 제공하는 방법</li>
+<li>여러 유형의 쿼리(<code>&quot;get&quot;, &quot;find&quot;, &quot;query&quot;</code>)가 존재</li>
+<li>상황에 맞게 적절하게 사용해야 함</li>
+</ul>
+<h3 id="3-3-1-get-find-query"><a href="#3-3-1-get-find-query" class="headerlink" title="3.3.1 get, find, query"></a>3.3.1 get, find, query</h3><p><code>getBy...</code></p>
+<ul>
+<li>쿼리에 대해 일치하는 노드를 반환하고 일치하는 요소가 없거나 둘 이상의 일치가 발견되면, <strong>오류를 발생</strong></li>
+<li>둘 이상의 요소가 예쌍되는 경우에는 대신 getAllBy 사용</li>
+</ul>
+<hr>
+<p><code>findBy...</code></p>
+<ul>
+<li>주어진 쿼리와 일치하는 요소가 발견되면 <strong>Promise를 반환</strong></li>
+<li>요소 가 발견되지 않거나 기본 제한 시간인 1000ms 후에 둘 이상의 요소가 발견되면 약속이 거부</li>
+<li>둘 이 상의 요소를 찾아야 하는 경우 findAllBy를 사용</li>
+<li>getBy + waitFor &#x3D; findBy</li>
+</ul>
+<hr>
+<p><code>queryBy...</code></p>
+<ul>
+<li>쿼리에 대해 일치하는 노드를 반환 하고 일치하는 <strong>요소가 없으면 null을 반환</strong></li>
+<li>존재하지 않는요소를 어설션하는데 유용</li>
+<li>둘 이상의 일치 항목이 발견되면 오류가 발생</li>
+<li>확인된 경우 대신 queryAllBy 사용</li>
+</ul>
+<hr>
+<p><code>&quot;waitFor</code></p>
+<ul>
+<li>일정 기간 동안 기다려야 할 때 waitFor를 사용</li>
+<li>기대가 통과할 때까지 기다릴 수 있음</li>
+</ul>
+<hr>
+<h3 id="3-3-2-정리"><a href="#3-3-2-정리" class="headerlink" title="3.3.2 정리"></a>3.3.2 정리</h3><p>cf. <a target="_blank" rel="noopener" href="https://testing-library.com/docs/queries/about/#types-of-queries">https://testing-library.com/docs/queries/about/#types-of-queries</a></p>
+<table>
+<thead>
+<tr>
+<th align="center">Type of Query</th>
+<th align="center">0 Matches</th>
+<th align="center">1 Match</th>
+<th align="center">&gt;1 Matches</th>
+<th align="center">Retry (Async&#x2F;Await)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>Single Element</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><code>getBy...</code></td>
+<td align="center">Throw error</td>
+<td align="center">Return element</td>
+<td align="center">Throw error</td>
+<td align="center">No</td>
+</tr>
+<tr>
+<td align="center"><code>queryBy...</code></td>
+<td align="center">Return <code>null</code></td>
+<td align="center">Return element</td>
+<td align="center">Throw error</td>
+<td align="center">No</td>
+</tr>
+<tr>
+<td align="center"><code>findBy...</code></td>
+<td align="center">Throw error</td>
+<td align="center">Return element</td>
+<td align="center">Throw error</td>
+<td align="center">Yes</td>
+</tr>
+<tr>
+<td align="center"><strong>Multiple Elements</strong></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><code>getAllBy...</code></td>
+<td align="center">Throw error</td>
+<td align="center">Return array</td>
+<td align="center">Return array</td>
+<td align="center">No</td>
+</tr>
+<tr>
+<td align="center"><code>queryAllBy...</code></td>
+<td align="center">Return <code>[]</code></td>
+<td align="center">Return array</td>
+<td align="center">Return array</td>
+<td align="center">No</td>
+</tr>
+<tr>
+<td align="center"><code>findAllBy...</code></td>
+<td align="center">Throw error</td>
+<td align="center">Return array</td>
+<td align="center">Return array</td>
+<td align="center">Yes</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="4-CRA에서-eslint"><a href="#4-CRA에서-eslint" class="headerlink" title="4. CRA에서 eslint"></a>4. CRA에서 eslint</h1><p>cf. 리액트 개발할 떄, Create React App에서는기본 eslint가 설정있음</p>
+<ul>
+<li>하지만, VS Code에서 바로 에러 확인할 수 없고,</li>
+<li>앱을 시작했을 때 터미널 상에서 볼 수 있음</li>
+</ul>
+<p>대신 <code>package.json</code>에 <strong>eslintConfig 부분 지우고</strong></p>
+<ul>
+<li><code>.eslintrc.json</code> 파일 생성하면,</li>
+<li>PROBELMS 탭에서 ESLint에서 주는 기본적인 경고들을 확인 가능</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// .eslintrc.json</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;extends&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;react-app&quot;</span><span class="punctuation">,</span> <span class="string">&quot;react-app/jest&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-1-eslint-플러그인"><a href="#4-1-eslint-플러그인" class="headerlink" title="4.1 eslint 플러그인"></a>4.1 eslint 플러그인</h2><p>eslint에서 기본으로 제공하지 않는 다양한 규칙을 플러그인을 통해 사용 가능</p>
+<ul>
+<li>e.g. react에 관련된 린트설정을 위해서는 eslintplugin-react를 사용</li>
+<li>e.g. react hooks에 관련 규칙을 적용하려면 eslint-plugin-react-hooks를 사용</li>
+<li><code>eslint-plugin-testing-library</code><ul>
+<li>render로 Dom 그리는 부분</li>
+</ul>
+</li>
+<li><code>eslint-plugin-jest-dom</code><ul>
+<li>expect-matcher로 테스트</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install eslint-plugin-testing-library eslint-plugin-jest-dom</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="4-1-1-내부-설정"><a href="#4-1-1-내부-설정" class="headerlink" title="4.1.1 내부 설정"></a>4.1.1 내부 설정</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// .eslintrc.json</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;plugins&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;testing-library&quot;</span><span class="punctuation">,</span> <span class="string">&quot;jest-dom&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;extends&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;react-app&quot;</span><span class="punctuation">,</span> <span class="string">&quot;react-app/jest&quot;</span><span class="punctuation">,</span> <span class="string">&quot;plugin:testing-library/react&quot;</span><span class="punctuation">,</span> <span class="string">&quot;plugin:jest-dom/recommend&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>plugins 항목 </code><ul>
+<li>플러그인 추가 추가할 때, eslint-plugin- 부분 생략가능</li>
+</ul>
+</li>
+<li><code>extends 항목</code><ul>
+<li>플러그인을 추가한 후에 규칙을 정해줘야 사용가능</li>
+<li>extends 항목에 사용하고자 하는 규칙을 설정</li>
+<li>vue, angular, react 중 react를 위한 규칙 recommended는 추천이 되는 걸 사용</li>
+</ul>
+</li>
+</ul>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/08/Front-React-Basic-23-Fetch01/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-08 10:09:22
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/react/" title="React"> <b>#</b> React </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/react/basic/" title="Basic"> <b>#</b> Basic </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/react/" title="React"> #React </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/08/Front-React-Basic-24-Fetch02/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%A3%BC%EB%8F%84-%EA%B0%9C%EB%B0%9C-TDD"><span class="toc-text">1. 테스트 주도 개발(TDD)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-Test-Driven-Development-TDD"><span class="toc-text">1.1 Test Driven Development(TDD)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-2-TDD%EB%A5%BC-%ED%95%98%EB%A9%B4-%EC%A2%8B%EC%9D%80-%EC%A0%90"><span class="toc-text">1.2 TDD를 하면 좋은 점</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-React-Testing-Library"><span class="toc-text">2. React Testing Library</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Jest"><span class="toc-text">3. Jest</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-Jest-%ED%8C%8C%EC%9D%BC-%EA%B5%AC%EC%A1%B0"><span class="toc-text">3.1 Jest 파일 구조</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-1-test-it-%EC%98%88%EC%8B%9C"><span class="toc-text">3.1.1 test(it) 예시</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-2-expect-matcher-%EC%98%88%EC%8B%9C"><span class="toc-text">3.1.2 expect, matcher 예시</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-CRA-Test"><span class="toc-text">3.2 CRA Test</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%EC%BF%BC%EB%A6%AC-%ED%95%A8%EC%88%98"><span class="toc-text">3.3 쿼리 함수</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-1-get-find-query"><span class="toc-text">3.3.1 get, find, query</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-2-%EC%A0%95%EB%A6%AC"><span class="toc-text">3.3.2 정리</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-CRA%EC%97%90%EC%84%9C-eslint"><span class="toc-text">4. CRA에서 eslint</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-eslint-%ED%94%8C%EB%9F%AC%EA%B7%B8%EC%9D%B8"><span class="toc-text">4.1 eslint 플러그인</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-1-%EB%82%B4%EB%B6%80-%EC%84%A4%EC%A0%95"><span class="toc-text">4.1.1 내부 설정</span></a></li></ol></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Front-React-Basic-25-React%20%ED%85%8C%EC%8A%A4%ED%8A%B8%20%EC%A3%BC%EB%8F%84%20%EA%B0%9C%EB%B0%9C(TDD) + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F08%2FFront-React-Basic-25-TDD%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/08/Front-React-Basic-25-TDD/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

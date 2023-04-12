@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Front-JS-DOM-02-DOM의 기본개념(CSSOM, Render Tree, CRP) 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Front-JS-DOM-02-DOM의 기본개념(CSSOM, Render Tree, CRP)</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-29 13:37:02
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/js/" title="JS"> <b>#</b> JS </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/js/dom-event/" title="DOM-Event"> <b>#</b> DOM-Event </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/js/" title="JS"> #JS </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-DOM이란"><a href="#1-DOM이란" class="headerlink" title="1. DOM이란?"></a>1. DOM이란?</h1><ul>
+<li>Document Object Model의 약자</li>
+<li>JS는 HTML 조작에 특화된 언어</li>
+</ul>
+<p>JS에선 <code>&lt;p&gt;&lt;/p&gt;</code> 이런 HTML을 직접 해석하고 조작할 수 없습니다.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-handlebars"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">  <span class="comment">&lt;!-- 에러남 --&gt;</span></span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars">  <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span>.innerHTML = &#x27;안녕&#x27;</span></span></span><br><span class="line"><span class="language-xml"><span class="language-handlebars"></span></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>JS는 <code>&lt;p&gt;</code> 이런건 못알아듣습니다. 그런데 어떻게 HTML 태그들을 알아보고 조작할 수 있는 것일까요?<br>JS가 HTML 조작을 하기 위해서는, <strong>HTML을 자바스크립트가 해석할 수 있는 문법으로 변환해놓으면</strong> 됩니다.<br>그래서 HTML을 JS가 알아먹는 array 혹은 object 자료형에 담아버립니다.</p>
+<p>그래서 실제로 브라우저는 HTML 페이지를 열어줄 때,<br>HTML을 JS로 쉽게 찾고 바꾸기 위해 object와 비슷한 자료형에 담아줍니다. </p>
+<p>예를 들어, </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;color : red&quot;</span>&gt;</span>안녕하세요<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>브라우저는 위와 같은 HTML을 발견하면, object 자료로 바꿔서 보관해둡니다.<br>구체적으로는 <code>var document = &#123; &#125;</code> 이런 변수를 하나 만들어서 거기 넣어줍니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="variable language_">document</span> = &#123;</span><br><span class="line">  div1 : &#123;</span><br><span class="line">    style : &#123;color : <span class="string">&#x27;red&#x27;</span>&#125;</span><br><span class="line">    innerHTML : <span class="string">&#x27;안녕하세요&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이제 <code>document.div1.innerHTML = &#39;안녕&#39;</code> 이렇게 자바스크립트를 짜면 HTML 조작이 가능합니다.<br>그래서 저렇게 object에 담아두는 것입니다. (물론 실제 DOM과 생김새는 좀 다름)</p>
+<p>위 변수를 <strong>document object</strong>라고 부릅니다.<br>여기다 model이라고 붙여서 <code>DOM (Document Object Model)</code>이라고 합니다.</p>
+<hr>
+<h1 id="2-브라우저는-위에서부터-읽음"><a href="#2-브라우저는-위에서부터-읽음" class="headerlink" title="2. 브라우저는 위에서부터 읽음"></a>2. 브라우저는 위에서부터 읽음</h1><p>브라우저는 HTML문서를 위에서 부터 차례로 읽어내려갑니다.<br>읽을 때 마다 HTML을 발견하면 DOM에 추가해줍니다. </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;test&#x27;</span>).<span class="property">innerHTML</span> = <span class="string">&#x27;안녕&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">id</span>=<span class="string">&quot;test&quot;</span>&gt;</span>임시글자<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>위와 같이 코드짜면 에러가 납니다. 왜냐면 브라우저는 HTML을 위에서부터 한줄한줄 읽습니다.<br>그런데 갑자기 JS로 <code>&lt;p id=&quot;test&quot;&gt;</code>인 요소를 DOM에서 찾고 바꾸라고 해서 에러가 날 뿐입니다.<br>왜냐면 아직 <code>&lt;p id=&quot;test&quot;&gt;</code>를 읽기 전이라 p태그에 대한 DOM이 아직 생성되지 않았으니까요.<br>이렇듯 <strong>자바스크립트는 DOM이 생성된 경우에만 HTML을 변경</strong>할 수 있습니다.</p>
+<hr>
+<h2 id="2-1-DOMContentLoaded-이벤트-리스너"><a href="#2-1-DOMContentLoaded-이벤트-리스너" class="headerlink" title="2.1 DOMContentLoaded 이벤트 리스너"></a>2.1 DOMContentLoaded 이벤트 리스너</h2><p>“이 코드는 HTML 전부 다 읽고 실행해주세요” 라고 코드짜놓을 수 있습니다. </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="comment">// &quot;HTML을 다 읽어들였는지&quot;를 알려주는 이벤트리스너</span></span></span><br><span class="line"><span class="language-javascript">  <span class="variable language_">document</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;DOMContentLoaded&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>) &#123; </span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;test&#x27;</span>).<span class="property">innerHTML</span> = <span class="string">&#x27;안녕&#x27;</span></span></span><br><span class="line"><span class="language-javascript">  &#125;)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">id</span>=<span class="string">&quot;test&quot;</span>&gt;</span>임시글자<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>JS를 <code>&lt;body&gt;</code>태그 끝나기 전에 전부 작성하기 때문에, JS 위치를 내가 정할 수 없을 경우에만 유용한 방법</p>
+<hr>
+<h2 id="2-2-load-이벤트-리스너"><a href="#2-2-load-이벤트-리스너" class="headerlink" title="2.2 load 이벤트 리스너"></a>2.2 load 이벤트 리스너</h2><p><code>load 이벤트리스너</code>를 사용하면 <strong>DOM 생성뿐만 아니라 이미지, css, js파일이 로드가 됐는지도 체크가능</strong>합니다.</p>
+<ul>
+<li>외부 자바스크립트 파일에 저걸 적어놓으면, </li>
+<li>js 파일보다 이미지가 더 먼저 로드되는 경우도 있으니 이벤트 발생체크를 못할 수도 있음</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;load&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">  <span class="comment">// document 안의 이미지, js 파일 포함 전부 로드가 되었을 경우 실행할 코드</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="3-CSSOM"><a href="#3-CSSOM" class="headerlink" title="3. CSSOM"></a>3. CSSOM</h1><p><code>CSSOM</code>은 CSS Object Model의 약자입니다.<br>브라우저에서 HTML 파일을 분석하면 HTML 요소들을 DOM으로 변환해서 이해하는데, 그러면 정의한 스타일 CSS는 어떻게 이해할까요? 브라우저에서 DOM을 만들게 되면, 정의된 CSS를 병합해서 CSSOM을 만듭니다.<br><code>DOM + CSS = CSSOM</code></p>
+<p>CSSOM에서는 개발자가 정의한 스타일뿐만 아니라 브라우저에서 기본적으로 설정된 모든 속성값들,<br>즉 cascading 룰에 따라서 합해진 모든 CSS 값들이 정의되어져 있습니다.<br>이를 <code>Computed Styles</code>라고 부르는데, 모든 것들이 이미 계산된 스타일을 말합니다.</p>
+<p>cf. <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model">MDN CSSOM</a></p>
+<hr>
+<h1 id="4-Render-Tree"><a href="#4-Render-Tree" class="headerlink" title="4. Render Tree"></a>4. Render Tree</h1><p><code>DOM + CSSOM = Render Tree</code></p>
+<p>브라우저가 HTML 파일을 읽게 되면, 제일 처음 DOM 트리가 만들어지고,<br>그 다음에 CSS 파일을 읽은 다음 전부 계산해서 최종적으로 확정된 CSSOM을 만들게 됩니다.<br>그리고 이거 다음에 DOM과 CSSOM을 합해서<br>즉, 최종적으로 브라우저에 표기될 요소들만 <code>Render Tree</code>에 선별되어서 표기가 됩니다.</p>
+<p>Render Tree에 body태그만 있는 것을 확인할 수 있는데,<br>왜냐하면 DOM의 head 태그는 사용자들에게 보여지지 않기 떄문입니다.</p>
+<p>예를 들면, span의 <code>opacity: 0, visibility: hidden</code> 으로 설정되었다면,<br>사용자 눈에는 보이지 않지만 요소는 그대로 그 자리에 있습니다.<br>다만 투명해질 뿐인거죠. 이런 요소들은 Render Tree에 포함됩니다. </p>
+<p>반대로, <code>display : none</code>라고 되어있다면,<br>아예 사용자 눈에 보이지 않는 속성값들은 Render Tree에 포함되지 않습니다.</p>
+<p>지금까지 브라우저가 아무리 간단한 HTML 페이지라도 사용자에게 보여주기까지는 많은 절차가 진행됩니다.</p>
+<ol>
+<li>DOM으로 변환</li>
+<li>CCSOM을 만들어 최종 스타일을 전부 계산한 다음<ul>
+<li>CSSOM에는 Cascading(폭포) 규칙이 존재하기 때문에 CSS를 따로 정의하지 않아도</li>
+<li>브라우저에 기본 설정된 CSS 파일 등이 전부 적용</li>
+<li>밑에 있는 자식 요소들에도 부모 요소들의 속성값들을 물려받음</li>
+</ul>
+</li>
+<li>Render Tree를 만들어 사용자게 보여준다.</li>
+</ol>
+<hr>
+<h1 id="5-성능-보장-렌더링-순서-Critical-Rendering-Path"><a href="#5-성능-보장-렌더링-순서-Critical-Rendering-Path" class="headerlink" title="5. 성능 보장 렌더링 순서(Critical Rendering Path)"></a>5. 성능 보장 렌더링 순서(Critical Rendering Path)</h1><p>웹 페이지나 웹 어플리케이션을 브라우저가 사용자에게 보여주기까지 어떤 과정을 거치는지에 대해서 알아볼 것입니다.<br>이 과정을 이해해야 성능이 좋은 웹 어플리케이션을 만들 수 있습니다.<br>나중에 다른 JavaScript 프레임워크나 라이브러리를 쓰던, 다른 CSS 전처리기를 쓰던, 애니메이션을 CSS로 하던,<br>기본적인 내용이 잘 정리되어야 성능좋은 웹페이지를 만들 수 있습니다.</p>
+<p>브라우저에서 URL을 입력하게 되면 다음와 같은 순서로 진행됩니다.</p>
+<ol>
+<li>브라우저가 서버에게 HTML 파일을 요청 : <code>Requests/Response</code></li>
+<li>HTML 파일을 서버에게 받아서 로딩 : <code>Loading</code></li>
+<li>로딩받은 HTML 파일을 한 줄씩 읽어서 : <code>Scripting</code><ol>
+<li>DOM 요소로 변환</li>
+<li>CSS 요소를 CSSOM으로 변환</li>
+</ol>
+</li>
+<li>변환한 CSSOM을 브라우저 window에 표기하기 위해 Rendering Tree를 준비 : <code>Rendering</code></li>
+<li>각각의 요소들이 어떤 위치에 얼마나 크게 표기될 건지 계산 : <code>Layout</code></li>
+<li>그림을 그린다. : <code>Painting</code></li>
+</ol>
+<p>이것을 조금 더 어떤 일을 하냐를 카테고리로 나눠서 생각해보면, 크게 2가지 파트로 나눌 수 있습니다.</p>
+<ul>
+<li><code>Construction 파트</code><ul>
+<li>HTML 페이지에서 브라우저가 이해할 수 있도록 브라우저만의 언어로 바꾸는 부분</li>
+<li>DOM요소로 변환하고, CSSOM을 만들고, Render Tree를 최종적으로 만드는 것까지를 의미</li>
+</ul>
+</li>
+<li><code>Operation 파트</code><ul>
+<li>브라우저가 이해할 수 있는 Rendering Tree를 이용해서 구조를 작성하고, 어디에다 배치할 건지 계산한 다음에 실제 브라우저에 그림을 그려주는(redering) 부분</li>
+<li>layout, paint, composition을 통해 최종적으로 사용자에게 웹페이지 내용이 보여지기까지를 의미</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="5-1-layout"><a href="#5-1-layout" class="headerlink" title="5.1 layout"></a>5.1 layout</h2><p>Layout이란 무엇일까요? Render Tree에는 DOM 요소뿐만 아니라 최종적으로 계산된 CSS 스타일이 포함되어 있습니다.<br>이제 이 정보를 기반으로 window 위에서 해당 요소가 어느 위치에 어느 크기로 배치할 지 등의 레이아웃을 구상하게 됩니다.<br>X와 Y, 너비과 높이 등의 크기들을 계산하겠죠.<br>이제 이런 레이아웃을 맞춰야지 정확하게 어디에다가 얼마만큼 크게 그림을 그려야 될지 계산이 됩니다.</p>
+<hr>
+<h2 id="5-2-paint"><a href="#5-2-paint" class="headerlink" title="5.2 paint"></a>5.2 paint</h2><p>그 다음 paint 과정이 일어나는데, 계산한 요소들을 바로 브라우저에 그림을 그리는 것이 아니라 이 요소들을 어떻게 배치했느냐에 따라서 paint 부분에서는 각각 부분을 조금씩 잘게 나누어서 이미지를 준비해 놓습니다. 각각의 요소들의 이미지를 <code>비트맵</code>이라고 하는데, 즉 컴퓨터가 이해할 수 있는 이미지를 비트맵 데이터 형태로 변환하게 됩니다. CSS에서 Z-index를 쓰게 되면 paint 부분이 요소들을 묶어서 레이어 단계를 만들어 레이어 별로 paint를 준비해놓습니다.</p>
+<blockquote>
+<p>꼭 Z-index 별로 아니라 다양한 속성값에 따라 브라우저 엔진마다 성능 개선을 위해 레이어를 만듭니다.</p>
+</blockquote>
+<p>그러면  왜 브라우저는 한 번에 그리지 않고 레이어 기능을 이용해 각 레이어 별로 준비할까요? 이것은 브라우저가 자체적으로 성능 개선을 위해 준비를 해놓는 것입니다. 만약 레이어 기능을 이용하지 않고 개발자가 요소의 위치를 움직이거나 투명도를 변환하다면, 브라우저는 매번 그림을 처음부터 다시 그려야 합니다. 하지만 이렇게 레이어 단위로 그리게 되면, 해당 요소가 변화되면 해당 요소의 레이어만 다시 그리면 됩니다. </p>
+<p>이는 PhotoShop의 레이어 기능과 똑같은 원리로 동작하는 것입니다. 레이어를 만들고 그 위에 또 다른 레이어를 만들어 겹치면서 그림을 그리는 것이죠. 이렇게 만들다 무언가 잘못되었다면 제일 위에 있는 레이어만 지우면 되겠죠? 그리고 다시 새로운 레이어를 만들어서 그림을 그리면 됩니다. 이런 식으로 브라우저도 성능 개선을 위해 레이어 기능을 사용합니다. </p>
+<p>그래서 CSS에 <code>willchange</code>라는 속성값이 있는데, 이는 브라우저에게 opacity(투명도)가 변화될지도 모른다고 애기를 해서, 새 레이어에다 추가를 해놓으라는 의미입니다. 그래서 <code>willchange</code>라는 속성값을 너무 많이 쓰지 마라고도 말합니다. 왜냐하면 불필요하게 너무 많이 쓰면 브라우저가 쓸데없이 불필요하게 레이어를 너무 많이 만들기 때문입니다. 각각 요소마다 새로운 레이어를 만들게 되면 너무 많은 레이어가 존재해도 성능이 나빠질 수 있습니다.</p>
+<hr>
+<h2 id="5-3-composition"><a href="#5-3-composition" class="headerlink" title="5.3 composition"></a>5.3 composition</h2><p>미리 준비한 레이어를 순서대로 차곡차곡 브라우저 위에다가 표기하면 됩니다.<br>z-index가 제일 높은 레이어를 제일 먼저하는 등 composition(구성 요소)를 함께 모아서 표기하게 됩니다.</p>
+<hr>
+<h2 id="5-4-Critical-Rendering-Path-성능"><a href="#5-4-Critical-Rendering-Path-성능" class="headerlink" title="5.4 Critical Rendering Path 성능"></a>5.4 Critical Rendering Path 성능</h2><p>HTML 페이지에서 브라우저가 표기할 수 있는 단계까지를 <code>Critical Rendering Path</code>라고 부릅니다. </p>
+<h3 id="5-4-1-Construction-파트"><a href="#5-4-1-Construction-파트" class="headerlink" title="5.4.1 Construction 파트"></a>5.4.1 Construction 파트</h3><p>DOM(HTML)에서 어떻게 Render Tree를 빠르게 만들 수 있을까요? 당연히 DOM 요소가 작으면 작을 수록, CSS 규칙이 작으면 작을 수록 Tree가 작아지기 때문에 빠르게 만들 수 있겠죠? 그래서 불필요한 태그를 쓰거나, 불필요하게 div태그를 남용한다든지, 쓸데없이 wrapping 클래스나 wrapping 요소를 만든다든지 이런 것들을 자제해야 합니다. 그래서 요소들을 최대한 작게 만드는 것이 중요합니다.</p>
+<h3 id="5-4-2-Operation-파트"><a href="#5-4-2-Operation-파트" class="headerlink" title="5.4.2 Operation 파트"></a>5.4.2 Operation 파트</h3><p>Operation Time에는 처음에 사용자에게 표기하는 것도 중요하지만 나중에 사용자가 클릭을 통해 요소를 움직이거나 애니메이션을 쓸 떄, paint가 자주 일어나지 않도록 만드는 것이 중요하겠죠? 예를 들어, 요소의 위치를 옮기는데 무언가 다시 그림을 그려야 한다면 paint가 다시 발생하기 때문에 성능에 좋지 않겠죠. 최악의 경우는 layout을 수정해서 다른 요소들의 position도 바뀌는 경우 다시 처음부터 그림을 그려야 하기 때문에 성능에 가장 좋지 않습니다. 그래서 우리가 JavaScript나 CSS로 DOM 요소를 조작할 때, composition만 일어나면 성능이 가장 좋습니다. point가 디시 일어난다면 나쁘지도 썩 좋지도 않겠지만, layout이 다시 일어난다면 최악의 경우가 됩니다.</p>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/29/Front-JS-DOM-01-Web%20API/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-29 13:37:02
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/js/" title="JS"> <b>#</b> JS </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/js/dom-event/" title="DOM-Event"> <b>#</b> DOM-Event </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/js/" title="JS"> #JS </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/29/Front-JS-DOM-03-Node/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-DOM%EC%9D%B4%EB%9E%80"><span class="toc-text">1. DOM이란?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80%EB%8A%94-%EC%9C%84%EC%97%90%EC%84%9C%EB%B6%80%ED%84%B0-%EC%9D%BD%EC%9D%8C"><span class="toc-text">2. 브라우저는 위에서부터 읽음</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-DOMContentLoaded-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%A6%AC%EC%8A%A4%EB%84%88"><span class="toc-text">2.1 DOMContentLoaded 이벤트 리스너</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-load-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%A6%AC%EC%8A%A4%EB%84%88"><span class="toc-text">2.2 load 이벤트 리스너</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-CSSOM"><span class="toc-text">3. CSSOM</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-Render-Tree"><span class="toc-text">4. Render Tree</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%EC%84%B1%EB%8A%A5-%EB%B3%B4%EC%9E%A5-%EB%A0%8C%EB%8D%94%EB%A7%81-%EC%88%9C%EC%84%9C-Critical-Rendering-Path"><span class="toc-text">5. 성능 보장 렌더링 순서(Critical Rendering Path)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-layout"><span class="toc-text">5.1 layout</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-paint"><span class="toc-text">5.2 paint</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-3-composition"><span class="toc-text">5.3 composition</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-4-Critical-Rendering-Path-%EC%84%B1%EB%8A%A5"><span class="toc-text">5.4 Critical Rendering Path 성능</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-1-Construction-%ED%8C%8C%ED%8A%B8"><span class="toc-text">5.4.1 Construction 파트</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-2-Operation-%ED%8C%8C%ED%8A%B8"><span class="toc-text">5.4.2 Operation 파트</span></a></li></ol></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Front-JS-DOM-02-DOM%EC%9D%98%20%EA%B8%B0%EB%B3%B8%EA%B0%9C%EB%85%90(CSSOM%2C%20Render%20Tree%2C%20CRP) + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F29%2FFront-JS-DOM-02-DOM%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/29/Front-JS-DOM-02-DOM/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

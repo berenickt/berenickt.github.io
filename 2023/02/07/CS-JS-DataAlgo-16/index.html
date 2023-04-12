@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      CS-JS-DataAlgo-16-소수 구하기 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">CS-JS-DataAlgo-16-소수 구하기</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-02-07 11:46:16
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/cs-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="CS-자료구조-알고리즘"> <b>#</b> CS-자료구조-알고리즘 </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/cs-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/js-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="JS-자료구조-알고리즘"> <b>#</b> JS-자료구조-알고리즘 </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/js-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="JS-자료구조-알고리즘"> #JS-자료구조-알고리즘 </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-소수-prime-구하기"><a href="#1-소수-prime-구하기" class="headerlink" title="1. 소수(prime) 구하기"></a>1. 소수(prime) 구하기</h1><blockquote>
+<p>An integer n &gt; 1 is called a <code>prine number</code>, of simply <code>a prime</code>.<br>if its only positive factors are 1 and n.<br>An integer n &gt; 1 that is not a prime is called composite.</p>
+<p>1보다 큰 정수들 중, 약수로 1과 자기 자신을 갖는 것을 소수(prime)<br>그 밖의 수들을 합성수(composite)이라고 한다.</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Programmers_JS_Algorithm_16_1.png" alt="Programmers_JS_Algorithm_16_1"></p>
+<p>소수는 1 또는 자기 자신만은 약수로 가지는 수를 의미한다.</p>
+<hr>
+<h1 id="2-소수를-구하는-효율적인-방법"><a href="#2-소수를-구하는-효율적인-방법" class="headerlink" title="2. 소수를 구하는 효율적인 방법"></a>2. 소수를 구하는 효율적인 방법</h1><h2 id="2-1-가장-직관적인-방법"><a href="#2-1-가장-직관적인-방법" class="headerlink" title="2.1 가장 직관적인 방법"></a>2.1 가장 직관적인 방법</h2><p>2부터 N-1까지 루프를 돌며 나눠보기</p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Programmers_JS_Algorithm_16_2.png" alt="Programmers_JS_Algorithm_16_2"></p>
+<p>다른 방법들에 비해 느린 편에 속한다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// O(n)</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">is_prime</span>(<span class="params">num</span>) &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">2</span>; i &lt; num; i += <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (num % i == <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-2-효율성-개선하기"><a href="#2-2-효율성-개선하기" class="headerlink" title="2.2 효율성 개선하기"></a>2.2 효율성 개선하기</h2><p>그 어떤 소수도 N의 제곱근보다 큰 수로 나눠지지 않는다는 점을 이용</p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Programmers_JS_Algorithm_16_3.png" alt="Programmers_JS_Algorithm_16_3"></p>
+<p>이전 방법보다 더 효율적이다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// O(루트 n)</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">is_prime</span>(<span class="params">num</span>) &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">2</span>; i * i &lt;= num; i += <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (num % i == <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-3-에라토스테네스의-체⭐"><a href="#2-3-에라토스테네스의-체⭐" class="headerlink" title="2.3 에라토스테네스의 체⭐"></a>2.3 에라토스테네스의 체⭐</h2><p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Programmers_JS_Algorithm_16_4.png" alt="Programmers_JS_Algorithm_16_4"></p>
+<p>고대 그리스 수학자 에라토스테네스가 발견한 소수를 찾는 방법으로 <strong>소수를 판단할 떄, 가장 효율적</strong>인 알고리즘</p>
+<img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Programmers_JS_Algorithm_16_5.png" alt="Programmers_JS_Algorithm_16_5" style="zoom: 80%;" />
+
+<ul>
+<li>2를 제외한 2의 배수가 되는 수들을 모두 체크</li>
+<li>3의 배수가 되는 수들을 모두 체크</li>
+<li>4는 이미 체크되어 있기 떄문에 넘어감</li>
+<li>5의 배수가 되는 수들을 모두 체크</li>
+<li>7의 배수가 되는 수들을 모두 체크</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Programmers_JS_Algorithm_16_6.png" alt="Programmers_JS_Algorithm_16_6"></p>
+<ul>
+<li>8부터는 확인할 필요가 없다</li>
+<li>이후 54까지 체크되지 않은 수들은 모두 소수로 판단</li>
+</ul>
+<p>에라토스테네스의 체는 <strong>1부터 N까지 모든 소수를 구하는 경우 가장 효율적</strong>이다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 에라토스테네스의 체</span></span><br><span class="line"><span class="comment">// O(n log log n)</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">get_primes</span>(<span class="params">num</span>) &#123;</span><br><span class="line">  <span class="comment">// 0과 1을 제외한 입력값의 나머지 숫자까지 true를 담은 배열</span></span><br><span class="line">  <span class="keyword">const</span> prime = [<span class="literal">false</span>, <span class="literal">false</span>, ...<span class="title class_">Array</span>(num - <span class="number">1</span>).<span class="title function_">fill</span>(<span class="literal">true</span>)];</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 2 ~ 입력받은 수까지 순회</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">2</span>; i * i &lt;= num; i += <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="comment">// 2, 3, 4 순으로 배수들을 false로 체크</span></span><br><span class="line">    <span class="keyword">if</span> (prime[i]) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">let</span> j = i * <span class="number">2</span>; j &lt;= num; j += i) &#123;</span><br><span class="line">        prime[j] = <span class="literal">false</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> prime.<span class="title function_">filter</span>(<span class="title class_">Boolean</span>); <span class="comment">// false같은 값을 제거</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="2-3-1-추가-설명-filter-Boolean"><a href="#2-3-1-추가-설명-filter-Boolean" class="headerlink" title="2.3.1 추가 설명 : filter(Boolean)"></a>2.3.1 추가 설명 : filter(Boolean)</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> something = [</span><br><span class="line"> ...some</span><br><span class="line">].<span class="title function_">filter</span>(<span class="title class_">Boolean</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>왜 이렇게 사용할까?</strong> JS에서 제공되는 배열은 아래와 같이 선언하여 사용할 수 있다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> bad = <span class="literal">undefined</span>;</span><br><span class="line"><span class="keyword">const</span> bomb = [<span class="literal">undefined</span>, <span class="number">5</span>, <span class="literal">null</span>, ,,<span class="literal">undefined</span>];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> arr = [bad, <span class="number">1</span>, <span class="number">2</span>, ...bomb];</span><br><span class="line"><span class="comment">// arr = [undefined, 1, 2, undefined, 5, null, undefined, undefined, undefined]</span></span><br></pre></td></tr></table></figure>
+
+<p>위에서 제공되는 예시와 같이 <code>undefined</code> 또는 <code>null</code>이 의도하지 않게 들어갈 수 있다.<br>이러한 가능성은 반복문에서 문제가 발생될 가능성이 크다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">arr.<span class="title function_">map</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(item.<span class="property">value</span>);  <span class="comment">// ERROR! Uncaught TypeError: Cannot read property &#x27;item&#x27; of undefined</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>이를 해결하기위해 일반적으로 반복문 내에서 체크하는 로직을 삽입하여 처리하기도 한다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">arr.<span class="title function_">map</span>(<span class="function">(<span class="params">item</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (item) &#123;</span><br><span class="line">    <span class="keyword">return</span> item;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(item.<span class="property">value</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>하지만 이러한 처리방식은 두가지의 문제점을 야기한다.</p>
+<ol>
+<li>코드가 복잡해진다.</li>
+<li><strong>배열이 또다른 새로운 배열로 확장되는 경우 또는 배열이 재사용되는 경우 동일하게 체크하는 로직을 삽입하여야한다.</strong></li>
+</ol>
+<p>이보다 더 좋은 방법은 없을까? 그 방법이 <code>filter(Boolean)</code>을 사용하여 배열을 <strong>믿을 수 있는 상태</strong>로 만드는 것이다! 심플하고 간단하게 사용할 수 있다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> array = [<span class="literal">false</span>, <span class="number">0</span>, -<span class="number">0</span>, <span class="number">0n</span>, <span class="string">&quot;&quot;</span>, <span class="literal">null</span>, <span class="literal">undefined</span>, <span class="title class_">NaN</span>, &#123;<span class="attr">hello</span>: <span class="string">&quot;world&quot;</span>&#125;];</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(array.<span class="title function_">filter</span>(<span class="title class_">Boolean</span>)); <span class="comment">// [&#123;hello: &quot;world&quot;&#125;]</span></span><br></pre></td></tr></table></figure>
+
+<p><code>Boolean</code>을 <code>iterator</code> 로 사용하여 <code>false, 0, -0, 0n, &quot;&quot;, null, undefined, NaN</code>를 제거할 수 있다.</p>
+<blockquote>
+<p>Reference : <a target="_blank" rel="noopener" href="https://michaeluloth.com/filter-boolean">https://michaeluloth.com/filter-b</a></p>
+</blockquote>
+<hr>
+<h1 id="3-실습-소수-찾기"><a href="#3-실습-소수-찾기" class="headerlink" title="3. 실습 : 소수 찾기"></a>3. 실습 : 소수 찾기</h1><h2 id="3-1-문제"><a href="#3-1-문제" class="headerlink" title="3.1 문제"></a>3.1 문제</h2><p>1부터 입력받은 숫자 n 사이에 있는 소수의 개수를 반환하는 함수, solution을 만들어 보세요.<br>소수는 1과 자기 자신으로만 나누어지는 수를 의미합니다. (1은 소수가 아닙니다.)</p>
+<p>[제한 조건]</p>
+<ul>
+<li>n은 2이상 1000000이하의 자연수입니다.</li>
+</ul>
+<p>[입출력 예]</p>
+<table>
+<thead>
+<tr>
+<th align="center">n</th>
+<th align="center">result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">10</td>
+<td align="center">4</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="center">3</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="3-2-풀이"><a href="#3-2-풀이" class="headerlink" title="3.2 풀이"></a>3.2 풀이</h2><p>이 문제는 이름 그대로 1부터 입력받은 숫자 n 사이에 있는 소수를 찾는 문제입니다.<br>1부터 n까지 소수를 모두 찾아야할 경우 가장 효율적인 알고리즘은 에라토스테네스의 체라고 말씀드린 것 기억나시나요?<br>이번 문제는 에라토스테네스의 체를 이용하여 쉽게 풀 수 있습니다.</p>
+<p>그렇지만 다른 알고리즘도 이용하여 한 번 비교해보도록 하겠습니다.</p>
+<h3 id="3-2-1-단순-루프로-풀어보기"><a href="#3-2-1-단순-루프로-풀어보기" class="headerlink" title="3.2.1 단순 루프로 풀어보기"></a>3.2.1 단순 루프로 풀어보기</h3><p>단순히 2부터 N까지 루프를 도는 것으로 일단 풀어볼 수 있습니다. 코드는 다음과 같습니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// O(n)</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">isPrime</span>(<span class="params">num</span>) &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">2</span>; i &lt; num; i += <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (num % i == <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">solution</span>(<span class="params">n</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> answer = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">2</span>; i &lt;= n; i += <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_">isPrime</span>(i)) &#123;</span><br><span class="line">      answer += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> answer;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>하지만 이 코드의 경우 성능이 느리기 때문에 모든 테스트 케이스를 통과하지 못합니다. 따라서 더 효율적인 방법을 찾아야 합니다.</p>
+<hr>
+<h3 id="3-2-2-제곱근-이후-연산하지-않기"><a href="#3-2-2-제곱근-이후-연산하지-않기" class="headerlink" title="3.2.2 제곱근 이후 연산하지 않기"></a>3.2.2 제곱근 이후 연산하지 않기</h3><p>영상에서 말씀드린 것처럼 N의 제곱근 이후는 체크할 필요가 없습니다. 따라서 다음과 같이 코드를 개선합니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// O(sqrt(n))</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">isPrime</span>(<span class="params">num</span>) &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">2</span>; i * i &lt;= num; i += <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="comment">// 이 부분이 변경됩니다.</span></span><br><span class="line">    <span class="keyword">if</span> (num % i == <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">solution</span>(<span class="params">n</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> answer = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">2</span>; i &lt;= n; i += <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="title function_">isPrime</span>(i)) &#123;</span><br><span class="line">      answer += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> answer;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>정확성 테스트는 모두 통과하지만 여전히 효율성 테스트는 통과하지 못합니다. 따라서 더 효율적인 알고리즘을 사용해야 합니다.</p>
+<hr>
+<h3 id="3-2-3-에라토스테네스의-체"><a href="#3-2-3-에라토스테네스의-체" class="headerlink" title="3.2.3 에라토스테네스의 체"></a>3.2.3 에라토스테네스의 체</h3><p>에라토스테네스의 체를 구현한 코드는 다음과 같습니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 에라토스테네스의 체</span></span><br><span class="line"><span class="comment">// O(n log log n)</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">get_primes</span>(<span class="params">num</span>) &#123;</span><br><span class="line">  <span class="comment">// 0과 1은 소수가 아니기에 미리 false로 체크합니다.</span></span><br><span class="line">  <span class="keyword">const</span> prime = [<span class="literal">false</span>, <span class="literal">false</span>, ...<span class="title class_">Array</span>(num - <span class="number">1</span>).<span class="title function_">fill</span>(<span class="literal">true</span>)];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">2</span>; i * i &lt;= num; i += <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (prime[i]) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">let</span> j = i * <span class="number">2</span>; j &lt;= num; j += i) &#123;</span><br><span class="line">        prime[j] = <span class="literal">false</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> prime.<span class="title function_">filter</span>(<span class="title class_">Boolean</span>); <span class="comment">// true만 필터링하고 싶을 경우 이런 방식으로 쓸 수 있습니다.</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">solution</span>(<span class="params">n</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">get_primes</span>(n).<span class="property">length</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이 경우 효율성 테스트를 통과합니다. 정확도 테스트에서 걸린 시간을 확인해보아도 훨씬 빠르다는 것을 알 수 있습니다.</p>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/02/06/Front-Start-CSS-09-MediaQuery/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-02-07 11:46:16
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/cs-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="CS-자료구조-알고리즘"> <b>#</b> CS-자료구조-알고리즘 </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/cs-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/js-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="JS-자료구조-알고리즘"> <b>#</b> JS-자료구조-알고리즘 </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/js-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="JS-자료구조-알고리즘"> #JS-자료구조-알고리즘 </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/02/10/CS-JS-DataAlgo-17/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%EC%86%8C%EC%88%98-prime-%EA%B5%AC%ED%95%98%EA%B8%B0"><span class="toc-text">1. 소수(prime) 구하기</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%EC%86%8C%EC%88%98%EB%A5%BC-%EA%B5%AC%ED%95%98%EB%8A%94-%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9D%B8-%EB%B0%A9%EB%B2%95"><span class="toc-text">2. 소수를 구하는 효율적인 방법</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%EA%B0%80%EC%9E%A5-%EC%A7%81%EA%B4%80%EC%A0%81%EC%9D%B8-%EB%B0%A9%EB%B2%95"><span class="toc-text">2.1 가장 직관적인 방법</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%ED%9A%A8%EC%9C%A8%EC%84%B1-%EA%B0%9C%EC%84%A0%ED%95%98%EA%B8%B0"><span class="toc-text">2.2 효율성 개선하기</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%EC%97%90%EB%9D%BC%ED%86%A0%EC%8A%A4%ED%85%8C%EB%84%A4%EC%8A%A4%EC%9D%98-%EC%B2%B4%E2%AD%90"><span class="toc-text">2.3 에라토스테네스의 체⭐</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-%EC%B6%94%EA%B0%80-%EC%84%A4%EB%AA%85-filter-Boolean"><span class="toc-text">2.3.1 추가 설명 : filter(Boolean)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%EC%8B%A4%EC%8A%B5-%EC%86%8C%EC%88%98-%EC%B0%BE%EA%B8%B0"><span class="toc-text">3. 실습 : 소수 찾기</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%EB%AC%B8%EC%A0%9C"><span class="toc-text">3.1 문제</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%ED%92%80%EC%9D%B4"><span class="toc-text">3.2 풀이</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-1-%EB%8B%A8%EC%88%9C-%EB%A3%A8%ED%94%84%EB%A1%9C-%ED%92%80%EC%96%B4%EB%B3%B4%EA%B8%B0"><span class="toc-text">3.2.1 단순 루프로 풀어보기</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-2-%EC%A0%9C%EA%B3%B1%EA%B7%BC-%EC%9D%B4%ED%9B%84-%EC%97%B0%EC%82%B0%ED%95%98%EC%A7%80-%EC%95%8A%EA%B8%B0"><span class="toc-text">3.2.2 제곱근 이후 연산하지 않기</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-3-%EC%97%90%EB%9D%BC%ED%86%A0%EC%8A%A4%ED%85%8C%EB%84%A4%EC%8A%A4%EC%9D%98-%EC%B2%B4"><span class="toc-text">3.2.3 에라토스테네스의 체</span></a></li></ol></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + CS-JS-DataAlgo-16-%EC%86%8C%EC%88%98%20%EA%B5%AC%ED%95%98%EA%B8%B0 + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F02%2F07%2FCS-JS-DataAlgo-16%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/02/07/CS-JS-DataAlgo-16/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

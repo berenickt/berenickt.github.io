@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Front-TS-Basic-07-클래스 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Front-TS-Basic-07-클래스</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-08 17:36:05
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/ts/" title="TS"> <b>#</b> TS </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/ts/basic/" title="Basic"> <b>#</b> Basic </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/ts/" title="TS"> #TS </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-JS의-class-문법"><a href="#1-JS의-class-문법" class="headerlink" title="1. JS의 class 문법"></a>1. JS의 class 문법</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> 챔피언(q스킬, w스킬) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">q</span> = q스킬;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">w</span> = w스킬;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> nunu = <span class="keyword">new</span> 챔피언(<span class="string">&#x27;잡아먹기&#x27;</span>, <span class="string">&#x27;눈덩이굴리기&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> garen = <span class="keyword">new</span> 챔피언(<span class="string">&#x27;돌격&#x27;</span>, <span class="string">&#x27;방패&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;누누: &#x27;</span>, nunu);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;가렌&quot;: &#x27;</span>, garen);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>class</code>는 <strong>object 뽑는 기계</strong></li>
+<li><code>this</code>는 <strong>기계로부터 생성되는 object &#x3D; 인스턴스</strong></li>
+</ul>
+<p>위 코드를 ES6 class 문법으로 만들어보면,</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> 챔피언 &#123;</span><br><span class="line">  <span class="comment">// constructor(생성자) = object 생성 기계</span></span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">q스킬, w스킬</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">q</span> = q스킬;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">w</span> = w스킬;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> nunu = <span class="keyword">new</span> 챔피언(<span class="string">&#x27;잡아먹기&#x27;</span>, <span class="string">&#x27;눈덩이굴리기&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> garen = <span class="keyword">new</span> 챔피언(<span class="string">&#x27;돌격&#x27;</span>, <span class="string">&#x27;방패&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;누누: &#x27;</span>, nunu);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;가렌: &#x27;</span>, garen);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="2-JS의-prototype-문법"><a href="#2-JS의-prototype-문법" class="headerlink" title="2. JS의 prototype 문법"></a>2. JS의 prototype 문법</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// prototype === 유전자, 자동으로 추가됨</span></span><br><span class="line"><span class="keyword">function</span> 챔피언() &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">q</span> = <span class="string">&#x27;잡아먹기&#x27;</span>;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">w</span> = <span class="string">&#x27;눈덩이굴리기&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">챔피언.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">name</span> = <span class="string">&#x27;누누&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> nunu = <span class="keyword">new</span> 챔피언();</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(nunu.<span class="property">name</span>); <span class="comment">// 누누</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(nunu); <span class="comment">// 챔피언 &#123; q: &#x27;잡아먹기&#x27;, w: &#x27;눈덩이굴리기&#x27; &#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>array 자료에 <code>.sort()</code>같은 것들을 붙일 수 있는 이유는? → <strong>부모 유전자에 기록되어 있어서</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>];</span><br><span class="line"><span class="keyword">let</span> arr2 = <span class="keyword">new</span> <span class="title class_">Array</span>(<span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">arr.<span class="title function_">sort</span>();</span><br><span class="line">arr2.<span class="title function_">sort</span>(); <span class="comment">// [ 1, 2, 4 ]</span></span><br></pre></td></tr></table></figure>
+
+<p>모든 array 자료에 쓸 수 있는 함수를 추가하려면?</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Array</span>.<span class="property"><span class="keyword">prototype</span></span>.추가할함수 = <span class="keyword">function</span> (<span class="params"></span>) &#123;&#125;;</span><br><span class="line"><span class="keyword">let</span> numArr = [<span class="number">4</span>, <span class="number">2</span>, <span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">numArr.추가할함수();</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="3-객체지향-개념"><a href="#3-객체지향-개념" class="headerlink" title="3. 객체지향 개념"></a>3. 객체지향 개념</h1><p>cf. <a target="_blank" rel="noopener" href="https://kevinkim95-dev.tistory.com/2">절차적 프로그래밍 vs 객체지향 프로그래밍</a></p>
+<h2 id="3-1-Imperative-and-Procedural-Programming"><a href="#3-1-Imperative-and-Procedural-Programming" class="headerlink" title="3.1 Imperative and Procedural Programming"></a>3.1 Imperative and Procedural Programming</h2><p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/ts_7_1.png" alt="ts_7_1"></p>
+<p><code>명령어과 절차형 프로그래밍</code></p>
+<ul>
+<li>객체지향의 반대되는 프로그래밍 패러다임</li>
+<li>데이터와 함수 위주로 구성하는 것</li>
+<li>맨 처음 실행되는 main함수<ul>
+<li>그 아래 여러 함수들을 호출 가능</li>
+<li>함수 내부에서는 전역 변수의 데이터에 접근 가능</li>
+</ul>
+</li>
+<li>대표적인 언어 : C</li>
+</ul>
+<hr>
+<h2 id="3-2-Object-Oriented-Programming"><a href="#3-2-Object-Oriented-Programming" class="headerlink" title="3.2 Object Oriented Programming"></a>3.2 Object Oriented Programming</h2><p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/ts_7_2.png" alt="ts_7_2"></p>
+<p><code>객체지향 프로그래밍</code></p>
+<ul>
+<li>프로그램을 객체(Object)로 정의해서 객체들끼리 의사소통하고 디자인하고 코딩해나가는 패러다임</li>
+<li>Object 단위로 만들기 떄문에 한 곳에서 문제가 생긴다면, 관련 Object만 수정하면 됨</li>
+<li>여러 번 반복되는 곳이 있다면, 관련 Object를 재사용할 수 있음</li>
+<li>무언가 새로운 기능이 필요하다면, 새로운 Object를 만들면 되서 확장성도 높음</li>
+<li>장점 : 생상성 높음, 높은 퀄리티 프로그램 작성 가능, 빠르게 기능 구현 가능, 유지보수성 향상</li>
+</ul>
+<p><code>객체(object)</code>는 <code>속성(data)</code>과 <code>함수(행동)</code>으로 구성됨</p>
+<ul>
+<li>e.g. MediaPlay(음악 플레이어)<ul>
+<li>속성(data)<ul>
+<li>music (음악 데이터)</li>
+</ul>
+</li>
+<li>함수(function)<ul>
+<li>play(재생 기능)</li>
+<li>stop(정지 기능)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>속성</code>은 다른 말로 <code>fields, property</code>라고도 부름</li>
+<li><code>함수</code>는 다른 말로 <code>methods</code>라고 부름</li>
+<li><code>object를 정의</code>하는 건 프로그래밍 언어마다 다르지만, 보통 <code>class</code>라고 부름</li>
+</ul>
+<p>class(템플릿, 틀)</p>
+<ul>
+<li>e.g. 붕어빵 만들기<ul>
+<li>class &#x3D;&#x3D;&#x3D; 붕어빵 틀</li>
+<li>object &#x3D;&#x3D;&#x3D; 팥 붕어빵, 크림 붕어빵, …</li>
+</ul>
+</li>
+<li>e.g. 학생(student)<ul>
+<li>class &#x3D;&#x3D;&#x3D; 학생 틀</li>
+<li>object &#x3D;&#x3D;&#x3D; 메시 학생, 호날두 학생</li>
+<li>property &#x3D;&#x3D;&#x3D; 학생 이름, 성적</li>
+<li>method &#x3D;&#x3D;&#x3D; 공부하다</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="4-객체지향-원칙-4가지"><a href="#4-객체지향-원칙-4가지" class="headerlink" title="4. 객체지향 원칙 4가지"></a>4. 객체지향 원칙 4가지</h1><ol>
+<li><code>Encapsulation(캡슐화)</code></li>
+<li><code>Abstraction(추상화)</code></li>
+<li><code>Inheritance(상속성)</code> : 상속을 이용해 코드 재사용성 높임</li>
+<li><code>Polymorphism(다형성)</code> : 캡슐화, 추상황, 상속성을 이용해 구현</li>
+</ol>
+<hr>
+<h2 id="4-1-Encapsulation-캡슐화"><a href="#4-1-Encapsulation-캡슐화" class="headerlink" title="4.1 Encapsulation(캡슐화)"></a>4.1 Encapsulation(캡슐화)</h2><ul>
+<li>절자지향 프로그래밍에서는 데이터와 함수 등이 여러가지가 섞여있음</li>
+<li>흩어져 있는 <strong>데이터와 함수들 중에 연관있고, 관련있는 것끼리 묶어 놓는 것</strong>을 <code>캡슐화</code>라고 함</li>
+<li>e.g. 감기 캡슐약 안에 여러 성분들<ul>
+<li>어떤 성분이 들어있는지 몰라도, 일반인들은 감기약을 먹으면, 감기가 호전된다는 것을 인식함</li>
+</ul>
+</li>
+<li><strong>외부에서 보일 필요가 없는 데이터를 잘 숨겨놓음</strong>으로써 캡슐화 가능</li>
+</ul>
+<hr>
+<h2 id="3-2-Abstraction-추상화"><a href="#3-2-Abstraction-추상화" class="headerlink" title="3.2 Abstraction(추상화)"></a>3.2 Abstraction(추상화)</h2><ul>
+<li>내부에 복잡한 기능을 모르고 다 이해하지 못해도,</li>
+<li>외부에서 간단한 Interface를 통해서 쓸 수 있는 것을 <code>추상화</code>라고 함</li>
+<li>e.g. 커피머신 작동원리<ul>
+<li>커피머신이 어떻게 내부 동작을 몰라도, 커피 타먹을 수 있음</li>
+</ul>
+</li>
+<li>외부에서는 내부가 어떻게 구현되어 있는지 신경쓰지 않고,</li>
+<li>지정된 외부에 보여줄 함수(Interface)를 통해 객체를 사용 가능</li>
+</ul>
+<hr>
+<h2 id="3-3-Inheritance-상속성"><a href="#3-3-Inheritance-상속성" class="headerlink" title="3.3 Inheritance(상속성)"></a>3.3 Inheritance(상속성)</h2><ul>
+<li>e.g. 커피 머신이라는 class가 정의되어져 있음<ul>
+<li>상속을 이용해 잘 만들어진 커피머신의 데이터와 함수를 그대로 갖고 와서,</li>
+<li>필요한 기능을 더해서 다른 종류의 새로운 커피 머신을 만들 수 있음</li>
+</ul>
+</li>
+<li><code>부모 class</code>를 <code>parent, super, base class</code>라고 부르기도 함</li>
+<li><code>자식 class</code>를 <code>child, sub, derived class</code>라고 부르기도 함</li>
+<li>이 관계를 <code>IS-A관계</code>라고도 부름<ul>
+<li>e.g. espresso machin <strong>is a</strong> coffee machine</li>
+<li>e.g. coffee brewer <strong>is a</strong> coffee machine</li>
+</ul>
+</li>
+</ul>
+<p>다른 상속 예</p>
+<ul>
+<li>개 is a 동물</li>
+<li>고양이 is a 동물</li>
+<li>돼지 is a 동물</li>
+</ul>
+<p>다른 상속 예</p>
+<ul>
+<li>HTMLElement <strong>is a</strong> Element</li>
+<li>Element <strong>is a</strong> Node</li>
+<li>Node <strong>is a</strong> EventTarget</li>
+<li>즉, Document, Element, Text는 모두 EventTarget을 상속받기 때문에, 모든 요소들이 이벤트가 발생할 수 있는 것임</li>
+</ul>
+<p><code>extends</code> 키워드를 사용해서 상속을 구현함</p>
+<hr>
+<h3 id="3-3-1-상속의-문제점"><a href="#3-3-1-상속의-문제점" class="headerlink" title="3.3.1 상속의 문제점"></a>3.3.1 상속의 문제점</h3><ul>
+<li>족보가 꼬인다는 말처럼, 상속이 깊어질 수록 서로 간의 관계가 복잡해짐</li>
+<li>상속은 수직적인 구조를 짜는 것을 의미합니다.</li>
+<li>상속의 <strong>치명적 문제점</strong>은 <strong>어떤 부모 클래스의 행동을 수정하게 되면, 이를 상속받는 모든 자식 클래스에도 영향</strong>을 미침</li>
+<li>더군다나 <strong>TS에서는 1가지 이상 부모 클래스를 상속받을 수 없음</strong></li>
+</ul>
+<hr>
+<h3 id="3-3-2-Composition"><a href="#3-3-2-Composition" class="headerlink" title="3.3.2 Composition"></a>3.3.2 Composition</h3><p>레고를 할 때, 필요한 부품을 모아서 조립하는 것처럼, <strong>상속보다 Composition을 선호</strong>하셈</p>
+<ul>
+<li>cf. React에서도 상속을 이용한 class 컴포넌트 방식보다는<ul>
+<li>Composition 방식의 함수형 컴포넌트를 권장함</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="3-4-Polymorphism-다형성"><a href="#3-4-Polymorphism-다형성" class="headerlink" title="3.4 Polymorphism(다형성)"></a>3.4 Polymorphism(다형성)</h2><ul>
+<li>cf. <code>poly (=many)</code> | <code>morphi (=form)</code></li>
+<li><code>polymorhism = 다양한 형태</code></li>
+<li>e.g. 어떤 종류의 동물이든 소리를 내는 함수(makeSound())를 가짐</li>
+<li>e.g. makeCoffee()라는 함수만 알면 어떤 종류의 커피머신이든, 커피 만들 수 있음</li>
+</ul>
+<hr>
+<h1 id="4-필드값-타입지정"><a href="#4-필드값-타입지정" class="headerlink" title="4. 필드값 타입지정"></a>4. 필드값 타입지정</h1><p>class 내부에는 모든 자식 object들이 사용가능한 속성을 만들 수 있습니다.<br>예를 들어, 모든 Person 클래스의 자식들에게 data라는 속성을 부여해주고 싶으면,</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="comment">// class 중괄호 안에다가 변수처럼 만들면 됨 (let, const 키워드 X)</span></span><br><span class="line">  <span class="comment">// class 안에 만드는 속성을 필드(field)라고 부름</span></span><br><span class="line">  <span class="attr">data</span>: <span class="built_in">number</span> = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Person이 모든 자식에게 data = 0을 하나씩 복사해줌</span></span><br><span class="line"><span class="keyword">let</span> john = <span class="keyword">new</span> <span class="title class_">Person</span>();</span><br><span class="line"><span class="keyword">let</span> kim = <span class="keyword">new</span> <span class="title class_">Person</span>();</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(john.<span class="property">data</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(kim.<span class="property">data</span>);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="5-constructor-타입지정"><a href="#5-constructor-타입지정" class="headerlink" title="5. constructor 타입지정"></a>5. constructor 타입지정</h1><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// class === object 복사기계</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// &#x27;this.뭐시기&#x27;를 쓰려면 필드값을 만들어줘야 함</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span> = <span class="string">&#x27;kim&#x27;</span>;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">age</span> = <span class="number">20</span>;</span><br><span class="line">    <span class="comment">// error TS2339: Property &#x27;age&#x27; does not exist on type &#x27;Person&#x27;.</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>필드 값으로 <strong>name, age가 미리 정의되어있어야 constructor 안에서도 사용가능</strong>합니다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="comment">// 필드 값이 정의되어 있어야 함</span></span><br><span class="line">  name;</span><br><span class="line">  age;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">a: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span> = a; <span class="comment">// &#x27;hello&#x27;라는 값이 this.name에 들어감</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">age</span> = <span class="number">20</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;hello&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>생산되는 object마다 각각 다른 이름을 부여하고 싶을 때 유용합니다.</p>
+<hr>
+<h1 id="6-methods-타입지정"><a href="#6-methods-타입지정" class="headerlink" title="6. methods 타입지정"></a>6. methods 타입지정</h1><p>class 내부엔 함수를 입력할 수 있습니다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="comment">// Person클래스의 prototype에 추가</span></span><br><span class="line">  <span class="comment">// 모든 Person의 자식들은 add 라는 함수를 이용가능</span></span><br><span class="line">  <span class="title function_">add</span>(<span class="params">숫자: <span class="built_in">number</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(숫자 + <span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="6-1-문제"><a href="#6-1-문제" class="headerlink" title="6.1 문제"></a>6.1 문제</h2><ul>
+<li><code>&#123; model : &#39;소나타&#39;, price : 3000 &#125;</code> object를 복사해주는 class 만들기</li>
+<li>복사된 object 자료들은 <code>tax()</code>라는 함수로 현재 object에 저장된 price의 10분의1을 출력</li>
+</ul>
+<p>동작 예</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> car1 = <span class="keyword">new</span> <span class="title class_">Car</span>(<span class="string">&#x27;소나타&#x27;</span>, <span class="number">3000</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(car1); <span class="comment">// &#123; model : &#x27;소나타&#x27;, price : 3000 &#125;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(car1.<span class="title function_">tax</span>()); <span class="comment">// 300</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="6-2-정답"><a href="#6-2-정답" class="headerlink" title="6.2 정답"></a>6.2 정답</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span> &#123;</span><br><span class="line">  <span class="attr">model</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">price</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">a: <span class="built_in">string</span>, b: <span class="built_in">number</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">model</span> = a;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">price</span> = b;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">tax</span>(): <span class="built_in">number</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">price</span> * <span class="number">0.1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> car1 = <span class="keyword">new</span> <span class="title class_">Car</span>(<span class="string">&#x27;소나타&#x27;</span>, <span class="number">3000</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(car1); <span class="comment">// &#123; model : &#x27;소나타&#x27;, price : 3000 &#125;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(car1.<span class="title function_">tax</span>()); <span class="comment">// 300</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="7-상속-구현하려면-extends"><a href="#7-상속-구현하려면-extends" class="headerlink" title="7. 상속 구현하려면 extends"></a>7. 상속 구현하려면 extends</h1><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  x = <span class="number">10</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">NewUser</span> <span class="keyword">extends</span> <span class="title class_ inherited__">User</span> &#123;</span><br><span class="line">  <span class="comment">// User 클래스의 기능들 복붙해줌</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>새로운 NewUser class 만들 때, User에 있는 기능을 상속받아서 사용할 수 있습니다.<br>비슷한 class를 많이 만들 때, 사용합니다.</p>
+<hr>
+<h1 id="8-접근제한자"><a href="#8-접근제한자" class="headerlink" title="8. 접근제한자"></a>8. 접근제한자</h1><p>접근 제한자를 선언한 속성과 메소드에 대한 접근 가능성은 다음과 같습니다.</p>
+<table>
+<thead>
+<tr>
+<th align="center">접근 가능성</th>
+<th align="center">public</th>
+<th align="center">protected</th>
+<th align="center">private</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">클래스 내부</td>
+<td align="center">◯</td>
+<td align="center">◯</td>
+<td align="center">◯</td>
+</tr>
+<tr>
+<td align="center">자식 클래스 내부</td>
+<td align="center">◯</td>
+<td align="center">◯</td>
+<td align="center">✕</td>
+</tr>
+<tr>
+<td align="center">클래스 인스턴스</td>
+<td align="center">◯</td>
+<td align="center">✕</td>
+<td align="center">✕</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="8-1-public"><a href="#8-1-public" class="headerlink" title="8.1 public"></a>8.1 public</h2><ul>
+<li>public이 붙은 속성은 <strong>자식 object들이 마음대로 사용하고 수정 가능</strong></li>
+<li>필드값 같은걸 그냥 만들면 public이 기본값임</li>
+<li>cf. public 키워드는 class 내의 prototype 함수에도 붙일 수 있음</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="comment">// 자식 클래스나 클래스 인스턴스에서 접근 가능</span></span><br><span class="line">  <span class="keyword">public</span> <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span> = <span class="string">&#x27;kim&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> 유저<span class="number">1</span> = <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">유저<span class="number">1.</span>name = <span class="string">&#x27;park&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="8-2-private"><a href="#8-2-private" class="headerlink" title="8.2 private"></a>8.2 private</h2><ul>
+<li>private 키워드를 붙이면 <strong>자식 object들이 수정 불가능</strong></li>
+<li>class 중괄호 안에서만 수정 및 사용가능</li>
+<li>cf. 바닐라 JS에서도 <strong>속성옆에 # 붙이면 private 속성</strong>이 됨</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="comment">// 해당 클래스 이외의 위치에서는 접근 불가능</span></span><br><span class="line">  <span class="keyword">private</span> <span class="attr">familyName</span>: <span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span> = <span class="string">&#x27;kim&#x27;</span>;</span><br><span class="line">    <span class="keyword">let</span> hello = <span class="variable language_">this</span>.<span class="property">familyName</span> + <span class="string">&#x27;안뇽&#x27;</span>; <span class="comment">// 가능</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> 유저<span class="number">1</span> = <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">유저<span class="number">1.</span>name = <span class="string">&#x27;park&#x27;</span>; <span class="comment">// public 가능</span></span><br><span class="line">유저<span class="number">1.</span>familyName = <span class="number">456</span>; <span class="comment">// private라 접근 불가 에러</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>cf. class 내의 함수에도 붙일 수 있음</li>
+<li>private 부여된 속성을 class 밖에서 수정해야할 경우<ul>
+<li>private 속성을 수정하는 함수를 class 안에 만들어서 함수로 실행</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="8-2-1-private-속성을-바깥에서-수정"><a href="#8-2-1-private-속성을-바깥에서-수정" class="headerlink" title="8.2.1 private 속성을 바깥에서 수정"></a>8.2.1 private 속성을 바깥에서 수정</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="keyword">private</span> <span class="attr">familyName</span>: <span class="built_in">string</span>; <span class="comment">// private 속성</span></span><br><span class="line"></span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span> = <span class="string">&#x27;메시&#x27;</span>;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">familyName</span> = <span class="string">&#x27;kim&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// private 속성을 바깥에서 수정하려면,</span></span><br><span class="line">  <span class="comment">// private 속성을 수정하는 함수를 class 안에서 만들어야 함</span></span><br><span class="line">  <span class="comment">// class 바깥에서 함수를 이용하면 간접적으로 수정가능</span></span><br><span class="line">  <span class="title function_">changeSecret</span>(<span class="params">lastName: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">familyName</span> = lastName;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> 집안 = <span class="keyword">new</span> <span class="title class_">Person</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(집안);</span><br><span class="line"><span class="comment">// 유저1.familyName = &#x27;park&#x27;; // 그냥 private 속성을 수정하려면 에러남</span></span><br><span class="line">집안.<span class="title function_">changeSecret</span>(<span class="string">&#x27;park&#x27;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(집안);</span><br></pre></td></tr></table></figure>
+
+<p>외부에서 실수로 수정하면, 안되는 속성들은 private를 붙이면 됩니다.<br>private 속성을 수정하려면, 매번 함수를 만들어서 수정해야하니 약간의 안전장치를 더해서 개발이 가능합니다.<br>이렇게 하면 버그를 예방할 수 있스빈다.</p>
+<hr>
+<h3 id="8-2-2-public-private-생략"><a href="#8-2-2-public-private-생략" class="headerlink" title="8.2.2 public, private 생략"></a>8.2.2 public, private 생략</h3><p>public, private 키워드를 쓰면, constructor 안에서 <code>this.name = name</code> 이런걸 생략할 수 있습니다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  name;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">name: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> 사람<span class="number">1</span> = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;john&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>위 코드와 아래 코드는 같은 역할을 하는 코드입니다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"><span class="keyword">public</span> name: <span class="built_in">string</span></span>) &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> 사람<span class="number">1</span> = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;john&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="8-3-protected"><a href="#8-3-protected" class="headerlink" title="8.3 protected"></a>8.3 protected</h2><ul>
+<li>protected 키워드를 붙이면, <strong>자식 class까지 사용 가능</strong></li>
+<li>extends 된 class 안에서도 사용가능하게 약간 보안을 풀어줌</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="comment">// protected</span></span><br><span class="line">  <span class="comment">// - private와 동일하게 class 안에서만 사용이 가능</span></span><br><span class="line">  <span class="comment">// - User의 자식들도 함부로 사용이 불가능</span></span><br><span class="line">  <span class="keyword">protected</span> x = <span class="number">10</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">NewUser</span> <span class="keyword">extends</span> <span class="title class_ inherited__">User</span> &#123;</span><br><span class="line">  <span class="comment">// x 속성이 private라면 접근 불가능</span></span><br><span class="line">  <span class="comment">// x 속성이 protected라면 접근 가능</span></span><br><span class="line">  <span class="title function_">doThis</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">x</span> = <span class="number">20</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>class 여러개 만들 때 class 끼리 공유할 수 있는 속성</strong>을 만들고 싶으면 <code>protected</code></li>
+<li><strong>class 하나 안에서만 쓸 수 있는 속성</strong>을 만들고 싶으면 <code>private</code></li>
+</ul>
+<hr>
+<h2 id="8-4-static-제한자"><a href="#8-4-static-제한자" class="headerlink" title="8.4 static 제한자"></a>8.4 static 제한자</h2><ul>
+<li>static 제한자를 붙이면, <strong>자식에게 물려주지 않음</strong></li>
+<li><code>클래스 안에 있는 변수와 함수</code>는 모두 클래스로부터 새로 생성되는 **object(a.k.a. 인스턴스)**에 부여됩니다.</li>
+<li>class로부터 생성되는 object가 사용할 필요가 없는 변수들을 만들어놓고 싶을 때 사용</li>
+<li>하나의 클래스에 하나만 적용됨</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="comment">// x와 y는 User로 생성된 object들만 사용가능</span></span><br><span class="line">  x = <span class="number">10</span>;</span><br><span class="line">  y = <span class="number">20</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> john = <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">john.<span class="property">x</span>; <span class="comment">// 가능</span></span><br><span class="line"><span class="title class_">User</span>.<span class="property">x</span>; <span class="comment">// 불가능</span></span><br></pre></td></tr></table></figure>
+
+<p>class에 직접 변수나 함수를 부여하고 싶으면, <code>static</code> 키워드를 왼쪽에 붙여주면 됩니다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="keyword">static</span> x = <span class="number">10</span>; <span class="comment">// static을 쓰면 자식에게 안물려줌</span></span><br><span class="line">  y = <span class="number">20</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> john = <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">john.<span class="property">x</span>; <span class="comment">// 불가능</span></span><br><span class="line"><span class="title class_">User</span>.<span class="property">x</span>; <span class="comment">// 가능</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>cf. 함수도 static 붙이기 가능</li>
+<li>extends로 class를 복사할 경우 static 붙은 것들도 따라옴</li>
+<li>cf. <code>static</code>은 <strong>private, protected, public 키워드와 동시 사용가능</strong></li>
+</ul>
+<hr>
+<h3 id="8-4-1-예시"><a href="#8-4-1-예시" class="headerlink" title="8.4.1 예시"></a>8.4.1 예시</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="keyword">static</span> skill = <span class="string">&#x27;js&#x27;</span>;</span><br><span class="line">  intro = <span class="title class_">User</span>.<span class="property">skill</span> + <span class="string">&#x27;전문가입니다&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> 철수 = <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(철수); <span class="comment">// User &#123; intro: &#x27;js전문가입니다&#x27; &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">User</span>.<span class="property">skill</span> = <span class="string">&#x27;python&#x27;</span>; <span class="comment">// python으로 수정</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> 민수 = <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(민수); <span class="comment">// User &#123; intro: &#x27;python전문가입니다&#x27; &#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>class 내부의 기본 변수같은걸 저렇게 수정할 일은 별로 없습니다.<br><strong>수정하고 싶으면 private 쓰고, 그 다음에 수정함수를 만들어서 사용하는게 더 안전한 방법</strong>입니다.</p>
+<hr>
+<h2 id="8-5-접근제한자-예시"><a href="#8-5-접근제한자-예시" class="headerlink" title="8.5 접근제한자 예시"></a>8.5 접근제한자 예시</h2><h3 id="8-5-1-예시-1"><a href="#8-5-1-예시-1" class="headerlink" title="8.5.1 예시 1"></a>8.5.1 예시 1</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="comment">// static가 붙으면 자식들은 사용 불가능</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> x = <span class="number">10</span>; <span class="comment">// class 내부에서만 수정가능</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> y = <span class="number">20</span>; <span class="comment">// class 내부 외부 상관없이 수정가능</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">protected</span> z = <span class="number">30</span>;</span><br><span class="line">  <span class="comment">// private 키워드와 유사하게 class 내부에서만 사용 가능</span></span><br><span class="line">  <span class="comment">// extends로 복사한 class 내부에서도 사용 가능</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="8-5-2-예시-2"><a href="#8-5-2-예시-2" class="headerlink" title="8.5.2 예시 2"></a>8.5.2 예시 2</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> x = <span class="number">10</span>;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> y = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// static은 class에 직접 부여되는 속성</span></span><br><span class="line">  <span class="comment">// static 속성을 수정하거나 가져다 쓰고 싶으면, &#x27;클래스명.속성명&#x27;</span></span><br><span class="line">  <span class="keyword">static</span> <span class="title function_">addOne</span>(<span class="params">파라미터: <span class="built_in">number</span></span>) &#123;</span><br><span class="line">    <span class="title class_">User</span>.<span class="property">x</span> += 파라미터;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="title function_">printX</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">User</span>.<span class="property">x</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title class_">User</span>.<span class="title function_">addOne</span>(<span class="number">3</span>);</span><br><span class="line"><span class="title class_">User</span>.<span class="title function_">addOne</span>(<span class="number">10</span>);</span><br><span class="line"><span class="title class_">User</span>.<span class="title function_">printX</span>(); <span class="comment">// 23</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="9-추상-클래스-abstract"><a href="#9-추상-클래스-abstract" class="headerlink" title="9. 추상 클래스 : abstract"></a>9. 추상 클래스 : abstract</h1><p><strong>클래스</strong> 앞에 <code>abstract</code>를 붙이면,</p>
+<ul>
+<li>새로운 인스턴스를 만들 수 없고,</li>
+<li><strong>반드시 상속을 통해서만 사용</strong>할 수 있습니다.</li>
+</ul>
+<p><strong>추상 클래스 내부의 메서드</strong>에도 <code>abstract</code>를 붙일 수 있습니다</p>
+<ul>
+<li><strong>상속받은 클래스에서 반드시 추상 메서드의 내용을 만들어야만 정상</strong> 동작함</li>
+<li>단순히 이름만 선언해주고 <strong>구체적인 기능은 상속받은 쪽에서 만들어주는 것</strong></li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 추상 class</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">Car</span> &#123;</span><br><span class="line">  <span class="attr">color</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">color: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">color</span> = <span class="variable language_">this</span>.<span class="property">color</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">start</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;시작&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">abstract</span> <span class="title function_">doSomething</span>(): <span class="built_in">void</span>; <span class="comment">// 추상 메서드 내부의 메서드</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 💥 Error : &#x27;Car&#x27; 클래스에서 상속된 추상 멤버 &#x27;doSomething&#x27;을(를) 구현하지 않습니다</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BMW</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Car</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">color: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">super</span>(color);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>상속받은 쪽에서 doSomething 메서드를 선언해야 합니다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">Car</span> &#123;</span><br><span class="line">  <span class="attr">color</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">color: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">color</span> = <span class="variable language_">this</span>.<span class="property">color</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">start</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;시작&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">abstract</span> <span class="title function_">doSomething</span>(): <span class="built_in">void</span>; <span class="comment">// 추상 메서드</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 추상 클래스를 상속받은 자식 클래스</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BMW</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Car</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">color: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">super</span>(color);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 상속받은 자식 클래스에서 추상 메서드 기능 구현</span></span><br><span class="line">  <span class="title function_">doSomething</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title function_">alert</span>(<span class="number">3</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/08/Front-TS-Basic-06-Literal.md/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-08 17:36:05
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/ts/" title="TS"> <b>#</b> TS </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/ts/basic/" title="Basic"> <b>#</b> Basic </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/ts/" title="TS"> #TS </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/08/Front-TS-Basic-08-Generics/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-JS%EC%9D%98-class-%EB%AC%B8%EB%B2%95"><span class="toc-text">1. JS의 class 문법</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-JS%EC%9D%98-prototype-%EB%AC%B8%EB%B2%95"><span class="toc-text">2. JS의 prototype 문법</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5-%EA%B0%9C%EB%85%90"><span class="toc-text">3. 객체지향 개념</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-Imperative-and-Procedural-Programming"><span class="toc-text">3.1 Imperative and Procedural Programming</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-Object-Oriented-Programming"><span class="toc-text">3.2 Object Oriented Programming</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5-%EC%9B%90%EC%B9%99-4%EA%B0%80%EC%A7%80"><span class="toc-text">4. 객체지향 원칙 4가지</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-Encapsulation-%EC%BA%A1%EC%8A%90%ED%99%94"><span class="toc-text">4.1 Encapsulation(캡슐화)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-Abstraction-%EC%B6%94%EC%83%81%ED%99%94"><span class="toc-text">3.2 Abstraction(추상화)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-Inheritance-%EC%83%81%EC%86%8D%EC%84%B1"><span class="toc-text">3.3 Inheritance(상속성)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-1-%EC%83%81%EC%86%8D%EC%9D%98-%EB%AC%B8%EC%A0%9C%EC%A0%90"><span class="toc-text">3.3.1 상속의 문제점</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-2-Composition"><span class="toc-text">3.3.2 Composition</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-Polymorphism-%EB%8B%A4%ED%98%95%EC%84%B1"><span class="toc-text">3.4 Polymorphism(다형성)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%ED%95%84%EB%93%9C%EA%B0%92-%ED%83%80%EC%9E%85%EC%A7%80%EC%A0%95"><span class="toc-text">4. 필드값 타입지정</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-constructor-%ED%83%80%EC%9E%85%EC%A7%80%EC%A0%95"><span class="toc-text">5. constructor 타입지정</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-methods-%ED%83%80%EC%9E%85%EC%A7%80%EC%A0%95"><span class="toc-text">6. methods 타입지정</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#6-1-%EB%AC%B8%EC%A0%9C"><span class="toc-text">6.1 문제</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-2-%EC%A0%95%EB%8B%B5"><span class="toc-text">6.2 정답</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%EC%83%81%EC%86%8D-%EA%B5%AC%ED%98%84%ED%95%98%EB%A0%A4%EB%A9%B4-extends"><span class="toc-text">7. 상속 구현하려면 extends</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-%EC%A0%91%EA%B7%BC%EC%A0%9C%ED%95%9C%EC%9E%90"><span class="toc-text">8. 접근제한자</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#8-1-public"><span class="toc-text">8.1 public</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-2-private"><span class="toc-text">8.2 private</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#8-2-1-private-%EC%86%8D%EC%84%B1%EC%9D%84-%EB%B0%94%EA%B9%A5%EC%97%90%EC%84%9C-%EC%88%98%EC%A0%95"><span class="toc-text">8.2.1 private 속성을 바깥에서 수정</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-2-2-public-private-%EC%83%9D%EB%9E%B5"><span class="toc-text">8.2.2 public, private 생략</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-3-protected"><span class="toc-text">8.3 protected</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-4-static-%EC%A0%9C%ED%95%9C%EC%9E%90"><span class="toc-text">8.4 static 제한자</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#8-4-1-%EC%98%88%EC%8B%9C"><span class="toc-text">8.4.1 예시</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-5-%EC%A0%91%EA%B7%BC%EC%A0%9C%ED%95%9C%EC%9E%90-%EC%98%88%EC%8B%9C"><span class="toc-text">8.5 접근제한자 예시</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#8-5-1-%EC%98%88%EC%8B%9C-1"><span class="toc-text">8.5.1 예시 1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-5-2-%EC%98%88%EC%8B%9C-2"><span class="toc-text">8.5.2 예시 2</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-%EC%B6%94%EC%83%81-%ED%81%B4%EB%9E%98%EC%8A%A4-abstract"><span class="toc-text">9. 추상 클래스 : abstract</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Front-TS-Basic-07-%ED%81%B4%EB%9E%98%EC%8A%A4 + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F08%2FFront-TS-Basic-07-Class%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/08/Front-TS-Basic-07-Class/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

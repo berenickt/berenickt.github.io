@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Front-JS-Basic-02-변수(Variable) 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Front-JS-Basic-02-변수(Variable)</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2022-12-20 16:10:12
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/js/" title="JS"> <b>#</b> JS </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/js/basic/" title="Basic"> <b>#</b> Basic </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/js/" title="JS"> #JS </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-컴퓨터-구성요소"><a href="#1-컴퓨터-구성요소" class="headerlink" title="1. 컴퓨터 구성요소"></a>1. 컴퓨터 구성요소</h1><p>컴퓨터를 구성하는 가장 중요한 요소 3가지는 <code>하드디스크, CPU, 메모리</code>입니다.</p>
+<p>컴퓨터에서 문서 파일을 실행시키면, 다음과 같은 과정이 진행됩니다.</p>
+<ol>
+<li>하드디스크에 저장된 폴더 안에 들어와서 파일을 선택하고, 어떤 것을 여는지를 CPU가 처리<ol>
+<li>하드디스크에 있는 문서 파일을 인식하고 메모리 상으로 가지고 옴</li>
+<li>파일을 열고 처리할 수 있는 어플리케이션을 모니터에 출력</li>
+</ol>
+</li>
+<li>사용자가 수정하는 내용들을 메모리 상에 주기적으로 업데이트하면서 작업을 처리</li>
+<li>작업한 내용을 저장하고 어플리케이션을 종료하면, 메모리 상에 있는 데이터를 하드디스크 안에 다시 저장</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/js-2-1.png" alt="js-2-1"></p>
+<p>어플리케이션을 열고 무언가를 처리하는 데는 메모리 상에 데이터를 보관하고, 읽고, 쓰는 등의 작업을 합니다.</p>
+<ul>
+<li>메모리는 <code>‘메모리 셀’</code>이라고 불리는 단위로 동작하며, </li>
+<li>각각의 메모리 셀은 1 Byte(&#x3D;8 Bit) 단위로 구성됨</li>
+</ul>
+<p>컴퓨터에서 여러 개의 어플리케이션을 사용하면, 어플리케이션 마다 필요한 메모리들이 할당됩니다.<br>사용자가 앱을 많이 열어서 메모리가 더 필요하다면, (A앱과 B앱이 있다고 가정)</p>
+<ul>
+<li>A앱을 사용 중일 떄는, B앱은 사용하지 않기 때문에 B앱은 잠시 하드디스크에 저장합니다.</li>
+<li>c.f. 만약 내 컴퓨터 메모리보다 앱이 더 많은 메모리를 요구한다면, 에러가 발생하고 앱이 정상 동작하지 않음</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/js-2-2.png" alt="js-2-2"></p>
+<p>어플리케이션이 메모리에 올라왔을 때, Code, Data, Stack, Heap의 4개의 구조로 구성됩니다.</p>
+<ul>
+<li><code>Code</code> : 개발자들이 작성하는 <strong>코드를 저장하는 공간</strong></li>
+<li><code>Data</code> : 어플리케이션이 전반적인 필요로 하는 <strong>변수, 데이터 등을 저장하는 공간</strong></li>
+<li><code>Stack</code> : 어플리케이션이 함수를 호출하는 <strong>실행 순서를 저장하는 공간</strong></li>
+<li><code>Heap</code> : 어플리케이션에서 단순한 데이터가 아니라 <strong>여러 개의 데이터타입을 묶은 복잡한 데이터(객체)를 저장하는 공간</strong></li>
+</ul>
+<hr>
+<h2 id="1-1-비트와-바이트"><a href="#1-1-비트와-바이트" class="headerlink" title="1.1 비트와 바이트"></a>1.1 비트와 바이트</h2><p>컴퓨터는 0과 1밖에 이해하지 못합니다. 컴퓨터가 처리할 수 있는 가장 작은 정보 단위는 <code>비트(Bit)</code>입니다. </p>
+<ul>
+<li>Bit는 0 또는 1이라는 정보를 담을 수 있음</li>
+<li>신호가 없고 있는 등의 정보만 처리</li>
+<li>사람은 10개의 손가락을 이용해 숫자 1~10까지 10진수를 다루지만, → <code>10진수</code></li>
+<li>컴퓨터는 신호가 있고 없고의 딱 2가지만 다룸 → <code>2진수</code></li>
+</ul>
+<p>2진수(Binary Digit)들이 모여 좀 더 큰 범위의 데이터를 다룰 수 있습니다.</p>
+<p>경우의 수 공식을 이용해보면, 한 비트당 2가지 경우를 나타낼 수 있으므로</p>
+<ul>
+<li>1bit는 2가지 정보를 표현</li>
+<li>2bit는 4가지의 정보를 표현</li>
+<li>3bit는 8 (2x2x2)가지 정보를 표현</li>
+<li>8bit는 총 256개의 다른 정보를 나타낼 수 있습니다.</li>
+</ul>
+<p>컴퓨터에서 데이터를 처리할 떄, 가장 기본적인 단위를 <code>1 Byte</code>라고 애기하는데,<br><code>1 Byte</code>는 <code>8 Bit</code>로 구성되어 있기 때문에, 256가지의 다른 정보를 담을 수 있습니다. </p>
+<hr>
+<h2 id="1-2-진수-변환"><a href="#1-2-진수-변환" class="headerlink" title="1.2 진수 변환"></a>1.2 진수 변환</h2><h3 id="1-2-1-10진수-→-2진수"><a href="#1-2-1-10진수-→-2진수" class="headerlink" title="1.2.1 10진수 → 2진수"></a>1.2.1 10진수 → 2진수</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 10진수 29를 2진수로 바꾸려면?</span><br><span class="line">// 1. 29를 2로 계속 나눗셈!</span><br><span class="line">// 2. 나머지를 연결하면 2진수</span><br><span class="line"></span><br><span class="line">2 | 29</span><br><span class="line">2 | 14  ----- 1</span><br><span class="line">2 |  7  ----- 0</span><br><span class="line">2 |  3  ----- 1</span><br><span class="line">     1  ----- 1</span><br><span class="line">     </span><br><span class="line">29를 2진수로 바꾸면, `11101`</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="1-2-2-2진수-→-10진수"><a href="#1-2-2-2진수-→-10진수" class="headerlink" title="1.2.2 2진수 → 10진수"></a>1.2.2 2진수 → 10진수</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 2진수 `11101`을 다시 10진수로 바꾸려면?</span><br><span class="line">// 1. 오른쪽부터 2^0부터 적고, 각 자리의 비트와 곱셈</span><br><span class="line">// 2. 각 자리의 곱셈한 결과를 다 더하면 10진수</span><br><span class="line"></span><br><span class="line">  1    1    1    0    1  </span><br><span class="line">  *    *    *    *    *</span><br><span class="line">2^4  2^3  2^2  2^1  2^0</span><br><span class="line">------------------------</span><br><span class="line"> 16 +  8 +  4 +  0  + 1 = 29</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="1-3-메가와-메비의-차이"><a href="#1-3-메가와-메비의-차이" class="headerlink" title="1.3 메가와 메비의 차이"></a>1.3 메가와 메비의 차이</h2><table>
+<thead>
+<tr>
+<th align="center"><code>PC용</code></th>
+<th align="center">단축이름</th>
+<th align="center">용량</th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"></td>
+<td align="center">B</td>
+<td align="center">Byte</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">kilobyte</td>
+<td align="center">KB</td>
+<td align="center">1024 Byte</td>
+<td align="center">$2^{10}$ Bytes</td>
+</tr>
+<tr>
+<td align="center">megabyte</td>
+<td align="center">MB</td>
+<td align="center">1024 KByte</td>
+<td align="center">$2^{20}$ Bytes</td>
+</tr>
+<tr>
+<td align="center">gigabyte</td>
+<td align="center">GB</td>
+<td align="center">1024 MByte</td>
+<td align="center">$2^{30}$ Bytes</td>
+</tr>
+<tr>
+<td align="center">terabyte</td>
+<td align="center">TB</td>
+<td align="center">1024 GByte</td>
+<td align="center">$2^{40}$ Bytes</td>
+</tr>
+</tbody></table>
+<p><code>윈도우, 맥, 리눅스 같은 PC 운영체제</code>에서는 <strong>1024씩 곱해서 2진수 단위로 저장</strong>합니다.</p>
+<table>
+<thead>
+<tr>
+<th align="center"><code>외장디스크, USB용</code></th>
+<th align="center">단축이름</th>
+<th align="center">용량</th>
+<th align="center"></th>
+<th align="center">PC용 용량</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"></td>
+<td align="center">B</td>
+<td align="center">Byte</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">kilobyte</td>
+<td align="center">KB</td>
+<td align="center"><strong>1000 Byte</strong></td>
+<td align="center">1000 Bytes</td>
+<td align="center">10<strong>24 Byte</strong></td>
+</tr>
+<tr>
+<td align="center">megabyte</td>
+<td align="center">MB</td>
+<td align="center">1000 KByte</td>
+<td align="center">$1000^2$ Bytes</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">gigabyte</td>
+<td align="center">GB</td>
+<td align="center">1000 MByte</td>
+<td align="center">$1000^3$ Bytes</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">terabyte</td>
+<td align="center">TB</td>
+<td align="center"><strong>1000 GByte</strong></td>
+<td align="center">$1000^4$ Bytes</td>
+<td align="center">10<strong>24 GByte</strong></td>
+</tr>
+</tbody></table>
+<p><code>외장디스크나 USB</code>는 <strong>1000씩 곱해서 10진수 단위로 저장</strong>합니다.<br>옛날에는 컴퓨터의 용량과 하드디스크의 크기도 적었기 때문에 이런 차이가 큰 문제가 되지 않았습니다.<br>KB 단위는 10진수 1000, 2진수 1024는 24Byte밖에 차이가 나지 않았습니다.<br>그러나 TB 단위에서는 24GByte나 차이가 나게 됩니다.</p>
+<p>그래서 100MB로 표기된 하드디스크나 USB 등을 구매해서 운영체제에 꼽으면,<br>실제 저장할 수 있는 사이즈는 95.37MB라고 뜹니다.<br>이는 10진수 표기법과 2진수 표기법으로 계산된 결과가 다르기 때문입니다.<br>(c.f. 옛날에는 이걸로 제조사에 항의하는 일이 많았다고 함)</p>
+<table>
+<thead>
+<tr>
+<th align="center"><code>IEC 1998 표기법</code></th>
+<th align="center">단축이름</th>
+<th align="center">용량</th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"></td>
+<td align="center">B</td>
+<td align="center">Byte</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">ki<strong>bi</strong>byte</td>
+<td align="center">KB</td>
+<td align="center">1024 Byte</td>
+<td align="center">$2^{10}$ Bytes</td>
+</tr>
+<tr>
+<td align="center">me<strong>bi</strong>byte</td>
+<td align="center">MB</td>
+<td align="center">1024 KByte</td>
+<td align="center">$2^{20}$ Bytes</td>
+</tr>
+<tr>
+<td align="center">gi<strong>bi</strong>byte</td>
+<td align="center">GB</td>
+<td align="center">1024 MByte</td>
+<td align="center">$2^{30}$ Bytes</td>
+</tr>
+<tr>
+<td align="center">te<strong>bi</strong>byte</td>
+<td align="center">TB</td>
+<td align="center">1024 GByte</td>
+<td align="center">$2^{40}$ Bytes</td>
+</tr>
+</tbody></table>
+<p>이런 혼란을 잠재우고자 1998년 IEC 단체에서 다른 표기법을 제안합니다.</p>
+<ul>
+<li><strong>KB, MB는 기존의 사람들이 쓰는 10진수로</strong> 남겨두고,</li>
+<li>Binary형태로 애기할 떄는, 뒤에 2진수(binary)를 붙여서 <strong>kibibyte, mebibyte</strong>라고 부르자고 약속을 하게 되었습니다. </li>
+<li>(c.f. 물론 아직 사람들이 kilobyte와 kibibyte를 혼동해서 부르곤 합니다.)</li>
+</ul>
+<hr>
+<h2 id="1-4-문자-인코딩"><a href="#1-4-문자-인코딩" class="headerlink" title="1.4 문자 인코딩"></a>1.4 문자 인코딩</h2><p>지구 상에 존재하는 수 많은 언어들을 0과 1로 표현할 수 있었을까요?<br>예전에는 각각의 나라별로 EUC-KR, EUC-JP 등 언어마다 다양한 텍스트 인코딩이 존재했는데,<br>서로 다른 인코딩 규격때문에 웹사이트가 깨지거나 한글 문서가 읽어지지 않는 문제점 등이 많이 발생했습니다. </p>
+<p>이것을 해결하기 위해 나온 것이 <code>UTF-8</code>(Unicode Transformation For mat, 8bit)입니다. </p>
+<ul>
+<li>기존 ASCII 코드뿐만 아니라 모든 Unicode 코드를 나타낼 수 있는 웹사이트에서 기본적으로 사용</li>
+<li>통상적으로 가장 많이 사용하는 텍스트 인코딩</li>
+<li>‘가변길이 유니코드 인코딩’ 방식으로 <strong>길이가 정해져 있지 않고, 필요에 의해서 길어질 수 있음</strong></li>
+<li>모든 ASCII 코드는 7 bit로 나타낼 수 있기 때문에 <strong>1 Byte로 표현</strong>하고, Unicode 코드는 2 ~ 4 Byte로 표현</li>
+<li>1 Byte로 표현할 수 있다면 그대로 데이터를 표현하고, <ul>
+<li>만약 2 Byte 이상이 필요하다면, 총 문자를 나타내는데 몇 Byte가 필요한지 힌트를 줌</li>
+</ul>
+</li>
+<li>c.f. Rob Pike, Ken Thompson(Go언어 창시자들)이 개발</li>
+</ul>
+<p><code>UTF-16</code>이라는 다른 방식도 있는데 이것도 가변길이이지만 <strong>기본적으로 2 Byte를 사용</strong>합니다.<br>그래서 <strong>1 Byte를 사용할 떄도 2 Byte를 사용</strong>하기에 통상적으로 <strong>UTF-8이 가장 보편적</strong>으로 사용되고 있습니다.</p>
+<hr>
+<h1 id="2-변수-선언-Variable-Declarations"><a href="#2-변수-선언-Variable-Declarations" class="headerlink" title="2. 변수 선언(Variable Declarations)"></a>2. 변수 선언(Variable Declarations)</h1><p><code>변수(Variables)</code>는 <code>값을 저장하는 공간</code>을 의미합니다.</p>
+<ul>
+<li>컴퓨터적으로는 <code>자료를 저장할 수 있는 이름이 주어진 기억장소</code></li>
+<li>JS는 총 3가지 변수 생성 문법을 제공합니다.<ul>
+<li><code>var, let</code> : 변수 선언</li>
+<li><code>const</code> : 상수 선언</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="1-1-var"><a href="#1-1-var" class="headerlink" title="1.1 var"></a>1.1 var</h2><ul>
+<li>변수만드는걸 <strong>선언</strong></li>
+<li>변수에 뭐 집어넣는걸 <strong>할당</strong></li>
+<li>재선언 가능, 재할당 가능</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 선언</span></span><br><span class="line"><span class="keyword">var</span> age;</span><br><span class="line"><span class="keyword">var</span> age; <span class="comment">// 재선언 가능</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 할당</span></span><br><span class="line">age = <span class="number">20</span>;</span><br><span class="line">age = <span class="number">30</span>; <span class="comment">// 다른 값으로 재할당 가능</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="1-2-변수를-쓰는-이유"><a href="#1-2-변수를-쓰는-이유" class="headerlink" title="1.2 변수를 쓰는 이유"></a>1.2 변수를 쓰는 이유</h2><p>메모리는 각각의 메모리 셀마다 메모리 주소라는 것이 있습니다.<br>그런데 변수에 이름을 사용하지 않고, 메모리의 주소를 사용한다면 어떨까요? </p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/js-2-3.png" alt="js-2-3"></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="number">0x000006</span> = <span class="number">0</span>; <span class="comment">// 무엇을 의미하는지 알 수 없다.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 변수명(Variable Name) = 식별자(Idetifier)</span></span><br><span class="line"><span class="keyword">let</span> age = <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+
+<p>이것의 문제점은 너무 길고 메모리의 주소가 어떤 것을 의미하는지 알 수 없습니다.<br>그래서 변수를 사용해 프로그래머가 보기 쉽게 사용합니다.</p>
+<hr>
+<h2 id="1-3-let과-const"><a href="#1-3-let과-const" class="headerlink" title="1.3 let과 const"></a>1.3 let과 const</h2><ul>
+<li>let과 const는 2015 ES6가 나오면서 등장한 변수 문법입니다.</li>
+<li>그래서 그 이전까지는 변수와 상수 구분없이 var키워드만을 사용했습니다.</li>
+</ul>
+<hr>
+<h1 id="3-var-vs-let"><a href="#3-var-vs-let" class="headerlink" title="3. var vs let"></a>3. var vs let</h1><p>var와 let은 크게 3가지 관점에 다릅니다.</p>
+<ul>
+<li><code>스코프(Scope, 범위)</code> : 코드가 변수에 접근할 수 있는 범위</li>
+<li><code>중복선언(Variable Redeclaration)</code></li>
+<li><code>호이스팅(Hoisting)</code></li>
+</ul>
+<hr>
+<h2 id="3-1-스코프-Scope-범위"><a href="#3-1-스코프-Scope-범위" class="headerlink" title="3.1 스코프(Scope, 범위)"></a>3.1 스코프(Scope, 범위)</h2><p>스코프는 크게 3개로 구분합니다.</p>
+<ul>
+<li><code>Function Scope(함수 범위)</code><ul>
+<li>함수 내부에서만 변수에 접근이 가능</li>
+<li>var키워드로 선언한 변수</li>
+</ul>
+</li>
+<li><code>Block Scope(블록 범위)</code><ul>
+<li>블록 내부에서만 변수에 접근이 가능</li>
+<li>let키워드로 선언한 변수</li>
+<li>cf. 다른 대부분의 언어는 변수를 선언하게 되면, 블록 범위를 가집니다.</li>
+</ul>
+</li>
+<li><code>Global Scope(전역 범위)</code> : 변수가 어느 곳에도 속하지 않은 최상위에 선언한 변수</li>
+</ul>
+<h3 id="3-1-1-Function-Scope-함수-범위"><a href="#3-1-1-Function-Scope-함수-범위" class="headerlink" title="3.1.1 Function Scope(함수 범위)"></a>3.1.1 Function Scope(함수 범위)</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">main</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> x = <span class="string">&#x27;hi&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 함수 밖에 접근하면, ReferenceError: x is not defined</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(x);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">main</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> x = <span class="string">&#x27;hi&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(x); <span class="comment">// 그런데 블록 밖에서 호출했는데도 값에 접근이 가능하다?</span></span><br><span class="line">  <span class="comment">// 이것이 가능한 이유는 var 키워드로 선언한 변수는 자동으로 Function Scope를 갖습니다.</span></span><br><span class="line">  <span class="comment">// 즉, 함수 내부라면 어디서든지 접근이 가능합니다.</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">main</span>(); <span class="comment">// hi</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-1-2-Block-Scope-블록-범위"><a href="#3-1-2-Block-Scope-블록-범위" class="headerlink" title="3.1.2 Block Scope(블록 범위)"></a>3.1.2 Block Scope(블록 범위)</h3><p>그러면 var 키워드를 let으로 바꿔보겠습니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">main</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> x = <span class="string">&#x27;hi&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(x); <span class="comment">// ReferenceError: x is not defined</span></span><br><span class="line">  <span class="comment">// let은 Block Scope이기 때문에 블록 내부에서만 접근이 가능합니다.</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">main</span>();</span><br></pre></td></tr></table></figure>
+
+<p>다른 예를 들어보면,</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">main</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> x = <span class="string">&#x27;hello&#x27;</span>;</span><br><span class="line">  <span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> x = <span class="string">&#x27;hi&#x27;</span>;</span><br><span class="line">    <span class="comment">// let 블록범위이기 때문에 x는 블록 내부에서만 유효하다.</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(x); <span class="comment">// hello</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">main</span>();</span><br></pre></td></tr></table></figure>
+
+<p>for문 역시 블록이기 때문에 마찬가지입니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">main</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">2</span>; i++) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(i);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(i); <span class="comment">// ReferenceError: i is not defined</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">main</span>();</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-1-3-Global-Scope-전역-범위"><a href="#3-1-3-Global-Scope-전역-범위" class="headerlink" title="3.1.3 Global Scope(전역 범위)"></a>3.1.3 Global Scope(전역 범위)</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> aVar = <span class="string">&#x27;varHello&#x27;</span>; <span class="comment">// var키워드로 선언한 변수는 window 전역 객체의 속성이 된다.</span></span><br><span class="line"><span class="keyword">let</span> aLet = <span class="string">&#x27;letHello&#x27;</span>; <span class="comment">// let키워드는 window 전역객체에 등록되지 않는다.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// window 전역 객체는 브라우저의 정보를 갖고있는 유일한 객체입니다.</span></span><br><span class="line"><span class="comment">// window 객체는 코드, 모든 라이브러리들이 공유하므로,</span></span><br><span class="line"><span class="comment">// window 객체에 속성을 추가하는 것은 위험할 수 있습니다.</span></span><br><span class="line"><span class="comment">// 왜냐하면 여러 곳에서 접근을 할 수 있고 값을 변경할 수 있기 때문입니다.</span></span><br><span class="line"><span class="comment">// 그래서 var 키워드를 쓰는 것은 위험한 것입니다.</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">window</span>);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-2-중복-선언"><a href="#3-2-중복-선언" class="headerlink" title="3.2 중복 선언"></a>3.2 중복 선언</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="string">&#x27;안녕하세요&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 코드 수천 줄이 있다고 가정</span></span><br><span class="line"><span class="keyword">var</span> x = <span class="string">&#x27;하이&#x27;</span>; <span class="comment">// 어떤 개발자가 변경, 값을 덮어씌워 버림, 코드를 헷갈리게 만듬</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(x); <span class="comment">// 하이</span></span><br></pre></td></tr></table></figure>
+
+<p><code>var</code>키워드는 같은 이름으로 중복 선언 가능합니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> x = <span class="string">&#x27;안녕하세요&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 코드 수천 줄이 있다고 가정</span></span><br><span class="line"><span class="keyword">let</span> x = <span class="string">&#x27;하이&#x27;</span>; <span class="comment">// SyntaxError : x가 이미 선언됨</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(x); </span><br></pre></td></tr></table></figure>
+
+<p><code>let</code>키워드는 같은 이름으로 중복 선언 불가능합니다.</p>
+<ul>
+<li>에러가 나온다는 것은 좋은 것입니다.<ul>
+<li>훨씬 더 안전하게 코딩 가능</li>
+</ul>
+</li>
+<li>에러가 나오지 않은 채 오류가 발생하는 경우가 가장 무서운 경우임</li>
+</ul>
+<hr>
+<h2 id="3-3-호이스팅-Hoisting-끌어올리다"><a href="#3-3-호이스팅-Hoisting-끌어올리다" class="headerlink" title="3.3 호이스팅 (Hoisting, 끌어올리다)"></a>3.3 호이스팅 (Hoisting, 끌어올리다)</h2><ul>
+<li>자바스크립트 엔진이 <code>코드를 실행하기 전, 변수, 함수, 클래스의 선언문을 끌어 올리는 것</code></li>
+<li>다시 말해, <code>변수의 선언과 초기화를 분리</code>한 후, <code>선언만 코드의 최상단</code>으로 옮김</li>
+<li>자바스크립트 엔진 &#x3D; 번역기, Interpreter</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(num); <span class="comment">// undefined</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> num = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(num); <span class="comment">// 10</span></span><br></pre></td></tr></table></figure>
+
+<p>아직 아무것도 할당되지 않은 변수에 접근하는 것은 의미없는 일입니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 에러 : num을 초기화하기 전에 접근할 수 없다.</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(num); <span class="comment">// ReferenceError : &#x27;num&#x27; before initialization</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> num = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(num);</span><br><span class="line"></span><br><span class="line"><span class="comment">// let으로 선언된 변수는 호이스팅되어서 선언문이 맨 위로 끌어올려지기는 하는데,</span></span><br><span class="line"><span class="comment">// 코드 상에 선언문에 접근하기 까지는</span></span><br><span class="line"><span class="comment">// num은 TDZ(Temporal Dead Zone; 일시적 사각지대)에 들어갑니다.</span></span><br><span class="line"><span class="comment">// JS는 TDZ에 들어가있는 변수에는 접근을 허용하지 않습니다.</span></span><br><span class="line"><span class="comment">// 이것 덕분에 변수 선언문 전에 접근하는 이상한 일을 막을 수 있습니다.</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="4-const"><a href="#4-const" class="headerlink" title="4. const"></a>4. const</h1><ul>
+<li>Block Scope</li>
+<li>중복 선언 불가</li>
+<li>선언문 이전 접근 불가</li>
+<li>상수 선언이라 한 번 값을 할당하면, 또 다시 할당 연산자로 값을 다시 할당하는 것은 불가능<ul>
+<li>재할당 X</li>
+<li>선언만 할 수 없음</li>
+<li>선언 시 꼭 초기화를 해줘야 함</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> price = <span class="number">3000</span>;</span><br><span class="line">price = <span class="number">4000</span>;  <span class="comment">// 에러 : 값의 재할당 불가능</span></span><br></pre></td></tr></table></figure>
+
+<p>const에 객체를 할당하면, 속성을 바꾸는 것은 가능합니다. </p>
+<ul>
+<li>이게 가능한 이유는, 새로운 객체를 할당하는 게 아니라</li>
+<li>내부적인 속성은 유지하면서 내부적인 속성을 바꾸는 것이라 가능한 것입니다.</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = &#123;</span><br><span class="line">  <span class="attr">x</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">y</span>: <span class="number">2</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 객체 속성을 바꾸는 것은 가능함</span></span><br><span class="line">a.<span class="property">x</span> = <span class="number">3</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a); <span class="comment">// Object &#123; x: 3, y: 2 &#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>근데 객체의 속성을 변경하는 것도 막고 싶으면, (&#x3D;객체의 불변성을 유지하고 싶으면) <code>freeze()</code>를 사용하면 됩니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = <span class="title class_">Object</span>.<span class="title function_">freeze</span>(&#123;</span><br><span class="line">  <span class="attr">x</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">y</span>: <span class="number">2</span>,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Object.freeze()로 객체 속성을 바꾸는 것은 막을 수 있음</span></span><br><span class="line">a.<span class="property">x</span> = <span class="number">3</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a); <span class="comment">// Object &#123; x: 1, y: 2 &#125;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="5-변수-정리"><a href="#5-변수-정리" class="headerlink" title="5. 변수 정리"></a>5. 변수 정리</h1><table>
+<thead>
+<tr>
+<th align="center">종류</th>
+<th align="center"></th>
+<th align="center">재선언 여부</th>
+<th align="center">재할당 여부</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">var</td>
+<td align="center">Function-scoped</td>
+<td align="center">O</td>
+<td align="center">O</td>
+</tr>
+<tr>
+<td align="center">let</td>
+<td align="center">{Block-scoped}</td>
+<td align="center">X</td>
+<td align="center">O</td>
+</tr>
+<tr>
+<td align="center">const</td>
+<td align="center">{Block-scoped}</td>
+<td align="center">X</td>
+<td align="center">X</td>
+</tr>
+</tbody></table>
+<p>결론 : var쓰지말고, let과 const만 쓰자.</p>
+<hr>
+<h1 id="6-Comment-주석"><a href="#6-Comment-주석" class="headerlink" title="6. Comment (주석)"></a>6. Comment (주석)</h1><p>주석은 코드 자체를 설명하는 것이 아니라, 왜(WHY)와 어떻게(HOW)를 설명하는것이 좋음</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 한 줄 주석 다는 법</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 여러 줄 주석 다는 법</span></span><br><span class="line"><span class="comment"> * 다음줄로 자동으로 넘어감</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="6-1-JSDoc"><a href="#6-1-JSDoc" class="headerlink" title="6.1 JSDoc"></a>6.1 JSDoc</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// JS DOC은 함수 위에서 &#x27;/**&#x27;을 입력하면 자동완성됨</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 이름, 나이 입력하면 합쳐서 문자로 뱉어주는 함수</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">string</span>&#125; name 문자 형태로 사람이름</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> &#123;<span class="type">number</span>&#125; age 숫자 형태로 나이</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@returns</span> 두 개 합쳐서 문자로 뱉어줌</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span> 1.3.0</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span> https://naver.com</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@readonly</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@const</span> &#123;<span class="type">number</span>&#125;</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@todo</span> 내일까지 뺄셈 기능 추가</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@deprecated</span> 이제 이거 그만쓰고 다른거 쓰세요</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@type</span> &#123;<span class="type">string | number</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">sum</span>(<span class="params">name, age</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> name + age;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// sum()에 마우스를 올려보면 JSDoc으로 적어둔 주석이 표시됨</span></span><br><span class="line"><span class="title function_">sum</span>(<span class="string">&#x27;kim&#x27;</span>, <span class="number">20</span>);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/jsdoc/jsdoc">JS Doc</a></li>
+</ul>
+<hr>
+<h1 id="7-Variable-Nameing-Rules-변수명-규칙"><a href="#7-Variable-Nameing-Rules-변수명-규칙" class="headerlink" title="7. Variable Nameing Rules(변수명 규칙)"></a>7. Variable Nameing Rules(변수명 규칙)</h1><p><strong>변수의 이름을 지을 때는 저장된 값을 잘 나타낼 수 있는 의미있는 이름으로</strong> 짓기</p>
+<ul>
+<li>라틴문자(0-9, a-z, A-Z, ), </li>
+<li>대소문자를 구분함</li>
+<li>추천: camelCase (e.g. listThis)</li>
+<li>주석 등 설명할 떄 제외하고, 코드 작성할 때는 영어로</li>
+<li>예약어 ❌</li>
+<li>숫자로 시작 ❌</li>
+<li>특수문자 ❌ (_, $ 두가지는 예외)</li>
+<li>이모지 ❌</li>
+<li>여러 개의 변수를 1, 2, 3 숫자로 구분 ❌ → 최대한 의미있게, 구체적인 이름으로</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 좋은 변수명 예시</span></span><br><span class="line"><span class="keyword">let</span> myAge = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> backgroundAudio;</span><br><span class="line"><span class="keyword">let</span> windAudio;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 나쁜 변수명 예시</span></span><br><span class="line"><span class="keyword">let</span> number = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> audio1;</span><br><span class="line"><span class="keyword">let</span> audio2;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/ko/docs/Learn/JavaScript/First_steps/Variables">MDN 변수</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#keywords">예약어 종류</a></li>
+</ul>
+<hr>
+<h2 id="7-1-명명-규칙-naming-convention"><a href="#7-1-명명-규칙-naming-convention" class="headerlink" title="7.1 명명 규칙(naming convention)"></a>7.1 명명 규칙(naming convention)</h2><p><code>네이밍 컨벤션(naming convention)</code></p>
+<ul>
+<li>하나 이상의 영어 단어로 구성된 식별자를 만들 떄 가독성 좋게 단어를 한눈에 구분하기 위해 규정한 명명 규칙</li>
+<li>네이밍 컨벤션을 잘 지키면 읽기 좋은 이름을 만들 수 있음</li>
+<li>다음과 같은 4가지 유형의 네이밍 컨벤션이 자주 사용됨<ul>
+<li><code>카멜 케이스</code> : 변수나 함수의 이름지을 때</li>
+<li><code>스네이크 케이스</code></li>
+<li><code>파스칼 케이스</code> : 생성자 함수, 클래스 이름지을 때</li>
+<li><code>헝가리언 케이스</code></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ⭐ 카멜 케이스 (camelCase) : 변수나 함수의 이름지을 때</span></span><br><span class="line"><span class="keyword">var</span> firstName;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ❌ 스네이크 케이스 (snake_case)</span></span><br><span class="line"><span class="keyword">var</span> first_name;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ⭐ 파스칼 케이스 (PascalCase) : 생성자 함수, 클래스 이름지을 때</span></span><br><span class="line"><span class="keyword">var</span> <span class="title class_">FirstName</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ❌ 헝가리언 케이스 (typeHungarianCase)</span></span><br><span class="line"><span class="keyword">var</span> strFirstName; <span class="comment">// type + identifier</span></span><br><span class="line"><span class="keyword">var</span> $elem = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;myId&#x27;</span>); <span class="comment">// DOM 노드</span></span><br><span class="line"><span class="keyword">var</span> observable$ = <span class="title function_">fromEvent</span>(<span class="variable language_">document</span>, <span class="string">&#x27;click&#x27;</span>); <span class="comment">// RxJS 옵저버블</span></span><br></pre></td></tr></table></figure>
+
+<p>ECMAScript사양에 정의된 객체와 함수들도 카멜 케이스와 파스칼 케이스를 사용합니다.<br>코드 전체의 가독성을 높이려면 <strong>카멜 케이스</strong>와 <strong>파스칼 케이스</strong>를 따릅시다.</p>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2022/12/20/Front-JS-Basic-01-Introduce/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2022-12-20 16:10:12
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/js/" title="JS"> <b>#</b> JS </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/js/basic/" title="Basic"> <b>#</b> Basic </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/js/" title="JS"> #JS </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2022/12/21/En-Grammar-01/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%EC%BB%B4%ED%93%A8%ED%84%B0-%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C"><span class="toc-text">1. 컴퓨터 구성요소</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%EB%B9%84%ED%8A%B8%EC%99%80-%EB%B0%94%EC%9D%B4%ED%8A%B8"><span class="toc-text">1.1 비트와 바이트</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%EC%A7%84%EC%88%98-%EB%B3%80%ED%99%98"><span class="toc-text">1.2 진수 변환</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-1-10%EC%A7%84%EC%88%98-%E2%86%92-2%EC%A7%84%EC%88%98"><span class="toc-text">1.2.1 10진수 → 2진수</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-2-2%EC%A7%84%EC%88%98-%E2%86%92-10%EC%A7%84%EC%88%98"><span class="toc-text">1.2.2 2진수 → 10진수</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%EB%A9%94%EA%B0%80%EC%99%80-%EB%A9%94%EB%B9%84%EC%9D%98-%EC%B0%A8%EC%9D%B4"><span class="toc-text">1.3 메가와 메비의 차이</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-%EB%AC%B8%EC%9E%90-%EC%9D%B8%EC%BD%94%EB%94%A9"><span class="toc-text">1.4 문자 인코딩</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%EB%B3%80%EC%88%98-%EC%84%A0%EC%96%B8-Variable-Declarations"><span class="toc-text">2. 변수 선언(Variable Declarations)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-var"><span class="toc-text">1.1 var</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%EB%B3%80%EC%88%98%EB%A5%BC-%EC%93%B0%EB%8A%94-%EC%9D%B4%EC%9C%A0"><span class="toc-text">1.2 변수를 쓰는 이유</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-let%EA%B3%BC-const"><span class="toc-text">1.3 let과 const</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-var-vs-let"><span class="toc-text">3. var vs let</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%EC%8A%A4%EC%BD%94%ED%94%84-Scope-%EB%B2%94%EC%9C%84"><span class="toc-text">3.1 스코프(Scope, 범위)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-1-Function-Scope-%ED%95%A8%EC%88%98-%EB%B2%94%EC%9C%84"><span class="toc-text">3.1.1 Function Scope(함수 범위)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-2-Block-Scope-%EB%B8%94%EB%A1%9D-%EB%B2%94%EC%9C%84"><span class="toc-text">3.1.2 Block Scope(블록 범위)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-3-Global-Scope-%EC%A0%84%EC%97%AD-%EB%B2%94%EC%9C%84"><span class="toc-text">3.1.3 Global Scope(전역 범위)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%EC%A4%91%EB%B3%B5-%EC%84%A0%EC%96%B8"><span class="toc-text">3.2 중복 선언</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%ED%98%B8%EC%9D%B4%EC%8A%A4%ED%8C%85-Hoisting-%EB%81%8C%EC%96%B4%EC%98%AC%EB%A6%AC%EB%8B%A4"><span class="toc-text">3.3 호이스팅 (Hoisting, 끌어올리다)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-const"><span class="toc-text">4. const</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%EB%B3%80%EC%88%98-%EC%A0%95%EB%A6%AC"><span class="toc-text">5. 변수 정리</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-Comment-%EC%A3%BC%EC%84%9D"><span class="toc-text">6. Comment (주석)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#6-1-JSDoc"><span class="toc-text">6.1 JSDoc</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-Variable-Nameing-Rules-%EB%B3%80%EC%88%98%EB%AA%85-%EA%B7%9C%EC%B9%99"><span class="toc-text">7. Variable Nameing Rules(변수명 규칙)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#7-1-%EB%AA%85%EB%AA%85-%EA%B7%9C%EC%B9%99-naming-convention"><span class="toc-text">7.1 명명 규칙(naming convention)</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Front-JS-Basic-02-%EB%B3%80%EC%88%98(Variable) + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2022%2F12%2F20%2FFront-JS-Basic-02-Variable%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2022/12/20/Front-JS-Basic-02-Variable/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      용어-서버사이드 렌더링(SSR) (ft.CSR, SSR, SSG) 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">용어-서버사이드 렌더링(SSR) (ft.CSR, SSR, SSG)</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2022-12-24 16:10:11
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/%EC%A0%95%EB%B3%B4/" title="정보"> <b>#</b> 정보 </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/%EC%A0%95%EB%B3%B4/terminology-%EC%9A%A9%EC%96%B4/" title="Terminology(용어)"> <b>#</b> Terminology(용어) </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/terminology-%EC%9A%A9%EC%96%B4/" title="Terminology(용어)"> #Terminology(용어) </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="L1-웹의-역사-SPA-시대까지"><a href="#L1-웹의-역사-SPA-시대까지" class="headerlink" title="L1 웹의 역사 (SPA 시대까지)"></a>L1 웹의 역사 (SPA 시대까지)</h1><p>출처 : 드림코딩 (<a target="_blank" rel="noopener" href="https://youtu.be/iZ9csAfU5Os">https://youtu.be/iZ9csAfU5Os</a>)</p>
+<hr>
+<h2 id="1-1-1990년-전까지-Static-Sties"><a href="#1-1-1990년-전까지-Static-Sties" class="headerlink" title="1.1 1990년 전까지 : Static Sties"></a>1.1 1990년 전까지 : Static Sties</h2><p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/SSR_1.jpeg" alt="SSR_1"></p>
+<p>1990년 중반까지는 모두 다 Static Sites였습니다.<br>서버에 이미 잘 만들어진 HTML문서들이 있고, 사용자가 브라우저에서 Hello.com같은 주소에 접속하면,<br>서버에 이미 배포되어져 있는 HTML 문서를 받아와서 보여주는 형식이죠.</p>
+<p>문제점은 페이지 내 다른 링크를 클릭하면, 다시 서버에서 해당 페이지의 HTML을 받아와서 페이지 전체가 업데이트 되어야 합니다.</p>
+<hr>
+<h2 id="1-2-1996년-iframe"><a href="#1-2-1996년-iframe" class="headerlink" title="1.2 1996년 : iframe"></a>1.2 1996년 : iframe</h2><p>1996년, 문서 내에서 또 다른 문서를 담을 수 있는 iframe 태그가 도입되었고,<br>페이지 내에서 부분적으로 문서를 받아와서 업데이트 할 수 있게 됩니다.</p>
+<hr>
+<h2 id="1-3-1998년-XMLHttpRequest"><a href="#1-3-1998년-XMLHttpRequest" class="headerlink" title="1.3 1998년 : XMLHttpRequest"></a>1.3 1998년 : XMLHttpRequest</h2><p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/SSR_2.jpeg" alt="SSR_2"></p>
+<p>1998년, 현재 많이 쓰는 fetch API의 원조, XMLHttpRequest API가 개발되어,<br>HTML 문서 전체가 아니라 JSON과 같은 포맷으로 서버에서 가볍게 필요한 데이터만 받아올 수 있게 됩니다.<br>그 데이터를 JavaScript를 이용해서, 동적으로 HTML 요소를 생성해서, 페이지에 업데이트하는 방식이죠.</p>
+<hr>
+<h2 id="1-4-2005년-AJAX"><a href="#1-4-2005년-AJAX" class="headerlink" title="1.4 2005년 : AJAX"></a>1.4 2005년 : AJAX</h2><p>2005년, XMLHttpRequest API 방식이 공식적인 AJAX라는 이름을 가지게 되고,<br>구글에서 AJAX를 이용해서 Gmail, Google Maps같은 서비스 등의 서비스를 만들기 시작합니다.<br>이것이 현재 널리 쓰이고 있는 <code>SPA(Single Page Application)</code>입니다.</p>
+<ul>
+<li>사용자가 한 페이지 내에서 머무르면서, <strong>필요한 데이터를 서버에서 받아와서, 부분적으로만 업데이트</strong>하는 방식</li>
+<li>이 방식으로 하나의 어플리케이션을 사용하듯, 웹 사이트에서도 사용성이 조금씩 좋아짐</li>
+</ul>
+<hr>
+<h1 id="L2-CSR-Client-Side-Rendering"><a href="#L2-CSR-Client-Side-Rendering" class="headerlink" title="L2 CSR (Client Side Rendering)"></a>L2 CSR (Client Side Rendering)</h1><p>이런 SPA트렌드와 사용자들의 PC 성능이 점차 좋아져서, 많은 것들을 무리없이 처리할 수 있게 되었고,<br>JS도 표준화가 잘 되면서, 강력한 커뮤니티를 바탕으로 Angular, React, Vue같은 프레임워크가 나와서,<br><code>CSR(Client Side Rendering) </code>시대로 접어듭니다.</p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/SSR_3.jpeg" alt="SSR_3"></p>
+<p>CSR을 쉽게 말하자면, <strong>클라이언트측에서 다 해결하는 걸</strong> 말합니다.<br>서버에서 index.html을 클라이언트에 보내주면, 어플리케이션에서 필요한 링크들만 들어있습니다.<br>HTML은 텅텅 비어있기 때문에 처음 접속하면, 빈 화면만 보이고, 다시 링크된 어플리케이션 JavaScript를 서버로부터 다운로드 받습니다.</p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/SSR_4.jpeg" alt="SSR_4"></p>
+<p>다운로드한 JavaScript에는 어플리케이션에서 필요한 로직뿐만 아니라,<br>어플리케이션을 구동하는 프레임워크와 라이브러리의 소스코드들도 모두 포함되어 있습니다.<br>그렇기 때문에 굉장히 사이즈가 커서, 다운로드받는데도 오랜 시간이 소요될 수 있겠죠?<br>추가로 필요한 데이터가 있다면, 서버에 요청해서 데이터를 받아온 다음에 이것들을 기반으로 동적으로 HTML을 생성해서,<br>사용자에게 최종적인 어플리케이션을 보여줍니다.</p>
+<p>이런 CSR의 큰 문제점은 2가지입니다.</p>
+<ul>
+<li>Initial Loading may take too long<ul>
+<li><strong>사용자가 첫 화면을 보기까지 오랜 시간이 걸릴 수 있다는 점</strong></li>
+</ul>
+</li>
+<li>Low SEO<ul>
+<li>썩 좋지 않는 SEO(Search Engin Optimization)</li>
+<li>SEO :<ul>
+<li>구글, 네이버같은 검색엔진들은 서버에 등록된 웹사이트를 하나씩 돌아다니며 HTML을 분석하는데,</li>
+<li>이떄 검색할 웹사이트가 빠르게 동작하도록 하는 것</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>CSR에서 사용되는 HTML body는 대부분 텅텅 비어있기 때문에,<br>검색엔진들이 CSR로 작성된 웹페이지를 분석하는데, 많은 어려움을 겪습니다.</p>
+<hr>
+<h1 id="L3-SSR-Server-Side-Rendering"><a href="#L3-SSR-Server-Side-Rendering" class="headerlink" title="L3 SSR (Server Side Rendering)"></a>L3 SSR (Server Side Rendering)</h1><p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/SSR_5.jpeg" alt="SSR_5"></p>
+<p>이런 CSR의 과도한 문제점때문에 1990년 중반쯤 사용했던 Static Stite에서 영감을 받은 SSR이 등장합니다.</p>
+<p>클라이언트에서 모든 것을 처리하는 방식과는 다르게 웹사이트에 접속하면,<br>서버에 필요한 데이터를 모두 가져와서 HTML 파일을 만들고,<br>잘 만들어진 HTML파일을 동적으로 조금 제어할 수 있는 소스코드와 함께 클라이언트에게 보내줍니다.<br>그러면 클라이언트 측에서는 잘 만들어진 HTML 문서를 받아와서 사용자에게 보여줄 수 있는 것이죠.</p>
+<blockquote>
+<p>💡 참고</p>
+<p>사실 SSR은 CSR보다 더 오래된 기술입니다. AJAX가 나오 기전 웹페이지를 생성하는 기술이 SSR이였고,<br>PHP, AJP, JSP 등이 다 SSR을 위해 사용되었던 기술이빈다.<br>당시에는 CSR이라는 개념이 없어서 대신 서버사이드 스크립트라고 불렸습니다.<br>AJXX가 등장하며, 서버에서만 가능하던 것들이 클라이언트로 어느정도 넘어가면서 CSR이 발전하고, SSR이 재조명된 것입니다.</p>
+</blockquote>
+<hr>
+<h2 id="3-1-장점"><a href="#3-1-장점" class="headerlink" title="3.1 장점"></a>3.1 장점</h2><p>이런 SSR을 이용하게 되면, CSR을 사용했을 떄보다 다음과 같은 장점이 있습니다.</p>
+<ul>
+<li>Initial page load is faster<ul>
+<li>첫 번쨰 페이지 로딩이 빨라짐</li>
+</ul>
+</li>
+<li>Great SEO<ul>
+<li>모든 컨텐츠가 HTML에 담겨있기 때문에 조금 더 효율적인 SEO를 할 수 있음</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="3-2-문제점"><a href="#3-2-문제점" class="headerlink" title="3.2 문제점"></a>3.2 문제점</h2><p>그럼 SSR이 모든 것에 솔루션이 될 수 있느냐? 그건 아닙니다. SSR에도 큰 문제점이 존재합니다.</p>
+<ul>
+<li>Blinking issue, Non-rich site interactions<ul>
+<li>Static Sites에서 발생했던 깜박임(Blinking) 이슈가 여전히 존재</li>
+<li>사용자가 클릭을 하게 되면, 전체 웹사이트를 서버에서 다시 받아오는 것과 동일하기 때문에</li>
+<li>썩 좋지 않는 User experience를 겪습니다.</li>
+</ul>
+</li>
+<li>Server side overhead<ul>
+<li>서버에 과부하가 걸리기 쉽습니다.</li>
+<li>특히 사용자가 많은 제품일 수록, 사용자가 클릭할 떄마다 서버에 요청해서</li>
+<li>서버에 필요한 데이터를 가지고 와서 HTML을 만들어야 하므로 서버에 과부하가 걸리기 쉬움</li>
+</ul>
+</li>
+<li>Need to wait before interacting<ul>
+<li>사용자가 빠르게 웹사이트를 확인할 수 있지만,</li>
+<li>동적으로 데이터를 처리하는 자바스크립트를 아직 다운로드 받지 못했는데,</li>
+<li>여기저기 클릭해서 반응이 없는 경우가 발생할 수 있음</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="3-3-TTV와-TTI-측면에서-한번-더-정리"><a href="#3-3-TTV와-TTI-측면에서-한번-더-정리" class="headerlink" title="3.3 TTV와 TTI 측면에서 한번 더 정리"></a>3.3 TTV와 TTI 측면에서 한번 더 정리</h2><p>SSR의 문제점을 이해하기 위해 TTV와 TTI를 알아야 합니다.</p>
+<ul>
+<li>TTV (Time To View)</li>
+<li>TTI (Time To Interact)</li>
+</ul>
+<p>CSR과 SSR을 시간이 흘러가는 순서대로 분석해보면,</p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/SSR_6.jpeg" alt="SSR_6"></p>
+<p>CSR은 사이트에 접속하면,<br>서버에서 인덱스 파일을 받아오고, 인덱스 파일은 텅텅 비어있기 때문에 사용자에게는 아무것도 보여지지 않습니다.<br>HTML 파일에 링크되어져 있는 웹사이트에 필요한 모든 로직이 담겨있는 JavaScript를 요청하게 됩니다.</p>
+<p>그리고 최종적으로 동적으로 HTML을 생성할 수 있는 웹 어플리케이션 로직이 담긴 JavaScript파일을 받아옵니다.<br>그리고 이 순간부터 웹사이트가 사용자에게 보여지게 되고, 또 사용자가 클릭이 가능해집니다.<br>즉, CSR은 TTV(사용자가 웹사이트를 볼 수 있음)과 동시에 TTI(클릭하거나 인터렉션)이 가능하게 됩니다.</p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/SSR_7.jpeg" alt="SSR_7"></p>
+<p>반대로 SSR은 사이트에 접속하면,<br>서버에서 이미 잘 만들어진 인덱스 파일을 받아오게 되고, 사용자가 웹 사이트를 볼 수 있습니다.</p>
+<p>하지만 아직 동적으로 제어할 수 있는 JavaScript 파일을 받아오지 않았으므로, 사용자가 클릭을 해도 동작하지 않습니다.<br>그래서 최종적으로 JavaScript파일을 받아와야지만, 그때부터 사용자의 클릭을 처리할 수 있는 인터렉션이 가능해집니다.<br>그래서 서버사이드 렌더링은 사용자가 사이트를 볼 수 있는 시간과 실제로 인터렉션을 할 수 있는 시간의 공백 기간이 꽤 긴 편입니다.</p>
+<hr>
+<h2 id="3-4-어떻게-개선할-수-있을까"><a href="#3-4-어떻게-개선할-수-있을까" class="headerlink" title="3.4 어떻게 개선할 수 있을까?"></a>3.4 어떻게 개선할 수 있을까?</h2><p>그래서 웹사이트 성능을 분석할 때, TTV와 TTI도 중요한 매트릭으로 사용할 수 있는데요,</p>
+<p>CSR을 정말 많이 사용하는 개발자라면, 최종적으로 번들링해서 사용자에게 보내주는 JS파일을 어떻게 하면 효율적으로 많이 분할해서,<br>첫 번째로 사용자가 보기 위해 필요한 정말 필수적인 것만 보낼 수 있는지 고민해야 합니다.</p>
+<p>SSR같은 경우 사용자가 보고, 인터렉션하는 이 시간의 단차를 줄이기 위해 어떤 노력을 할 수 있는지,<br>어떻게 조금 더 매끄러운 UI와 UX를 제공할 수 있을지 고민해야 합니다.</p>
+<hr>
+<h1 id="L4-SSG-Static-Site-Generation"><a href="#L4-SSG-Static-Site-Generation" class="headerlink" title="L4 SSG (Static Site Generation)"></a>L4 SSG (Static Site Generation)</h1><h2 id="4-1-Gatsby"><a href="#4-1-Gatsby" class="headerlink" title="4.1 Gatsby"></a>4.1 Gatsby</h2><p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/SSR_8.jpeg" alt="SSR_8"></p>
+<p>요즘에는 꼭 CSR 또는 SSR 만을 고집해서 사용하기보다는 <code>SSG</code>도 있습니다.<br>React의 경우 CSR에 특화된 라이브러리이지만, Gatsby라는 라이브러리와 함께 사용하면,<br>React로 만든 웹어플리케이션을 정적으로 웹페이지를 미리 생성해둬서 서버에 배포해놓을 수 있습니다.</p>
+<p>그러면 이렇게 만들어진 웹사이트들은 모두 정적이냐? 그런 건 아닙니다.<br>추가적으로 데이터를서버에서 받아오거나 또는 동적으로 처리해야 하는 로직이 있다면,<br>JS파일을 함께 가지고 있을 수 있기 때문에 동적인 요소도 추가할 수 있습니다.</p>
+<hr>
+<h2 id="4-2-Next-JS"><a href="#4-2-Next-JS" class="headerlink" title="4.2 Next.JS"></a>4.2 Next.JS</h2><p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/SSR_9.jpeg" alt="SSR_9"></p>
+<p>Gatsby다음으로 React에서 많이 사용되는 것이 Next.js입니다.<br>Next.js는 강력한 SSR을 지원하는 라이브러리였는데,<br>요즘에는 SSG도 지원하고, CSR과 SSR을 잘 섞어서 더 강력하고 유연하게 사용할 수 있게 되었습니다.</p>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2022/12/22/Front-React-Basic-14-Hooks02/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2022-12-24 16:10:11
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/%EC%A0%95%EB%B3%B4/" title="정보"> <b>#</b> 정보 </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/%EC%A0%95%EB%B3%B4/terminology-%EC%9A%A9%EC%96%B4/" title="Terminology(용어)"> <b>#</b> Terminology(용어) </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/terminology-%EC%9A%A9%EC%96%B4/" title="Terminology(용어)"> #Terminology(용어) </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2022/12/27/Terminology-CICD/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#L1-%EC%9B%B9%EC%9D%98-%EC%97%AD%EC%82%AC-SPA-%EC%8B%9C%EB%8C%80%EA%B9%8C%EC%A7%80"><span class="toc-text">L1 웹의 역사 (SPA 시대까지)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-1990%EB%85%84-%EC%A0%84%EA%B9%8C%EC%A7%80-Static-Sties"><span class="toc-text">1.1 1990년 전까지 : Static Sties</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-1996%EB%85%84-iframe"><span class="toc-text">1.2 1996년 : iframe</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-1998%EB%85%84-XMLHttpRequest"><span class="toc-text">1.3 1998년 : XMLHttpRequest</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-2005%EB%85%84-AJAX"><span class="toc-text">1.4 2005년 : AJAX</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#L2-CSR-Client-Side-Rendering"><span class="toc-text">L2 CSR (Client Side Rendering)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#L3-SSR-Server-Side-Rendering"><span class="toc-text">L3 SSR (Server Side Rendering)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%EC%9E%A5%EC%A0%90"><span class="toc-text">3.1 장점</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%EB%AC%B8%EC%A0%9C%EC%A0%90"><span class="toc-text">3.2 문제점</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-TTV%EC%99%80-TTI-%EC%B8%A1%EB%A9%B4%EC%97%90%EC%84%9C-%ED%95%9C%EB%B2%88-%EB%8D%94-%EC%A0%95%EB%A6%AC"><span class="toc-text">3.3 TTV와 TTI 측면에서 한번 더 정리</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-%EC%96%B4%EB%96%BB%EA%B2%8C-%EA%B0%9C%EC%84%A0%ED%95%A0-%EC%88%98-%EC%9E%88%EC%9D%84%EA%B9%8C"><span class="toc-text">3.4 어떻게 개선할 수 있을까?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#L4-SSG-Static-Site-Generation"><span class="toc-text">L4 SSG (Static Site Generation)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-Gatsby"><span class="toc-text">4.1 Gatsby</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-Next-JS"><span class="toc-text">4.2 Next.JS</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %EC%9A%A9%EC%96%B4-%EC%84%9C%EB%B2%84%EC%82%AC%EC%9D%B4%EB%93%9C%20%EB%A0%8C%EB%8D%94%EB%A7%81(SSR)%20(ft.CSR%2C%20SSR%2C%20SSG) + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2022%2F12%2F24%2FTerminology-SSR%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2022/12/24/Terminology-SSR/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

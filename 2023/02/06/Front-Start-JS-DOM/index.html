@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      tart-JS - 자바스크립트 DOM으로 조작 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">tart-JS - 자바스크립트 DOM으로 조작</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-02-06 18:31:55
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/html-css-js/" title="HTML-CSS-JS"> <b>#</b> HTML-CSS-JS </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/html-css-js/js/" title="JS"> <b>#</b> JS </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/js/" title="JS"> #JS </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-DOM이란"><a href="#1-DOM이란" class="headerlink" title="1. DOM이란?"></a>1. DOM이란?</h1><p>HTML에서 요소로 불리는 태그 등을 자바스크립트에서는 <code>문서 객체(Document Object)</code>라고 부른다.<br>즉, DOM은 <code>Document Objects Model</code>의 약자로 문서 객체를 조합해서 만든 전체적인 형태로 <strong>문서 객체 모델</strong>이라고 불린다.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>보통 스크립트를 선언하는 위치는 head 태그 안에 위치한다.</p>
+<p>그런데 이러한 경우 DOM을 조작하게 되면, 자바스크립트 코드가 실행된 후 HTML 태그들이 불러오므로 문제가 발생한다.<br>문제를 해결하는 방법은 2가지가 있는데</p>
+<hr>
+<h1 id="2-JS-코드-부르는-방법"><a href="#2-JS-코드-부르는-방법" class="headerlink" title="2. JS 코드 부르는 방법"></a>2. JS 코드 부르는 방법</h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>첫 번째는 모든 태그들을 작성하고, body 태그 맨 마지막에 자바스크립트를 실행하는 방법</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">document</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;DOMContentLoaded&#x27;</span>, <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// 코드 작성</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>두 번째는 문서 전체에 해당하는 document에 <code>DOMContentLoaded 이벤트</code>를 사용하는 방법이다.</p>
+<hr>
+<h1 id="3-문서-객체를-가져오려면"><a href="#3-문서-객체를-가져오려면" class="headerlink" title="3. 문서 객체를 가져오려면"></a>3. 문서 객체를 가져오려면</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">document</span>.<span class="property">head</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">title</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">body</span>;</span><br></pre></td></tr></table></figure>
+
+<p>HTML 문서에서 당연히 있는 내용들은 태그별로 가져올 수 있다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">document</span>.<span class="title function_">getElementsByTagName</span>(<span class="string">&#x27;태그&#x27;</span>);</span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;아이디명&#x27;</span>);</span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">getElementsByClassName</span>(<span class="string">&#x27;클래스명&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>그 외에 태그를 가져오려면 <code>getElementsByTagName</code></li>
+<li>아이디로 가져오려면 <code>getElementById</code></li>
+<li>클래스로 가져오려면 <code>getElementsByClassName</code>을 사용한다.</li>
+</ul>
+<p>그런데 이런 식으로 사용하면 하위 태그에 접근할 때마다 매번 사용해야 해서 불편하다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">document</span>.<span class="title function_">querySelector</span>(선택자);</span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">querySelectorAll</span>(선택자);</span><br></pre></td></tr></table></figure>
+
+<p>그래서 CSS 선택자를 사용하는 방식으로 가져오는 <code>querySelector</code>와 <code>querySelectorAll</code>을 사용할 것을 권장한다.</p>
+<ul>
+<li><code>querySelectorAll</code>은 여러 개를 배열로 가져오는 방식으로</li>
+<li>내부에 하나하나 접근하려면 <code>forEach</code>를 같이 사용한다.</li>
+</ul>
+<hr>
+<h1 id="4-문서-객체에-접근했다면"><a href="#4-문서-객체에-접근했다면" class="headerlink" title="4. 문서 객체에 접근했다면"></a>4. 문서 객체에 접근했다면</h1><h2 id="4-1-문자-HTML-형태로-넣기"><a href="#4-1-문자-HTML-형태로-넣기" class="headerlink" title="4.1 문자, HTML 형태로 넣기"></a>4.1 문자, HTML 형태로 넣기</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">문서 객체.<span class="property">textContent</span></span><br><span class="line">문서 객체.<span class="property">innerHTML</span></span><br></pre></td></tr></table></figure>
+
+<p>문서 객체 내에</p>
+<ul>
+<li>문자 그대로 넣는 <code>textContent</code></li>
+<li>HTML 형식으로 넣는 <code>innerHTML</code></li>
+</ul>
+<hr>
+<h2 id="4-2-속성-추가-수정-삭제"><a href="#4-2-속성-추가-수정-삭제" class="headerlink" title="4.2 속성 추가, 수정, 삭제"></a>4.2 속성 추가, 수정, 삭제</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">문서 객체.<span class="title function_">setAttribute</span>(속성 이름, 값)</span><br><span class="line">문서 객체.<span class="title function_">getAttribute</span>(속성 이름)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>문서 객체의 속성을 추가하거나 수정할 때는 <code>setAttribute</code></li>
+<li>문서 객체의 속성을 가져오려면 <code>getAttribute</code></li>
+</ul>
+<hr>
+<h2 id="4-3-스타일-조작"><a href="#4-3-스타일-조작" class="headerlink" title="4.3 스타일 조작"></a>4.3 스타일 조작</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">문서 객체.<span class="property">style</span>.속성 = <span class="string">&quot;값&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>문서 객체의 스타일을 조작할 때는 style로 접근할 수 있다.</p>
+<ul>
+<li>style 속성은 만약 <code>background-color</code>는 <code>backgroundColor</code>처럼</li>
+<li><code>-</code> 기호 대신 <strong>카멜 케이스로 사용</strong>해야 한다.</li>
+</ul>
+<hr>
+<h2 id="4-4-스타일-조작-classList"><a href="#4-4-스타일-조작-classList" class="headerlink" title="4.4 스타일 조작 - classList"></a>4.4 스타일 조작 - classList</h2><p>사실 스타일을 조적할 때 style로 접근하는 방식보다 미리 클래스에 스타일을 지정하고</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">문서 객체.<span class="property">classList</span>.<span class="title function_">add</span>(<span class="string">&quot;클래스명&quot;</span>)</span><br><span class="line">문서 객체.<span class="property">classList</span>.<span class="title function_">remove</span>(<span class="string">&quot;클래스명&quot;</span>)</span><br><span class="line"></span><br><span class="line">문서 객체.<span class="property">classList</span>.<span class="title function_">contains</span>(<span class="string">&quot;클래스명&quot;</span>)</span><br><span class="line">문서 객체.<span class="property">classList</span>.<span class="title function_">toggle</span>(<span class="string">&quot;클래스명&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><code>classList</code>로 해당 클래스를 추가, 삭제로 조작하는 것을 추천한다.</p>
+<ul>
+<li><code>contains</code>는 해당 클래스명 유무를 체크하는데,</li>
+<li>있는지 없는지에 따라 if 조건문을 사용해도 되고</li>
+<li>있다면 삭제, 없다면 추가를 알아서 해주는 toggle을 사용해도 된다.</li>
+</ul>
+<hr>
+<h2 id="4-5-문서-객체-추가"><a href="#4-5-문서-객체-추가" class="headerlink" title="4.5 문서 객체 추가"></a>4.5 문서 객체 추가</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> 자식 객체 = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(문서 객체 이름)</span><br><span class="line">부모 객체.<span class="title function_">appendChild</span>(자식 객체)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>createElement</code>로 문서 객체를 생성하고</li>
+<li><code>appendChild</code>로 부모 객체에 자식 객체를 추가할 수 있다.</li>
+</ul>
+<hr>
+<h2 id="4-6-문서-객체-삭제"><a href="#4-6-문서-객체-삭제" class="headerlink" title="4.6 문서 객체 삭제"></a>4.6 문서 객체 삭제</h2><p>반대로,</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">부모 객체(문서 객체.<span class="property">parentNode</span>).<span class="title function_">removeChild</span>(자식 객체)</span><br></pre></td></tr></table></figure>
+
+<p>부모 객체에서 자식 객체를 삭제할 수 있다.<br>만약 부모 객체에 접근해야 한다면 <code>parentNode</code>를 사용한다.</p>
+<hr>
+<h2 id="4-7-이벤트-추가"><a href="#4-7-이벤트-추가" class="headerlink" title="4.7 이벤트 추가"></a>4.7 이벤트 추가</h2><p>모든 문서 객체에는 클릭되거나 마우스를 위에 올리거나 등 이벤트를 가지고 있다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">문서 객체.<span class="title function_">addEventListener</span>(이벤트 이름, 함수)</span><br></pre></td></tr></table></figure>
+
+<p><code>addEventListener</code>로 이벤트 이름과 함수를 지정하면, 문서 객체의 해당 이벤트가 실행되면 지정한 함수가 실행된다.</p>
+<hr>
+<h2 id="4-8-이벤트-삭제"><a href="#4-8-이벤트-삭제" class="headerlink" title="4.8 이벤트 삭제"></a>4.8 이벤트 삭제</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">문서 객체.<span class="title function_">removeEventListener</span>(이벤트 이름, 함수)</span><br></pre></td></tr></table></figure>
+
+<p>반대로, 이벤트를 제거하고 싶다면 <code>removeEventListener</code>를 사용한다.</p>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/02/06/Front-Start-CSS-07-Flexible-Layout/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-02-06 18:31:55
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/html-css-js/" title="HTML-CSS-JS"> <b>#</b> HTML-CSS-JS </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/html-css-js/js/" title="JS"> <b>#</b> JS </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/js/" title="JS"> #JS </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/02/06/Front-Start-CSS-08-Grid-Layout/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-DOM%EC%9D%B4%EB%9E%80"><span class="toc-text">1. DOM이란?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-JS-%EC%BD%94%EB%93%9C-%EB%B6%80%EB%A5%B4%EB%8A%94-%EB%B0%A9%EB%B2%95"><span class="toc-text">2. JS 코드 부르는 방법</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%EB%AC%B8%EC%84%9C-%EA%B0%9D%EC%B2%B4%EB%A5%BC-%EA%B0%80%EC%A0%B8%EC%98%A4%EB%A0%A4%EB%A9%B4"><span class="toc-text">3. 문서 객체를 가져오려면</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%EB%AC%B8%EC%84%9C-%EA%B0%9D%EC%B2%B4%EC%97%90-%EC%A0%91%EA%B7%BC%ED%96%88%EB%8B%A4%EB%A9%B4"><span class="toc-text">4. 문서 객체에 접근했다면</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%EB%AC%B8%EC%9E%90-HTML-%ED%98%95%ED%83%9C%EB%A1%9C-%EB%84%A3%EA%B8%B0"><span class="toc-text">4.1 문자, HTML 형태로 넣기</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%EC%86%8D%EC%84%B1-%EC%B6%94%EA%B0%80-%EC%88%98%EC%A0%95-%EC%82%AD%EC%A0%9C"><span class="toc-text">4.2 속성 추가, 수정, 삭제</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-%EC%8A%A4%ED%83%80%EC%9D%BC-%EC%A1%B0%EC%9E%91"><span class="toc-text">4.3 스타일 조작</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-%EC%8A%A4%ED%83%80%EC%9D%BC-%EC%A1%B0%EC%9E%91-classList"><span class="toc-text">4.4 스타일 조작 - classList</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-%EB%AC%B8%EC%84%9C-%EA%B0%9D%EC%B2%B4-%EC%B6%94%EA%B0%80"><span class="toc-text">4.5 문서 객체 추가</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-6-%EB%AC%B8%EC%84%9C-%EA%B0%9D%EC%B2%B4-%EC%82%AD%EC%A0%9C"><span class="toc-text">4.6 문서 객체 삭제</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-7-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%B6%94%EA%B0%80"><span class="toc-text">4.7 이벤트 추가</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-8-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%82%AD%EC%A0%9C"><span class="toc-text">4.8 이벤트 삭제</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + tart-JS%20-%20%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%20DOM%EC%9C%BC%EB%A1%9C%20%EC%A1%B0%EC%9E%91 + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F02%2F06%2FFront-Start-JS-DOM%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/02/06/Front-Start-JS-DOM/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

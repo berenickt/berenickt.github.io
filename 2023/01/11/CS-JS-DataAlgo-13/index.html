@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      CS-JS-DataAlgo-13-정렬 (Sort) 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">CS-JS-DataAlgo-13-정렬 (Sort)</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-11 06:43:47
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/cs-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="CS-자료구조-알고리즘"> <b>#</b> CS-자료구조-알고리즘 </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/cs-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/js-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="JS-자료구조-알고리즘"> <b>#</b> JS-자료구조-알고리즘 </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/js-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="JS-자료구조-알고리즘"> #JS-자료구조-알고리즘 </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-정렬"><a href="#1-정렬" class="headerlink" title="1. 정렬"></a>1. 정렬</h1><p>만약 구슬들을 크기 별로 나열해야 한다면?<br>제일 큰 것부터 찾거나 일단 분류해서 정리하는 등의 행동들을 할 것입니다. 이러한 행동을 정렬이라고 부릅니다.</p>
+<p>정렬 : <strong>요소들을 일정한 순서대로 열거</strong>하는 알고리즘</p>
+<hr>
+<h2 id="1-1-정렬의-특징"><a href="#1-1-정렬의-특징" class="headerlink" title="1.1 정렬의 특징"></a>1.1 정렬의 특징</h2><ul>
+<li><strong>정렬 기준은 사용자가 정할 수 있다.</strong> (e.g. 오름차순, 내림차순)</li>
+<li>크게 <code>비교식</code>과 <code>분산식</code>으로 나눌 수 있다.</li>
+<li>대부분의 언어가 빌트인으로 제공해준다.</li>
+<li><strong>삽입, 선택, 버블, 머지, 힙, 퀵 정렬 등 다양한 정렬 방식</strong>이 존재한다.</li>
+</ul>
+<hr>
+<h2 id="1-2-어떤-정렬이-제일-빠를까"><a href="#1-2-어떤-정렬이-제일-빠를까" class="headerlink" title="1.2 어떤 정렬이 제일 빠를까?"></a>1.2 어떤 정렬이 제일 빠를까?</h2><p>정렬들은 각각 유리하고, 불리한 상황이 존재하기 때문에 무엇이 좋고 나쁜지는 정해져 있지 않습니다.</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.toptal.com/developers/sorting-algorithms">https://www.toptal.com/developers/sorting-algorithms</a></p>
+</blockquote>
+<hr>
+<h1 id="2-비교식-정렬"><a href="#2-비교식-정렬" class="headerlink" title="2. 비교식 정렬"></a>2. 비교식 정렬</h1><p><strong>다른 요소와 비교를 통해 정렬</strong>을 하는 방식</p>
+<hr>
+<h2 id="2-1-버블-정렬-Bubble-Sort"><a href="#2-1-버블-정렬-Bubble-Sort" class="headerlink" title="2.1 버블 정렬(Bubble Sort)"></a>2.1 버블 정렬(Bubble Sort)</h2><ul>
+<li><p><strong>서로 인접한 두 요소를 검사하여 정렬</strong>하는 알고리즘</p>
+</li>
+<li><p>요소들이 마치 거품이 일어나듯이 연쇄적으로 자기 자리를 찾아간다고 해서 버블 정렬이란 이름이 붙여짐</p>
+</li>
+<li><p>시간복잡도</p>
+<ul>
+<li><p><code>Worst Case</code> : $O(n^2)$ - 정렬이 하나도 안되어있는 경우</p>
+<ul>
+<li>각 자리를 찾기 위해서 n번의 순회를 해야하며, </li>
+<li>n번의 회전 동안에 요소의 개수만큼 또 순회를 해야하기 때문</li>
+</ul>
+</li>
+<li><p><code>Best Case</code> : $O(n)$ - 이미 정렬이 되어있는 경우</p>
+<ul>
+<li>이미 정렬이 되어있는 경우에는 한 번의 순회로 정렬 여부를 알 수 있다.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>즉, <strong>자료의 개수가 많아질수록 성능이 매우 떨어진다</strong></p>
+<ul>
+<li>5개밖에 없다면 최대 25번 순회하지만, 데이터가 1,000개라면 1,000,000번 순회해야함</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-1-1-동작원리"><a href="#2-1-1-동작원리" class="headerlink" title="2.1.1 동작원리"></a>2.1.1 동작원리</h3><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/bubble-sort.gif" alt="bubble-sort" style="zoom:67%;" />
+
+<ul>
+<li>데이터를 두개씩 묶어서 비교한 후 크기가 큰 쪽이 오른쪽으로 가도록 자리를 바꿔가며 </li>
+<li>크기가 큰 데이터를 오른쪽으로 민다. </li>
+<li>그러면 1회전이 끝남과 동시에 이 리스트에서 가장 큰 값이 가장 오른쪽에 가기 때문에 맨 오른쪽 자리가 결정난다.</li>
+<li><strong>즉, n번째 정렬 회차가 끝나면 뒤에서 n번째 자리의 데이터가 확정된다.</strong></li>
+</ul>
+<h3 id="2-1-2-그림"><a href="#2-1-2-그림" class="headerlink" title="2.1.2 그림"></a>2.1.2 그림</h3><p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_13_1.png" alt="Data Structure_13_1"></p>
+<p>배열을 오름차순으로 정렬</p>
+<ol>
+<li><code>첫 번쨰 정렬</code><ul>
+<li>첫 번쨰 요소에 인접한 요소를 비교합니다.<ul>
+<li>4 &lt; 7 이기 때문에 오름차순에 따라 두 요소를 교환합니다.</li>
+</ul>
+</li>
+<li>교환 후 2번쨰 요소와 3번째요소를 비교합니다.<ul>
+<li>5 &lt; 7 이기 때문에 오름차순에 따라 두 요소를 교환합니다.</li>
+</ul>
+</li>
+<li>교환 후 3번쨰 요소와 4번째요소를 비교합니다.<ul>
+<li>1 &lt; 7 이기 때문에 오름차순에 따라 두 요소를 교환합니다.</li>
+</ul>
+</li>
+<li>교환 후 4번쨰 요소와 5번째요소를 비교합니다.<ul>
+<li>3 &lt; 7 이기 때문에 오름차순에 따라 두 요소를 교환합니다.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>두 번째 정렬</code><ul>
+<li>첫 번쨰 요소에 인접한 요소를 비교합니다.<ul>
+<li>4 &lt; 5 이기 때문에 교환하지 않습니다.</li>
+</ul>
+</li>
+<li>2번쨰 요소와 3번째요소를 비교합니다.<ul>
+<li>1 &lt; 5 이기 때문에 오름차순에 따라 두 요소를 교환합니다.</li>
+</ul>
+</li>
+<li>교환 후 3번쨰 요소와 4번째요소를 비교합니다.<ul>
+<li>3 &lt; 5 이기 때문에 오름차순에 따라 두 요소를 교환합니다.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>세 번째 정렬</code><ul>
+<li>첫 번쨰 요소에 인접한 요소를 비교합니다.<ul>
+<li>1 &lt; 4 이기 때문에 오름차순에 따라 두 요소를 교환합니다.</li>
+</ul>
+</li>
+<li>2번쨰 요소와 3번째요소를 비교합니다.<ul>
+<li>3 &lt; 4 이기 때문에 오름차순에 따라 두 요소를 교환합니다.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>네 번쨰 정렬</code><ul>
+<li>첫 번쨰 요소에 인접한 요소를 비교합니다.<ul>
+<li>1 &lt; 3 이기 때문에 교환하지 않습니다.</li>
+</ul>
+</li>
+<li>마무리!</li>
+</ul>
+</li>
+</ol>
+<p>결국 버블 정렬은 <strong>n-1번 순회</strong>하면 정렬이 마무리됩니다.</p>
+<h3 id="2-1-3-구현"><a href="#2-1-3-구현" class="headerlink" title="2.1.3 구현"></a>2.1.3 구현</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">bubbleSort</span>(<span class="params">arr</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> answer = arr; <span class="comment">// 얕은 복사</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 순회</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; arr.<span class="property">length</span> - <span class="number">1</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; arr.<span class="property">length</span> - i - <span class="number">1</span>; j++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (arr[j] &gt; arr[j + <span class="number">1</span>]) &#123;</span><br><span class="line">        [arr[j], arr[j + <span class="number">1</span>]] = [arr[j + <span class="number">1</span>], arr[j]]; <span class="comment">// 바꾸기</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`<span class="subst">$&#123;i&#125;</span>회전: <span class="subst">$&#123;arr&#125;</span>`</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> answer;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">bubbleSort</span>([<span class="number">5</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>]));</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-2-선택-정렬-Selection-Sort"><a href="#2-2-선택-정렬-Selection-Sort" class="headerlink" title="2.2 선택 정렬(Selection Sort)"></a>2.2 선택 정렬(Selection Sort)</h2><ul>
+<li>사람이 이해하기 가장 단순한 정렬</li>
+<li><strong>선택한 요소와 가장 우선순위가 높은 요소를 교환</strong>하는 정렬 알고리즘</li>
+<li>시간복잡도<ul>
+<li><code>Worst Case</code> : $O(n^2)$ - 정렬이 하나도 안되어있는 경우</li>
+<li><code>Best Case</code> : $O(n^2)$ - 이미 정렬이 되어있는 경우</li>
+<li>정렬이 이미 되어있는 경우에도 $O(n^2)$의 시간복잡도를 가짐</li>
+<li>왜냐하면 매번 정해진 자리에 올 수 있는 최소값을 찾아야하기 때문</li>
+<li>그래서 <strong>성능이 매우 떨어진다.</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="2-2-1-동작원리"><a href="#2-2-1-동작원리" class="headerlink" title="2.2.1 동작원리"></a>2.2.1 동작원리</h3><p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/selection-sort.gif" alt="selection-sort"></p>
+<ol>
+<li>먼저 주어진 리스트 중에 최소값을 찾는다.</li>
+<li>그 값을 맨 앞에 위치한 값과 교환한다.</li>
+<li>이제 맨 앞을 제외하고 다시 순회하며 최소값을 찾는다.</li>
+<li>그 값을 맨 앞 위치 바로 다음 위치와 교체한다. … 반복</li>
+</ol>
+<p> 버블 정렬이 각 회전이 끝날 때마다 맨 마지막 데이터의 위치가 정해졌던 것과 반대로<br><strong>선택 정렬은 n번째 회전이 끝날 때마다 앞에서 n번째 데이터의 위치가 정해진다.</strong></p>
+<h3 id="2-2-2-그림"><a href="#2-2-2-그림" class="headerlink" title="2.2.2 그림"></a>2.2.2 그림</h3><p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_13_2.png" alt="Data Structure_13_2"></p>
+<ol>
+<li>선택된 첫 번째 요소와 나머지 요소 중 가장 우선순위가 높은 1과 교환합니다.</li>
+<li>다음 두 번쨰 요소와 나머지 요소 중 가장 우선순위가 높은 3과 교환합니다. </li>
+<li>다음 세 번쨰 요소와 나머지 요소 중 가장 우선순위가 높은 4와 교환합니다. </li>
+<li>다음 네 번쨰 요소와 나머지 요소 중 가장 우선순위가 높은 5와 교환합니다.</li>
+</ol>
+<p>참고로 나머지 요소 중 선택된 요소보다 우선순위가 높은 요소가 없다면, 교환하지 않고 넘어가면 됩니다.</p>
+<h3 id="2-2-3-구현"><a href="#2-2-3-구현" class="headerlink" title="2.2.3 구현"></a>2.2.3 구현</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">solution</span>(<span class="params">arr</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> answer = arr;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 크기만큼 순회</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; arr.<span class="property">length</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">let</span> index = i;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = i + <span class="number">1</span>; j &lt; arr.<span class="property">length</span>; j++) &#123;</span><br><span class="line">      <span class="keyword">if</span> (arr[j] &lt; arr[index]) index = j;</span><br><span class="line">    &#125;</span><br><span class="line">    [arr[i], arr[index]] = [arr[index], arr[i]]; <span class="comment">// 서로 바꾸기</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`<span class="subst">$&#123;i&#125;</span>회전: <span class="subst">$&#123;arr&#125;</span>`</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> answer;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">solution</span>([<span class="number">13</span>, <span class="number">5</span>, <span class="number">11</span>, <span class="number">7</span>, <span class="number">23</span>, <span class="number">15</span>])); <span class="comment">// [ 5, 7, 11, 13, 15, 23 ]</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-3-삽입-정렬-Insertion-Sort"><a href="#2-3-삽입-정렬-Insertion-Sort" class="headerlink" title="2.3 삽입 정렬(Insertion Sort)"></a>2.3 삽입 정렬(Insertion Sort)</h2><ul>
+<li><strong>선택한 요소를 삽입할 수 있는 위치를 찾아 삽입하는 방식</strong>의 정렬 알고리즘</li>
+<li>시간복잡도<ul>
+<li><code>Worst Case</code> : $O(n^2)$ - 정렬이 하나도 안되어있는 경우</li>
+<li><code>Best Case</code> : $O(n)$ - 이미 정렬이 되어있는 경우</li>
+</ul>
+</li>
+<li>자료의 <strong>개수가 많아질수록 성능이 매우 떨어진다</strong></li>
+</ul>
+<hr>
+<h3 id="2-3-1-그림"><a href="#2-3-1-그림" class="headerlink" title="2.3.1 그림"></a>2.3.1 그림</h3><p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_13_3.png" alt="Data Structure_13_3"></p>
+<p><code>7, 4, 5, 1, 3</code>순의 배열을 정렬해보겠습니다. <strong>두 번째 요소부터 시작</strong>합니다.</p>
+<ol>
+<li><strong>두 번째 요소인 4부터 선택</strong>합니다.<ul>
+<li>4 &lt; 7 이기 때문에 오름차순에 따라 첫 번쨰 요소에 4을 삽입합니다.</li>
+</ul>
+</li>
+<li><strong>세 번째 요소인 5를 선택</strong>합니다.<ul>
+<li>5 &lt; 7 이기 때문에 오름차순에 따라 두 번쨰 요소에 5을 삽입합니다.</li>
+<li>다음으로 첫 번째 요소와 비교합니다.</li>
+<li>4 &lt; 5 이기 때문에 오름차순에 따라 밀어내지 못하고 5가 그대로 있습니다.</li>
+</ul>
+</li>
+<li><strong>네 번째 요소인 1를 선택</strong>합니다.<ul>
+<li>1 &lt; 7 이기 때문에 오름차순에 따라 세 번쨰 요소에 1을 삽입합니다.</li>
+<li>1 &lt; 5 이기 때문에 오름차순에 따라 두 번쨰 요소에 1을 삽입합니다.</li>
+<li>1 &lt; 4 이기 때문에 오름차순에 따라 첫 번쨰 요소에 1을 삽입합니다.</li>
+</ul>
+</li>
+<li><strong>다섯 번째 요소인 3를 선택</strong>합니다.<ul>
+<li>3 &lt; 7 이기 때문에 오름차순에 따라 네 번쨰 요소에 3을 삽입합니다.</li>
+<li>3 &lt; 5 이기 때문에 오름차순에 따라 세 번쨰 요소에 3을 삽입합니다.</li>
+<li>3 &lt; 4 이기 때문에 오름차순에 따라 두 번쨰 요소에 3을 삽입합니다.</li>
+<li>1 &lt; 3 이기 때문에 오름차순에 따라 밀어내지 못하고 1이 그대로 있습니다.</li>
+</ul>
+</li>
+</ol>
+<h3 id="2-3-2-구현"><a href="#2-3-2-구현" class="headerlink" title="2.3.2 구현"></a>2.3.2 구현</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">insertionSort</span>(<span class="params">array</span>) &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; array.<span class="property">length</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">let</span> cur = array[i];</span><br><span class="line">    <span class="keyword">let</span> left = i - <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (left &gt;= <span class="number">0</span> &amp;&amp; array[left] &gt; cur) &#123;</span><br><span class="line">      array[left + <span class="number">1</span>] = array[left];</span><br><span class="line">      left--;</span><br><span class="line">    &#125;</span><br><span class="line">    array[left + <span class="number">1</span>] = cur;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`<span class="subst">$&#123;i&#125;</span>회전: <span class="subst">$&#123;array&#125;</span>`</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> array;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">insertionSort</span>([<span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>]));</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="3-분산식-정렬"><a href="#3-분산식-정렬" class="headerlink" title="3. 분산식 정렬"></a>3. 분산식 정렬</h1><p><strong>요소를 분산해서 정렬</strong>하는 방식</p>
+<h2 id="3-1-분할-정복-Divide-x2F-Conquer"><a href="#3-1-분할-정복-Divide-x2F-Conquer" class="headerlink" title="3.1 분할 정복(Divide &#x2F; Conquer)"></a>3.1 분할 정복(Divide &#x2F; Conquer)</h2><p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_13_4.png" alt="Data Structure_13_4"></p>
+<ul>
+<li><strong>문제를</strong> 작은 2개의 문제로 분리하고 <strong>더 이상 분리가 불가능할 떄 처리한 후 합치는 전략</strong></li>
+<li>정렬 뿐만 아니라 다양한 알고리즘에 응용된다.</li>
+</ul>
+<hr>
+<h2 id="3-2-합병-정렬-Merge-Sort"><a href="#3-2-합병-정렬-Merge-Sort" class="headerlink" title="3.2 합병 정렬(Merge Sort)"></a>3.2 합병 정렬(Merge Sort)</h2><ul>
+<li><strong>분할 정복 알고리즘을 이용</strong>한 <strong>최선과 최악이 같은 안정적인 정렬</strong> 알고리즘</li>
+<li><strong>선형 로그($O(n\ log\ n)$) 시간복잡도</strong>를 가진다.</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_13_5.png" alt="Data Structure_13_5"></p>
+<ol>
+<li>요소를 나누는 작업부터 먼저 시작합니다. <code>(Divide)</code><ul>
+<li>8개의 요소를 절반으로 나누고, 요소가 1개가 남을 떄까지 계속 절반으로 나눈다.</li>
+</ul>
+</li>
+<li>모든 요소를 나눴다면 합치는 작업을 시작합니다. <code>(Conquer)</code><ul>
+<li>나눈 것을 합치면, 두 요소 중 작은 것을 먼저 배치합니다.</li>
+<li>21과 10의 경우 10이 먼저 배치되고 21이 배치됩니다.</li>
+<li>이어서 2개까지를 합칠 떄도 작은 순으로 배치합니다.</li>
+<li>최종적으로 모두 합치면 정렬된 상태가 됩니다.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="3-3-퀵-정렬-Quick-Sort"><a href="#3-3-퀵-정렬-Quick-Sort" class="headerlink" title="3.3 퀵 정렬(Quick Sort)"></a>3.3 퀵 정렬(Quick Sort)</h2><ul>
+<li>분할 정복 알고리즘을 이용한 <strong>매우 빠르지만 최악의 경우가 존재하는 불안정 정렬</strong></li>
+<li><strong>선형 로그($O(n\ log\ n)$) 시간복잡도</strong>를 가진다.</li>
+<li><strong>최악의 경우 2차($O(n^2)$) 시간복잡도</strong>를 가진다.</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_13_6.png" alt="Data Structure_13_6"></p>
+<ol>
+<li>피벗이라는 기준으로 좌측과 우측을 나눕니다.<ul>
+<li>여기서는 첫 번쨰 요소인 5를 피벗으로 둡니다.</li>
+<li>5를 기준으로 작은 값이 왼쪽, 큰 값이 오른쪽에 배치됩니다.</li>
+</ul>
+</li>
+<li>다시 나뉜 배열에서 각 첫 번쨰 요소가 피벗이 됩니다.<ul>
+<li>각각 1과 9가 피벗이 됩니다.</li>
+</ul>
+</li>
+<li>다시 나뉜 배열에서 각 첫 번쨰 요소가 피벗이 됩니다.</li>
+<li>더 이상 나눌 수 없는 상태가 되었다면, 그대로 합쳐줍니다.</li>
+</ol>
+<hr>
+<h1 id="4-JS에서-정렬-sort"><a href="#4-JS에서-정렬-sort" class="headerlink" title="4. JS에서 정렬(sort)"></a>4. JS에서 정렬(sort)</h1><p>JavaScript에서는 정렬이 매우 간단합니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> array = [<span class="number">5</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">3</span>, <span class="number">8</span>, <span class="number">3</span>, <span class="number">2</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 다음과 같이 그냥 정렬하면 ASCII 문자 순서로 정렬되어</span></span><br><span class="line"><span class="comment">// 우리가 원하는 숫자 크기대로 정렬되지 않는다.</span></span><br><span class="line">array.<span class="title function_">sort</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(array); <span class="comment">// [10, 2, 3, 3, 5, 8, 9]</span></span><br><span class="line"><span class="comment">// 10이 먼저 나오는 이유는 ASCII 문자 &#x27;1&#x27;이 &#x27;2&#x27;보다 작기 때문</span></span><br><span class="line"></span><br><span class="line">array.<span class="title function_">sort</span>(<span class="function">(<span class="params">a, b</span>) =&gt;</span> a - b); <span class="comment">// 오름차순 정렬</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(array); <span class="comment">// [2, 3, 3, 5, 8, 9, 10]</span></span><br><span class="line"></span><br><span class="line">array.<span class="title function_">sort</span>(<span class="function">(<span class="params">a, b</span>) =&gt;</span> b - a); <span class="comment">// 내림차순 정렬</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(array); <span class="comment">// [10, 9, 8, 5, 3, 3, 2]</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="참고"><a href="#참고" class="headerlink" title="[참고]"></a>[참고]</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://im-developer.tistory.com/133">https://im-developer.tistory.com/133</a></li>
+</ul>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/11/CS-JS-DataAlgo-12/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-11 06:43:47
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/cs-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="CS-자료구조-알고리즘"> <b>#</b> CS-자료구조-알고리즘 </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/cs-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/js-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="JS-자료구조-알고리즘"> <b>#</b> JS-자료구조-알고리즘 </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/js-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="JS-자료구조-알고리즘"> #JS-자료구조-알고리즘 </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/11/CS-JS-DataAlgo-14/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%EC%A0%95%EB%A0%AC"><span class="toc-text">1. 정렬</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%EC%A0%95%EB%A0%AC%EC%9D%98-%ED%8A%B9%EC%A7%95"><span class="toc-text">1.1 정렬의 특징</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%EC%96%B4%EB%96%A4-%EC%A0%95%EB%A0%AC%EC%9D%B4-%EC%A0%9C%EC%9D%BC-%EB%B9%A0%EB%A5%BC%EA%B9%8C"><span class="toc-text">1.2 어떤 정렬이 제일 빠를까?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%EB%B9%84%EA%B5%90%EC%8B%9D-%EC%A0%95%EB%A0%AC"><span class="toc-text">2. 비교식 정렬</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%EB%B2%84%EB%B8%94-%EC%A0%95%EB%A0%AC-Bubble-Sort"><span class="toc-text">2.1 버블 정렬(Bubble Sort)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-%EB%8F%99%EC%9E%91%EC%9B%90%EB%A6%AC"><span class="toc-text">2.1.1 동작원리</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-2-%EA%B7%B8%EB%A6%BC"><span class="toc-text">2.1.2 그림</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-3-%EA%B5%AC%ED%98%84"><span class="toc-text">2.1.3 구현</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%EC%84%A0%ED%83%9D-%EC%A0%95%EB%A0%AC-Selection-Sort"><span class="toc-text">2.2 선택 정렬(Selection Sort)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-%EB%8F%99%EC%9E%91%EC%9B%90%EB%A6%AC"><span class="toc-text">2.2.1 동작원리</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-%EA%B7%B8%EB%A6%BC"><span class="toc-text">2.2.2 그림</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-3-%EA%B5%AC%ED%98%84"><span class="toc-text">2.2.3 구현</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%EC%82%BD%EC%9E%85-%EC%A0%95%EB%A0%AC-Insertion-Sort"><span class="toc-text">2.3 삽입 정렬(Insertion Sort)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-%EA%B7%B8%EB%A6%BC"><span class="toc-text">2.3.1 그림</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-2-%EA%B5%AC%ED%98%84"><span class="toc-text">2.3.2 구현</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%EB%B6%84%EC%82%B0%EC%8B%9D-%EC%A0%95%EB%A0%AC"><span class="toc-text">3. 분산식 정렬</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%EB%B6%84%ED%95%A0-%EC%A0%95%EB%B3%B5-Divide-x2F-Conquer"><span class="toc-text">3.1 분할 정복(Divide &#x2F; Conquer)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%ED%95%A9%EB%B3%91-%EC%A0%95%EB%A0%AC-Merge-Sort"><span class="toc-text">3.2 합병 정렬(Merge Sort)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-%ED%80%B5-%EC%A0%95%EB%A0%AC-Quick-Sort"><span class="toc-text">3.3 퀵 정렬(Quick Sort)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-JS%EC%97%90%EC%84%9C-%EC%A0%95%EB%A0%AC-sort"><span class="toc-text">4. JS에서 정렬(sort)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%EC%B0%B8%EA%B3%A0"><span class="toc-text">[참고]</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + CS-JS-DataAlgo-13-%EC%A0%95%EB%A0%AC%20(Sort) + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F11%2FCS-JS-DataAlgo-13%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/11/CS-JS-DataAlgo-13/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

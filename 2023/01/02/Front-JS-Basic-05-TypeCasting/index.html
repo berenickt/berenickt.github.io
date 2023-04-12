@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Front-JS-Basic-05-타입 변환(Type Casting/Coercion) 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Front-JS-Basic-05-타입 변환(Type Casting/Coercion)</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-02 12:37:05
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/js/" title="JS"> <b>#</b> JS </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/js/basic/" title="Basic"> <b>#</b> Basic </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/js/" title="JS"> #JS </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-Type-Conversion-x2F-Coercion"><a href="#1-Type-Conversion-x2F-Coercion" class="headerlink" title="1. Type Conversion&#x2F;Coercion"></a>1. Type Conversion&#x2F;Coercion</h1><p>자바스크립트는 타입이 매우 유연한 언어다.<br>그래서 JS 엔진이 필요에 따라 <strong>암시적변환</strong>을 혹은 개발자의 의도에 따라 <strong>명시적변환</strong>을 실행한다. </p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Glossary/Type_Conversion">Type Conversion - MDN</a> : 타입 변환, 형 변환</li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Glossary/Type_coercion">Type Coercion - MDN</a> : 타입 강제, 강제 형 변환</li>
+</ul>
+<hr>
+<h1 id="2-Explicit-Type-Casting-암시적-형-변환"><a href="#2-Explicit-Type-Casting-암시적-형-변환" class="headerlink" title="2. Explicit Type Casting(암시적 형 변환)"></a>2. Explicit Type Casting(암시적 형 변환)</h1><p><code>Explicit Type Casting</code> &#x3D; JS 엔진이 필요에 따라 <strong>자동으로 데이터 타입을 변환</strong>시키는 것</p>
+<hr>
+<h2 id="2-1-산술-연산자"><a href="#2-1-산술-연산자" class="headerlink" title="2.1 산술 연산자"></a>2.1 산술 연산자</h2><p><strong>더하기(+)</strong> 연산자는 숫자보다 문자열이 우선시 되기 때문에, 숫자형이 문자형을 만나면 문자형으로 변환하여 연산된다. </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">number + number <span class="comment">// number</span></span><br><span class="line">number + string <span class="comment">// string</span></span><br><span class="line">string + string <span class="comment">// string</span></span><br><span class="line">string + boolean <span class="comment">// string</span></span><br><span class="line">number + boolean <span class="comment">// number</span></span><br><span class="line"><span class="number">50</span> + <span class="number">50</span>; <span class="comment">//100</span></span><br><span class="line"><span class="number">100</span> + “점”; <span class="comment">//”100점”</span></span><br><span class="line">“<span class="number">100</span>” + “점”; <span class="comment">//”100점”</span></span><br><span class="line">“<span class="number">10</span>” + <span class="literal">false</span>; <span class="comment">//”100&quot;</span></span><br><span class="line"><span class="number">99</span> + <span class="literal">true</span>; <span class="comment">//100</span></span><br></pre></td></tr></table></figure>
+
+<p>다른 연산자(- * &#x2F; %)는 숫자형이 문자형보다 우선시되기 때문에 더하기와 같은 문자형으로의 변환이 일어나지 않는다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//다른 연산자(-,*,/,%)</span></span><br><span class="line">string * number <span class="comment">// number</span></span><br><span class="line">string * string <span class="comment">// number</span></span><br><span class="line">number * number <span class="comment">// number</span></span><br><span class="line">string * boolean <span class="comment">//number</span></span><br><span class="line">number * boolean <span class="comment">//number</span></span><br><span class="line">“<span class="number">2</span>” * <span class="literal">false</span>; <span class="comment">//0</span></span><br><span class="line"><span class="number">2</span> * <span class="literal">true</span>; <span class="comment">//2</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-2-동치비교"><a href="#2-2-동치비교" class="headerlink" title="2.2 동치비교"></a>2.2 동치비교</h2><p>엄격하지 않은 동치(&#x3D;&#x3D;)비교이며, 아래의 결과값은 좌우항 변환할 경우 모두 ‘0&#x3D;&#x3D;0이기 때문에’ ‘true’이다. </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">null</span> == <span class="literal">undefined</span> <span class="comment">// true 0 == 0</span></span><br><span class="line">“<span class="number">0</span>” == <span class="number">0</span> <span class="comment">// true 0 == 0</span></span><br><span class="line"><span class="number">0</span> == <span class="literal">false</span> <span class="comment">// true 0 == 0</span></span><br><span class="line">“<span class="number">0</span>” == <span class="literal">false</span> <span class="comment">// true 0 == 0</span></span><br></pre></td></tr></table></figure>
+
+<p>cf. 위의 비교는 엄격하지 않은 동치 비교일 경우, 두 값을 비교할때 데이터타입을 변환하지 않는 **엄격한 동치(&#x3D;&#x3D;&#x3D;)**비교와 혼동X</p>
+<hr>
+<h1 id="3-Implicit-Type-Casting-명시적-형-변환"><a href="#3-Implicit-Type-Casting-명시적-형-변환" class="headerlink" title="3. Implicit Type Casting(명시적 형 변환)"></a>3. Implicit Type Casting(명시적 형 변환)</h1><ul>
+<li><code>Implicit Type Casting</code> &#x3D; 개발자가 <strong>의도를 가지고 데이터 타입을 변환</strong>시키는 것이다. </li>
+<li>타입을 변경하는 기본적인 방법은  <code>Object(), Number(), toString(), Boolean()</code> 와 같은 함수를 이용</li>
+<li>new 연산자가 없다면 사용한 함수는 타입을 변환하는 함수로써 사용</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> trans = <span class="number">100</span>; <span class="comment">// Number</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Object</span>(trans); <span class="comment">// 100</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">typeof</span> trans); <span class="comment">// Number</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">toString</span>(trans); <span class="comment">// ”100&quot;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">typeof</span> trans); <span class="comment">// String</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Boolean</span>(trans); <span class="comment">// true</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">typeof</span> trans); <span class="comment">// Bolean</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-1-A-Type-→-Number-Type"><a href="#3-1-A-Type-→-Number-Type" class="headerlink" title="3.1 A Type → Number Type"></a>3.1 A Type → Number Type</h2><p>다른 자료형을 숫자타입으로 변형하는 방법은 아래와 같다. </p>
+<h3 id="3-1-1-Number"><a href="#3-1-1-Number" class="headerlink" title="3.1.1 Number()"></a>3.1.1 Number()</h3><ul>
+<li><code>Number()</code>는 <strong>정수형과 실수형의 숫자로 변환</strong>한다. </li>
+<li>보통 문자형을 숫자형으로 변경할때 사용한다.</li>
+<li>숫자로 변환되지 않는 경우에는 NaN(Not a Number)을 반환한다.</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Number</span>(“<span class="number">12345</span>”); <span class="comment">//12345</span></span><br><span class="line"><span class="title class_">Number</span>(“<span class="number">2</span>”*<span class="number">2</span>); <span class="comment">//4</span></span><br></pre></td></tr></table></figure>
+
+<p>거짓같은 값(falsy values : null, false,”빈문자열”)에 대해서는 0으로 표현합니다.<br>참같은 값(truthy values)에 대해서는 1로 표현합니다. array의 경우는 <code>Number()</code>함수에서 사용하는 0을 반환합니다. </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> falsy1 = <span class="literal">null</span>;</span><br><span class="line"><span class="title class_">Number</span>(falsy1); <span class="comment">// 0;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> falsy2 = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"><span class="title class_">Number</span>(falsy2); <span class="comment">// 0;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> falsy3 = <span class="literal">false</span>;</span><br><span class="line"><span class="title class_">Number</span>(falsy3); <span class="comment">// 0;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> truthy1 = [];</span><br><span class="line"><span class="title class_">Number</span>(truthy1); <span class="comment">// 0;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> truthy2 = <span class="literal">true</span>;</span><br><span class="line"><span class="title class_">Number</span>(truthy2); <span class="comment">// 1;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> truthy3 = &#123;&#125;;</span><br><span class="line"><span class="title class_">Number</span>(&#123;&#125;); <span class="comment">// NaN;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-1-2-parseInt"><a href="#3-1-2-parseInt" class="headerlink" title="3.1.2 parseInt()"></a>3.1.2 parseInt()</h3><p>parseInt()는 <strong>정수형의 숫자</strong>로 변환한다.<br>만약 문자열이 ‘숫자0’으로 시작하면 8진수로 인식하고, ‘0x, OX’로 시작한다면 해당 문자열을 16진수 숫자로 인식한다.<br>또한 앞부분 빈 공백을 두고 나오는 문자는 모두 무시되어 NaN을 반환한다. </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">parseInt</span>(“<span class="number">27</span>”) <span class="comment">//27</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="number">0033</span>); <span class="comment">//27</span></span><br><span class="line"><span class="built_in">parseInt</span>(<span class="number">0x1b</span>); <span class="comment">//27</span></span><br><span class="line"><span class="built_in">parseInt</span>(“ <span class="number">2</span>”); <span class="comment">//2</span></span><br><span class="line"><span class="built_in">parseInt</span>(“ <span class="number">2</span>ㅎ”); <span class="comment">//2</span></span><br><span class="line"><span class="built_in">parseInt</span>(“ ㅎ<span class="number">2</span>”); <span class="comment">//NaN</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>💡 parseInt() VS Number()</p>
+<ul>
+<li><code>parseInt()</code>는 문자열로 된 부분에서 숫자(정수)만 뽑아서 변환해줌</li>
+<li><code>Number()</code>은 문자열 전체가 숫자일때 소수점까지 숫자타입으로 가져옴</li>
+</ul>
+</blockquote>
+<hr>
+<h3 id="3-1-3-parseFloat"><a href="#3-1-3-parseFloat" class="headerlink" title="3.1.3 parseFloat()"></a>3.1.3 parseFloat()</h3><p>parseFloat()는 부동 소수점의 숫자로 변환한다. parseInt()와는 달리<br> parseFloat()는 항상 10진수를 사용하며 parseFloat() 또한 앞부분 빈 공백을 두고 나오는 문자는 모두 무시되어 NaN을 반환한다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">parseFloat</span>(“!<span class="number">123</span>”); <span class="comment">//NaN</span></span><br><span class="line"><span class="built_in">parseFloat</span>(“<span class="number">123.123456</span>”); <span class="comment">//123.123456</span></span><br><span class="line"><span class="built_in">parseInt</span>(“<span class="number">123.123456</span>”); <span class="comment">//123</span></span><br><span class="line"><span class="built_in">parseFloat</span>(“ <span class="number">123.123456</span>”); <span class="comment">//123.123456</span></span><br><span class="line"><span class="built_in">parseFloat</span>(“ a123<span class="number">.123456</span>”); <span class="comment">//NaN</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-1-4-단항연산자-unary-operators-로-숫자형-타입-변경"><a href="#3-1-4-단항연산자-unary-operators-로-숫자형-타입-변경" class="headerlink" title="3.1.4 단항연산자(unary-operators)로 숫자형 타입 변경"></a>3.1.4 단항연산자(unary-operators)로 숫자형 타입 변경</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+<span class="string">&#x27;1000&#x27;</span>; <span class="comment">// 1000</span></span><br><span class="line">+<span class="string">&#x27;-1000&#x27;</span>; <span class="comment">// -1000</span></span><br><span class="line">+<span class="string">&#x27;Infinity&#x27;</span>; <span class="comment">// Infinity</span></span><br><span class="line">-<span class="string">&#x27;1000&#x27;</span>; <span class="comment">// -1000</span></span><br><span class="line">+<span class="literal">true</span>; <span class="comment">// 1</span></span><br><span class="line">+[]; <span class="comment">/// 0</span></span><br><span class="line">+<span class="literal">false</span>; <span class="comment">// 0</span></span><br><span class="line">+<span class="literal">null</span>; <span class="comment">// 0</span></span><br><span class="line">+<span class="string">&#x27;&#x27;</span>;<span class="comment">// 0</span></span><br></pre></td></tr></table></figure>
+
+<p>위 예제를 보면 단일 연산자를 이용한 숫자형 변환은 <code>Number</code>와 동일한 동작을 하는 것을 볼 수 있다.<br>단항 연산자는 자바스크립트 함수를 사용하지 않고 타입변환을 할 수 있는 쉽고 효율적인 방법이다. </p>
+<hr>
+<h2 id="3-2-A-Type-→-String-Type"><a href="#3-2-A-Type-→-String-Type" class="headerlink" title="3.2 A Type → String Type"></a>3.2 A Type → String Type</h2><p>다른 자료형을 문자타입으로 변형하는 방법은 아래와 같다. </p>
+<h3 id="3-2-1-String"><a href="#3-2-1-String" class="headerlink" title="3.2.1 String()"></a>3.2.1 String()</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">String</span>(<span class="number">123</span>); <span class="comment">//”123&quot;</span></span><br><span class="line"><span class="title class_">String</span>(<span class="number">123.456</span>); <span class="comment">//”123.456&quot;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-2-2-toString"><a href="#3-2-2-toString" class="headerlink" title="3.2.2 toString()"></a>3.2.2 toString()</h3><p><strong>주어진 값을 문자열로 변환 후 반환</strong>합니다.<br> toString()는 인자로 기수를 선택할 수 있다. 인자를 전달하지 않으면 10진수로 변환한다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> trans = <span class="number">100</span>;</span><br><span class="line">trans.<span class="title function_">toString</span>(); <span class="comment">//”100&quot;</span></span><br><span class="line">trans.<span class="title function_">toString</span>(<span class="number">2</span>); <span class="comment">//”1100100&quot;</span></span><br><span class="line">trans.<span class="title function_">toString</span>(<span class="number">8</span>); <span class="comment">//”144&quot;</span></span><br><span class="line"><span class="keyword">var</span> boolT = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">var</span> boolF = <span class="literal">false</span>;</span><br><span class="line">boolT.<span class="title function_">toString</span>(); <span class="comment">//”true”</span></span><br><span class="line">boolF.<span class="title function_">toString</span>(); <span class="comment">//”false”</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-2-3-toFixed"><a href="#3-2-3-toFixed" class="headerlink" title="3.2.3 toFixed()"></a>3.2.3 toFixed()</h3><p>toFixed()의 인자를 넣으면 <strong>인자값만큼 반올림하여 소수점을 표현</strong>하며,<br><strong>소수점을 넘치는 값이 인자로 들어오며 ‘0’으로 길이를 맞춘 문자열을 반환</strong>한다. </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> trans = <span class="number">123.456789</span>;</span><br><span class="line"><span class="keyword">var</span> roundOff = <span class="number">99.987654</span>;</span><br><span class="line">trans.<span class="title function_">toFixed</span>(); <span class="comment">//”123&quot;</span></span><br><span class="line">trans.<span class="title function_">toFixed</span>(<span class="number">0</span>); <span class="comment">//”123&quot;</span></span><br><span class="line">trans.<span class="title function_">toFixed</span>(<span class="number">2</span>); <span class="comment">//”123.46&quot;</span></span><br><span class="line">trans.<span class="title function_">toFixed</span>(<span class="number">8</span>); <span class="comment">//”123.45678900&quot;</span></span><br><span class="line">roundOff.<span class="title function_">toFixed</span>(<span class="number">2</span>); <span class="comment">//”99.99&quot;</span></span><br><span class="line">roundOff.<span class="title function_">toFixed</span>(<span class="number">0</span>); <span class="comment">//”100&quot;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-3-A-Type-→-Boolean-Type"><a href="#3-3-A-Type-→-Boolean-Type" class="headerlink" title="3.3 A Type → Boolean Type"></a>3.3 A Type → Boolean Type</h2><p>자바스크립트에서는 Boolean타입으로 변경은 Boolean 또는 <code>부정연산자(!)</code>를 사용하여 Boolean값을 만들어낸다.<br>부정연산자는 의미그대로 <code>!</code>을 사용하면 <code>Boolean()</code> 반대의 값을 리턴한다.</p>
+<p>다른 자료형을 불린타입으로 변형하는 방법은 아래와 같다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Boolean</span>(<span class="number">100</span>); <span class="comment">//true</span></span><br><span class="line"><span class="title class_">Boolean</span>(“<span class="number">1</span>”); <span class="comment">//true</span></span><br><span class="line"><span class="title class_">Boolean</span>(<span class="literal">true</span>); <span class="comment">//true</span></span><br><span class="line"><span class="title class_">Boolean</span>(<span class="title class_">Object</span>); <span class="comment">//true</span></span><br><span class="line"><span class="title class_">Boolean</span>([]); <span class="comment">//true</span></span><br><span class="line"><span class="title class_">Boolean</span>(<span class="number">0</span>); <span class="comment">//false</span></span><br><span class="line"><span class="title class_">Boolean</span>(<span class="title class_">NaN</span>); <span class="comment">//false</span></span><br><span class="line"><span class="title class_">Boolean</span>(<span class="literal">null</span>); <span class="comment">//false</span></span><br><span class="line"><span class="title class_">Boolean</span>(<span class="literal">undefined</span>); <span class="comment">//false</span></span><br><span class="line"><span class="title class_">Boolean</span>( ); <span class="comment">//false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> numb1 = <span class="number">0</span>;</span><br><span class="line"><span class="title class_">Boolean</span>(numb1); <span class="comment">// false</span></span><br><span class="line">!!numb1; <span class="comment">// false</span></span><br><span class="line">!numb1; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="참조"><a href="#참조" class="headerlink" title="[참조]"></a>[참조]</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://medium.com/gdana/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EC%9D%98-%ED%98%95%EB%B3%80%ED%99%98%EC%9D%80-%EB%91%90%EA%B0%80%EC%A7%80%EB%8B%A4-b46875be4a88">자바스크립트의 형변환은 2가지다</a></li>
+</ul>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/02/Roadmap-CS/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-02 12:37:05
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/js/" title="JS"> <b>#</b> JS </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/js/basic/" title="Basic"> <b>#</b> Basic </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/js/" title="JS"> #JS </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/02/Front-JS-Basic-06-DataStructure/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Type-Conversion-x2F-Coercion"><span class="toc-text">1. Type Conversion&#x2F;Coercion</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Explicit-Type-Casting-%EC%95%94%EC%8B%9C%EC%A0%81-%ED%98%95-%EB%B3%80%ED%99%98"><span class="toc-text">2. Explicit Type Casting(암시적 형 변환)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%EC%82%B0%EC%88%A0-%EC%97%B0%EC%82%B0%EC%9E%90"><span class="toc-text">2.1 산술 연산자</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%EB%8F%99%EC%B9%98%EB%B9%84%EA%B5%90"><span class="toc-text">2.2 동치비교</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Implicit-Type-Casting-%EB%AA%85%EC%8B%9C%EC%A0%81-%ED%98%95-%EB%B3%80%ED%99%98"><span class="toc-text">3. Implicit Type Casting(명시적 형 변환)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-A-Type-%E2%86%92-Number-Type"><span class="toc-text">3.1 A Type → Number Type</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-1-Number"><span class="toc-text">3.1.1 Number()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-2-parseInt"><span class="toc-text">3.1.2 parseInt()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-3-parseFloat"><span class="toc-text">3.1.3 parseFloat()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-4-%EB%8B%A8%ED%95%AD%EC%97%B0%EC%82%B0%EC%9E%90-unary-operators-%EB%A1%9C-%EC%88%AB%EC%9E%90%ED%98%95-%ED%83%80%EC%9E%85-%EB%B3%80%EA%B2%BD"><span class="toc-text">3.1.4 단항연산자(unary-operators)로 숫자형 타입 변경</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-A-Type-%E2%86%92-String-Type"><span class="toc-text">3.2 A Type → String Type</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-1-String"><span class="toc-text">3.2.1 String()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-2-toString"><span class="toc-text">3.2.2 toString()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-3-toFixed"><span class="toc-text">3.2.3 toFixed()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-A-Type-%E2%86%92-Boolean-Type"><span class="toc-text">3.3 A Type → Boolean Type</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%EC%B0%B8%EC%A1%B0"><span class="toc-text">[참조]</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Front-JS-Basic-05-%ED%83%80%EC%9E%85%20%EB%B3%80%ED%99%98(Type%20Casting%2FCoercion) + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F02%2FFront-JS-Basic-05-TypeCasting%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/02/Front-JS-Basic-05-TypeCasting/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

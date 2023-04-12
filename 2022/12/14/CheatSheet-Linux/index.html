@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      CheatSheet-Linux Command-명령어 정리 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">CheatSheet-Linux Command-명령어 정리</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2022-12-14 16:25:19
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/cheatsheet/" title="CheatSheet"> <b>#</b> CheatSheet </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/cheatsheet/linux/" title="Linux"> <b>#</b> Linux </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/cheatsheet/" title="CheatSheet"> #CheatSheet </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-Shell-Commands-Shell-종류들"><a href="#1-Shell-Commands-Shell-종류들" class="headerlink" title="1. Shell Commands (Shell 종류들)"></a>1. Shell Commands (Shell 종류들)</h1><p>많은 Unix Shell이 존재하지만, 하나만 잘 사용하면, 명령어가 비슷해서 다양한 Shell을 사용할 수 있습니다.<br>그리고 Unix Shell을 알아두면, Linux, Mac OS의 Shell Command, WSL에도 사용 가능합니다.</p>
+<blockquote>
+<p>💡 참고</p>
+<ul>
+<li>WSL(Windows Subsystem for Linux)<ul>
+<li>WSL을 사용하면 Windows안에서도 Linux 명령어를 사용 가능 (Window 10 이상부터)</li>
+</ul>
+</li>
+<li>뭐 설치하기 귀찮으면, Native Terminal을 사용하면 됩니다.<ul>
+<li>Window는 PowerShell</li>
+<li>PowerShell은 Unix 명령어들을 사용할 수 있게 Aliases(별명)를 제공함</li>
+</ul>
+</li>
+<li>Mac OS 추천 터미널<ul>
+<li>iTerm2 : <a target="_blank" rel="noopener" href="https://iterm2.com/">https://iterm2.com/</a></li>
+</ul>
+</li>
+<li>Windows 추천 터미널<ul>
+<li>cmder (git이 내장으로 이미 설치됨)</li>
+<li><a target="_blank" rel="noopener" href="https://cmder.app/">https://cmder.app/</a></li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr>
+<h1 id="2-Manual"><a href="#2-Manual" class="headerlink" title="2. Manual"></a>2. Manual</h1><h2 id="2-1-man-명령어의-사용법-출력"><a href="#2-1-man-명령어의-사용법-출력" class="headerlink" title="2.1 man (명령어의 사용법 출력)"></a>2.1 man (명령어의 사용법 출력)</h2><p><code>man</code>은 <code>Manual</code>의 약자로, 어떤 명령어의 사용법을 보여줍니다. man을 나가고 싶다면 <code>q</code>를 입력하면 됩니다.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ man man</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-2-clear"><a href="#2-2-clear" class="headerlink" title="2.2 clear"></a>2.2 clear</h2><p><code>clear</code>은 터미널의 모든 텍스트를 지워주는 명령어입니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ clear</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="3-Navigating-File-System"><a href="#3-Navigating-File-System" class="headerlink" title="3. Navigating File System"></a>3. Navigating File System</h1><h2 id="3-1-pwd-현재-자신이-위치한-디렉토리"><a href="#3-1-pwd-현재-자신이-위치한-디렉토리" class="headerlink" title="3.1 pwd (현재 자신이 위치한 디렉토리)"></a>3.1 pwd (현재 자신이 위치한 디렉토리)</h2><p><code>pwd</code>는 <code>Print Working Directory</code>의 약자로, 내가 있는 곳의 전체 경로를 보여줍니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">pwd</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-2-ls-현재-자신이-속해있는-폴더-내의-파일-폴더-표시"><a href="#3-2-ls-현재-자신이-속해있는-폴더-내의-파일-폴더-표시" class="headerlink" title="3.2 ls (현재 자신이 속해있는 폴더 내의 파일, 폴더 표시)"></a>3.2 ls (현재 자신이 속해있는 폴더 내의 파일, 폴더 표시)</h2><p><code>ls</code>는 <code>list</code>의 약자로, 현재 디렉토리에 있는 폴더와 파일의 명들을 보여줍니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ls</span></span><br><span class="line">dir1 dir2 file1.txt file2.txt</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">ls</span> dir1 <span class="comment"># dir1이라는 폴더 안 폴더와 파일명 출력</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># -l (long의 약자)</span></span><br><span class="line">$ <span class="built_in">ls</span> -l <span class="comment"># 파일에 내용을 자세히 알고 싶을 떄</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># -a (all의 약자)</span></span><br><span class="line">$ <span class="built_in">ls</span> -a <span class="comment"># 숨겨진 파일까지 모두 출력</span></span><br><span class="line">$ <span class="built_in">ls</span> -la <span class="comment"># -l옵션과 -a옵션을 같이 사용 가능</span></span><br><span class="line"></span><br><span class="line">$ open . <span class="comment"># 현재 디렉토리를 파일 탐색기로 열기</span></span><br><span class="line">$ explorer . <span class="comment"># PowerShell에서 현재 디렉토리를 파일 탐색기로 열기</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-3-cd-디렉토리-이동"><a href="#3-3-cd-디렉토리-이동" class="headerlink" title="3.3 cd (디렉토리 이동)"></a>3.3 cd (디렉토리 이동)</h2><p><code>cd</code>는 <code>change directory</code>의 약자로, 현재 있는 경로의 위치를 변경해주는 명령입니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> dir1</span><br><span class="line">$ <span class="built_in">cd</span> .. <span class="comment"># 현재 경로의 바로 상위 경로 폴더로 이동</span></span><br><span class="line">$ <span class="built_in">cd</span> ~ <span class="comment"># 현재 설정된 사용자의 최상위 경로(Home 디렉토리)로 이동</span></span><br><span class="line">$ <span class="built_in">cd</span> - <span class="comment"># 바로 이전 경로로 이동</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-4-find-특정한-파일을-찾기"><a href="#3-4-find-특정한-파일을-찾기" class="headerlink" title="3.4 find (특정한 파일을 찾기)"></a>3.4 find (특정한 파일을 찾기)</h2><p><code>find</code>는 파일 시스템에서 특정 파일이나 디렉토리를 찾는 명령어입니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ find . -<span class="built_in">type</span> file -name <span class="string">&quot;*.txt&quot;</span>   <span class="comment"># txt 파일을 찾기</span></span><br><span class="line">$ find . -<span class="built_in">type</span> file -name <span class="string">&quot;*.json&quot;</span>  <span class="comment"># json 파일을 찾기</span></span><br><span class="line">$ find . -<span class="built_in">type</span> directory -name <span class="string">&quot;*2&quot;</span> <span class="comment"># 이름이 2로 끝나는 폴더 찾기  </span></span><br></pre></td></tr></table></figure>
+
+<p>PowerShell에서는 find alias를 지원하지 않아서 직접 작성해줘야 합니다.</p>
+<hr>
+<h2 id="3-5-which-특정-명령어의-위치"><a href="#3-5-which-특정-명령어의-위치" class="headerlink" title="3.5 which (특정 명령어의 위치)"></a>3.5 which (특정 명령어의 위치)</h2><p><code>which</code>는 내가 실행하고자 하는 명령이 어디에 설치되어 있는지 어디에 설정되어 있는지 경로를 확인할 떄 사용하는 명령어입니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">which</span> node <span class="comment"># node의 실행결로를 확인</span></span><br><span class="line">$ <span class="built_in">which</span> code <span class="comment"># visual studio의 실행경로를 확인</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="4-Create-and-mangae-files"><a href="#4-Create-and-mangae-files" class="headerlink" title="4. Create and mangae files"></a>4. Create and mangae files</h1><h2 id="4-1-touch-파일-생성"><a href="#4-1-touch-파일-생성" class="headerlink" title="4.1 touch (파일 생성)"></a>4.1 touch (파일 생성)</h2><p><code>touch</code>는 원하는 파일을 작성하면 새로운 파일을 만들 수 있습니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">touch</span> new_file1.txt <span class="comment"># new_file1.txt라는 파일 생성</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-2-cat-파일의-내용을-화면에-출력"><a href="#4-2-cat-파일의-내용을-화면에-출력" class="headerlink" title="4.2 cat (파일의 내용을 화면에 출력)"></a>4.2 cat (파일의 내용을 화면에 출력)</h2><p><code>cat</code>은 <code>concatenate(연결하다)</code>약자로, 파일 안의 내용을 터미널 상에서 확인할 수 있습니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cat</span> new_file1.txt</span><br><span class="line">First Line</span><br><span class="line">$ <span class="built_in">touch</span> new_file2.txt</span><br><span class="line">$ <span class="built_in">cat</span> new_file1.txt new_file2.txt</span><br><span class="line">First Line</span><br><span class="line">Second Line</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-3-echo"><a href="#4-3-echo" class="headerlink" title="4.3 echo"></a>4.3 echo</h2><p>echo 다음에 문자열을 입력하면 문자열을 터미널에 echo(메아리)칠 수 있습니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">&quot;Hello World&quot;</span></span><br><span class="line">hello world</span><br><span class="line"></span><br><span class="line"><span class="comment"># echo 명령어 단독으로는 별 영향이 없지만</span></span><br><span class="line">$ <span class="built_in">echo</span> <span class="string">&quot;Hello World&quot;</span> &gt; new_file3.txt <span class="comment"># &gt;로 새로운 파일을 만들면서 파일 내용으로 작성됩니다.</span></span><br><span class="line">$ <span class="built_in">cat</span> new_file3.txt</span><br><span class="line">Hello World</span><br><span class="line"></span><br><span class="line"><span class="comment">#  &gt;을 사용할 떄 주의할 점은 파일 내용을 덮어씌운다는 점입니다.</span></span><br><span class="line">$ <span class="built_in">echo</span> <span class="string">&quot;Hello Brave New world&quot;</span> &gt; new_file3.txt</span><br><span class="line">$ <span class="built_in">cat</span> new_file3.txt</span><br><span class="line">Hello Brave New world</span><br><span class="line"></span><br><span class="line"><span class="comment"># 덮어씌우는 게 아니라 붙이고 싶다면 &gt;&gt;을 사용합니다.</span></span><br><span class="line">$ <span class="built_in">echo</span> <span class="string">&quot;Goodbye world&quot;</span> &gt;&gt; new_file3.txt</span><br><span class="line">$ <span class="built_in">cat</span> new_file3.txt</span><br><span class="line">Hello Brave New world</span><br><span class="line">Goodbye world</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-4-mkdir-디렉토리-생성"><a href="#4-4-mkdir-디렉토리-생성" class="headerlink" title="4.4 mkdir (디렉토리 생성)"></a>4.4 mkdir (디렉토리 생성)</h2><p><code>mkdir</code>은 <code>make directory</code>의 약자로, 폴더(directory)를 만드는 명령어입니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">mkdir</span> dir3 <span class="comment"># dir3이라는 폴더 생성</span></span><br><span class="line">$ <span class="built_in">ls</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 폴더 내 폴더같이 모든 서브 폴더들을 만들고 싶다면 -p 옵션</span></span><br><span class="line">$ <span class="built_in">mkdir</span> -p dir4/subdir1/subdir2</span><br></pre></td></tr></table></figure>
+
+<p>반대 명령어로 <code>rmdir(디렉토리 삭제)</code></p>
+<hr>
+<h2 id="4-5-cp-파일-복사"><a href="#4-5-cp-파일-복사" class="headerlink" title="4.5 cp (파일 복사)"></a>4.5 cp (파일 복사)</h2><p><code>cp</code>는 <code>copy</code>의 약자로, 파일이나 폴더를 복사하는 명령어입니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cp [파일] [원하는 위치]</span></span><br><span class="line">$ <span class="built_in">cp</span> file1.txt dir1/ <span class="comment"># file1.txt를 dir1에 복사</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-6-mv-파일-이동"><a href="#4-6-mv-파일-이동" class="headerlink" title="4.6 mv (파일 이동)"></a>4.6 mv (파일 이동)</h2><p><code>mv</code>는 <code>move</code>의 약자로, 복사하지 않고 파일이나 폴더를 이동시키는 명령어입니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">mv</span> file2.txt dir1/ <span class="comment"># file2.txt를 dir1으로 이동</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 새로운 파일로 복사하고 싶다면</span></span><br><span class="line">$ <span class="built_in">mv</span> file1.txt file2.txt </span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-7-rm-파일-삭제"><a href="#4-7-rm-파일-삭제" class="headerlink" title="4.7 rm (파일 삭제)"></a>4.7 rm (파일 삭제)</h2><p><code>rm</code>은 <code>remove</code>의 약자로, 파일을 삭제합니다. (디렉토리를 삭제하려고 하면 경고가 나옵니다.)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">rm</span> file2.txt <span class="comment"># file2.txt 파일을 삭제</span></span><br><span class="line">$ <span class="built_in">rm</span> dir2 <span class="comment"># 폴더(directory)라 지울 수 없음</span></span><br><span class="line"><span class="built_in">rm</span>: dir2: is a directory</span><br><span class="line"></span><br><span class="line"><span class="comment"># 디렉토리를 삭제하려면 -r옵션은 사용해야 합니다.</span></span><br><span class="line">$ <span class="built_in">rm</span> -r dir2 <span class="comment"># dir2안에 서브 경로들도 모두 삭제</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-8-grep-특정-패턴으로-파일을-찾기"><a href="#4-8-grep-특정-패턴으로-파일을-찾기" class="headerlink" title="4.8 grep (특정 패턴으로 파일을 찾기)"></a>4.8 grep (특정 패턴으로 파일을 찾기)</h2><p><code>grep</code>은 <code>Global Regular Expression Print</code>의 약자로, 파일이나 프로젝트 한에서 키워드 검색하는 명령어입니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># grep [검색키워드] [파일종류]</span></span><br><span class="line">$ grep <span class="string">&quot;world&quot;</span> *.txt  <span class="comment"># txt파일 내에서 world라는 단어 검색</span></span><br><span class="line">new_file3.txt:Goodbye world</span><br><span class="line"></span><br><span class="line"><span class="comment"># -n 몇번쨰 줄에 있는지</span></span><br><span class="line">$ grep -n <span class="string">&quot;world&quot;</span> *.txt <span class="comment"># txt파일 내에서 world라는 단어가 몇 번쨰 줄에 있는지 검색</span></span><br><span class="line">new_file3.txt:2:Goodbye world</span><br><span class="line"></span><br><span class="line"><span class="comment"># -i 대소문자 구분X</span></span><br><span class="line">$ grep -ni <span class="string">&quot;world&quot;</span> *.txt <span class="comment"># 대소문자 상관없이 world라는 단어가 몇 번쨰 줄에 있는지 검색</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># -r 현재 폴더의 모든 서브 시스템까지 포함해서</span></span><br><span class="line">$ grep -nir <span class="string">&quot;world&quot;</span> . <span class="comment"># 현재 경로와 그 하위 서브경로를 포함해 검색</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="5-Work-with-environment-variables"><a href="#5-Work-with-environment-variables" class="headerlink" title="5. Work with environment variables"></a>5. Work with environment variables</h1><p>환경변수(environment variables)은 내 컴퓨터에서 특정한 키워드가 어떠한 일을 하거나, 경로를 저장할 수 있도록 만들어 줍니다.</p>
+<hr>
+<h2 id="5-1-export-환경변수를-설정"><a href="#5-1-export-환경변수를-설정" class="headerlink" title="5.1 export (환경변수를 설정)"></a>5.1 export (환경변수를 설정)</h2><p>export는 환경변수를 설정하는 명령어입니다. (환경변수는 보통 대문자로 작성, 단어 사이에는 언더바(_) 사용)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">export</span> MY_DIR=<span class="string">&quot;dir1&quot;</span> <span class="comment"># 내 환경변수(컴퓨터상에 변수)를 설정</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="5-2-env-환경변수를-출력"><a href="#5-2-env-환경변수를-출력" class="headerlink" title="5.2 env (환경변수를 출력)"></a>5.2 env (환경변수를 출력)</h2><p><code>env</code>는 설정된 모든 환경변수를 출력합니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">env</span> <span class="comment"># 모든 환경변수 출력</span></span><br><span class="line">$ <span class="built_in">cd</span> <span class="variable">$MY_DIR</span> <span class="comment"># 환경변수를 사용할 떄는 앞에 $를 붙여서 사용</span></span><br></pre></td></tr></table></figure>
+
+<p>우리가 프로그래밍을 할 떄, 변수를 설정하는 것처럼 우리 컴퓨터 상에서 변수처럼 사용가능합니다.</p>
+<hr>
+<h2 id="5-3-unset-환경변수를-삭제"><a href="#5-3-unset-환경변수를-삭제" class="headerlink" title="5.3 unset (환경변수를 삭제)"></a>5.3 unset (환경변수를 삭제)</h2><p><code>unset</code>은 환경변수를 삭제하는 명령어입니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">unset</span> MY_DIR <span class="comment"># 환경변수 삭제</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="6-Network"><a href="#6-Network" class="headerlink" title="6. Network"></a>6. Network</h1><ul>
+<li><code>ping</code> : 네트워크 상태 점검 및 도메인 IP 확인</li>
+<li><code>ifconfig</code> : 리눅스 IP 확인 및 설정</li>
+<li><code>netstat</code> : 네트워크의 상태</li>
+<li><code>nbstat</code> : IP 충돌 시, 충돌된 컴퓨터를 찾기 위함</li>
+<li><code>traceroute</code> : 알고 싶은 목적지까지 경로를 찾아줌</li>
+<li><code>route</code> : 라우팅 테이블 구성 상태</li>
+<li><code>clock</code> : 시간 조절 명령어</li>
+<li><code>date</code> : 시간, 날짜 출력 및 시간과 날짜 변경</li>
+</ul>
+<hr>
+<h1 id="7-File"><a href="#7-File" class="headerlink" title="7. File"></a>7. File</h1><ul>
+<li><code>tar, gzip 등</code> : 압축 파일 묶거나 품</li>
+</ul>
+<hr>
+<h1 id="8-User"><a href="#8-User" class="headerlink" title="8. User"></a>8. User</h1><ul>
+<li><code>useradd</code> : 새로운 사용자 계정 생성</li>
+<li><code>password</code> : 사용자 계정의 비밀번호 설정</li>
+<li><code>userdel</code> : 사용자 계정 삭제</li>
+<li><code>usermod</code> : 사용자 계정 수정</li>
+<li><code>groupadd</code> : 그룹 생성</li>
+<li><code>groupdel</code> : 그룹 삭제</li>
+<li><code>groups</code> : 그룹 확인</li>
+<li><code>newgrp</code> : 자신이 속한 그룹 변경</li>
+<li><code>mesg</code> : 메시지 응답 가능 및 불가 설정</li>
+<li><code>talk</code> : 로그인한 사용자끼리 대화</li>
+<li><code>wall</code> : 시스템 로그인한 모든 사용자에게 메시지 전송</li>
+<li><code>write</code> : 로그인한 사용자에게 메시지 전달</li>
+<li><code>dd</code> : 블럭 단위로 파일을 복사하거나 변환</li>
+</ul>
+<hr>
+<h1 id="9-System"><a href="#9-System" class="headerlink" title="9. System"></a>9. System</h1><ul>
+<li><code>shutdown</code>, <code>halt</code>, <code>init 0</code>, <code>poweroff</code> : 시스템 종료</li>
+<li><code>reboot</code>, <code>init 6</code>, <code>shutdown -r now</code> : 시스템 재부팅</li>
+</ul>
+<hr>
+<h1 id="10-VIM"><a href="#10-VIM" class="headerlink" title="10. VIM"></a>10. VIM</h1><p>Vi 또는 Vim이라 불리는 터미널 텍스트 에디터는 터미널뿐만 아니라 Visual Studio Code, IntellJ같은 IDE에서도 사용할 수 있습니다. </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ vim file1.txt <span class="comment"># file1.txt이라는 파일 생성하면서 파일 내부로 에디터모드에 들어감</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># i를 눌러야 편집 가능 (insert)⭐</span></span><br><span class="line"><span class="comment"># 다 편집했으면 키보드 ESC를 클릭⭐</span></span><br><span class="line"><span class="comment"># :w (write changes)는 수정한 내용 저장</span></span><br><span class="line"><span class="comment"># :q (quit) 그냥 나가기(수정사항이 있으면 경고창 표시)</span></span><br><span class="line"><span class="comment"># :q! 경고창안띄우고 강제로 그냥 나가기⭐</span></span><br><span class="line"><span class="comment"># :wq 수정한 내용을 저장하면서 나가기⭐</span></span><br></pre></td></tr></table></figure>
+
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2022/12/14/CheatSheet-Git/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2022-12-14 16:25:19
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/cheatsheet/" title="CheatSheet"> <b>#</b> CheatSheet </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/cheatsheet/linux/" title="Linux"> <b>#</b> Linux </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/cheatsheet/" title="CheatSheet"> #CheatSheet </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2022/12/15/Roadmap-Front/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Shell-Commands-Shell-%EC%A2%85%EB%A5%98%EB%93%A4"><span class="toc-text">1. Shell Commands (Shell 종류들)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Manual"><span class="toc-text">2. Manual</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-man-%EB%AA%85%EB%A0%B9%EC%96%B4%EC%9D%98-%EC%82%AC%EC%9A%A9%EB%B2%95-%EC%B6%9C%EB%A0%A5"><span class="toc-text">2.1 man (명령어의 사용법 출력)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-clear"><span class="toc-text">2.2 clear</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Navigating-File-System"><span class="toc-text">3. Navigating File System</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-pwd-%ED%98%84%EC%9E%AC-%EC%9E%90%EC%8B%A0%EC%9D%B4-%EC%9C%84%EC%B9%98%ED%95%9C-%EB%94%94%EB%A0%89%ED%86%A0%EB%A6%AC"><span class="toc-text">3.1 pwd (현재 자신이 위치한 디렉토리)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-ls-%ED%98%84%EC%9E%AC-%EC%9E%90%EC%8B%A0%EC%9D%B4-%EC%86%8D%ED%95%B4%EC%9E%88%EB%8A%94-%ED%8F%B4%EB%8D%94-%EB%82%B4%EC%9D%98-%ED%8C%8C%EC%9D%BC-%ED%8F%B4%EB%8D%94-%ED%91%9C%EC%8B%9C"><span class="toc-text">3.2 ls (현재 자신이 속해있는 폴더 내의 파일, 폴더 표시)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-cd-%EB%94%94%EB%A0%89%ED%86%A0%EB%A6%AC-%EC%9D%B4%EB%8F%99"><span class="toc-text">3.3 cd (디렉토리 이동)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-find-%ED%8A%B9%EC%A0%95%ED%95%9C-%ED%8C%8C%EC%9D%BC%EC%9D%84-%EC%B0%BE%EA%B8%B0"><span class="toc-text">3.4 find (특정한 파일을 찾기)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-5-which-%ED%8A%B9%EC%A0%95-%EB%AA%85%EB%A0%B9%EC%96%B4%EC%9D%98-%EC%9C%84%EC%B9%98"><span class="toc-text">3.5 which (특정 명령어의 위치)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-Create-and-mangae-files"><span class="toc-text">4. Create and mangae files</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-touch-%ED%8C%8C%EC%9D%BC-%EC%83%9D%EC%84%B1"><span class="toc-text">4.1 touch (파일 생성)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-cat-%ED%8C%8C%EC%9D%BC%EC%9D%98-%EB%82%B4%EC%9A%A9%EC%9D%84-%ED%99%94%EB%A9%B4%EC%97%90-%EC%B6%9C%EB%A0%A5"><span class="toc-text">4.2 cat (파일의 내용을 화면에 출력)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-echo"><span class="toc-text">4.3 echo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-mkdir-%EB%94%94%EB%A0%89%ED%86%A0%EB%A6%AC-%EC%83%9D%EC%84%B1"><span class="toc-text">4.4 mkdir (디렉토리 생성)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5-cp-%ED%8C%8C%EC%9D%BC-%EB%B3%B5%EC%82%AC"><span class="toc-text">4.5 cp (파일 복사)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-6-mv-%ED%8C%8C%EC%9D%BC-%EC%9D%B4%EB%8F%99"><span class="toc-text">4.6 mv (파일 이동)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-7-rm-%ED%8C%8C%EC%9D%BC-%EC%82%AD%EC%A0%9C"><span class="toc-text">4.7 rm (파일 삭제)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-8-grep-%ED%8A%B9%EC%A0%95-%ED%8C%A8%ED%84%B4%EC%9C%BC%EB%A1%9C-%ED%8C%8C%EC%9D%BC%EC%9D%84-%EC%B0%BE%EA%B8%B0"><span class="toc-text">4.8 grep (특정 패턴으로 파일을 찾기)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-Work-with-environment-variables"><span class="toc-text">5. Work with environment variables</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-export-%ED%99%98%EA%B2%BD%EB%B3%80%EC%88%98%EB%A5%BC-%EC%84%A4%EC%A0%95"><span class="toc-text">5.1 export (환경변수를 설정)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-env-%ED%99%98%EA%B2%BD%EB%B3%80%EC%88%98%EB%A5%BC-%EC%B6%9C%EB%A0%A5"><span class="toc-text">5.2 env (환경변수를 출력)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-3-unset-%ED%99%98%EA%B2%BD%EB%B3%80%EC%88%98%EB%A5%BC-%EC%82%AD%EC%A0%9C"><span class="toc-text">5.3 unset (환경변수를 삭제)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-Network"><span class="toc-text">6. Network</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-File"><span class="toc-text">7. File</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-User"><span class="toc-text">8. User</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-System"><span class="toc-text">9. System</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-VIM"><span class="toc-text">10. VIM</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + CheatSheet-Linux%20Command-%EB%AA%85%EB%A0%B9%EC%96%B4%20%EC%A0%95%EB%A6%AC + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2022%2F12%2F14%2FCheatSheet-Linux%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2022/12/14/CheatSheet-Linux/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

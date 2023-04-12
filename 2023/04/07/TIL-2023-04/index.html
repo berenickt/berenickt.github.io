@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      TIL(Today I Learned) - 2023년 4월 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">TIL(Today I Learned) - 2023년 4월</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-04-07 22:54:06
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/%ED%9A%8C%EA%B3%A0/" title="회고"> <b>#</b> 회고 </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/%ED%9A%8C%EA%B3%A0/til/" title="TIL"> <b>#</b> TIL </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/til/" title="TIL"> #TIL </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1주"><a href="#1주" class="headerlink" title="1주"></a>1주</h1><h2 id="2023-x2F-04-x2F-03"><a href="#2023-x2F-04-x2F-03" class="headerlink" title="2023&#x2F;04&#x2F;03"></a>2023&#x2F;04&#x2F;03</h2><ul>
+<li><p>검색 기능 구현</p>
+</li>
+<li><p>검색 프로세스 이해</p>
+</li>
+<li><p>검색 - 디바운싱 &amp; 쓰로틀링</p>
+<ul>
+<li><code>디바운싱(debounce, 쿵쾅거리다)</code><ul>
+<li>정의 : <strong>마지막 입력</strong>을 기준으로, <strong>특정 시간 이내에 추가 입력이 없으면 1번 실행하는 것</strong><ul>
+<li>즉, 마지막 한 번 요청</li>
+</ul>
+</li>
+<li><strong>연이어 발생한 이벤트를 하나의 그룹으로 묶어 처리하는 방식</strong></li>
+<li>주로 그룹에서 마지막, 혹은 처음에 처리된 함수를 처리하는 방식으로 사용됩니다.</li>
+<li>마지막 호출이 발생한 후 일정 시간이 지날때까지 추가적 입력이 없을때 실행이 됩니다.</li>
+<li>디바운싱이 사용되는 대표적 예제로는 <code>검색 기능</code>이 있습니다.</li>
+</ul>
+</li>
+<li><code>쓰로틀링(throttling)</code><ul>
+<li>정의 : <strong>최초 입력</strong>을 기준으로, <strong>특정 시간 이내에 발생한 추가 입력을 무시하는 것</strong><ul>
+<li>즉, 먼저 한 번 요청</li>
+</ul>
+</li>
+<li>연이어 발생한 이벤트에 대해 일정한 <code>delay</code>를 포함시켜, <strong>연속적으로 발생하는 이벤트는 무시하는 방식</strong></li>
+<li>즉, 지정한 <code>delay</code>동안 호출된 함수는 무시합니다.</li>
+<li>쓰로틀링이 사용되는 대표적 예제는 <code>무한스크롤 기능</code>이 있습니다</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Lodash 라이브러리 디바운싱 사용법</p>
+</li>
+</ul>
+<h2 id="2023-x2F-04-x2F-04"><a href="#2023-x2F-04-x2F-04" class="headerlink" title="2023&#x2F;04&#x2F;04"></a>2023&#x2F;04&#x2F;04</h2><ul>
+<li><p>이미지 수정</p>
+</li>
+<li><p>graphql-variables의 실체</p>
+</li>
+<li><p>REST-API의 문제점과 endpoint</p>
+<ul>
+<li><code>endpoint</code>란? API가 서버에서 리소스에 접근할 수 있도록 가능하게 하는 URL</li>
+</ul>
+</li>
+<li><p>GraphQL과 REST-API의 관계</p>
+<ul>
+<li>오버페칭(Over Fetching), 언더페칭(Under Fetching)</li>
+</ul>
+</li>
+<li><p>global state의 이해와 fetchpoilcy</p>
+<ul>
+<li>Redux의 문제점 : fetchPolicy 사용이 힘듬</li>
+<li>apollo-client의 fetchPolicy : Apollo-Cache<ul>
+<li>Apollo-Client로 Global State를 만들게되면 <code>Apollo-Cache</code>라는곳에 저장</li>
+<li>이를 Apollo-client의 <code>fetchPolicy(fetch 정책)</code>라고 합니다.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Recoil 세팅 및 사용</p>
+<ul>
+<li>Recoil State 저장소(store) : atom</li>
+</ul>
+</li>
+<li><p>정규식 (정규표현식)으로 로그인, 비밀번호 등 검증</p>
+</li>
+</ul>
+<h2 id="2023-x2F-04-x2F-05"><a href="#2023-x2F-04-x2F-05" class="headerlink" title="2023&#x2F;04&#x2F;05"></a>2023&#x2F;04&#x2F;05</h2><ul>
+<li><p>로그인의 역사 : 쿠키&#x2F;세션</p>
+<ul>
+<li>메모리 세션(session)을 이용한 로그인</li>
+<li>컴퓨터 여러 대로 접속을 분산</li>
+<li>Redis(임시 DB)에 로그인 정보 저장</li>
+</ul>
+</li>
+<li><p>로그인의 역사 : JWT 로그인</p>
+</li>
+<li><p>암호화와 JWT 토큰</p>
+<ul>
+<li>단방향 암호화(해싱) 양방향 암호화</li>
+</ul>
+</li>
+<li><p>JWT의 이상한 점 : 내용을 확인 가능</p>
+</li>
+</ul>
+<h2 id="2023-x2F-04-x2F-06"><a href="#2023-x2F-04-x2F-06" class="headerlink" title="2023&#x2F;04&#x2F;06"></a>2023&#x2F;04&#x2F;06</h2><ul>
+<li><p>accessToken의 저장과 next.js의 렌더링 원리</p>
+<ul>
+<li>브라우저 저장소의 종류</li>
+</ul>
+</li>
+<li><p>권한 분기와 HOF &#x2F; HOC</p>
+<ul>
+<li>호이스팅, 스코프체인, 클로저</li>
+</ul>
+</li>
+</ul>
+<h2 id="2023-x2F-04-x2F-07"><a href="#2023-x2F-04-x2F-07" class="headerlink" title="2023&#x2F;04&#x2F;07"></a>2023&#x2F;04&#x2F;07</h2><ul>
+<li>비회원 장바구니 구현</li>
+<li>폼 라이브러리(react-hook-form)</li>
+<li>검증 라이브러리(yup)와 공통컴포넌트 재사용</li>
+</ul>
+<hr>
+<h1 id="2주"><a href="#2주" class="headerlink" title="2주"></a>2주</h1><h2 id="2023-x2F-04-x2F-10"><a href="#2023-x2F-04-x2F-10" class="headerlink" title="2023&#x2F;04&#x2F;10"></a>2023&#x2F;04&#x2F;10</h2><ul>
+<li></li>
+</ul>
+<h2 id="2023-x2F-04-x2F-11"><a href="#2023-x2F-04-x2F-11" class="headerlink" title="2023&#x2F;04&#x2F;11"></a>2023&#x2F;04&#x2F;11</h2><ul>
+<li></li>
+</ul>
+<h2 id="2023-x2F-04-x2F-12"><a href="#2023-x2F-04-x2F-12" class="headerlink" title="2023&#x2F;04&#x2F;12"></a>2023&#x2F;04&#x2F;12</h2><ul>
+<li></li>
+</ul>
+<h2 id="2023-x2F-04-x2F-13"><a href="#2023-x2F-04-x2F-13" class="headerlink" title="2023&#x2F;04&#x2F;13"></a>2023&#x2F;04&#x2F;13</h2><ul>
+<li></li>
+</ul>
+<h2 id="2023-x2F-04-x2F-14"><a href="#2023-x2F-04-x2F-14" class="headerlink" title="2023&#x2F;04&#x2F;14"></a>2023&#x2F;04&#x2F;14</h2><ul>
+<li></li>
+</ul>
+<hr>
+<h1 id="3주"><a href="#3주" class="headerlink" title="3주"></a>3주</h1><h2 id="2023-x2F-04-x2F-17"><a href="#2023-x2F-04-x2F-17" class="headerlink" title="2023&#x2F;04&#x2F;17"></a>2023&#x2F;04&#x2F;17</h2><ul>
+<li></li>
+</ul>
+<h2 id="2023-x2F-04-x2F-18"><a href="#2023-x2F-04-x2F-18" class="headerlink" title="2023&#x2F;04&#x2F;18"></a>2023&#x2F;04&#x2F;18</h2><ul>
+<li></li>
+</ul>
+<h2 id="2023-x2F-04-x2F-19"><a href="#2023-x2F-04-x2F-19" class="headerlink" title="2023&#x2F;04&#x2F;19"></a>2023&#x2F;04&#x2F;19</h2><ul>
+<li></li>
+</ul>
+<h2 id="2023-x2F-04-x2F-20"><a href="#2023-x2F-04-x2F-20" class="headerlink" title="2023&#x2F;04&#x2F;20"></a>2023&#x2F;04&#x2F;20</h2><ul>
+<li></li>
+</ul>
+<h2 id="2023-x2F-04-x2F-21"><a href="#2023-x2F-04-x2F-21" class="headerlink" title="2023&#x2F;04&#x2F;21"></a>2023&#x2F;04&#x2F;21</h2><ul>
+<li></li>
+</ul>
+<hr>
+<h1 id="4주"><a href="#4주" class="headerlink" title="4주"></a>4주</h1><h2 id="2023-x2F-04-x2F-24"><a href="#2023-x2F-04-x2F-24" class="headerlink" title="2023&#x2F;04&#x2F;24"></a>2023&#x2F;04&#x2F;24</h2><ul>
+<li></li>
+</ul>
+<h2 id="2023-x2F-04-x2F-25"><a href="#2023-x2F-04-x2F-25" class="headerlink" title="2023&#x2F;04&#x2F;25"></a>2023&#x2F;04&#x2F;25</h2><ul>
+<li></li>
+</ul>
+<h2 id="2023-x2F-04-x2F-26"><a href="#2023-x2F-04-x2F-26" class="headerlink" title="2023&#x2F;04&#x2F;26"></a>2023&#x2F;04&#x2F;26</h2><ul>
+<li></li>
+</ul>
+<h2 id="2023-x2F-04-x2F-27"><a href="#2023-x2F-04-x2F-27" class="headerlink" title="2023&#x2F;04&#x2F;27"></a>2023&#x2F;04&#x2F;27</h2><ul>
+<li></li>
+</ul>
+<h2 id="2023-x2F-04-x2F-28"><a href="#2023-x2F-04-x2F-28" class="headerlink" title="2023&#x2F;04&#x2F;28"></a>2023&#x2F;04&#x2F;28</h2><ul>
+<li></li>
+</ul>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/04/02/TIL-2023-03/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-04-07 22:54:06
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/%ED%9A%8C%EA%B3%A0/" title="회고"> <b>#</b> 회고 </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/%ED%9A%8C%EA%B3%A0/til/" title="TIL"> <b>#</b> TIL </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/til/" title="TIL"> #TIL </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%EC%A3%BC"><span class="toc-text">1주</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-03"><span class="toc-text">2023&#x2F;04&#x2F;03</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-04"><span class="toc-text">2023&#x2F;04&#x2F;04</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-05"><span class="toc-text">2023&#x2F;04&#x2F;05</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-06"><span class="toc-text">2023&#x2F;04&#x2F;06</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-07"><span class="toc-text">2023&#x2F;04&#x2F;07</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%EC%A3%BC"><span class="toc-text">2주</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-10"><span class="toc-text">2023&#x2F;04&#x2F;10</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-11"><span class="toc-text">2023&#x2F;04&#x2F;11</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-12"><span class="toc-text">2023&#x2F;04&#x2F;12</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-13"><span class="toc-text">2023&#x2F;04&#x2F;13</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-14"><span class="toc-text">2023&#x2F;04&#x2F;14</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3%EC%A3%BC"><span class="toc-text">3주</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-17"><span class="toc-text">2023&#x2F;04&#x2F;17</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-18"><span class="toc-text">2023&#x2F;04&#x2F;18</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-19"><span class="toc-text">2023&#x2F;04&#x2F;19</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-20"><span class="toc-text">2023&#x2F;04&#x2F;20</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-21"><span class="toc-text">2023&#x2F;04&#x2F;21</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4%EC%A3%BC"><span class="toc-text">4주</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-24"><span class="toc-text">2023&#x2F;04&#x2F;24</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-25"><span class="toc-text">2023&#x2F;04&#x2F;25</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-26"><span class="toc-text">2023&#x2F;04&#x2F;26</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-27"><span class="toc-text">2023&#x2F;04&#x2F;27</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-28"><span class="toc-text">2023&#x2F;04&#x2F;28</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + TIL(Today%20I%20Learned)%20-%202023%EB%85%84%204%EC%9B%94 + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F04%2F07%2FTIL-2023-04%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/04/07/TIL-2023-04/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

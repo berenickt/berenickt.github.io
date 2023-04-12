@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      01-NextJs-Intro 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">01-NextJs-Intro</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-13 06:43:33
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/nextjs/" title="NextJS"> <b>#</b> NextJS </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/nextjs/basic/" title="Basic"> <b>#</b> Basic </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/nextjs/" title="NextJS"> #NextJS </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-프레임워크-vs-라이브러리"><a href="#1-프레임워크-vs-라이브러리" class="headerlink" title="1. 프레임워크 vs 라이브러리"></a>1. 프레임워크 vs 라이브러리</h1><table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">프레임워크</th>
+<th align="center">라이브러리</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"></td>
+<td align="center">기반구조</td>
+<td align="center">개발 편의 도구들</td>
+</tr>
+<tr>
+<td align="center">제어주도권</td>
+<td align="center">프레임워크가 가짐</td>
+<td align="center">사용자가 가짐</td>
+</tr>
+<tr>
+<td align="center">자유도</td>
+<td align="center">상대적으로 작음</td>
+<td align="center">상대적 으로 큼</td>
+</tr>
+<tr>
+<td align="center">비유</td>
+<td align="center">기계 (like 굴삭기)</td>
+<td align="center">공구 (like 펜치, 니퍼 )</td>
+</tr>
+</tbody></table>
+<p>프레임워크 장점</p>
+<ul>
+<li>개인이 해야할 고민들을 프레임워크 개발자가 미리 하고 반영</li>
+<li>특정 디자인 패턴이나 동작과 기능들을 위한 정의와 방식을 정리해 둠</li>
+<li>여러 개발자가 함께 협업할 때 기준점이 됨</li>
+</ul>
+<p>NextJS 쓰는 이유</p>
+<ul>
+<li>프론트엔드 개발자들이 가진 고민에 대한 적절한 해결책을 제공</li>
+<li>규모가 있는 서비스 구조 설계를 어떻게 할 것인가?</li>
+<li>개발환경 &#x2F; 코드 분할 &#x2F; 파일 기반 구조</li>
+<li>SEO(검색 엔진 최적화)</li>
+<li>프론트엔드에 필요한 간단한 API 구성</li>
+<li>손쉬운 배포 시스템 Vercel</li>
+</ul>
+<p>Next.js의 대체재는?</p>
+<ul>
+<li>Next.js는 대표적인 React 프레임워크로서 자리를 공고히 하고 있음</li>
+<li>대체재로는 Gatsby &#x2F; Remix 등이 있음</li>
+</ul>
+<hr>
+<h1 id="2-필요한-개발환경"><a href="#2-필요한-개발환경" class="headerlink" title="2. 필요한 개발환경"></a>2. 필요한 개발환경</h1><ul>
+<li>Node 16.15.1</li>
+<li>Yarn 1.22.19 : <code>npm install -g yarn</code></li>
+<li>Git</li>
+<li>VS Code</li>
+</ul>
+<hr>
+<h2 id="2-1-Next-js-프로젝트-띄워보기"><a href="#2-1-Next-js-프로젝트-띄워보기" class="headerlink" title="2.1 Next.js 프로젝트 띄워보기"></a>2.1 Next.js 프로젝트 띄워보기</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npx create-next-app nextjs-blog --use-npm --example <span class="string">&quot;https://github.com/vercel/next-learn/tree/master/basics/learn-starter&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>페이지 띄우기</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># npm</span></span><br><span class="line">npm run dev</span><br><span class="line"></span><br><span class="line"><span class="comment"># yarn </span></span><br><span class="line">yarn dev</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-2-Wappalyzer-크롬-익스텐션"><a href="#2-2-Wappalyzer-크롬-익스텐션" class="headerlink" title="2.2 Wappalyzer 크롬 익스텐션"></a>2.2 Wappalyzer 크롬 익스텐션</h2><p><a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/wappalyzer-technology-pro/gppongmhjkpfnbhagpmjfkannfbllamg">Wappalyzer 크롬 익스텐션</a></p>
+<ul>
+<li>웹페이지가 어떤 기술을 활용했는지 확인할 수 있는 도구</li>
+</ul>
+<hr>
+<h1 id="3-Next로-만든-서비스-둘러보기"><a href="#3-Next로-만든-서비스-둘러보기" class="headerlink" title="3. Next로 만든 서비스 둘러보기"></a>3. Next로 만든 서비스 둘러보기</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://nextjs.org/showcase">https://nextjs.org/showcase</a></li>
+<li><a target="_blank" rel="noopener" href="https://vercel.com/templates/next.js">https://vercel.com/templates/next.js</a></li>
+</ul>
+<hr>
+<h1 id="4-프레임워크-구조"><a href="#4-프레임워크-구조" class="headerlink" title="4. 프레임워크 구조"></a>4. 프레임워크 구조</h1><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/vercel/commerce.git</span><br><span class="line">yarn</span><br><span class="line">yarn build</span><br><span class="line">yarn start</span><br></pre></td></tr></table></figure>
+
+<p>Commerce 프로젝트</p>
+<ul>
+<li>Typescript로 되어있고</li>
+<li>Turbo 로 mono repo를 관리하고 있고</li>
+<li>4개의 extension을 recommendation 으로 정해뒀고</li>
+<li>yarn build 후에 yarn start 로 실행해볼 수 있다</li>
+</ul>
+<hr>
+<h1 id="5-Data-Fetching"><a href="#5-Data-Fetching" class="headerlink" title="5. Data Fetching"></a>5. Data Fetching</h1><hr>
+<h1 id="6-Layouts-x2F-Pages-x2F-Image"><a href="#6-Layouts-x2F-Pages-x2F-Image" class="headerlink" title="6. Layouts &#x2F; Pages &#x2F; Image"></a>6. Layouts &#x2F; Pages &#x2F; Image</h1><hr>
+<h1 id="7-Routing"><a href="#7-Routing" class="headerlink" title="7. Routing"></a>7. Routing</h1><hr>
+<h1 id="8-Shallow-Routing"><a href="#8-Shallow-Routing" class="headerlink" title="8. Shallow Routing"></a>8. Shallow Routing</h1><hr>
+<h1 id="9-API-Routes"><a href="#9-API-Routes" class="headerlink" title="9. API Routes"></a>9. API Routes</h1></div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/13/Front-JS-Practice-Clone-Clock/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-13 06:43:33
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/nextjs/" title="NextJS"> <b>#</b> NextJS </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/nextjs/basic/" title="Basic"> <b>#</b> Basic </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/nextjs/" title="NextJS"> #NextJS </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/16/En-Voca-02/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%ED%94%84%EB%A0%88%EC%9E%84%EC%9B%8C%ED%81%AC-vs-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC"><span class="toc-text">1. 프레임워크 vs 라이브러리</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%ED%95%84%EC%9A%94%ED%95%9C-%EA%B0%9C%EB%B0%9C%ED%99%98%EA%B2%BD"><span class="toc-text">2. 필요한 개발환경</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-Next-js-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EB%9D%84%EC%9B%8C%EB%B3%B4%EA%B8%B0"><span class="toc-text">2.1 Next.js 프로젝트 띄워보기</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-Wappalyzer-%ED%81%AC%EB%A1%AC-%EC%9D%B5%EC%8A%A4%ED%85%90%EC%85%98"><span class="toc-text">2.2 Wappalyzer 크롬 익스텐션</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Next%EB%A1%9C-%EB%A7%8C%EB%93%A0-%EC%84%9C%EB%B9%84%EC%8A%A4-%EB%91%98%EB%9F%AC%EB%B3%B4%EA%B8%B0"><span class="toc-text">3. Next로 만든 서비스 둘러보기</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%ED%94%84%EB%A0%88%EC%9E%84%EC%9B%8C%ED%81%AC-%EA%B5%AC%EC%A1%B0"><span class="toc-text">4. 프레임워크 구조</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-Data-Fetching"><span class="toc-text">5. Data Fetching</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-Layouts-x2F-Pages-x2F-Image"><span class="toc-text">6. Layouts &#x2F; Pages &#x2F; Image</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-Routing"><span class="toc-text">7. Routing</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-Shallow-Routing"><span class="toc-text">8. Shallow Routing</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-API-Routes"><span class="toc-text">9. API Routes</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 01-NextJs-Intro + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F13%2FFront-NextJS-basic01%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/13/Front-NextJS-basic01/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

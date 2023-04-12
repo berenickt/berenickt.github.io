@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      CS-JS-DataAlgo-10-힙 (Heap) 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">CS-JS-DataAlgo-10-힙 (Heap)</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-11 06:43:35
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/cs-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="CS-자료구조-알고리즘"> <b>#</b> CS-자료구조-알고리즘 </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/cs-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/js-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="JS-자료구조-알고리즘"> <b>#</b> JS-자료구조-알고리즘 </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/js-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="JS-자료구조-알고리즘"> #JS-자료구조-알고리즘 </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-우선순위-큐"><a href="#1-우선순위-큐" class="headerlink" title="1. 우선순위 큐"></a>1. 우선순위 큐</h1><ul>
+<li>FIFO인 큐와 달리 <strong>우선 순위가 높은 요소가 먼저 나가는 큐</strong></li>
+<li>우선순위 큐는 <strong>자료구조가 아닌 개념</strong>이다.</li>
+<li>e.g. 줄서기 중에 VIP 고객은 먼저 입장</li>
+</ul>
+<hr>
+<h1 id="2-힙-Heap"><a href="#2-힙-Heap" class="headerlink" title="2. 힙(Heap)"></a>2. 힙(Heap)</h1><ul>
+<li><p>힙은 우선순위 큐를 구현하기 위한 가장 적합한 자료구조입니다.</p>
+</li>
+<li><p><strong>이진 트리 형태</strong>를 가지며, </p>
+<ul>
+<li><strong>우선순위가 높은 요소가 먼저 나가기 위해 요소가 삽입, 삭제될 때 바로 정렬</strong>되는 특징이 있다.</li>
+</ul>
+</li>
+<li><p><code>우선순위 큐 != 힙</code></p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_10_1.png" alt="Data Structure_10_1"></p>
+<hr>
+<h2 id="1-1-힙의-특징"><a href="#1-1-힙의-특징" class="headerlink" title="1.1 힙의 특징"></a>1.1 힙의 특징</h2><ul>
+<li><strong>우선순위가 높은 요소가 먼저 나가는 특징</strong>을 가진다.</li>
+<li><strong>루트가 가장 큰 값</strong>이 되는 <code>최대 힙(Max Heap)</code>과 <strong>루트가 가장 작은 값</strong>이 되는 <code>최소 힙(Min Heap)</code>이 있다.</li>
+<li>즉, <strong>빠른 시간 안에 최대값 또는 최소값을 찾아낼 수 있다</strong>.</li>
+<li>주로 배열을 이용해 힙 구조를 구현할 수 있는데, 다른 언어의 경우 Heap 구조 자체를 라비르러리로 기본 제공한다.</li>
+<li>아쉽게도 JavaScript에선 직접 구현해서 사용해야 한다.</li>
+<li>물론 코딩테스트 영역 밖이라면 JS 역시 외부 라이브러리를 통해 heap을 사용할 수 있다.</li>
+</ul>
+<hr>
+<h2 id="1-2-Heap-요소-추가"><a href="#1-2-Heap-요소-추가" class="headerlink" title="1.2 Heap 요소 추가"></a>1.2 Heap 요소 추가</h2><ul>
+<li><strong>요소가 추가될 떄는 트리의 가장 마지막에 정점에 위치</strong>한다. - push()</li>
+<li><strong>추가 후 부모 정점보다 우선순위가 높다면 부모 정점과 순서를 바꾼다</strong>. - swap()</li>
+<li><strong>이 과정을 반복</strong>하면 결국 <strong>가장 우선순위가 높은 정점이 루트</strong>가 된다. - heapifyUp()</li>
+<li>완전 이진 트리의 높이는 $log\ N$이기에 힙의 요소 추가 알고리즘은 $O(log\ n)$시간복잡도를 가진다.</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_10_2.png" alt="Data Structure_10_2"></p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_10_3.png" alt="Data Structure_10_3"></p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_10_4.png" alt="Data Structure_10_4"></p>
+<hr>
+<h2 id="1-3-Heap-요소-제거"><a href="#1-3-Heap-요소-제거" class="headerlink" title="1.3 Heap 요소 제거"></a>1.3 Heap 요소 제거</h2><ul>
+<li><strong>요소 제거는 루트 정점만 가능</strong>하다.</li>
+<li><strong>루트 정점이 제거된 후 가장 마지막 정점이 루트에 위치</strong>한다.</li>
+<li><strong>루트 정점의 두 자식 정점 중 더 우선순위가 높은 정점과 바꾼다</strong>.</li>
+<li><strong>두 자식 정점이 우선순위가 더 낮을 때까지 반복</strong>한다.</li>
+<li>완전 이진 트리의 높이는 $log\ N$이기에 힙의 요소 제거 알고리즘은 $O(log\ n)$시간복잡도를 가진다.</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_10_5.png" alt="Data Structure_10_5"></p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_10_6.png" alt="Data Structure_10_6"></p>
+<hr>
+<h1 id="2-구현"><a href="#2-구현" class="headerlink" title="2. 구현"></a>2. 구현</h1><p>그렇다면 배열을 이용해 어떻게 힙을 구현할 수 있을까? 알고리즘 문제에서 배열의 첫번째 값은 비워두는 경우가 종종 있다.<br>이는  배열의 첫번째 요소가 가지는 index는 0이기 때문에 ‘1번째’ 라는 말과 인지부조화가 생기기에 계산의 편의성을 위해 그러한  경향을 띄는 편이다. 물론 이러한 부조화에 익숙하다면 굳이 처음을 비워둘 필요는 없지만, 해당 포스팅에서도 역시 계산의 편의성을  위해 첫 배열의 값은 비워두고 시작한다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Heap</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">heap</span> = [ <span class="literal">null</span> ];	<span class="comment">// 첫 원소는 사용 X</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>배열의 첫 원소는 사용하지 않으므로 부모와 자식 간 다음의 관계가 성립한다.<br>완전 이진 트리의 일종이기 때문에 Binaray Search tree에서의 부모-자식 간 관계와 유사하다.</p>
+<ul>
+<li>왼쪽 자식의 index &#x3D; <code>부모 index * 2</code></li>
+<li>오른쪽 자식의 index &#x3D; <code>(부모 index * 2) + 1</code></li>
+<li>부모의 index &#x3D; <code>Math.floor(자식의 인덱스 / 2)</code>;</li>
+</ul>
+<hr>
+<h2 id="2-1-힙-요소-추가"><a href="#2-1-힙-요소-추가" class="headerlink" title="2.1 힙 요소 추가"></a>2.1 힙 요소 추가</h2><p>삽입 역시 비슷하다. 일단 마지막 노드에 들어온 값을 push하여 삽입한다.<br>이때 재귀적이든 반복문을 돌리든 부모노드를 확인하면서,<br>들어온 값이 부모노드보다 작은지 큰지를 구분하여 위치를 교환을 계속 실행해주며 정렬해준다.<br><strong>최대힙</strong>으로 구현할 때의 삽입과정을 살펴보자.</p>
+<blockquote>
+<p><strong>최소힙</strong>이라면 반대의 계산결과로 적용해주면 된다! </p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MaxHeap</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">heap</span> = [<span class="literal">null</span>];</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 힙 요쇼 추가</span></span><br><span class="line">  <span class="title function_">push</span>(<span class="params">value</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">heap</span>.<span class="title function_">push</span>(value);</span><br><span class="line">    <span class="keyword">let</span> currentIndex = <span class="variable language_">this</span>.<span class="property">heap</span>.<span class="property">length</span> - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">let</span> parentIndex = <span class="title class_">Math</span>.<span class="title function_">floor</span>(currentIndex / <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (parentIndex !== <span class="number">0</span> &amp;&amp; <span class="variable language_">this</span>.<span class="property">heap</span>[parentIndex] &lt; value) &#123;</span><br><span class="line">      <span class="keyword">const</span> temp = <span class="variable language_">this</span>.<span class="property">heap</span>[parentIndex];</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">heap</span>[parentIndex] = value;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">heap</span>[currentIndex] = temp;</span><br><span class="line"></span><br><span class="line">      currentIndex = parentIndex;</span><br><span class="line">      parentIndex = <span class="title class_">Math</span>.<span class="title function_">floor</span>(currentIndex / <span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> heap = <span class="keyword">new</span> <span class="title class_">MaxHeap</span>();</span><br><span class="line">heap.<span class="title function_">push</span>(<span class="number">45</span>);</span><br><span class="line">heap.<span class="title function_">push</span>(<span class="number">36</span>);</span><br><span class="line">heap.<span class="title function_">push</span>(<span class="number">54</span>);</span><br><span class="line">heap.<span class="title function_">push</span>(<span class="number">27</span>);</span><br><span class="line">heap.<span class="title function_">push</span>(<span class="number">63</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(heap.<span class="property">heap</span>); <span class="comment">// [ null, 63, 54, 45, 27, 36 ]</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-2-힙-요소-제거"><a href="#2-2-힙-요소-제거" class="headerlink" title="2.2 힙 요소 제거"></a>2.2 힙 요소 제거</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MaxHeap</span> &#123;</span><br><span class="line">  <span class="comment">// ... </span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 힙 요소 제거</span></span><br><span class="line">  <span class="title function_">pop</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> returnValue = <span class="variable language_">this</span>.<span class="property">heap</span>[<span class="number">1</span>];</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">heap</span>[<span class="number">1</span>] = <span class="variable language_">this</span>.<span class="property">heap</span>.<span class="title function_">pop</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> currentIndex = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">let</span> leftIndex = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">let</span> rightIndex = <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">while</span> (<span class="variable language_">this</span>.<span class="property">heap</span>[currentIndex] &lt; <span class="variable language_">this</span>.<span class="property">heap</span>[leftIndex] || <span class="variable language_">this</span>.<span class="property">heap</span>[currentIndex] &lt; <span class="variable language_">this</span>.<span class="property">heap</span>[rightIndex]) &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">heap</span>[leftIndex] &lt; <span class="variable language_">this</span>.<span class="property">heap</span>[rightIndex]) &#123;</span><br><span class="line">        <span class="keyword">const</span> temp = <span class="variable language_">this</span>.<span class="property">heap</span>[currentIndex];</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">heap</span>[currentIndex] = <span class="variable language_">this</span>.<span class="property">heap</span>[rightIndex];</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">heap</span>[rightIndex] = temp;</span><br><span class="line">        currentIndex = rightIndex;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> temp = <span class="variable language_">this</span>.<span class="property">heap</span>[currentIndex];</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">heap</span>[currentIndex] = <span class="variable language_">this</span>.<span class="property">heap</span>[leftIndex];</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">heap</span>[leftIndex] = temp;</span><br><span class="line">        currentIndex = leftIndex;</span><br><span class="line">      &#125;</span><br><span class="line">      leftIndex = currentIndex * <span class="number">2</span>;</span><br><span class="line">      rightIndex = currentIndex * <span class="number">2</span> + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> returnValue;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> heap = <span class="keyword">new</span> <span class="title class_">MaxHeap</span>();</span><br><span class="line">heap.<span class="title function_">push</span>(<span class="number">45</span>);</span><br><span class="line">heap.<span class="title function_">push</span>(<span class="number">36</span>);</span><br><span class="line">heap.<span class="title function_">push</span>(<span class="number">54</span>);</span><br><span class="line">heap.<span class="title function_">push</span>(<span class="number">27</span>);</span><br><span class="line">heap.<span class="title function_">push</span>(<span class="number">63</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(heap.<span class="property">heap</span>); <span class="comment">// [ null, 63, 54, 45, 27, 36 ]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> array = [];</span><br><span class="line">array.<span class="title function_">push</span>(heap.<span class="title function_">pop</span>()); <span class="comment">// 63</span></span><br><span class="line">array.<span class="title function_">push</span>(heap.<span class="title function_">pop</span>()); <span class="comment">// 54</span></span><br><span class="line">array.<span class="title function_">push</span>(heap.<span class="title function_">pop</span>()); <span class="comment">// 45</span></span><br><span class="line">array.<span class="title function_">push</span>(heap.<span class="title function_">pop</span>()); <span class="comment">// 36</span></span><br><span class="line">array.<span class="title function_">push</span>(heap.<span class="title function_">pop</span>()); <span class="comment">// 27</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(array); <span class="comment">// [ 63, 54, 45, 36, 27 ]</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="3-힙-실습-배상-비용-최소화❌"><a href="#3-힙-실습-배상-비용-최소화❌" class="headerlink" title="3. 힙 실습 : 배상 비용 최소화❌"></a>3. 힙 실습 : 배상 비용 최소화❌</h1><h2 id="3-1-문제"><a href="#3-1-문제" class="headerlink" title="3.1 문제"></a>3.1 문제</h2><p>OO 조선소에서 태풍으로 인한 <strong>작업지연으로 수주한 선박들을 기한 내에 완성하지 못할 것이 예상</strong>됩니다.<br>기한 내에 완성하지 못하면 손해 배상을 해야 하므로 <strong>남은 일의 작업량을 숫자로 매기고 배상비용을 최소화하는 방법</strong>을 찾으려고 합니다.</p>
+<blockquote>
+<p>배상 비용은 <strong>각 선박의 완성까지 남은 일의 작업량을 제곱하여 모두 더한 값</strong>이 됩니다.</p>
+</blockquote>
+<p>조선소에서는 <strong>1시간 동안 남은 일 중 하나를 골라 작업량 1만큼 처리</strong>할 수 있습니다.<br><strong>조선소에서 작업할 수 있는 N 시간</strong>과 **각 일에 대한 작업량이 담긴 배열(works)**이 있을 때,<br>배상 비용을 최소화한 결과를 반환하는 함수를 만들어 주세요.</p>
+<p>예를 들어,  N&#x3D;4일 때, 선박별로 남은 일의 작업량이 <code>works = [4, 3, 3]</code>이라면,<br>배상 비용을 최소화하기 위해 일을 한 결과는  [2, 2, 2]가 되고 배상 비용은 $2^2 + 2^2 + 2^2 &#x3D; 12$가 되어 12를 반환해 줍니다.</p>
+<p>[제한사항]</p>
+<ul>
+<li>일할 수 있는 시간 N : 1,000,000 이하의 자연수</li>
+<li>배열 works의 크기 : 1,000 이하의 자연수</li>
+<li>각 일에 대한 작업량 : 1,000 이하의 자연수</li>
+</ul>
+<p>[입출력 예]</p>
+<table>
+<thead>
+<tr>
+<th align="center">N</th>
+<th align="center">works</th>
+<th align="center">result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">4</td>
+<td align="center">[4,3,3]</td>
+<td align="center">12</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">[3,3,3]</td>
+<td align="center">17</td>
+</tr>
+</tbody></table>
+<p>[입출력 예 설명]</p>
+<p>입출력 예 #1<br>문제의 예제와 같습니다.</p>
+<p>입출력 예 #2<br>배상 비용을 최소화하기 위해 일을 한 결과는 [2, 2, 3]가 되고 배상 비용은 22 + 22 + 32 &#x3D; 17가 되어 17를 반환해 줍니다.</p>
+<hr>
+<h2 id="3-2-풀이"><a href="#3-2-풀이" class="headerlink" title="3.2 풀이"></a>3.2 풀이</h2><h3 id="3-2-1-문제-유형-파악하기"><a href="#3-2-1-문제-유형-파악하기" class="headerlink" title="3.2.1 문제 유형 파악하기"></a>3.2.1 문제 유형 파악하기</h3><p>문제 설명 중 핵심 부분은 역시 <strong>배상 비용을 계산하는 부분</strong>입니다.<br>배상 비용은 <strong>각 요소를 제곱하게 되므로 최대한 각 요소를 골고루 처리하는 것이 가장 배상 비용을 최소화</strong>할 수 있는 방법입니다.</p>
+<p>그러기 위해서는 <strong>매 루프마다 가장 큰 작업을 찾아서 처리</strong>해야 합니다. 이때 가장 큰 작업을 찾기 위한 방법은 3가지가 있습니다.</p>
+<ol>
+<li>매 루프마다 <code>Math.max</code> 함수를 호출한다.</li>
+<li>매 루프마다 정렬한다.</li>
+<li>Heap을 이용한다.</li>
+</ol>
+<p>1번은 매 루프마다 O(n) 시간복잡도가 소요됩니다. 2번은 O(n log n)이 소요됩니다. 반면 <strong>Heap을 이용하면 O(log n)만이 소요</strong>됩니다.<br>사실 <strong>매번 큰 값 혹은 작은 값을 알아야 한다면 무조건 Heap을 사용</strong>하는 것이 좋습니다.<br>이제 문제 유형을 파악했으니 한 번 풀어보겠습니다.</p>
+<hr>
+<h3 id="3-2-2-최대-힙-구현"><a href="#3-2-2-최대-힙-구현" class="headerlink" title="3.2.2 최대 힙 구현"></a>3.2.2 최대 힙 구현</h3><p>가장 큰 값을 알기 위해선 최대 힙을 구현해야 합니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MaxHeap</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">heap</span> = [<span class="literal">null</span>];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">push</span>(<span class="params">value</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">heap</span>.<span class="title function_">push</span>(value);</span><br><span class="line">    <span class="keyword">let</span> currentIndex = <span class="variable language_">this</span>.<span class="property">heap</span>.<span class="property">length</span> - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">let</span> parentIndex = <span class="title class_">Math</span>.<span class="title function_">floor</span>(currentIndex / <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (parentIndex !== <span class="number">0</span> &amp;&amp; <span class="variable language_">this</span>.<span class="property">heap</span>[parentIndex] &lt; value) &#123;</span><br><span class="line">      <span class="keyword">const</span> temp = <span class="variable language_">this</span>.<span class="property">heap</span>[parentIndex];</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">heap</span>[parentIndex] = value;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">heap</span>[currentIndex] = temp;</span><br><span class="line"></span><br><span class="line">      currentIndex = parentIndex;</span><br><span class="line">      parentIndex = <span class="title class_">Math</span>.<span class="title function_">floor</span>(currentIndex / <span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">pop</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">heap</span>.<span class="property">length</span> === <span class="number">2</span>) <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">heap</span>.<span class="title function_">pop</span>(); <span class="comment">// 루트 정점만 남은 경우</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> returnValue = <span class="variable language_">this</span>.<span class="property">heap</span>[<span class="number">1</span>];</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">heap</span>[<span class="number">1</span>] = <span class="variable language_">this</span>.<span class="property">heap</span>.<span class="title function_">pop</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> currentIndex = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">let</span> leftIndex = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">let</span> rightIndex = <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">while</span> (<span class="variable language_">this</span>.<span class="property">heap</span>[currentIndex] &lt; <span class="variable language_">this</span>.<span class="property">heap</span>[leftIndex] || <span class="variable language_">this</span>.<span class="property">heap</span>[currentIndex] &lt; <span class="variable language_">this</span>.<span class="property">heap</span>[rightIndex]) &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">heap</span>[leftIndex] &lt; <span class="variable language_">this</span>.<span class="property">heap</span>[rightIndex]) &#123;</span><br><span class="line">        <span class="keyword">const</span> temp = <span class="variable language_">this</span>.<span class="property">heap</span>[currentIndex];</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">heap</span>[currentIndex] = <span class="variable language_">this</span>.<span class="property">heap</span>[rightIndex];</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">heap</span>[rightIndex] = temp;</span><br><span class="line">        currentIndex = rightIndex;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> temp = <span class="variable language_">this</span>.<span class="property">heap</span>[currentIndex];</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">heap</span>[currentIndex] = <span class="variable language_">this</span>.<span class="property">heap</span>[leftIndex];</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">heap</span>[leftIndex] = temp;</span><br><span class="line">        currentIndex = leftIndex;</span><br><span class="line">      &#125;</span><br><span class="line">      leftIndex = currentIndex * <span class="number">2</span>;</span><br><span class="line">      rightIndex = currentIndex * <span class="number">2</span> + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> returnValue;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-2-3-solution-함수-구현"><a href="#3-2-3-solution-함수-구현" class="headerlink" title="3.2.3 solution 함수 구현"></a>3.2.3 solution 함수 구현</h3><p>빠른 성능으로 통과됩니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">solution</span>(<span class="params">no, works</span>) &#123;</span><br><span class="line">  <span class="comment">// 모든 작업의 합보다 no가 크면 배상 비용을 낼 필요가 없다.</span></span><br><span class="line">  <span class="keyword">if</span> (works.<span class="title function_">reduce</span>(<span class="function">(<span class="params">a, b</span>) =&gt;</span> a + b) &lt;= no) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// max heap 구성</span></span><br><span class="line">  <span class="keyword">const</span> heap = <span class="keyword">new</span> <span class="title class_">MaxHeap</span>();</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> work <span class="keyword">of</span> works) &#123;</span><br><span class="line">    heap.<span class="title function_">push</span>(work);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// no만큼 루프 돌면서 가장 큰 값을 빼서 처리 후 다시 push</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; no; i += <span class="number">1</span>) &#123;</span><br><span class="line">    heap.<span class="title function_">push</span>(heap.<span class="title function_">pop</span>() - <span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 남은 요소에 제곱한 값들의 합을 구한 후 반환</span></span><br><span class="line">  <span class="keyword">return</span> heap.<span class="property">heap</span>.<span class="title function_">reduce</span>(<span class="function">(<span class="params">a, b</span>) =&gt;</span> a + b * b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/11/CS-JS-DataAlgo-09/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-11 06:43:35
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/cs-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="CS-자료구조-알고리즘"> <b>#</b> CS-자료구조-알고리즘 </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/cs-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/js-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="JS-자료구조-알고리즘"> <b>#</b> JS-자료구조-알고리즘 </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/js-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="JS-자료구조-알고리즘"> #JS-자료구조-알고리즘 </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/11/CS-JS-DataAlgo-11/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%EC%9A%B0%EC%84%A0%EC%88%9C%EC%9C%84-%ED%81%90"><span class="toc-text">1. 우선순위 큐</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%ED%9E%99-Heap"><span class="toc-text">2. 힙(Heap)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%ED%9E%99%EC%9D%98-%ED%8A%B9%EC%A7%95"><span class="toc-text">1.1 힙의 특징</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-Heap-%EC%9A%94%EC%86%8C-%EC%B6%94%EA%B0%80"><span class="toc-text">1.2 Heap 요소 추가</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-Heap-%EC%9A%94%EC%86%8C-%EC%A0%9C%EA%B1%B0"><span class="toc-text">1.3 Heap 요소 제거</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%EA%B5%AC%ED%98%84"><span class="toc-text">2. 구현</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%ED%9E%99-%EC%9A%94%EC%86%8C-%EC%B6%94%EA%B0%80"><span class="toc-text">2.1 힙 요소 추가</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%ED%9E%99-%EC%9A%94%EC%86%8C-%EC%A0%9C%EA%B1%B0"><span class="toc-text">2.2 힙 요소 제거</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%ED%9E%99-%EC%8B%A4%EC%8A%B5-%EB%B0%B0%EC%83%81-%EB%B9%84%EC%9A%A9-%EC%B5%9C%EC%86%8C%ED%99%94%E2%9D%8C"><span class="toc-text">3. 힙 실습 : 배상 비용 최소화❌</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%EB%AC%B8%EC%A0%9C"><span class="toc-text">3.1 문제</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%ED%92%80%EC%9D%B4"><span class="toc-text">3.2 풀이</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-1-%EB%AC%B8%EC%A0%9C-%EC%9C%A0%ED%98%95-%ED%8C%8C%EC%95%85%ED%95%98%EA%B8%B0"><span class="toc-text">3.2.1 문제 유형 파악하기</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-2-%EC%B5%9C%EB%8C%80-%ED%9E%99-%EA%B5%AC%ED%98%84"><span class="toc-text">3.2.2 최대 힙 구현</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-3-solution-%ED%95%A8%EC%88%98-%EA%B5%AC%ED%98%84"><span class="toc-text">3.2.3 solution 함수 구현</span></a></li></ol></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + CS-JS-DataAlgo-10-%ED%9E%99%20(Heap) + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F11%2FCS-JS-DataAlgo-10%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/11/CS-JS-DataAlgo-10/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

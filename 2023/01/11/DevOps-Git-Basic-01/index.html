@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      DevOps-Git-Basic--01-Git 쓰는 이유와 설치 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">DevOps-Git-Basic--01-Git 쓰는 이유와 설치</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-11 04:07:54
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/git/" title="Git"> <b>#</b> Git </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/git/basic/" title="Basic"> <b>#</b> Basic </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/git/" title="Git"> #Git </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-git을-왜-쓰나"><a href="#1-git을-왜-쓰나" class="headerlink" title="1. git을 왜 쓰나"></a>1. git을 왜 쓰나</h1><p>코드를 짜든 디자인을 하든 레포트를 쓰든 <strong>파일 변경내역을 보존하고 관리</strong>하는 과정이 필요합니다. </p>
+<ul>
+<li>2023-01-11-디자인 시안_최종</li>
+<li>2023-01-12-디자인 시안_최종의 최종</li>
+<li>2023-01-13-디자인 시안_최종의 최종2</li>
+<li>2023-01-14-디자인 시안_진짜 마지막</li>
+</ul>
+<blockquote>
+<p>Q. 2일 전 코드로 되돌아가려면?</p>
+<ol>
+<li>직접 파일을 매일 만들어 백업해두기</li>
+<li>버전 관리 소프트웨어 쓰기<ul>
+<li>프로그래머들이 쓰는 Git</li>
+<li>파일 복사본을 귀찮게 만들지 않고도 깔끔하게 버전관리가 가능</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<p>Git은 <strong>토르발스 리눅스(Linux 창시자)가 2005년에 만든 프로그램</strong></p>
+<ul>
+<li>git checkout 파생명령어 20개 외울 필요없이 신 문법 switch, restore 등을 사용</li>
+</ul>
+<hr>
+<h1 id="2-git-설치"><a href="#2-git-설치" class="headerlink" title="2. git 설치"></a>2. git 설치</h1><h2 id="2-1-Window"><a href="#2-1-Window" class="headerlink" title="2.1 Window"></a>2.1 Window</h2><p><a target="_blank" rel="noopener" href="https://git-scm.com/download/win">https://git-scm.com/download/win</a></p>
+<p>(1) 설치시 기본 에디터가 Vim으로 설정되어있으면, 설치한 <strong>VSCode 에디터로</strong>  변경</p>
+<ul>
+<li>[Use Visual Studio Code as Git’s default editor] 선택</li>
+</ul>
+<p>(2) 기본 브랜치 이름을 요즘은 master라고 안쓰고, <strong>main</strong>이라고 씀, main으로 변경하기</p>
+<ul>
+<li>[Override the default branch name for new repositoriex]에서 main으로 적기</li>
+</ul>
+<hr>
+<h2 id="2-2-Mac"><a href="#2-2-Mac" class="headerlink" title="2.2 Mac"></a>2.2 Mac</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ /bin/bash -c <span class="string">&quot;<span class="subst">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)</span>&quot;</span></span><br><span class="line">$ brew install git <span class="comment"># git 설치</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="3-git-이름-이메일-설정"><a href="#3-git-이름-이메일-설정" class="headerlink" title="3. git 이름, 이메일 설정"></a>3. git 이름, 이메일 설정</h1><p>누가 지금 git을 쓰고있는지 구분하기 위한 아이디 등록</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ git config --list <span class="comment"># 모든 설정 확인, q를 눌러 다시 빠져나오기</span></span><br><span class="line">$ git config --global -e <span class="comment"># -e는 edit 모드로 열기</span></span><br><span class="line">$ code . <span class="comment"># 현재 디렉토리를 Visual Studio Code로 열기</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># code를 에디터와 연동</span></span><br><span class="line">$ git config --global core.editor <span class="string">&quot;code&quot;</span></span><br><span class="line">$ git config --global core.editor <span class="string">&quot;code --wait&quot;</span> <span class="comment"># 작업을 하는 중에는 터미널이 대기 상태로</span></span><br><span class="line"></span><br><span class="line">$ git config --global -e</span><br><span class="line">$ git config --global user.name <span class="string">&quot;Beren&quot;</span> <span class="comment"># 자기가 쓸 이름 설정</span></span><br><span class="line">$ git config --global user.email <span class="string">&quot;berenickt99@gmail.com&quot;</span> <span class="comment"># 자기 이메일로 설정</span></span><br><span class="line"></span><br><span class="line">$ git config user.name</span><br><span class="line">Beren</span><br><span class="line">$ git config user.email</span><br><span class="line">berenickt99@gmail.com</span><br></pre></td></tr></table></figure>
+
+<p>Git을 설치하게 되면 Git에 관련된 모든 환경설정이 <code>.gitconfig</code>라는 파일 안에 저장되는데,<br>터미널에서도 간단하게 확인 가능</p>
+<hr>
+<h1 id="4-core-autocrlf-설정"><a href="#4-core-autocrlf-설정" class="headerlink" title="4. core.autocrlf 설정"></a>4. core.autocrlf 설정</h1><blockquote>
+<p>CR, LF, CRLF</p>
+<ul>
+<li><code>CR(Carriage-Return)</code> : 현재 커서를 줄 올림 없이 가장 앞으로 옮기는 동작</li>
+<li><code>LF(Line-Feed)</code> : 커서는 그 자리에 그대로 둔 상황에서 종이만 한 줄 올려 줄을 바꾸는 동작</li>
+<li><code>CRLF (Carriage-Return+Line-Feed)</code> : 줄바꿈</li>
+</ul>
+</blockquote>
+<p>운영체제마다 에디터에서 새로운 줄바꿈을 할 때, 들어가는 문자열이 다릅니다. </p>
+<ul>
+<li>윈도우의 경우 carriage-return과 line feed가 동시에 들어가는 반면에, </li>
+<li>MAC에서는 line feed 하나만 들어갑니다.</li>
+</ul>
+<p>이런 차이점 떄문에 Git Repository를 다양한 운영체제에서 쓰는 경우 내가 수정하지 않았음에도 불구하고<br>줄바꿈 문자열이 달라져서 Git History나 Git Blame을 보는데 문제가 있을 수 있습니다. </p>
+<p>이것을 수정하는 속성이 autocrlf 설정입니다.</p>
+<ul>
+<li>윈도우에서 true로 설정하게 되면 <ul>
+<li>Git에 저장할 떄는 carriage-return을 삭제하게 되고, </li>
+<li>다시 Git에서 윈도우로 가져올 떄는 자동으로 carriage-return을 붙여줍니다.</li>
+</ul>
+</li>
+<li>Mac에서는 input으로 설정하게 되면<ul>
+<li>Git에서 받아올 떄는 별다른 수정이 일어나지 않지만,</li>
+<li>저장할 떄는 carriage-return을 삭제해줍니다.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># MAC 사용자는 git config --global core.autocrlf input</span></span><br><span class="line"><span class="comment"># Windows 사용자는 git config --global core.autocrlf true</span></span><br><span class="line">$ git config --global core.autocrlf <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 만약 위 설정을 안하게 된다면 다음같은 명령어등을 입력할 때 오류들을 볼 수 있습니다.</span></span><br><span class="line"><span class="comment"># warning: LF will be replaced by CRLF in bora.txt.</span></span><br><span class="line"><span class="comment"># The file will have its original line endings in your working directory</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 경고 : bora.txt에서 LF는 CRLF로 대체됩니다.</span></span><br><span class="line"><span class="comment"># 파일은 작업 디렉토리에 원래 줄 끝이 있습니다.</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="참고"><a href="#참고" class="headerlink" title="[참고]"></a>[참고]</h1><p><a target="_blank" rel="noopener" href="https://codingapple.com/course/git-and-github/">코딩애플 Git 강의</a>를 듣고 정리한 내용입니다.</p>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/10/Front-TS-Basic-10-Module/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-11 04:07:54
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/git/" title="Git"> <b>#</b> Git </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/git/basic/" title="Basic"> <b>#</b> Basic </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/git/" title="Git"> #Git </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/11/DevOps-Git-Basic-02/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-git%EC%9D%84-%EC%99%9C-%EC%93%B0%EB%82%98"><span class="toc-text">1. git을 왜 쓰나</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-git-%EC%84%A4%EC%B9%98"><span class="toc-text">2. git 설치</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-Window"><span class="toc-text">2.1 Window</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-Mac"><span class="toc-text">2.2 Mac</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-git-%EC%9D%B4%EB%A6%84-%EC%9D%B4%EB%A9%94%EC%9D%BC-%EC%84%A4%EC%A0%95"><span class="toc-text">3. git 이름, 이메일 설정</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-core-autocrlf-%EC%84%A4%EC%A0%95"><span class="toc-text">4. core.autocrlf 설정</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%EC%B0%B8%EA%B3%A0"><span class="toc-text">[참고]</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + DevOps-Git-Basic--01-Git%20%EC%93%B0%EB%8A%94%20%EC%9D%B4%EC%9C%A0%EC%99%80%20%EC%84%A4%EC%B9%98 + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F11%2FDevOps-Git-Basic-01%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/11/DevOps-Git-Basic-01/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

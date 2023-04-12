@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Front-React-Basic-05-Components Basic - Conditional Rendering(조건부 렌더링) 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Front-React-Basic-05-Components Basic - Conditional Rendering(조건부 렌더링)</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2022-12-22 13:09:05
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/react/" title="React"> <b>#</b> React </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/react/basic/" title="Basic"> <b>#</b> Basic </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/react/" title="React"> #React </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-Conditional-Rendering-이란"><a href="#1-Conditional-Rendering-이란" class="headerlink" title="1. Conditional Rendering 이란?"></a>1. Conditional Rendering 이란?</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://reactjs.org/docs/conditional-rendering.html">Conditional Rendering</a></li>
+<li><code>조건부 렌더링</code> &#x3D; 특정 조건에 따라 다른 결과물을 렌더링 하는 것</li>
+<li>JSX 에서 <strong>null, false, undefined 를 렌더링하게 된다면 아무것도 나타나지 않음</strong></li>
+<li>React의 조건부 렌더링은 JS랑 똑같이 동작함<ul>
+<li>if 또는 조건 연산자같은 JS 연산자를 사용하여 현재 상태를 나타내는 요소를 만들고,</li>
+<li>이에 맞게 React가 UI를 업데이트함</li>
+</ul>
+</li>
+<li>조건부 렌더링하는 방법<ul>
+<li>삼항연산자 사용</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Hello</span>(<span class="params">&#123; color, name, isSpecial &#125;</span>) &#123;</span><br><span class="line">  <span class="comment">// isSpecial 값이 true 라면 &lt;b&gt;*&lt;/b&gt; 를, 그렇지 않다면 null</span></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&#123;&#123;</span> <span class="attr">color</span> &#125;&#125;&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#123;isSpecial ? <span class="tag">&lt;<span class="name">b</span>&gt;</span>*<span class="tag">&lt;/<span class="name">b</span>&gt;</span> : null&#125;</span></span><br><span class="line"><span class="language-xml">      안녕하세요 &#123;name&#125;</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="2-Truthy-and-Falsy"><a href="#2-Truthy-and-Falsy" class="headerlink" title="2. Truthy and Falsy"></a>2. Truthy and Falsy</h1><ul>
+<li><code>Truthy</code> : true 같은 값을 가지는 것<ul>
+<li>e.g. <code>true, &#123;&#125;, [], 42, -42, “0”, “false”, new Date(), Infinity, 3.14</code></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/ko/docs/Glossary/Truthy">MDN Truthy</a></li>
+</ul>
+</li>
+<li><code>Falsy</code> : false 같은 값을 가지는 것<ul>
+<li>e.g. <code>false, null, undefined, 0, -0, NaN, “”</code></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/ko/docs/Glossary/Falsy">MDN Falsy</a></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">print</span>(<span class="params">person</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(person.<span class="property">name</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> person = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;메시&#x27;</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// print함수의 파라미터가 비어있으면 에러💥</span></span><br><span class="line"><span class="title function_">print</span>(); <span class="comment">// TypeError: Cannot read property &#x27;name&#x27; of undefined</span></span><br></pre></td></tr></table></figure>
+
+<p>만약에 다음과 같이 print 에 null 값이 파라미터로 전달되면 어떨까요?</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">print</span>(<span class="params">person</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (person === <span class="literal">undefined</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;person이 없네요&#x27;</span>);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(person.<span class="property">name</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> person = <span class="literal">null</span>;</span><br><span class="line"><span class="title function_">print</span>(person); <span class="comment">// TypeError: Cannot read property &#x27;name&#x27; of null</span></span><br></pre></td></tr></table></figure>
+
+<p>person 이 undefined 이거나, null 인 상황을 대비하려면 다음과 같이 코드를 작성합니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">print</span>(<span class="params">person</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (person === <span class="literal">undefined</span> || person === <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;person이 없네요&#x27;</span>);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(person.<span class="property">name</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> person = <span class="literal">null</span>;</span><br><span class="line"><span class="title function_">print</span>(person);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-1-undefined와-null인-경우"><a href="#2-1-undefined와-null인-경우" class="headerlink" title="2.1 undefined와 null인 경우"></a>2.1 undefined와 null인 경우</h2><p>위 코드는 다음과 같이 축약해서 작성 할 수 있습니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">print</span>(<span class="params">person</span>) &#123;</span><br><span class="line">  <span class="comment">// 1. undefined 와 null 은 Falsy 한 값</span></span><br><span class="line">  <span class="comment">// 2. Falsy 한 값 앞에 느낌표를 붙여주면 true 로전환</span></span><br><span class="line">  <span class="keyword">if</span> (!person) &#123;</span><br><span class="line">    <span class="comment">// &lt;- 📝 person이 undefined나 null인 경우</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;person이 없네요&#x27;</span>);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(person.<span class="property">name</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> person = <span class="literal">null</span>;</span><br><span class="line"><span class="title function_">print</span>(person);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-2-if문에서-Truthy-한-값-체크"><a href="#2-2-if문에서-Truthy-한-값-체크" class="headerlink" title="2.2 if문에서 Truthy 한 값 체크"></a>2.2 if문에서 Truthy 한 값 체크</h2><p>Truthy 한 값과 Falsy 한 값은 if 문에서도 사용 가능</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> value = &#123; <span class="attr">a</span>: <span class="number">1</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1. value 가 Truthy 한 값이기 때문에, 콘솔에 메시지가 출력됨</span></span><br><span class="line"><span class="comment">// 2. 반면, value 가 null, undefined, 0, &#x27;&#x27;, NaN 중 하나라면, 나타나지 않음</span></span><br><span class="line"><span class="keyword">if</span> (value) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;value 가 Truthy 하네요.&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="3-short-circuit-evaluation-단축평가-계산"><a href="#3-short-circuit-evaluation-단축평가-계산" class="headerlink" title="3. short-circuit evaluation(단축평가 계산)"></a>3. short-circuit evaluation(단축평가 계산)</h1><h2 id="3-1-AND-OR-연산자"><a href="#3-1-AND-OR-연산자" class="headerlink" title="3.1 AND, OR 연산자"></a>3.1 AND, OR 연산자</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 📝 AND(&amp;&amp;) 연산자</span></span><br><span class="line"><span class="literal">true</span> &amp;&amp; <span class="literal">true</span>; <span class="comment">// true</span></span><br><span class="line"><span class="literal">true</span> &amp;&amp; <span class="literal">false</span>; <span class="comment">// false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 📝 OR(||) 연산자</span></span><br><span class="line"><span class="literal">true</span> || <span class="literal">false</span>; <span class="comment">// true</span></span><br><span class="line"><span class="literal">false</span> || <span class="literal">true</span>; <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-2-if문에서-Truthy-한-값-체크"><a href="#3-2-if문에서-Truthy-한-값-체크" class="headerlink" title="3.2 if문에서 Truthy 한 값 체크"></a>3.2 if문에서 Truthy 한 값 체크</h2><p>예를 들어, 다음과 같은 코드가 있다고 가정합니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> dog = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;멍멍이&#x27;</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getName</span>(<span class="params">animal</span>) &#123;</span><br><span class="line">  <span class="comment">// 2. animal 객체가 undefined 이기 때문에</span></span><br><span class="line">  <span class="keyword">return</span> animal.<span class="property">name</span>; <span class="comment">// 3. undefined 에서 name 값을 조회 할 수 없어서 에러 발생😭</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1. getName의 파라미터에 제대로된 객체가 주어지지 않으면?</span></span><br><span class="line"><span class="keyword">const</span> name = <span class="title function_">getName</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(name);</span><br></pre></td></tr></table></figure>
+
+<p>함수에서 animal 값이 제대로 주어졌을 때만 name을 조회하고, 그렇지 않을때는 그냥 undefined를 반환하게 하고 싶으면?</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getName</span>(<span class="params">animal</span>) &#123;</span><br><span class="line">  <span class="comment">// animal 값이 제대로 주어졌을 때만 name을 조회</span></span><br><span class="line">  <span class="comment">// animal 값이 없으면 undefined 반환</span></span><br><span class="line">  <span class="keyword">if</span> (animal) &#123;</span><br><span class="line">    <span class="keyword">return</span> animal.<span class="property">name</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">undefined</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-3-amp-amp-연산자로-코드-단축"><a href="#3-3-amp-amp-연산자로-코드-단축" class="headerlink" title="3.3 &amp;&amp; 연산자로 코드 단축"></a>3.3 &amp;&amp; 연산자로 코드 단축</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> dog = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;멍멍이&#x27;</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getName</span>(<span class="params">animal</span>) &#123;</span><br><span class="line">  <span class="comment">// animal 값이 제대로 주어졌을 때만 animal.name 반환</span></span><br><span class="line">  <span class="comment">// animal 값이 없으면 undefined 반환</span></span><br><span class="line">  <span class="keyword">return</span> animal &amp;&amp; animal.<span class="property">name</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> name = <span class="title function_">getName</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(name); <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
+
+<p>추가 예시</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="literal">true</span> &amp;&amp; <span class="string">&#x27;hello&#x27;</span>); <span class="comment">// hello</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="literal">false</span> &amp;&amp; <span class="string">&#x27;hello&#x27;</span>); <span class="comment">// false</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;hello&#x27;</span> &amp;&amp; <span class="string">&#x27;bye&#x27;</span>); <span class="comment">// bye</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="literal">null</span> &amp;&amp; <span class="string">&#x27;hello&#x27;</span>); <span class="comment">// null</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="literal">undefined</span> &amp;&amp; <span class="string">&#x27;hello&#x27;</span>); <span class="comment">// undefined</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;&#x27;</span> &amp;&amp; <span class="string">&#x27;hello&#x27;</span>); <span class="comment">// &#x27;&#x27;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">0</span> &amp;&amp; <span class="string">&#x27;hello&#x27;</span>); <span class="comment">// 0</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">1</span> &amp;&amp; <span class="string">&#x27;hello&#x27;</span>); <span class="comment">// hello</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">1</span> &amp;&amp; <span class="number">1</span>); <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-4-연산자로-코드-단축"><a href="#3-4-연산자로-코드-단축" class="headerlink" title="3.4 || 연산자로 코드 단축"></a>3.4 || 연산자로 코드 단축</h2><p>만약 어떤 값이 Falsy 하다면 대체로 사용할 값을 지정해줄 때, 사용 가능</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getName</span>(<span class="params">animal</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> name = animal &amp;&amp; animal.<span class="property">name</span>;</span><br><span class="line">  <span class="keyword">if</span> (!name) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;이름이 없는 동물입니다&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>위 코드는 <code>||</code> 연산자를 사용하면 다음과 같이 단축시킬 수 있습니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getName</span>(<span class="params">animal</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> name = animal &amp;&amp; animal.<span class="property">name</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// name이 falsy한값이라면, ||의 오른쪽의 값 출력</span></span><br><span class="line">  <span class="keyword">return</span> name || <span class="string">&#x27;이름이 없는 동물입니다.&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="4-Conditional-Rendering"><a href="#4-Conditional-Rendering" class="headerlink" title="4.. Conditional Rendering"></a>4.. Conditional Rendering</h1><p>보통 삼항연산자를 사용한 조건부 렌더링을 주로 특정 조건에 따라 보여줘야 하는 내용이 다를 때 사용합니다.</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Hello</span>(<span class="params">&#123; name, isSpecial &#125;</span>) &#123;</span><br><span class="line">  <span class="comment">// isSpecial이 false일땐 false이고, isSpecial이 true 일 땐 &lt;b&gt;*&lt;/b&gt;</span></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#123;isSpecial &amp;&amp; <span class="tag">&lt;<span class="name">b</span>&gt;</span>*<span class="tag">&lt;/<span class="name">b</span>&gt;</span>&#125;</span></span><br><span class="line"><span class="language-xml">      안녕하세요 &#123;name&#125;</span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-1-props-값-설정을-생략하면-x3D-true"><a href="#4-1-props-값-설정을-생략하면-x3D-true" class="headerlink" title="4.1 props 값 설정을 생략하면 &#x3D;{true}"></a>4.1 props 값 설정을 생략하면 &#x3D;{true}</h2><p>컴포넌트의 props 값을 설정하게 될 때 만약 props 이름만 작성하고 값 설정을 생략한다면, 이를 <code>true</code> 로 설정한 것으로 간주함</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">App</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#123;/* isSpecial 이름만 넣어주면 isSpecial=&#123;true&#125;와 동일한 의미 */&#125;</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">Hello</span> <span class="attr">name</span>=<span class="string">&#x27;react&#x27;</span> <span class="attr">color</span>=<span class="string">&#x27;red&#x27;</span> <span class="attr">isSpecial</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">Hello</span> <span class="attr">color</span>=<span class="string">&#x27;pink&#x27;</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2022/12/22/Front-React-Basic-04-components03/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2022-12-22 13:09:05
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/react/" title="React"> <b>#</b> React </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/react/basic/" title="Basic"> <b>#</b> Basic </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/react/" title="React"> #React </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2022/12/22/Front-React-Basic-06-components05/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Conditional-Rendering-%EC%9D%B4%EB%9E%80"><span class="toc-text">1. Conditional Rendering 이란?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Truthy-and-Falsy"><span class="toc-text">2. Truthy and Falsy</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-undefined%EC%99%80-null%EC%9D%B8-%EA%B2%BD%EC%9A%B0"><span class="toc-text">2.1 undefined와 null인 경우</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-if%EB%AC%B8%EC%97%90%EC%84%9C-Truthy-%ED%95%9C-%EA%B0%92-%EC%B2%B4%ED%81%AC"><span class="toc-text">2.2 if문에서 Truthy 한 값 체크</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-short-circuit-evaluation-%EB%8B%A8%EC%B6%95%ED%8F%89%EA%B0%80-%EA%B3%84%EC%82%B0"><span class="toc-text">3. short-circuit evaluation(단축평가 계산)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-AND-OR-%EC%97%B0%EC%82%B0%EC%9E%90"><span class="toc-text">3.1 AND, OR 연산자</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-if%EB%AC%B8%EC%97%90%EC%84%9C-Truthy-%ED%95%9C-%EA%B0%92-%EC%B2%B4%ED%81%AC"><span class="toc-text">3.2 if문에서 Truthy 한 값 체크</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-amp-amp-%EC%97%B0%EC%82%B0%EC%9E%90%EB%A1%9C-%EC%BD%94%EB%93%9C-%EB%8B%A8%EC%B6%95"><span class="toc-text">3.3 &amp;&amp; 연산자로 코드 단축</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-%EC%97%B0%EC%82%B0%EC%9E%90%EB%A1%9C-%EC%BD%94%EB%93%9C-%EB%8B%A8%EC%B6%95"><span class="toc-text">3.4 || 연산자로 코드 단축</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-Conditional-Rendering"><span class="toc-text">4.. Conditional Rendering</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-props-%EA%B0%92-%EC%84%A4%EC%A0%95%EC%9D%84-%EC%83%9D%EB%9E%B5%ED%95%98%EB%A9%B4-x3D-true"><span class="toc-text">4.1 props 값 설정을 생략하면 &#x3D;{true}</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Front-React-Basic-05-Components%20Basic%20-%20Conditional%20Rendering(%EC%A1%B0%EA%B1%B4%EB%B6%80%20%EB%A0%8C%EB%8D%94%EB%A7%81) + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2022%2F12%2F22%2FFront-React-Basic-05-components04%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2022/12/22/Front-React-Basic-05-components04/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

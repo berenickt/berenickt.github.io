@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      DevOps-Git-Basic-10-코드 보관 - stash 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">DevOps-Git-Basic-10-코드 보관 - stash</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-11 04:14:48
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/git/" title="Git"> <b>#</b> Git </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/git/basic/" title="Basic"> <b>#</b> Basic </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/git/" title="Git"> #Git </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-git-stash-코드-잠깐-보관하기"><a href="#1-git-stash-코드-잠깐-보관하기" class="headerlink" title="1. git stash : 코드 잠깐 보관하기"></a>1. git stash : 코드 잠깐 보관하기</h1><p>이상한 코드가 있다고 칩시다.<br>그 코드를 잠깐 치워놓고 개발하고 싶으면 주석처리해도 되겠지만 <code>git stash</code> 명령어를 이용해도 잠깐 코드를 치울 수 있습니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 새 프로젝트 폴더 app 생성</span></span><br><span class="line">git init</span><br><span class="line"></span><br><span class="line"><span class="comment"># a 라는 파일 생성 후 수정</span></span><br><span class="line"><span class="comment"># ------------------------------a.txt</span></span><br><span class="line">aaaaaaaaaaaaa</span><br><span class="line"><span class="comment"># -----------------------------------</span></span><br><span class="line"></span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&#x27;어쩌구&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># a의 파일의 수정</span></span><br><span class="line"><span class="comment"># ------------------------------a.txt</span></span><br><span class="line">aaaaaaaaaaaaa</span><br><span class="line">bbbbbbbb <span class="comment"># 잠깐 잘래내서 보관하고 싶음</span></span><br><span class="line"><span class="comment"># -----------------------------------</span></span><br><span class="line"></span><br><span class="line">git stash <span class="comment"># 임시 공간으로 이동</span></span><br><span class="line">git stash list <span class="comment"># 보관된 코드 목록 조회</span></span><br><span class="line">stash@&#123;0&#125;: WIP on main: 8978be9 어쩌구</span><br><span class="line"></span><br><span class="line"><span class="comment"># 최근 commit과의 차이점을 전부 보관해주는 git stash</span></span><br><span class="line"><span class="comment"># 다만, staging 안해놓은 새 파일은 stash가 안될 수도 있음</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ------------------------------a.txt</span></span><br><span class="line">aaaaaaaaaaaaa</span><br><span class="line">ccccccc</span><br><span class="line"><span class="comment"># -----------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 📝 git stash save &#x27;메모&#x27;</span></span><br><span class="line">git stash save <span class="string">&#x27;ccc라고 적음&#x27;</span> <span class="comment"># 메모도 함께 입력 가능</span></span><br></pre></td></tr></table></figure>
+
+<p>터미널에 git stash 입력하면 방금 작성한 bbbb 어쩌구 코드는 잠깐 다른 공간에 보관됩니다.<br>(그래서 파일들이 최근 commit 상태로 되돌아갑니다.)</p>
+<ul>
+<li>staging 된 것이든 안된 것이든 추적중인 파일은 다 이동됩니다.</li>
+<li>새로 만든 파일인데 staging 안되었다면 이동안됩니다. </li>
+<li><code> git stash save &#39;메모&#39;</code>로 메모도 함께 입력 가능합니다.</li>
+<li><code>git stash list</code>는 현재 stash 되어있는 코드 목록을 전부 출력해주는 명령어입니다.</li>
+</ul>
+<hr>
+<h1 id="2-보관했던-코드-다시-불러오기"><a href="#2-보관했던-코드-다시-불러오기" class="headerlink" title="2. 보관했던 코드 다시 불러오기"></a>2. 보관했던 코드 다시 불러오기</h1><p><code>git stash</code> 했던 코드가 여러개 있으면 가장 최근에 보관했던 코드부터 먼저 불러옵니다. </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git stash pop <span class="comment"># 가장 최근 stash 불러오기</span></span><br></pre></td></tr></table></figure>
+
+<p>가장 최근에 들어온 것 부터 먼저나갑니다.<br>물론 현재 코드와 겹치는 부분이 있으면 conflict나니까 알아서 해결하면 됩니다. </p>
+<hr>
+<h1 id="3-stash-관련-여러-명령어들"><a href="#3-stash-관련-여러-명령어들" class="headerlink" title="3. stash 관련 여러 명령어들"></a>3. stash 관련 여러 명령어들</h1><p>삭제할 id는 <code>git stash list</code> 하면 보이는 0, 1, 2 이런 숫자 넣으면 됩니다. </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">git stash list</span><br><span class="line">stash@&#123;0&#125;: WIP on main: 8978be9 어쩌구</span><br><span class="line"></span><br><span class="line"><span class="comment"># 특정 stash 삭제</span></span><br><span class="line"><span class="comment"># 📝 git stash drop 삭제할id </span></span><br><span class="line">git stash drop 0</span><br><span class="line"></span><br><span class="line">git stash clear <span class="comment"># 모든 stash 삭제</span></span><br></pre></td></tr></table></figure>
+
+<p>전체 말고 일부 코드만 <code>git stash</code> 하고싶으면 다음 명령어 씁시다.<br>그럼 파일을 훑어주면서 stash할 지 의견을 물어보는데 y&#x2F;n 으로 잘 대답하면 됩니다.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git stash -p </span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="4-왜쓰나"><a href="#4-왜쓰나" class="headerlink" title="4. 왜쓰나"></a>4. 왜쓰나</h1><p><strong>Q. 주석처리해놓는게 더 쉬울듯</strong> </p>
+<p>실은 코드를 주석처리하는거랑 용도가 비슷한데 주석처리된 코드는 commit할 때 반영됩니다.<br>그렇게 되면 주석도 commit 기록에 남아서 기록이 더러워질 수 있습니다.<br>주석처리한 내용을 commit 해버리기 싫을 때 git stash 쓰면 유용합니다. </p>
+<p>또는 기능 A, B를 만드는데 기능A는 완성되었고, 기능B는 완성이 안됐을 때,<br>팀장이 “기능A 부분만 빨리 commit하고 merge 하라”고 하면 그럴 때 기능B를 git stash 해놔도 좋을듯요.</p>
+<hr>
+<p><strong>Q. 브랜치 새로 만들어서 거기다 코드짜놓는거랑 다를바 없는데요?</strong></p>
+<p>들킴. 간단히 브랜치만들어서 거기 보관하는 것도 나쁘지않습니다. </p>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/11/DevOps-Git-Basic-09/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-11 04:14:48
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/git/" title="Git"> <b>#</b> Git </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/git/basic/" title="Basic"> <b>#</b> Basic </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/git/" title="Git"> #Git </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/11/DevOps-Git-Basic-11/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-git-stash-%EC%BD%94%EB%93%9C-%EC%9E%A0%EA%B9%90-%EB%B3%B4%EA%B4%80%ED%95%98%EA%B8%B0"><span class="toc-text">1. git stash : 코드 잠깐 보관하기</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%EB%B3%B4%EA%B4%80%ED%96%88%EB%8D%98-%EC%BD%94%EB%93%9C-%EB%8B%A4%EC%8B%9C-%EB%B6%88%EB%9F%AC%EC%98%A4%EA%B8%B0"><span class="toc-text">2. 보관했던 코드 다시 불러오기</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-stash-%EA%B4%80%EB%A0%A8-%EC%97%AC%EB%9F%AC-%EB%AA%85%EB%A0%B9%EC%96%B4%EB%93%A4"><span class="toc-text">3. stash 관련 여러 명령어들</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%EC%99%9C%EC%93%B0%EB%82%98"><span class="toc-text">4. 왜쓰나</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + DevOps-Git-Basic-10-%EC%BD%94%EB%93%9C%20%EB%B3%B4%EA%B4%80%20-%20stash + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F11%2FDevOps-Git-Basic-10%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/11/DevOps-Git-Basic-10/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

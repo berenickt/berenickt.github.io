@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      CheatSheet-Git-명령어 정리 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">CheatSheet-Git-명령어 정리</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2022-12-14 16:10:15
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/cheatsheet/" title="CheatSheet"> <b>#</b> CheatSheet </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/cheatsheet/git/" title="Git"> <b>#</b> Git </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/cheatsheet/" title="CheatSheet"> #CheatSheet </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-git-초기-설정"><a href="#1-git-초기-설정" class="headerlink" title="1. git 초기 설정"></a>1. git 초기 설정</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 현재 위치에서 지역 저장소를 생성</span></span><br><span class="line">$ git init</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 깃 환경에서 사용자 이름을 [사용자명]으로 지정</span></span><br><span class="line">$ git config --global user.name <span class="string">&quot;[사용자명]&quot;</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># 깃 환경에서 사용자 이메일을 [사용자이메일명]으로 지정</span></span><br><span class="line">$ git config --global user.email <span class="string">&quot;[사용자이메일명]&quot;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="2-git-스테이징"><a href="#2-git-스테이징" class="headerlink" title="2. git 스테이징"></a>2. git 스테이징</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># [파일명.확장자명]을 스테이지에 올림</span></span><br><span class="line">$ git add [파일명.확장자명]</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 상태를 확인</span></span><br><span class="line">$ git status</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 파일 add 취소</span></span><br><span class="line">$ git restore --staged 파일명</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 전체 add 취소</span></span><br><span class="line">$ git reset HEAD</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="3-git-커밋"><a href="#3-git-커밋" class="headerlink" title="3. git 커밋"></a>3. git 커밋</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 커밋 메시지 [메시지명]을 붙여 커밋</span></span><br><span class="line">$ git commit -m <span class="string">&quot;[메시지명]&quot;</span></span><br><span class="line">$ git commit -am <span class="string">&quot;[메시지명]&quot;</span> <span class="comment"># 스테이징과 커밋을 동시에 진행</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 최근 순서대로 커밋을 취소</span></span><br><span class="line">$ git reset HEAD^ <span class="comment"># 현재 HEAD의 이전 커밋으로 되돌리기</span></span><br><span class="line">$ git reset HEAD~n <span class="comment"># 현재로 부터 n 번째 이전 커밋으로 되돌리기</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 롤백할 커밋을 지정</span></span><br><span class="line">$ git reset [커밋 해시]</span><br><span class="line"> </span><br><span class="line"><span class="comment"># - reset의 3가지 옵션</span></span><br><span class="line">$ git reset --soft [커밋ID]  <span class="comment"># head 만 바뀜</span></span><br><span class="line">$ git reset --mixed [커밋ID] <span class="comment"># staging 도 그 때로 바뀜</span></span><br><span class="line">$ git reset --hard [커밋ID] <span class="comment"># working디렉토리/staging 모두 그 때로 바꿈 </span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 커밋을 삭제하지않고 이전 커밋을 새로 복사 추가하는 식으로 롤백</span></span><br><span class="line">$ git revert [커밋 해시] <span class="comment"># 해당 커밋 이전상태로 되돌린다라는 명령</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 커밋 수정하는 법</span></span><br><span class="line"><span class="comment"># ... 파일 수정 한 뒤</span></span><br><span class="line">$ git add .</span><br><span class="line">$ git commit --amend <span class="comment"># 최신 커밋 수정</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="4-git-이력-확인"><a href="#4-git-이력-확인" class="headerlink" title="4. git 이력 확인"></a>4. git 이력 확인</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 커밋 내역 확인</span></span><br><span class="line">$ git <span class="built_in">log</span>           <span class="comment"># 전체 이력을 보여준다.</span></span><br><span class="line">$ git shortlog     </span><br><span class="line">$ git <span class="built_in">log</span> --oneline <span class="comment"># 커밋과 커밋 메시지를 조회</span></span><br><span class="line"> </span><br><span class="line">$ git <span class="built_in">log</span> -p        <span class="comment"># 이력을 보여줄 때, 변경된 데이터도 보여준다.</span></span><br><span class="line">$ git <span class="built_in">log</span> [filename] <span class="comment"># 특정 파일에 대한 이력을 보여준다.</span></span><br><span class="line">$ git <span class="built_in">log</span> -p [filename] <span class="comment"># 특정 파일의 이력과 변경된 데이터를 보여준다.</span></span><br><span class="line"> </span><br><span class="line">$ git <span class="built_in">log</span> --<span class="built_in">stat</span>    <span class="comment"># 커밋마다 파일의 추가/삭제된 통계데이터를 보여줌</span></span><br><span class="line">$ git <span class="built_in">log</span> --graph   <span class="comment"># 브랜치 분기 및 병합내용을 아스키 그래프로 보여줌</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 특정 커밋 내역 확인</span></span><br><span class="line">$ git show [커밋 <span class="built_in">id</span>]</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 최근 버전과 작업 폴더의 수정 파일 사이의 차이를 출력</span></span><br><span class="line">$ git diff               <span class="comment"># modified 상태의 file과 마지막 commit 비교</span></span><br><span class="line">$ git diff --staged      <span class="comment"># staged 상태의 file과 마지막 commit 비교</span></span><br><span class="line">$ git diff --color-words <span class="comment"># 변경사항을 color 풀하게 비교</span></span><br><span class="line">$ git diff [브랜치이름]    <span class="comment"># 현재브랜치와 선택된 브랜치와 차이점 비교</span></span><br><span class="line">$ git diff [이전커밋 <span class="built_in">id</span>] [이후커밋 <span class="built_in">id</span>] <span class="comment"># 커밋 비교</span></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="left">git log 명령어 예시</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">git log</td>
+<td>HEAD와 관련된 commit들이 자세하게 나옴</td>
+</tr>
+<tr>
+<td align="left">git log –oneline</td>
+<td>간단히 commit 해시와 제목만 보고 싶을 때</td>
+</tr>
+<tr>
+<td align="left">git log –oneline –graph –decorate</td>
+<td>HEAD와 관련된 commit들을 조금 더 자세히 보고 싶을 때</td>
+</tr>
+<tr>
+<td align="left">git log –oneline –graph –all –decorate</td>
+<td>모든 branch들을 보고 싶을 때 사용하는 명령어</td>
+</tr>
+<tr>
+<td align="left">git log –oneline -n7</td>
+<td>내 branch의 최신 commit을 7개만 보고 싶을 때 사용</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="5-원격-저장소"><a href="#5-원격-저장소" class="headerlink" title="5. 원격 저장소"></a>5. 원격 저장소</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 원격 저장소에 연결</span></span><br><span class="line">$ git remote add origin [github 레포지 주소]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 옵션 종류 보기</span></span><br><span class="line">$ git remote --<span class="built_in">help</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 추가한 원격저장소의 목록 확인 </span></span><br><span class="line">$ git remote</span><br><span class="line">$ git remote -v <span class="comment"># 상세히</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 특정 원격 저장소의 정보를 확인할 수 있다.</span></span><br><span class="line">$ git remote show 이름</span><br><span class="line"></span><br><span class="line"><span class="comment"># 원격저장소 이름 변경</span></span><br><span class="line">$ git remote rename 기존이름 변경할이름</span><br><span class="line"></span><br><span class="line"><span class="comment"># 원격저장소를 제거</span></span><br><span class="line">$ git remote <span class="built_in">rm</span> 이름</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 지역 저장소의 커밋을 맨 처음 원격 저장소에 올리는 경우</span></span><br><span class="line">$ git push -u origin master</span><br><span class="line"> </span><br><span class="line"><span class="comment"># -u로 등록한 후에 지역 저장소의 커밋을 원격 저장소에 올리는 경우(업로드)</span></span><br><span class="line">$ git push</span><br><span class="line">$ git push origin master</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 원격 저장소의 커밋을 지역 저장소로 가져옴</span></span><br><span class="line">$ git pull origin master</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 원격 저장소 복제하기</span></span><br><span class="line">$ git <span class="built_in">clone</span> [원격 저장소 주소]</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 원격 저장소의 커밋을 가져오기만 하고 merge하지 않는다</span></span><br><span class="line">$ git fetch</span><br><span class="line"><span class="comment"># 이후엔 diff 로 비교</span></span><br><span class="line">$ git diff <span class="built_in">test</span> origin/test <span class="comment"># 브랜치 이름이 test일 경우 예시</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># 원격저장소 삭제(끊기)</span></span><br><span class="line">$ git remote remove origin</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="6-저장소-파일-삭제"><a href="#6-저장소-파일-삭제" class="headerlink" title="6. 저장소 파일 삭제"></a>6. 저장소 파일 삭제</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 로컬저장소 원격저장소 둘다 파일 삭제</span></span><br><span class="line">$ git <span class="built_in">rm</span> [filename]    </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 원격저장소 파일만 삭제. 로컬저장소 파일은 냅둠</span></span><br><span class="line">$ git <span class="built_in">rm</span> --cached [filename]</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="7-git-branch"><a href="#7-git-branch" class="headerlink" title="7. git branch"></a>7. git branch</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 브랜치 확인</span></span><br><span class="line">$ git branch               </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 브랜치 추가 / 삭제</span></span><br><span class="line">$ git branch [branch name]  </span><br><span class="line">$ git branch -d [branch name] <span class="comment"># -delete</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># 브랜치로 이동</span></span><br><span class="line">$ git switch [branch name]</span><br><span class="line">$ git checkout [branch name]</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 브랜치 추가하고 바로 이동</span></span><br><span class="line">$ git switch -c [branch name]</span><br><span class="line">$ git checkout -b [branch name]</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 현재 브랜치에서 다른 브랜치를 merge</span></span><br><span class="line">$ git merge [branch name]</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="8-git-cherry-pick"><a href="#8-git-cherry-pick" class="headerlink" title="8. git cherry-pick"></a>8. git cherry-pick</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 만일 내가 X 브랜치에 있고</span></span><br><span class="line"><span class="comment"># 브랜치 Y의 커밋 중 76ae30ef와 13af32cc만 골라 현재 브랜치인 X에 적용하고 싶을때</span></span><br><span class="line">$ git cherry-pick 76ae30ef 13af32cc</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="9-git-stash"><a href="#9-git-stash" class="headerlink" title="9. git stash"></a>9. git stash</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># staged, modified 상태의 파일을 저장</span></span><br><span class="line">$ git stash     </span><br><span class="line"> </span><br><span class="line"><span class="comment"># stash로 저장한 리스트를 출력</span></span><br><span class="line">$ git stash list         </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 가장 최근에 저장한 stash를 반영</span></span><br><span class="line">$ git stash apply      </span><br><span class="line">$ git stash apply stash@&#123;1&#125;  <span class="comment"># 지정한 stash를 반영</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># 지정한 stash를 삭제</span></span><br><span class="line">$ git stash drop stash@&#123;1&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment"># stash를 반영하고 자동 삭제</span></span><br><span class="line">$ git stash pop</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="10-git-tag"><a href="#10-git-tag" class="headerlink" title="10. git tag"></a>10. git tag</h1><ul>
+<li><code>light weight 태그</code> : 단순 커밋 태그용. 커밋을 바로 가리킴</li>
+<li><code>annotated 태그</code> : 태그 메세지도 첨부할수 있어 자체 해시값을 가짐. ^{}이 커밋을 가리킴</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 태그 추가</span></span><br><span class="line">$ git tag [태그이름]           </span><br><span class="line">$ git tag [태그이름] [커밋번호]  <span class="comment"># 특정 해쉬에 태그 추가</span></span><br><span class="line">$ git tag -a [태그이름] [커밋번호] <span class="comment"># 특정 해쉬에 annotated 태그 추가</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 태그 조회</span></span><br><span class="line">$ git tag</span><br><span class="line">$ git tag -l <span class="string">&#x27;v1.*&#x27;</span>  <span class="comment"># 와일드카드 패턴으로 검색조회</span></span><br><span class="line">$ git show [태그이름]  <span class="comment"># 특정 태그 조회</span></span><br><span class="line">$ git show-ref --tags  <span class="comment"># 해쉬값과 태그 조회</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="11-git-blame"><a href="#11-git-blame" class="headerlink" title="11. git blame"></a>11. git blame</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># git 프로젝트에서 어떤 코드를 누가 수정했는지, 어떤 commit으로 수정이 되었는지 궁금할 때</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># 해당 파일에 대한 모든 수정 내역</span></span><br><span class="line">$ git blame &lt;파일명&gt;</span><br><span class="line"> </span><br><span class="line"><span class="comment"># author name과 timestamp는 출력하지 않음.</span></span><br><span class="line">$ git blame -s &lt;파일명&gt;</span><br><span class="line"> </span><br><span class="line"><span class="comment"># description과 수정사항을 보여줌</span></span><br><span class="line">$ git show &lt;커밋번호&gt;</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 파일내용을 start부터 end 라인까지의 수정 내역만 보여줌</span></span><br><span class="line">$ git blame -L &lt;start,end&gt; &lt;파일명&gt;</span><br></pre></td></tr></table></figure></div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2022-12-14 16:10:15
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/cheatsheet/" title="CheatSheet"> <b>#</b> CheatSheet </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/cheatsheet/git/" title="Git"> <b>#</b> Git </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/cheatsheet/" title="CheatSheet"> #CheatSheet </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2022/12/14/CheatSheet-Linux/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-git-%EC%B4%88%EA%B8%B0-%EC%84%A4%EC%A0%95"><span class="toc-text">1. git 초기 설정</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-git-%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%95"><span class="toc-text">2. git 스테이징</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-git-%EC%BB%A4%EB%B0%8B"><span class="toc-text">3. git 커밋</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-git-%EC%9D%B4%EB%A0%A5-%ED%99%95%EC%9D%B8"><span class="toc-text">4. git 이력 확인</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%EC%9B%90%EA%B2%A9-%EC%A0%80%EC%9E%A5%EC%86%8C"><span class="toc-text">5. 원격 저장소</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%EC%A0%80%EC%9E%A5%EC%86%8C-%ED%8C%8C%EC%9D%BC-%EC%82%AD%EC%A0%9C"><span class="toc-text">6. 저장소 파일 삭제</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-git-branch"><span class="toc-text">7. git branch</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-git-cherry-pick"><span class="toc-text">8. git cherry-pick</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-git-stash"><span class="toc-text">9. git stash</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-git-tag"><span class="toc-text">10. git tag</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11-git-blame"><span class="toc-text">11. git blame</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + CheatSheet-Git-%EB%AA%85%EB%A0%B9%EC%96%B4%20%EC%A0%95%EB%A6%AC + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2022%2F12%2F14%2FCheatSheet-Git%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2022/12/14/CheatSheet-Git/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

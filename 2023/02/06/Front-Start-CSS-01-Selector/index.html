@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Start-CSS-01-선택자 - CSS Diner 1~32 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Start-CSS-01-선택자 - CSS Diner 1~32</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-02-06 17:31:55
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/html-css-js/" title="HTML-CSS-JS"> <b>#</b> HTML-CSS-JS </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/html-css-js/css/" title="CSS"> <b>#</b> CSS </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/css/" title="CSS"> #CSS </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-HTML에서-CSS-사용"><a href="#1-HTML에서-CSS-사용" class="headerlink" title="1. HTML에서 CSS 사용"></a>1. HTML에서 CSS 사용</h1><p>CSS는 Cascading Style Sheet로 위에서부터 아래로 차례대로 스타일이 적용된다.<br>HTML에서 CSS를 사용하려면 3가지 방법이 있다.</p>
+<h2 id="1-1-태그-안에-style-속성을-사용"><a href="#1-1-태그-안에-style-속성을-사용" class="headerlink" title="1.1 태그 안에 style 속성을 사용"></a>1.1 태그 안에 style 속성을 사용</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">태그</span> <span class="attr">style</span>=<span class="string">&quot;속성:값;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>첫 번째는 태그 안에 style 속성을 사용하는 방법!</p>
+<hr>
+<h2 id="1-2-style-태그-내에-CSS-작성"><a href="#1-2-style-태그-내에-CSS-작성" class="headerlink" title="1.2 style 태그 내에 CSS 작성"></a>1.2 style 태그 내에 CSS 작성</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">    <span class="comment">/* CSS */</span></span></span><br><span class="line"><span class="language-css">  </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>두 번째는 style 태그 내에 CSS 문법을 작성하는 방법! 참고로 style 태그는 head 태그 안에 있어야 한다.</p>
+<hr>
+<h2 id="1-3-파일-따로-만들어서-link-태그로-연결"><a href="#1-3-파일-따로-만들어서-link-태그로-연결" class="headerlink" title="1.3 파일 따로 만들어서 link 태그로 연결"></a>1.3 파일 따로 만들어서 link 태그로 연결</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">link</span> <span class="attr">href</span>=<span class="string">&quot;style.css&quot;</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">link</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>마지막은 CSS 파일을 따로 만들어서 link 태그로 연결하는 방법으로 HTML 코드와 CSS 코드를 분리시킬 수 있다.<br><code>href</code>는 css 파일 경로를, <code>rel</code>은 stylesheet를 작성한다.</p>
+<hr>
+<h1 id="2-CSS-문법"><a href="#2-CSS-문법" class="headerlink" title="2. CSS 문법"></a>2. CSS 문법</h1><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">선택자 &#123;</span><br><span class="line">  속성: 값;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>본 구조는 선택자를 지정하고 중괄호 안에  속성과 속성에 해당하는 값을 입력하고 세미콜론(;)으로 마무리하면 끝!</p>
+<p>CSS 문법은 위에 구조에서 보았듯이, 크게 선택자와 속성으로 나누어진다.</p>
+<hr>
+<h1 id="3-선택자-정리"><a href="#3-선택자-정리" class="headerlink" title="3. 선택자 정리"></a>3. 선택자 정리</h1><h2 id="3-1-기본-선택자"><a href="#3-1-기본-선택자" class="headerlink" title="3.1 기본 선택자"></a>3.1 기본 선택자</h2><ul>
+<li><strong>전체</strong> 선택자 : <code>*</code></li>
+<li><strong>태그</strong> 선택자 : <code>태그이름</code></li>
+<li><strong>아이디</strong> 선택자 : <code>#</code></li>
+<li><strong>클래스</strong> 선택자 : <code>.</code></li>
+<li><strong>그룹</strong> 선택자 : <code>태그이름, 태그이름</code></li>
+</ul>
+<hr>
+<h2 id="3-2-심화-선택자"><a href="#3-2-심화-선택자" class="headerlink" title="3.2 심화 선택자"></a>3.2 심화 선택자</h2><h3 id="3-2-1-속성-선택자-문자열-속성-선택자"><a href="#3-2-1-속성-선택자-문자열-속성-선택자" class="headerlink" title="3.2.1 속성 선택자 : 문자열 속성 선택자"></a>3.2.1 속성 선택자 : 문자열 속성 선택자</h3><ul>
+<li>[속성 ~&#x3D; 문자열]</li>
+<li>[속성 |&#x3D; 문자열]</li>
+<li>[속성 ^&#x3D; 문자열]</li>
+<li>[속성 $&#x3D; 문자열]</li>
+<li>[속성 *&#x3D; 문자열]</li>
+</ul>
+<h3 id="3-2-2-조합-선택자"><a href="#3-2-2-조합-선택자" class="headerlink" title="3.2.2 조합 선택자"></a>3.2.2 조합 선택자</h3><ul>
+<li>CSS에서는 기본 선택자(태그, 아이디, 클래스)를 조합해서 사용 가능</li>
+<li><code>그룹 선택자(group selector)</code> : 이미 기본 선택자 시간에 배움, 여러 사용 가능한 태그 나열<ul>
+<li>기본 선택자, 기본 선택자 {}</li>
+</ul>
+</li>
+<li><code>하위 선택자(descendant selector)</code> : 특정 요소의 하위에 있는 요소를 선택할 떄 사용<ul>
+<li>기본 선택자 기본 선택자 {}</li>
+</ul>
+</li>
+<li><code>자식 선택자(Child Selector)</code></li>
+<li><code>형제 선택자</code></li>
+</ul>
+<h3 id="3-2-3-가상-요소-선택자"><a href="#3-2-3-가상-요소-선택자" class="headerlink" title="3.2.3 가상 요소 선택자"></a>3.2.3 가상 요소 선택자</h3><ul>
+<li>HTML 문서에서는 존재하지 않지만, </li>
+<li>요소의 특정 부분을 존재하는 것처럼 가정하고 스타일을 적용할 때 사용하는 선택자 방법</li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/ko/docs/Web/CSS/Pseudo-elements">MDN 가상 요소 선택자</a></li>
+<li>가상 요소 선택자의 종류는 꽤 여러 가지가 있지만, 대표적으로 4가지 정도만 알아두면 됨</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">선택자</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>::first-letter</code></td>
+<td><code>요소의 첫 글자를 선택</code>합니다.</td>
+</tr>
+<tr>
+<td align="center"><code>::first-line</code></td>
+<td><code>요소의 첫 번째 줄(first line)을 선택</code>합니다.</td>
+</tr>
+<tr>
+<td align="center"><code>::before</code></td>
+<td><code>요소의 콘텐츠 영역에서 맨 앞을 선택</code>합니다.</td>
+</tr>
+<tr>
+<td align="center"><code>::after</code></td>
+<td><code>요소의 콘텐츠 영역에서 맨 뒤를 선택</code>합니다.</td>
+</tr>
+</tbody></table>
+<h3 id="3-2-4-가상-클래스-선택자"><a href="#3-2-4-가상-클래스-선택자" class="headerlink" title="3.2.4 가상 클래스 선택자"></a>3.2.4 가상 클래스 선택자</h3><ul>
+<li>link, visisted 링크 가상 클래스 선택자<ul>
+<li><code>:link</code> : <strong>한 번도 방문한 적이 없는 상태</strong>의 링크 요소 선택</li>
+<li><code>:visited</code> : <strong>한 번 이상 방문한 적이 있는 상태</strong>의 링크 요소 선택</li>
+</ul>
+</li>
+<li>hover, active 동적 가상 클래스 선택자<ul>
+<li><code>:hover</code> : 요소에 <strong>마우스를 올리고 있는 상태</strong>를 선택</li>
+<li><code>:active</code> :  요소가 <strong>마우스로 클릭 중인 상태</strong>를 선택</li>
+</ul>
+</li>
+<li>입력 요소 가상 클래스 선택자<ul>
+<li><code>:focus</code> : <strong>입력 요소에 커서가 활성화되면</strong> 선택자로 지정</li>
+<li><code>:checked</code> : <strong>체크박스가 표시되어 있으면 인접한 형제 요소</strong> 선택자로 지정</li>
+<li><code>:disabled</code> : <strong>상호작용 요소가 비활성</strong>되면(disabled 속성이 사용되면) 선택자로 지정</li>
+<li><code>:enabled</code> : <strong>상호작용 요소가 활성화</strong>되면(disabled 속성이 사용되지 않은 상태면) 선택자로 지정</li>
+</ul>
+</li>
+<li>구조적 가상 클래스 선택자<ul>
+<li><code>:nth-child(N)</code> : 부모안에 모든 요소 중 N번째 요소</li>
+<li><code>A:nth-of-type(N)</code> : 부모안에 A라는 요소 중 N번째 요소</li>
+<li><code>:first-child</code> : 부모안에 모든 요소 중 첫번째 요소</li>
+<li><code>:last-child</code> : 부모안에 모든 요소 중 마지막 요소</li>
+<li><code>A:first-of-type</code> : 부모안에 A라는 요소 중 첫번째 요소</li>
+<li><code>A:last-of-type</code> : 부모안에 A라는 요소 중 마지막 요소</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-pseudo">:nth-child</span>(<span class="number">1</span>) <span class="comment">/* 첫번째 선택 */</span></span><br><span class="line"><span class="selector-pseudo">:nth-child</span>(<span class="number">2</span>n) <span class="comment">/* 두번째 마다 선택 */</span></span><br><span class="line"><span class="selector-pseudo">:nth-child</span>(<span class="number">2</span>n+<span class="number">1</span>) <span class="comment">/* 첫번째 요소부터 2번째 마다 선택 */</span></span><br><span class="line"><span class="selector-pseudo">:nth-child</span>(<span class="number">2</span>n+<span class="number">5</span>) <span class="comment">/* 다섯번째 부터 2개 마다 선택 */</span></span><br><span class="line"><span class="selector-pseudo">:nth-child</span>(-<span class="number">2</span>n+<span class="number">5</span>) <span class="comment">/* 첫번째 요소부터 5번째 요소까지 2개 마다 선택 */</span></span><br><span class="line"><span class="selector-pseudo">:nth-child</span>(n+<span class="number">5</span>) <span class="comment">/* 5번째 부터 모두 선택 */</span></span><br><span class="line"><span class="selector-pseudo">:nth-child</span>(-n+<span class="number">5</span>) <span class="comment">/* 앞에서부터 5개만 선택 */</span></span><br><span class="line"><span class="selector-pseudo">:nth-child</span>(odd) <span class="comment">/* 홀수 선택 */</span></span><br><span class="line"><span class="selector-pseudo">:nth-child</span>(even) <span class="comment">/* 짝수 선택 */</span></span><br><span class="line"><span class="selector-tag">p</span><span class="selector-pseudo">:first</span>-of-type <span class="comment">/* 부모안에 모든 p요소 중 첫번째 p요소 선택 */</span></span><br><span class="line"><span class="selector-tag">span</span><span class="selector-pseudo">:last-of-type</span> <span class="comment">/* 부모안에 모든 span요소 중 마지막 span요소 선택 */</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="4-CSS-Diner-CSS-선택자-게임"><a href="#4-CSS-Diner-CSS-선택자-게임" class="headerlink" title="4. CSS Diner : CSS 선택자 게임"></a>4. CSS Diner : CSS 선택자 게임</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://flukeout.github.io/">https://flukeout.github.io/</a></li>
+</ul>
+<h1 id="Level-1-2-태그-선택자"><a href="#Level-1-2-태그-선택자" class="headerlink" title="Level 1, 2 : 태그 선택자"></a>Level 1, 2 : <strong>태그 선택자</strong></h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">태그</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"></span><br><span class="line">태그 &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>태그명을 사용한다.</p>
+<hr>
+<h1 id="Level-3-아이디-선택자"><a href="#Level-3-아이디-선택자" class="headerlink" title="Level 3 : 아이디 선택자"></a>Level 3 : <strong>아이디 선택자</strong></h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">태그</span> <span class="attr">id</span>=<span class="string">&quot;아이디명&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"></span><br><span class="line">#아이디명 &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>태그의 id에 지정한 고유한 이름을 <code>#</code>으로 선택할 수 있다.<br>주로 웹 페이지에서 중요하거나 특정 영역을 지정할 때 자주 사용한다.</p>
+<hr>
+<h1 id="Level-4-5-자손-선택자"><a href="#Level-4-5-자손-선택자" class="headerlink" title="Level 4, 5 : 자손 선택자"></a>Level 4, 5 : <strong>자손 선택자</strong></h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">상위태그</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">하위태그</span>&gt;</span><span class="tag">&lt;/<span class="name">하위태그</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">상위태그</span>&gt;</span></span><br><span class="line"></span><br><span class="line">상위태그 하위태그 &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>상위 태그에 포함된 하위 태그 모두 선택할 수 있다.</p>
+<hr>
+<h1 id="Level-6-7-8-클래스-선택자"><a href="#Level-6-7-8-클래스-선택자" class="headerlink" title="Level 6, 7, 8 : 클래스 선택자"></a>Level 6, 7, 8 : <strong>클래스 선택자</strong></h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">태그</span> <span class="attr">class</span>=<span class="string">&quot;클래스명&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"></span><br><span class="line">.클래스명 &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="Level-9-그룹-선택자"><a href="#Level-9-그룹-선택자" class="headerlink" title="Level 9 : 그룹 선택자"></a>Level 9 : <strong>그룹 선택자</strong></h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">태그1</span>&gt;</span><span class="tag">&lt;/<span class="name">태그1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">태그2</span>&gt;</span><span class="tag">&lt;/<span class="name">태그2</span>&gt;</span></span><br><span class="line"></span><br><span class="line">태그1, 태그2 &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>콤마(,)를 사용하여 여러 태그를 선택할 수 있다.</p>
+<hr>
+<h1 id="Level-10-11-전체-선택자"><a href="#Level-10-11-전체-선택자" class="headerlink" title="Level 10, 11 : 전체 선택자"></a>Level 10, 11 : <strong>전체 선택자</strong></h1><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">* &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>모든 HTML 태그들을 한꺼번에 선택한다.</p>
+<hr>
+<h1 id="Level-12-형제-선택자-중-하나인-선택자"><a href="#Level-12-형제-선택자-중-하나인-선택자" class="headerlink" title="Level 12 : 형제 선택자 중 하나인 + 선택자"></a>Level 12 : 형제 선택자 중 하나인 <strong>+ 선택자</strong></h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">태그1</span>&gt;</span><span class="tag">&lt;/<span class="name">태그2</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">태그2</span>&gt;</span><span class="tag">&lt;/<span class="name">태그2</span>&gt;</span></span><br><span class="line"></span><br><span class="line">태그1 + 태그2 &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>바로 뒤에 나오는 태그를 선택할 때 사용한다.</p>
+<hr>
+<h1 id="Level-13-형제-선택자-중-하나인-선택자"><a href="#Level-13-형제-선택자-중-하나인-선택자" class="headerlink" title="Level 13 : 형제 선택자 중 하나인 ~ 선택자"></a>Level 13 : 형제 선택자 중 하나인 <strong>~ 선택자</strong></h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">태그1</span>&gt;</span><span class="tag">&lt;/<span class="name">태그1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">태그2</span>&gt;</span><span class="tag">&lt;/<span class="name">태그2</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">태그3</span>&gt;</span><span class="tag">&lt;/<span class="name">태그3</span>&gt;</span></span><br><span class="line"></span><br><span class="line">태그1 ~ 태그3 &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>바로 뒤가 아니어도 형제 태그라면 선택할 수 있다.</p>
+<hr>
+<h1 id="Level-14-자식-선택자"><a href="#Level-14-자식-선택자" class="headerlink" title="Level 14 : 자식 선택자"></a>Level 14 : <strong>자식 선택자</strong></h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">부모태그</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">자식태그</span>&gt;</span><span class="tag">&lt;/<span class="name">자식태그</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">부모태그</span>&gt;</span></span><br><span class="line"></span><br><span class="line">부모태그 &gt; 자식태그 &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>직계 자식만 선택할 수 있다.</p>
+<hr>
+<h1 id="Level-15-first-child-선택자"><a href="#Level-15-first-child-선택자" class="headerlink" title="Level 15 : first-child 선택자"></a>Level 15 : <strong>first-child 선택자</strong></h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">태그</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">태그</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">태그</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"></span><br><span class="line">태그:first-child &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>여러 개의 태그 중 첫 번째 태그만 선택한다.</p>
+<hr>
+<h1 id="Level-16-only-child-선택자"><a href="#Level-16-only-child-선택자" class="headerlink" title="Level 16 : only-child 선택자"></a>Level 16 : <strong>only-child 선택자</strong></h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">태그</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">태그2</span>&gt;</span><span class="tag">&lt;/<span class="name">태그2</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">태그2</span>&gt;</span><span class="tag">&lt;/<span class="name">태그2</span>&gt;</span></span><br><span class="line"></span><br><span class="line">태그:only-child &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>선택한 태그가 유일한 경우 선택할 수 있다.</p>
+<hr>
+<h1 id="Level-17-last-child-선택자"><a href="#Level-17-last-child-선택자" class="headerlink" title="Level 17 : last-child 선택자"></a>Level 17 : <strong>last-child 선택자</strong></h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">태그</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">태그</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">태그</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"></span><br><span class="line">태그:first-child &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>여러 태그 중 마지막 태그만 선택한다.</p>
+<hr>
+<h1 id="Level-18-nth-of-child-선택자"><a href="#Level-18-nth-of-child-선택자" class="headerlink" title="Level 18 : nth-of-child 선택자"></a>Level 18 : <strong>nth-of-child 선택자</strong></h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">태그</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">태그</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">태그</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"></span><br><span class="line">태그:nth-child(n) &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>n 번째 태그를 선택할 수 있다.</p>
+<p>n에는 숫자 말고도 <strong>짝수</strong>에 해당하는 <code>even 또는 2n</code>, <strong>홀수</strong>에 해당하는 <code>odd 또는 2n+1</code> 등을 사용할 수 있다.</p>
+<hr>
+<h1 id="Level-19-nth-last-child-선택자"><a href="#Level-19-nth-last-child-선택자" class="headerlink" title="Level 19 : nth-last-child 선택자"></a>Level 19 : <strong>nth-last-child 선택자</strong></h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">태그</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">태그</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">태그</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"></span><br><span class="line">태그:nth-last-child(n) &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>뒤에서부터 n 번째에 있는 태그를 선택할 수 있다.</p>
+<hr>
+<h1 id="Level-20-first-of-type-선택자"><a href="#Level-20-first-of-type-선택자" class="headerlink" title="Level 20 : first-of-type 선택자"></a>Level 20 : <strong>first-of-type 선택자</strong></h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">태그</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">태그</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">태그</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"></span><br><span class="line">태그:first-of-type &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>특정 태그들 중 첫 번째 태그를 선택한다.</p>
+<hr>
+<h1 id="Level-21-22-nth-of-type-선택자"><a href="#Level-21-22-nth-of-type-선택자" class="headerlink" title="Level 21, 22 : nth-of-type 선택자"></a>Level 21, 22 : <strong>nth-of-type 선택자</strong></h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">태그</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">태그</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">태그</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"></span><br><span class="line">태그:nth-of-type(n) &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>특정 태그들 중 n 번째 태그를 선택한다. <code>nth-child</code>와 사용하는 방법은 같다.</p>
+<hr>
+<h1 id="Level-23-only-of-type-선택자"><a href="#Level-23-only-of-type-선택자" class="headerlink" title="Level 23 : only-of-type 선택자"></a>Level 23 : <strong>only-of-type 선택자</strong></h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">태그</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">태그2</span>&gt;</span><span class="tag">&lt;/<span class="name">태그2</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">태그2</span>&gt;</span><span class="tag">&lt;/<span class="name">태그2</span>&gt;</span></span><br><span class="line"></span><br><span class="line">태그:only-of-type &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>특정 태그가 유일한 경우 선택할 수 있다.</p>
+<hr>
+<h1 id="Level-24-last-of-type-선택자"><a href="#Level-24-last-of-type-선택자" class="headerlink" title="Level 24 : last-of-type 선택자"></a>Level 24 : <strong>last-of-type 선택자</strong></h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">태그</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">태그</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">태그</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"></span><br><span class="line">태그:last-of-type &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>특정 태그들 중 마지막 태그만 선택할 수 있다.</p>
+<hr>
+<h1 id="Level-25-empty-선택자"><a href="#Level-25-empty-선택자" class="headerlink" title="Level 25 : empty 선택자"></a>Level 25 : <strong>empty 선택자</strong></h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">태그</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"></span><br><span class="line">태그:empty &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>해당 태그가 비어있는 경우 선택할 수 있다.</p>
+<hr>
+<h1 id="Level-26-not-선택자"><a href="#Level-26-not-선택자" class="headerlink" title="Level 26 : not 선택자"></a>Level 26 : <strong>not 선택자</strong></h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">태그</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">태그</span> <span class="attr">id</span>=<span class="string">&quot;아이디&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"></span><br><span class="line">태그:not(#아이디) &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>특정 태그들 중 해당 태그가 아닌 경우 선택할 수 있다.</p>
+<hr>
+<h1 id="Level-27-28-속성-선택자"><a href="#Level-27-28-속성-선택자" class="headerlink" title="Level 27, 28 : 속성 선택자"></a>Level 27, 28 : <strong>속성 선택자</strong></h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">태그</span> <span class="attr">속성</span>=<span class="string">&quot;값&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"></span><br><span class="line">태그[속성] &#123;&#125;</span><br><span class="line">[속성] &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>태그의 속성으로 선택할 수 있다. 태그를 생략하고 속성만 선택할 수 있다.</p>
+<hr>
+<h1 id="Level-29-속성-x3D-값-선택자"><a href="#Level-29-속성-x3D-값-선택자" class="headerlink" title="Level 29 : 속성&#x3D;값 선택자"></a>Level 29 : <strong>속성&#x3D;값 선택자</strong></h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">태그</span> <span class="attr">속성</span>=<span class="string">&quot;값&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"></span><br><span class="line">태그[속성=&quot;값&quot;] &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>태그의 속성과 값을 사용하여 선택할 수 있다.</p>
+<hr>
+<h1 id="Level-30-속성-x3D-선택자"><a href="#Level-30-속성-x3D-선택자" class="headerlink" title="Level 30 : 속성 ^&#x3D; 선택자"></a>Level 30 : <strong>속성 ^&#x3D; 선택자</strong></h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">태그</span> <span class="attr">속성</span>=<span class="string">&quot;abc&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"></span><br><span class="line">태그[속성^=&quot;a&quot;] &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>속성값이 처음에 오는 글자들과 같은 경우 선택할 수 있다.</p>
+<hr>
+<h1 id="Level-31-속성-x3D-선택자"><a href="#Level-31-속성-x3D-선택자" class="headerlink" title="Level 31 : 속성 $&#x3D; 선택자"></a>Level 31 : <strong>속성 $&#x3D; 선택자</strong></h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">태그</span> <span class="attr">속성</span>=<span class="string">&quot;abc&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"></span><br><span class="line">태그[속성$=&quot;c&quot;] &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>속성값이 마지막에 오는 글자들과 같은 경우 선택할 수 있다.</p>
+<hr>
+<h1 id="Level-32-속성-x3D-선택자"><a href="#Level-32-속성-x3D-선택자" class="headerlink" title="Level 32 : 속성 *&#x3D; 선택자"></a>Level 32 : <strong>속성 *&#x3D; 선택자</strong></h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">태그</span> <span class="attr">속성</span>=<span class="string">&quot;abc&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">태그</span>&gt;</span></span><br><span class="line"></span><br><span class="line">태그[속성*=&quot;b&quot;] &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>속성값에 글자들이 포함되어 있는 경우 선택할 수 있다.</p>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/02/06/Front-Start-HTML/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-02-06 17:31:55
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/html-css-js/" title="HTML-CSS-JS"> <b>#</b> HTML-CSS-JS </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/html-css-js/css/" title="CSS"> <b>#</b> CSS </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/css/" title="CSS"> #CSS </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/02/06/Front-Start-CSS-02-BEM-attribute/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-HTML%EC%97%90%EC%84%9C-CSS-%EC%82%AC%EC%9A%A9"><span class="toc-text">1. HTML에서 CSS 사용</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%ED%83%9C%EA%B7%B8-%EC%95%88%EC%97%90-style-%EC%86%8D%EC%84%B1%EC%9D%84-%EC%82%AC%EC%9A%A9"><span class="toc-text">1.1 태그 안에 style 속성을 사용</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-style-%ED%83%9C%EA%B7%B8-%EB%82%B4%EC%97%90-CSS-%EC%9E%91%EC%84%B1"><span class="toc-text">1.2 style 태그 내에 CSS 작성</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-%ED%8C%8C%EC%9D%BC-%EB%94%B0%EB%A1%9C-%EB%A7%8C%EB%93%A4%EC%96%B4%EC%84%9C-link-%ED%83%9C%EA%B7%B8%EB%A1%9C-%EC%97%B0%EA%B2%B0"><span class="toc-text">1.3 파일 따로 만들어서 link 태그로 연결</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-CSS-%EB%AC%B8%EB%B2%95"><span class="toc-text">2. CSS 문법</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%EC%84%A0%ED%83%9D%EC%9E%90-%EC%A0%95%EB%A6%AC"><span class="toc-text">3. 선택자 정리</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%EA%B8%B0%EB%B3%B8-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">3.1 기본 선택자</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%EC%8B%AC%ED%99%94-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">3.2 심화 선택자</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-1-%EC%86%8D%EC%84%B1-%EC%84%A0%ED%83%9D%EC%9E%90-%EB%AC%B8%EC%9E%90%EC%97%B4-%EC%86%8D%EC%84%B1-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">3.2.1 속성 선택자 : 문자열 속성 선택자</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-2-%EC%A1%B0%ED%95%A9-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">3.2.2 조합 선택자</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-3-%EA%B0%80%EC%83%81-%EC%9A%94%EC%86%8C-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">3.2.3 가상 요소 선택자</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-4-%EA%B0%80%EC%83%81-%ED%81%B4%EB%9E%98%EC%8A%A4-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">3.2.4 가상 클래스 선택자</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-CSS-Diner-CSS-%EC%84%A0%ED%83%9D%EC%9E%90-%EA%B2%8C%EC%9E%84"><span class="toc-text">4. CSS Diner : CSS 선택자 게임</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-1-2-%ED%83%9C%EA%B7%B8-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">Level 1, 2 : 태그 선택자</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-3-%EC%95%84%EC%9D%B4%EB%94%94-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">Level 3 : 아이디 선택자</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-4-5-%EC%9E%90%EC%86%90-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">Level 4, 5 : 자손 선택자</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-6-7-8-%ED%81%B4%EB%9E%98%EC%8A%A4-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">Level 6, 7, 8 : 클래스 선택자</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-9-%EA%B7%B8%EB%A3%B9-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">Level 9 : 그룹 선택자</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-10-11-%EC%A0%84%EC%B2%B4-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">Level 10, 11 : 전체 선택자</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-12-%ED%98%95%EC%A0%9C-%EC%84%A0%ED%83%9D%EC%9E%90-%EC%A4%91-%ED%95%98%EB%82%98%EC%9D%B8-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">Level 12 : 형제 선택자 중 하나인 + 선택자</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-13-%ED%98%95%EC%A0%9C-%EC%84%A0%ED%83%9D%EC%9E%90-%EC%A4%91-%ED%95%98%EB%82%98%EC%9D%B8-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">Level 13 : 형제 선택자 중 하나인 ~ 선택자</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-14-%EC%9E%90%EC%8B%9D-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">Level 14 : 자식 선택자</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-15-first-child-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">Level 15 : first-child 선택자</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-16-only-child-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">Level 16 : only-child 선택자</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-17-last-child-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">Level 17 : last-child 선택자</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-18-nth-of-child-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">Level 18 : nth-of-child 선택자</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-19-nth-last-child-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">Level 19 : nth-last-child 선택자</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-20-first-of-type-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">Level 20 : first-of-type 선택자</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-21-22-nth-of-type-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">Level 21, 22 : nth-of-type 선택자</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-23-only-of-type-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">Level 23 : only-of-type 선택자</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-24-last-of-type-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">Level 24 : last-of-type 선택자</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-25-empty-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">Level 25 : empty 선택자</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-26-not-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">Level 26 : not 선택자</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-27-28-%EC%86%8D%EC%84%B1-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">Level 27, 28 : 속성 선택자</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-29-%EC%86%8D%EC%84%B1-x3D-%EA%B0%92-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">Level 29 : 속성&#x3D;값 선택자</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-30-%EC%86%8D%EC%84%B1-x3D-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">Level 30 : 속성 ^&#x3D; 선택자</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-31-%EC%86%8D%EC%84%B1-x3D-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">Level 31 : 속성 $&#x3D; 선택자</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Level-32-%EC%86%8D%EC%84%B1-x3D-%EC%84%A0%ED%83%9D%EC%9E%90"><span class="toc-text">Level 32 : 속성 *&#x3D; 선택자</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Start-CSS-01-%EC%84%A0%ED%83%9D%EC%9E%90%20-%20CSS%20Diner%201~32 + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F02%2F06%2FFront-Start-CSS-01-Selector%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/02/06/Front-Start-CSS-01-Selector/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

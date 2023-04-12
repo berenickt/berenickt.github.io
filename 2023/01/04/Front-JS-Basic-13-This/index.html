@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Front-JS-Basic-13-this &amp; 화살표함수 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Front-JS-Basic-13-this & 화살표함수</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-04 12:37:13
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/js/" title="JS"> <b>#</b> JS </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/js/basic/" title="Basic"> <b>#</b> Basic </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/js/" title="JS"> #JS </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-This-바인딩"><a href="#1-This-바인딩" class="headerlink" title="1. This 바인딩"></a>1. This 바인딩</h1><p>This를 사용할 떄, 생성자 함수·객체·클래스 안에서 This를 사용했는데,<br>This는 <strong>앞으로 만들어진 인스턴스나 지금의 객체 자기 자신을 가리키는 용도로 사용</strong>했습니다.</p>
+<p>This를 사용하면서, 나 자신의 인스턴스를 가리키는 것,<br>즉, <strong>특정한 객체와 This를 묶어두는 연결된 것</strong>을 <code>This 바인딩</code>이라고 합니다.</p>
+<p><code>JavaScript에서 사용하는 This</code>는 <code>다른 프로그래밍 언어의 This</code>와 살짝 다릅니다.</p>
+<ul>
+<li><code>다른 프로그래밍 언어의 This</code><ul>
+<li>클래스 안에 This를 사용해서 <strong>앞으로 만들어진 인스턴스 자기 자신을 가리킴</strong></li>
+<li>한 번 인스턴스를 가리키는 This가 결정되면, This는 계속 인스턴스 하나만 계속 정적으로 가리킴<ul>
+<li><strong>코드 상에서 정적으로 결정</strong>됨</li>
+</ul>
+</li>
+<li>Java, C# 같은 다른 객체지향 프로그래밍 언어</li>
+</ul>
+</li>
+<li><code>JavaScript에서 사용하는 This</code><ul>
+<li>런타임 상에서 This 바인딩이 동적으로 결정</li>
+<li>JavaSciprt, TypeScript</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="2-This-뜻"><a href="#2-This-뜻" class="headerlink" title="2. This 뜻"></a>2. This 뜻</h1><p><code>This</code>  &#x3D; <strong>this는 함수를 호출한 객체이다.</strong></p>
+<hr>
+<h2 id="2-1-전역-문맥에서-this"><a href="#2-1-전역-문맥에서-this" class="headerlink" title="2.1 전역 문맥에서 this"></a>2.1 전역 문맥에서 this</h2><ul>
+<li><code>전역 문맥에서 this</code> &#x3D; <strong>그냥 쓰꺼나 함수에서 쓰면 window 전역 객체</strong></li>
+</ul>
+<p>그냥 HTML 파일 아무거나 하나 만들고 JS 파일을 연동시키고 브라우저를 띄웁니다.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;ko&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;./main.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>일단 this를 콘솔창에 출력해봅시다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.js</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>); <span class="comment">// window 전역 객체</span></span><br></pre></td></tr></table></figure>
+
+<p>함수에서 this를 쓰면, windows 전역 객체이다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.js</span></span><br><span class="line"><span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>); <span class="comment">// window 전역 객체</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>엄격모드에서 전역적인 문맥에서 접근해보면, windows 전역 객체이다. (즉, 전역모드와는 상관없다.)</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span>; <span class="comment">// 엄격모드</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>); <span class="comment">// window 전역 객체</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>💡 Window 전역 객체</p>
+<p><strong>함수들, 전역변수, DOM 등을 보관하는 전역 객체</strong> &#x3D; 보관소</p>
+<ul>
+<li>함수들 : <code>document.getElementById(), alert(), console.log()</code>같은 것들</li>
+<li>전역 변수 : 코드 내 모든 곳에서 참조해서 쓸 수 있는 범용적인, 범위가 넓은 변수</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="comment">// script태그 내에 var 변수만들면 전역변수</span></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">var</span> x = <span class="number">300</span>;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+</blockquote>
+<hr>
+<h2 id="2-2-함수-문맥에서-this"><a href="#2-2-함수-문맥에서-this" class="headerlink" title="2.2 함수 문맥에서 this"></a>2.2 함수 문맥에서 this</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 📝 function으로 선언한 함수는 window 객체에 등록됨</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">main</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>); <span class="comment">// this는 함수를 호출한 객체이다.</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 콘솔로 window 객체를 보면, main 함수가 들어있음</span></span><br><span class="line"><span class="comment">// console.log(window);</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 📝 전역적으로 main()를 호출한다는 것은 window.main()과 동일하다.</span></span><br><span class="line"><span class="title function_">main</span>(); <span class="comment">// main()를 호출하면 this는 window 객체가 된다.</span></span><br><span class="line"><span class="comment">// window.main();</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-1-엄격모드-함수에서-this-x3D-undefined"><a href="#2-2-1-엄격모드-함수에서-this-x3D-undefined" class="headerlink" title="2.2.1 엄격모드 함수에서 this &#x3D; undefined"></a>2.2.1 엄격모드 함수에서 this &#x3D; undefined</h3><p>여기서 한가지 예외가 있습니다. 엄격모드를 활성화시켜준다면,</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">main</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>); <span class="comment">// 엄격모드에서 함수 안의 this는 undefined</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">main</span>();</span><br></pre></td></tr></table></figure>
+
+<p>직접적으로 <code>window.main()</code>라고 명시해야지만, this가 window 전역객체가 됩니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">main</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// 엄격모드를 함수 내부에서도 선언해줘도 똑같음</span></span><br><span class="line">  <span class="comment">// &#x27;use strict&#x27;;</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>); <span class="comment">// window 전역객체</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">window</span>.<span class="title function_">main</span>(); <span class="comment">// window 전역객체를 명시</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-3-객체-메서드에서-this"><a href="#2-3-객체-메서드에서-this" class="headerlink" title="2.3 객체 메서드에서 this"></a>2.3 객체 메서드에서 this</h2><p><code>This</code>  &#x3D; <strong>this는 함수를 호출한 객체이다.</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> object = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;메시&#x27;</span>,</span><br><span class="line">  <span class="attr">main</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>); <span class="comment">// main()안에 있는 this는 작성자가 작성한 Object가 된다.</span></span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">object.<span class="title function_">main</span>(); <span class="comment">// Object &#123; name: &quot;메시&quot;, main: main() &#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>객체의 다른 속성에 접근할 떄 유용합니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> object = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;메시&#x27;</span>,</span><br><span class="line">  <span class="attr">main</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>); <span class="comment">// 객체의 다른 속성에 접근할 떄 유용</span></span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">object.<span class="title function_">main</span>(); <span class="comment">// 메시</span></span><br></pre></td></tr></table></figure>
+
+<p>만든 객체를 새로운 변수에 할당하면, 더 이상 객체가 아니기 때문에 indow 전역 객체가 호출됩니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> object = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;메시&#x27;</span>,</span><br><span class="line">  <span class="attr">main</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">object.<span class="title function_">main</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 더 이상 main2()를 호출하는 것이 객체가 아니기 때문에 window 전역 객체가 호출된다.</span></span><br><span class="line"><span class="keyword">const</span> main2 = object.<span class="property">main</span>;</span><br><span class="line"><span class="title function_">main2</span>(); <span class="comment">// window 전역 객체</span></span><br></pre></td></tr></table></figure>
+
+<p>this는 함수가 정의된 위치나 방법에 영향을 받지 않습니다.</p>
+ <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 객체 밖에서 만든 this</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">main</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 그 이후에 객체를 만들어서 메서드로 넣어줘도 똑같이 this는 object 객체가 된다</span></span><br><span class="line"><span class="keyword">const</span> object = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;메시&#x27;</span>,</span><br><span class="line">  main,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">object.<span class="title function_">main</span>();</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 객체 밖에서 만든 this</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">main</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> object = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;메시&#x27;</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">object.<span class="property">main</span> = main; <span class="comment">// 그 이후에 객체를 만들어서 메서드로 넣어줘도 똑같이 this는 object 객체</span></span><br><span class="line"></span><br><span class="line">object.<span class="title function_">main</span>();</span><br></pre></td></tr></table></figure>
+
+<p>마찬가지로 객체 안의 객체 안에 this라도, this는 함수를 호출한 객체입니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 객체 밖에서 만든 this</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">main</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> object = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;메시&#x27;</span>,</span><br><span class="line">  <span class="attr">smallObject</span>: &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;호날두&#x27;</span>,</span><br><span class="line">    main,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">object.<span class="property">smallObject</span>.<span class="title function_">main</span>(); <span class="comment">// Object &#123; name: &quot;호날두&quot;, main: main() &#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>그래서 <code>mani()</code>를 직접 호출한 객체가 smallObject이기 때문에 this는 <code>smallObject(호출한 객체)</code>가 됩니다.<br>어떤 함수의 this 값이 궁금하다면, 바로 옆의 객체를 보면 됩니다.</p>
+<hr>
+<h3 id="2-3-1-bind"><a href="#2-3-1-bind" class="headerlink" title="2.3.1 bind()"></a>2.3.1 bind()</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">main</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">main</span>(); <span class="comment">// window 전역 객체</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>동적으로 this 값이 바뀌기 때문에 일일히 추적하는 것은 귀찮기 때문에 <strong>원하는 객체로 고정</strong>하고 싶다면,<br><code>bind()</code>를 쓰면 됩니다. (cf. binding, 바인딩 &#x3D; 묶어주다)</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">main</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 원하는 객체을 this으로 설정하고 싶다면, bind(고정시키고싶은 객체)</span></span><br><span class="line"><span class="keyword">const</span> mainBind = main.<span class="title function_">bind</span>(&#123; <span class="attr">name</span>: <span class="string">&#x27;hi&#x27;</span> &#125;);</span><br><span class="line"><span class="title function_">mainBind</span>(); <span class="comment">// Object &#123; name: &quot;hi&quot; &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 다른 객체 안에서 호출해도 mainBind()의 this는 고정된다.</span></span><br><span class="line"><span class="keyword">const</span> object = &#123;</span><br><span class="line">  mainBind,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">object.<span class="title function_">mainBind</span>(); <span class="comment">// Object &#123; name: &quot;hi&quot; &#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>이제 mainBind()를 어떻게 호출하든 상관없이 this 값은 넣어준 객체값으로 고정됩니다.</p>
+<ul>
+<li><code>bind()</code>는 넣어준 객체값이 this값으로 설정된 새로운 함수를 반환해줍니다.</li>
+<li>주의할 점 : <strong>이미 bind()된 것을 또 bind()할 수 없다</strong>. 또 bind한 값은 무시해버린다.</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">main</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 📌 주의 : 이미 bind()된 것을 또 bind()할 수 없다. 또 bind한 값은 무시해버림</span></span><br><span class="line"><span class="keyword">const</span> mainBind = main.<span class="title function_">bind</span>(&#123; <span class="attr">name</span>: <span class="string">&#x27;hi&#x27;</span> &#125;);</span><br><span class="line"><span class="keyword">const</span> mainBindBind = mainBind.<span class="title function_">bind</span>(&#123;&#125;);</span><br><span class="line"><span class="title function_">mainBindBind</span>(); <span class="comment">// Object &#123; name: &quot;hi&quot; &#125;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> object = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;메시&#x27;</span>,</span><br><span class="line">  <span class="attr">main</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>);</span><br><span class="line">  &#125;.<span class="title function_">bind</span>(&#123; <span class="attr">name</span>: <span class="string">&#x27;네이마르&#x27;</span> &#125;),</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// ↑ bind()해준 객체값으로 this가 바뀐다.</span></span><br><span class="line"></span><br><span class="line">object.<span class="title function_">main</span>(); <span class="comment">// Object &#123; name: &quot;네이마르&quot; &#125;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-4-이벤트-처리기에서-this"><a href="#2-4-이벤트-처리기에서-this" class="headerlink" title="2.4 이벤트 처리기에서 this"></a>2.4 이벤트 처리기에서 this</h2><p>함수를 DOM 요소의 이벤트 처리기에서 사용할 떄, this 값은 <code>event.target</code>입니다.<br>버튼 클릭, 스크롤 등 같은 이벤트를 처리할 떄, 이벤트 리스너를 사용합니다.</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;ko&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;btn&quot;</span>&gt;</span>버튼<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;./main.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> button = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;btn&#x27;</span>);</span><br><span class="line"></span><br><span class="line">button.<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="keyword">function</span> (<span class="params">event</span>) &#123;</span><br><span class="line">  <span class="comment">// 버튼을 누르면 true가 출력됩니다.</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(event.<span class="property">target</span> === <span class="variable language_">this</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>💡 화살표 함수를 쓰는 이유</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">main</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>호출 방법에 따른 this 변화</li>
+<li>this를 고정하기 위해 bind() 사용</li>
+</ul>
+<p>전통적인 함수 문법은 동적인 this 때문에 이리저리 바인딩하느라 귀찮습니다.<br>그럴 때는 화살표 함수(ES6+)를 사용하면 됩니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">main</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>더 간결한 함수 선언 문법</li>
+<li>동적인 this에 대한 값을 고정시킬 수 있음<ul>
+<li>this가 호출에 따라 바뀌지 않음</li>
+</ul>
+</li>
+<li>화살표 함수의 this값은 그 함수를 감싸는 스코프 외부에서 그대로 가져옴</li>
+<li>개발자 인생을 편하게 해주지만 그렇다고 화살표함수가 모든 상황에서 대체할 수는 없음</li>
+</ul>
+</blockquote>
+<hr>
+<h1 id="3-Arrow-Function-화살표-함수"><a href="#3-Arrow-Function-화살표-함수" class="headerlink" title="3. Arrow Function(화살표 함수)"></a>3. Arrow Function(화살표 함수)</h1><h2 id="3-1-기본-일반-함수-vs-화살표-함수"><a href="#3-1-기본-일반-함수-vs-화살표-함수" class="headerlink" title="3.1 기본 : 일반 함수 vs 화살표 함수"></a>3.1 기본 : 일반 함수 vs 화살표 함수</h2></div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/04/Front-JS-Basic-12-StrictMode/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-04 12:37:13
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/js/" title="JS"> <b>#</b> JS </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/js/basic/" title="Basic"> <b>#</b> Basic </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/js/" title="JS"> #JS </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/04/Front-JS-Basic-14-Asynchronous/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-This-%EB%B0%94%EC%9D%B8%EB%94%A9"><span class="toc-text">1. This 바인딩</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-This-%EB%9C%BB"><span class="toc-text">2. This 뜻</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%EC%A0%84%EC%97%AD-%EB%AC%B8%EB%A7%A5%EC%97%90%EC%84%9C-this"><span class="toc-text">2.1 전역 문맥에서 this</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%ED%95%A8%EC%88%98-%EB%AC%B8%EB%A7%A5%EC%97%90%EC%84%9C-this"><span class="toc-text">2.2 함수 문맥에서 this</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-%EC%97%84%EA%B2%A9%EB%AA%A8%EB%93%9C-%ED%95%A8%EC%88%98%EC%97%90%EC%84%9C-this-x3D-undefined"><span class="toc-text">2.2.1 엄격모드 함수에서 this &#x3D; undefined</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%EA%B0%9D%EC%B2%B4-%EB%A9%94%EC%84%9C%EB%93%9C%EC%97%90%EC%84%9C-this"><span class="toc-text">2.3 객체 메서드에서 this</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-bind"><span class="toc-text">2.3.1 bind()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%B2%98%EB%A6%AC%EA%B8%B0%EC%97%90%EC%84%9C-this"><span class="toc-text">2.4 이벤트 처리기에서 this</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Arrow-Function-%ED%99%94%EC%82%B4%ED%91%9C-%ED%95%A8%EC%88%98"><span class="toc-text">3. Arrow Function(화살표 함수)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%EA%B8%B0%EB%B3%B8-%EC%9D%BC%EB%B0%98-%ED%95%A8%EC%88%98-vs-%ED%99%94%EC%82%B4%ED%91%9C-%ED%95%A8%EC%88%98"><span class="toc-text">3.1 기본 : 일반 함수 vs 화살표 함수</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Front-JS-Basic-13-this%20%26%20%ED%99%94%EC%82%B4%ED%91%9C%ED%95%A8%EC%88%98 + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F04%2FFront-JS-Basic-13-This%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/04/Front-JS-Basic-13-This/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      CS-network-모두의 네트워크-01-네트워크 첫걸음 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">CS-network-모두의 네트워크-01-네트워크 첫걸음</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-24 20:17:35
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/cs-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/" title="CS-네트워크"> <b>#</b> CS-네트워크 </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/cs-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%AA%A8%EB%91%90%EC%9D%98-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/" title="모두의 네트워크"> <b>#</b> 모두의 네트워크 </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/" title="네트워크"> #네트워크 </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><blockquote>
+<p>모두의 네트워크 책을 읽고 요약, 정리한 글입니다.</p>
+</blockquote>
+<h1 id="1-네트워크-구조"><a href="#1-네트워크-구조" class="headerlink" title="1. 네트워크 구조"></a>1. 네트워크 구조</h1><h2 id="1-1-네트워크란"><a href="#1-1-네트워크란" class="headerlink" title="1.1 네트워크란?"></a>1.1 네트워크란?</h2><ul>
+<li>네트워크라는 용어는 컴퓨터뿐만 아니라 <ul>
+<li>사람과 사람의 네트워크, 도로와 철도의 네트워크, 물류 네트워크와 같이 다양한 네트워크가 존재</li>
+</ul>
+</li>
+<li>IT에서는 컴퓨터 2대 이상이 연결되어 있는 <strong>컴퓨터 네트워크</strong>를 의미</li>
+</ul>
+<h2 id="1-2-패킷-x3D-택배"><a href="#1-2-패킷-x3D-택배" class="headerlink" title="1.2 패킷 &#x3D; 택배"></a>1.2 패킷 &#x3D; 택배</h2><ul>
+<li>네트워크나 인터넷에서 데이터를 주고받으려면 규칙이 있어야 한다. <ul>
+<li>e.g. 우리가 쇼핑몰을 볼 때 옷의 사진과 옷에 대한 설명</li>
+</ul>
+</li>
+<li>이 사진과 문자를 보여주기 위해 필요한 규칙이 있는데, 이 규칙에는 <strong>패킷</strong>(packet)을 이용</li>
+</ul>
+<hr>
+<p><code>패킷</code>은 컴퓨터 간의 데이터를 주고받을 때 <strong>네트워크를 통해 전송되는 데이터의 작은 조각</strong></p>
+<ul>
+<li><p>패킷은 큰 데이터가 있더라도 <strong>작게 나누어서 보내는 게 규칙</strong></p>
+</li>
+<li><p>작게 나누지 않고 큰 상태 그대로 보내면 번거롭지도 않고 오히려 더 편할 수 있지만,</p>
+</li>
+<li><p>큰 데이터를 한번에 보내면</p>
+<ul>
+<li>그 데이터가 네트워크의 <strong>대역폭</strong>을 너무 많이 차지(점유) 해서 <strong>다른 패킷의 흐름을 막을 위험</strong>이 존재</li>
+</ul>
+</li>
+<li><p>e.g. 네트워크는 도로와 같다.</p>
+<ul>
+<li>큰 데이터를 네트워크에 보내면 도로와 마찬가지로 네트워크에 정체가 발생함</li>
+</ul>
+</li>
+<li><p>작게 분할한 패킷은 목적지에서 <strong>원래 상태로 되돌리는 작업</strong>이 필요</p>
+<ul>
+<li>목적지에 도착한 패킷들은 전송한 순서대로 도착하지 않음</li>
+<li>네트워크가 지연되어 늦게 도착하거나 패킷이 누락되기도 함</li>
+<li>그래서 송신 측에서 수신 측으로 패킷을 보낼 떄는 <strong>각 패킷에 수선대로 번호를 붙여서 보냄</strong></li>
+<li>그러면 번호에 맞춰 정렬하면 늦게 도착한 패킷도 원래 위치로 돌아갈 수 있음</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="2-정보의-양을-나타내는-단위"><a href="#2-정보의-양을-나타내는-단위" class="headerlink" title="2. 정보의 양을 나타내는 단위"></a>2. 정보의 양을 나타내는 단위</h1><h2 id="2-1-비트와-바이트"><a href="#2-1-비트와-바이트" class="headerlink" title="2.1 비트와 바이트"></a>2.1 비트와 바이트</h2><p>모든 컴퓨터는 숫자 0과 1만을 다루는데, 그 0과 1의 집합을 **디지털 데이터(digital data)**라고 함</p>
+<ul>
+<li><strong>비트(bit)</strong> : 0과 1의 정보를 나타내는 최소 단위</li>
+<li><strong>바이트(byte)</strong> : 0과 1을 표현하는 1비트는 8개를 모아 표시 가능</li>
+</ul>
+<hr>
+<h2 id="2-2-문자코드"><a href="#2-2-문자코드" class="headerlink" title="2.2 문자코드"></a>2.2 문자코드</h2><p>컴퓨터는 모든 것을 0과 1의 집합으로만 다룬다고 했다. 그러면 문자는 어떻게 입력되나?</p>
+<ul>
+<li><strong>숫자와 문자의 대응표</strong>를 미리 만들어 두면 된다.</li>
+<li>이 대응표를 <code>문자 코드(character code)</code>라고 한다.</li>
+<li>문자 코드중 하나인 <code>ASCII(아스키) 코드</code>는 알파벳, 기호, 숫자 등을 다룰 수 있는 <strong>기본적인 문자코드</strong></li>
+</ul>
+<hr>
+<h1 id="3-랜과-왠"><a href="#3-랜과-왠" class="headerlink" title="3. 랜과 왠"></a>3. 랜과 왠</h1><p>네트워크는 접속할 수 있는 범위에 따라 크게 두 가지 종류로 나눌 수 있다.</p>
+<ul>
+<li><code>랜(LAN)</code> : 지리적으로 제한된 곳에서 컴퓨터와 프린터를 연결할 수 있는 네트워크<ul>
+<li>e.g. 사무실, 가정</li>
+</ul>
+</li>
+<li><code>왠(WAN)</code> : 지리적으로 넓은 범위에 구축된 네트워크<ul>
+<li>e.g. **인터넷 서비스 제공자(ISP)**가 제공하는 서비스를 사용하여 구축된 네트워크<ul>
+<li>ISP &#x3D; 인터넷 사용 서비스 사업을 하고 있는 KT, U+, SK브로드밴드와 같은 통신 회사</li>
+</ul>
+</li>
+<li>e.g. 부산 사무실과 서울 사무실을 연결</li>
+<li>즉, 랜과 랜을 연결한 것</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="4-가정에서-하는-랜-구성"><a href="#4-가정에서-하는-랜-구성" class="headerlink" title="4. 가정에서 하는 랜 구성"></a>4. 가정에서 하는 랜 구성</h1><p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/cs-all-network-basic_1_1.png" alt="cs-all-network-basic_1_1"></p>
+<p>가정에서 구성하는 네트워크는 주로 랜</p>
+<ul>
+<li>인터넷을 사용하기 위해서는 결정해야 할 2가지가 있는데, **인터넷 서비스 제공자(ISP)**와 <strong>인터넷 회선</strong>이다. </li>
+<li>현재는 대부분 <strong>광랜</strong>(광케이블 X)을 사용하는 사람이 많다.</li>
+<li>cf. <strong>인터넷 공유기</strong>는 인터넷 서비스 제공자와 네트워크를 연결</li>
+<li>보통 위 그림처럼 인터넷 공유기를 중심으로 내부 인터넷망(사설망)을 구성하고, 다양한 기기를 연결함</li>
+<li>연결 방식은 크게 <code>유선 랜</code>과 <code>무선 랜</code>으로 나뉨<ul>
+<li><code>유선 랜(유선)</code> : 랜 케이블이 필요</li>
+<li><code>무선 랜(무선)</code> : 랜 케이블이 필요X, (e.g. WIFI)</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="5-회사에서-하는-랜-구성"><a href="#5-회사에서-하는-랜-구성" class="headerlink" title="5. 회사에서 하는 랜 구성"></a>5. 회사에서 하는 랜 구성</h1><h2 id="5-1-작은-기업"><a href="#5-1-작은-기업" class="headerlink" title="5.1 작은 기업"></a>5.1 작은 기업</h2><ul>
+<li>소호 기업(SOHO)는 Small Office&#x2F;Home Office의 약어이며, 소호기업은 소규모 회사를 의미</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/cs-all-network-basic_1_2.png" alt="cs-all-network-basic_1_2"></p>
+<p>가정에서 랜 구성과 다르게 **DMZ(DeMilitarized Zone)**라는 네트워크 영역이 있음</p>
+<ul>
+<li><code>DMZ</code> : 외부에 공개하기 위한 네트워크<ul>
+<li><strong>서버</strong>를 공개하는데 주로 웹 서버, 메일 서버, DNS 서버를 공개</li>
+<li>웹 사이트를 불특정 다수의 외부 사용자에게 공개하려면 <strong>웹 서버</strong>를 외부에 공개</li>
+<li>외부 사용자와 메일을 주고받으려면 <strong>메일 서버</strong>를 외부에 공개</li>
+<li>외부에서 도메인 이름을 사용하여 회사의 서버에 접속하려면 <strong>DNS 서버</strong>를 외부에 공개</li>
+</ul>
+</li>
+</ul>
+<p>회사에서는 서버를 운영하는 방법은 3가지가 있다</p>
+<ol>
+<li>서버를 <strong>사내에 설치</strong>하거나<ul>
+<li>사내에서 서버를 운영하는 경우에는 회사 내에 서버 장비실을 두고 그곳에 랙(선반)을 설치한다.</li>
+<li>cf. 구글에 “서버 렉” 검색</li>
+<li>사내 또는 데이터 센터에 서버를 두고 운영하는것을 **온프레미스(on-premise)**라고 한다</li>
+</ul>
+</li>
+<li><strong>데이터 센터</strong>에 두거나</li>
+<li>**클라우드(cloud)**에 둔다.</li>
+</ol>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/21/VSCode-Shortcuts/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-24 20:17:35
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/cs-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/" title="CS-네트워크"> <b>#</b> CS-네트워크 </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/cs-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%AA%A8%EB%91%90%EC%9D%98-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/" title="모두의 네트워크"> <b>#</b> 모두의 네트워크 </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/" title="네트워크"> #네트워크 </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/29/Front-JS-DOM-01-Web%20API/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EA%B5%AC%EC%A1%B0"><span class="toc-text">1. 네트워크 구조</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%EB%9E%80"><span class="toc-text">1.1 네트워크란?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%ED%8C%A8%ED%82%B7-x3D-%ED%83%9D%EB%B0%B0"><span class="toc-text">1.2 패킷 &#x3D; 택배</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%EC%A0%95%EB%B3%B4%EC%9D%98-%EC%96%91%EC%9D%84-%EB%82%98%ED%83%80%EB%82%B4%EB%8A%94-%EB%8B%A8%EC%9C%84"><span class="toc-text">2. 정보의 양을 나타내는 단위</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%EB%B9%84%ED%8A%B8%EC%99%80-%EB%B0%94%EC%9D%B4%ED%8A%B8"><span class="toc-text">2.1 비트와 바이트</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%EB%AC%B8%EC%9E%90%EC%BD%94%EB%93%9C"><span class="toc-text">2.2 문자코드</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%EB%9E%9C%EA%B3%BC-%EC%99%A0"><span class="toc-text">3. 랜과 왠</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%EA%B0%80%EC%A0%95%EC%97%90%EC%84%9C-%ED%95%98%EB%8A%94-%EB%9E%9C-%EA%B5%AC%EC%84%B1"><span class="toc-text">4. 가정에서 하는 랜 구성</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%ED%9A%8C%EC%82%AC%EC%97%90%EC%84%9C-%ED%95%98%EB%8A%94-%EB%9E%9C-%EA%B5%AC%EC%84%B1"><span class="toc-text">5. 회사에서 하는 랜 구성</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-%EC%9E%91%EC%9D%80-%EA%B8%B0%EC%97%85"><span class="toc-text">5.1 작은 기업</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + CS-network-%EB%AA%A8%EB%91%90%EC%9D%98%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-01-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EC%B2%AB%EA%B1%B8%EC%9D%8C + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F24%2FCS-Network-basic01%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/24/CS-Network-basic01/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

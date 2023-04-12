@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      용어- 브라우저 동작 원리 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">용어- 브라우저 동작 원리</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-02-27 12:53:06
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/%EC%A0%95%EB%B3%B4/" title="정보"> <b>#</b> 정보 </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/%EC%A0%95%EB%B3%B4/%EC%9B%90%EB%A6%AC/" title="원리"> <b>#</b> 원리 </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/%EC%9B%90%EB%A6%AC/" title="원리"> #원리 </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-웹-브라우저-동작-과정"><a href="#1-웹-브라우저-동작-과정" class="headerlink" title="1. 웹 브라우저 동작 과정"></a>1. 웹 브라우저 동작 과정</h1><p>주소창에 <a target="_blank" rel="noopener" href="https://www.naver.com/">https://www.naver.com</a> 등 URL을 검색하여, 해당 웹 페이지에 접속한 경험이 있을 겁니다.<br>그렇다면 어떤 동작 원리로 우리가 입력한 웹 페이지로 접속이 가능할까요?</p>
+<blockquote>
+<p>💡 브라우저</p>
+<ul>
+<li>동기(Synchronous)적으로 (HTML + CSS), Javascript 언어를 해석하여, </li>
+<li>내용을 화면에 보여주는 응용 소프트웨어</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="1-1-DOM"><a href="#1-1-DOM" class="headerlink" title="1.1 DOM"></a>1.1 DOM</h2><ul>
+<li>JS는 HTML 조작에 특화된 언어</li>
+<li>JS에선 <code>&lt;p&gt;&lt;/p&gt;</code> 이런 HTML을 직접 해석하고 조작할 수 없습니다.</li>
+<li>그런데 어떻게 HTML 태그들을 알아보고 조작할 수 있는 것일까요?</li>
+<li>JS가 HTML 조작을 하기 위해서는, <ul>
+<li><strong>HTML을 자바스크립트가 해석할 수 있는 문법으로 변환해놓으면</strong> 됩니다.</li>
+</ul>
+</li>
+<li>그래서 HTML을 JS가 알아먹는 array 혹은 object 자료형에 담아버립니다.</li>
+<li>그래서 실제로 브라우저는 HTML 페이지를 열어줄 때,<ul>
+<li>HTML을 JS로 쉽게 찾고 바꾸기 위해 object와 비슷한 자료형에 담아줍니다.</li>
+</ul>
+</li>
+</ul>
+<p>예를 들어,</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;color : red&quot;</span>&gt;</span>안녕하세요<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>브라우저는 위와 같은 HTML을 발견하면, object 자료로 바꿔서 보관해둡니다.<br>구체적으로는 <code>var document = &#123; &#125;</code> 이런 변수를 하나 만들어서 거기 넣어줍니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="variable language_">document</span> = &#123;</span><br><span class="line">  div1 : &#123;</span><br><span class="line">    style : &#123;color : <span class="string">&#x27;red&#x27;</span>&#125;</span><br><span class="line">    innerHTML : <span class="string">&#x27;안녕하세요&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>이제 <code>document.div1.innerHTML = &#39;안녕&#39;</code> 이렇게 자바스크립트를 짜면 HTML 조작이 가능합니다.<br>그래서 저렇게 object에 담아두는 것입니다. (물론 실제 DOM과 생김새는 좀 다름)</p>
+<p>위 변수를 <strong>document object</strong>라고 부릅니다.<br>여기다 model이라고 붙여서 <code>DOM (Document Object Model)</code>이라고 합니다.</p>
+<p>cf. <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction">MDN DOM</a></p>
+<hr>
+<h2 id="1-2-CSSOM"><a href="#1-2-CSSOM" class="headerlink" title="1.2 CSSOM"></a>1.2 CSSOM</h2><p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Brower_1.png" alt="Brower_1"></p>
+<p><code>CSSOM</code>은 <code>CSS Object Model</code>의 약자입니다.<br>브라우저에서 HTML 파일을 분석하면 HTML 요소들을 DOM으로 변환해서 이해하는데,<br>그러면 정의한 스타일 CSS는 어떻게 이해할까요?<br>브라우저에서 DOM을 만들게 되면, 정의된 CSS를 병합해서 CSSOM을 만듭니다.</p>
+<p><code>CSSOM</code>에서는 <strong>개발자가 정의한 스타일</strong>뿐만 아니라 <strong>브라우저에서 기본적으로 설정된 모든 속성값들</strong>,<br>즉, <strong>cascading 룰에 따라서 합해진 모든 CSS 값들</strong>이 정의되어져 있습니다.<br>이를 <code>Computed Styles</code>라고 부르는데, <strong>모든 것들이 이미 계산된 스타일을</strong> 말합니다.</p>
+<p>cf. <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model">MDN CSSOM</a></p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Brower_2.png" alt="Brower_2"></p>
+<p>예를 들어, CSSOM은 위 그림과 같이 표기될 수 있는데,<br>만약 <code>HTML 요소에 font-size: 14px;</code>로 지정하면, <strong>이하 모든 요소들에 각각 14가 적용</strong>됩니다. </p>
+<ul>
+<li>즉, 각각의 태그에서 폰트 사이즈를 지정하지 않았지만, </li>
+<li>최상단 부모인 HTML에서 폰트 사이즈를 지정하면, <ul>
+<li>cascading(폭포) 룰에 의해 따라 body 모든 자식 요소들이 14로 기본 설정됩니다.</li>
+</ul>
+</li>
+<li>그래서 <strong>CSSOM에는 모든 스타일 관련 속성들이 포함</strong>되어 있습니다.</li>
+</ul>
+<hr>
+<h2 id="1-3-Render-Tree"><a href="#1-3-Render-Tree" class="headerlink" title="1.3 Render Tree"></a>1.3 Render Tree</h2><p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Brower_3.png" alt="Brower_3"></p>
+<p>그래서 브라우저가 HTML 파일을 읽게 되면, 다음과 같은 절차를 거치게 됩니다.</p>
+<ol>
+<li>DOM으로 변환</li>
+<li>CCSOM을 만들어 최종 스타일을 전부 계산한 다음<ul>
+<li>CSSOM에는 Cascading(폭포) 규칙이 존재하기 때문에 CSS를 따로 정의하지 않아도</li>
+<li>브라우저에 기본 설정된 CSS 파일 등이 전부 적용</li>
+<li>밑에 있는 자식 요소들에도 부모 요소들의 속성값들을 물려받음</li>
+</ul>
+</li>
+<li>Render Tree를 만들어 사용자게 보여준다.</li>
+</ol>
+<blockquote>
+<p>💡 Render Tree에 포함되는 속성과 포함안되는 속성</p>
+<ul>
+<li>span의 <code>opacity: 0, visibility: hidden</code> 으로 설정되었다면,<ul>
+<li>사용자 눈에는 보이지 않지만 요소는 그대로 그 자리에 있습니다. </li>
+<li>다만 투명해질 뿐인거죠. <strong>이런 요소들은 Render Tree에 포함</strong>됩니다.</li>
+</ul>
+</li>
+<li><code>display : none</code>라고 되어있다면, <ul>
+<li>아예 사용자 눈에 보이지 않는 속성값들은 <strong>Render Tree에 포함되지 않습니다</strong>.</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr>
+<h1 id="2-웹-브라우저의-구성요소"><a href="#2-웹-브라우저의-구성요소" class="headerlink" title="2. 웹 브라우저의 구성요소"></a>2. 웹 브라우저의 구성요소</h1><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Brower_4.png" alt="Brower_4" style="zoom:80%;" />
+
+<ul>
+<li><code>사용자 인터페이스</code><ul>
+<li><strong>사용자가 접근할 수 있는 영역</strong></li>
+<li>e.g. URI를 입력할 수 있는 주소 표시줄, 이전&#x2F;다음, 북마크, 새로고침, 정지, 홈 버튼 등 <ul>
+<li>요청 페이지를 보여주는 창을 제외한 나머지 모든 부분</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>브라우저 엔진</code><ul>
+<li><strong>사용자 인터페이스와 렌더링 엔진 사이의 동작을 제어</strong></li>
+<li>e.g. Data Storage를 참조하며 로컬에 데이터를 쓰고 읽으면서 다양한 작업 수행</li>
+</ul>
+</li>
+<li><code>렌더링 엔진</code><ul>
+<li><strong>웹 서버로부터 응답 받은 자원을 웹 브라우저 상에 표시</strong></li>
+<li>e.g. HTML 문서를 응답받으면 HTML과 CSS를 파싱하여 화면에 표시</li>
+<li>브라우저는 서버로부터 HTML 문서를 응답받으면,</li>
+<li>렌더링 엔진의 HTML 파서와 CSS 파서에 의해 파싱(parsing)되어 </li>
+<li>DOM, CSSOM 트리로 변환되고 렌더 트리로 결합합니다. </li>
+<li>이렇게 생성된 렌더 트리를 기반으로 브라우저는 웹 페이지를 표시</li>
+</ul>
+</li>
+<li><code>자료 저장소</code> : Cookie, Local Storage, Indexed DB 등 브라우저 메모리를 활용하여 저장하는 영역</li>
+<li><code>통신</code> :  HTTP 요청과 같은, 서버와 통신이 가능하게 하는 네트워크 호출에 사용</li>
+<li><code>JS 해석기</code> : JS 코드를 해석하고 실행</li>
+<li><code>UI 백엔드</code> :  select, input 등 기본적인 위젯을 그리는 인터페이스</li>
+</ul>
+<hr>
+<h2 id="2-1-렌더링-엔진"><a href="#2-1-렌더링-엔진" class="headerlink" title="2.1 렌더링 엔진"></a>2.1 렌더링 엔진</h2><p>렌더링 엔진의 종류는 아래와 같습니다. </p>
+<ul>
+<li><code>Blink</code> : 크롬, 오페라<ul>
+<li>cf. 구글이 Webkit을 대체하기 위해 자체적으로 개발한 엔진</li>
+</ul>
+</li>
+<li><code>Webkit</code> : 사파리</li>
+<li><code>Trident</code> : 익스플로어</li>
+<li><code>EdgeHTML</code> : 마이크로소프트 엣지</li>
+</ul>
+<p>각 브라우저마다 렌더링 엔진이 다르기 때문에, 같은 페이지가 다르게 보일 수 있습니다.<br>e.g. Elments 탭에서 아래와 같은 코드</p>
+ <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-ms-<span class="attribute">border-radius</span>: <span class="number">2em</span>; <span class="comment">/* 익스플로어에 적용, 보통 생략 */</span></span><br><span class="line">-moz-<span class="attribute">border-radius</span>: <span class="number">1em</span>; <span class="comment">/* 파이어폭스 브라우저에 적용 */</span></span><br><span class="line">-webkit-<span class="attribute">border-radius</span>: <span class="number">4em</span>; <span class="comment">/* 구글, 사파리 브라우저에 적용 */</span></span><br><span class="line">-o-<span class="attribute">border-radius</span>: <span class="number">3em</span>; <span class="comment">/* 오페라에 적용 */</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="2-1-1-렌더링-엔진-동작-과정"><a href="#2-1-1-렌더링-엔진-동작-과정" class="headerlink" title="2.1.1 렌더링 엔진 동작 과정"></a>2.1.1 렌더링 엔진 동작 과정</h3><p>렌더링 엔진은 서버로부터 응답받은 HTML 문서를 얻는 것으로 시작합니다.<br>이 문서의 내용은 보통 8KB 단위로 전송됩니다. 다음은 렌더링 엔진의 기본적인 동작 과정입니다.</p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Brower_5.png" alt="Brower_5"></p>
+<ol>
+<li><code>렌더링 엔진</code>은 <strong>HTML 문서를 파싱</strong>하여 <strong>DOM 트리를 구축</strong>합니다.</li>
+<li><code>외부 CSS 파일</code>과 함께 포함된 <strong>스타일 요소를 파싱</strong>합니다.</li>
+<li><strong>DOM 트리</strong>와 2의 결과물을 합쳐 <code>렌더 트리</code>를 구축합니다. </li>
+<li><code>렌더 트리 각 노드</code>에 대해 <strong>화면 상에서 배치할 곳을 결정</strong>합니다. </li>
+<li>UI 백엔드에서 <code>렌더 트리</code>의 각 노드를 그립니다.</li>
+</ol>
+<blockquote>
+<p>💡 파싱(parsing)</p>
+<ul>
+<li><strong>구문 분석</strong>이라고 한다. </li>
+<li>문장이 이루고 있는 구성 성분을 분해하고 분해된 성분의 위계 관계를 분석하여 구조를 결정하는 것</li>
+<li>즉, 데이터를 분해 분석하여 원하는 형태로 조립하고 다시 빼내는 프로그램</li>
+</ul>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Brower_6.png" alt="Brower_6"></p>
+<p>동작 과정의 순서는 위에서 설명한 Render Tree 동작 과정과 같습니다. </p>
+<ol>
+<li>DOM으로 변환</li>
+<li>CCSOM을 만들어 최종 스타일을 전부 계산한 다음<ul>
+<li>CSSOM에는 Cascading(폭포) 규칙이 존재하기 때문에 CSS를 따로 정의하지 않아도</li>
+<li>브라우저에 기본 설정된 CSS 파일 등이 전부 적용</li>
+<li>밑에 있는 자식 요소들에도 부모 요소들의 속성값들을 물려받음</li>
+</ul>
+</li>
+<li>Render Tree를 만들어 사용자게 보여준다.</li>
+</ol>
+<hr>
+<h1 id="3-네트워크-요청-과정"><a href="#3-네트워크-요청-과정" class="headerlink" title="3. 네트워크 요청 과정"></a>3. 네트워크 요청 과정</h1><p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Brower_7.png" alt="Brower_7"></p>
+<p>사실 <code>브라우저 주소창</code>은 <strong>HTTP의 GET 요청을 하는 곳</strong>입니다.<br>그러면, <code>클라이언트 PC의 브라우저</code>가 <code>서버 PC</code>에게 데이터를 요청합니다.<br>(cf. <code>GET 요청</code> : 서버에 있는 자원(resorce, 이른바 데이터)를 조회하는 HTTP 메서드 중 하나)</p>
+<hr>
+<h2 id="3-1-패킷-packet"><a href="#3-1-패킷-packet" class="headerlink" title="3.1 패킷(packet)"></a>3.1 패킷(packet)</h2><ul>
+<li><code>패킷(packet)</code><ul>
+<li>번역하면. 소포, 택배라는 뜻</li>
+<li>네트워크를 통해 전송되는 데이터의 작은 조각</li>
+</ul>
+</li>
+<li>e.g. 도로에 우주선, 전차같이 큰 차량을 통째로 운전해서 가면, 도로가 다 막힐 것입니다.<ul>
+<li>그래서, 우주선, 전차같이 큰 차량들은 분해해서 가지고 간 뒤에,</li>
+<li>목적지에 도착하면, 그 부품들을 다시 조립해서 이동합니다.</li>
+</ul>
+</li>
+<li>위 예와 마찬가지로, 네트워크 상에 큰 데이터를 한 번에 보내면, <ul>
+<li>네트워크 대역폭을 너무 많이 차지해서 다른 패킷들이 전송되질 못합니다.</li>
+</ul>
+</li>
+<li>그래서 <strong>용량이 큰 사진 데이터를 패킷으로 나눠 보낼</strong> 때,<ul>
+<li>모두 작은 패킷 단위로 쪼갠 뒤에,</li>
+<li>목적지에 도달하면 패킷에서 원래 사진대로 되돌립니다.</li>
+<li>그냥 보내기만 하면, 늦게 도착하는 패킷도 있을 수 있어서, 원래 사진대로 돌리기 힘드니까</li>
+<li>송신 측에서 수신 측으로 패킷을 보낼 때는 <strong>각 패킷에 순서대로 번호를 붙여서 보냅니다</strong>. </li>
+<li>그러면 번호에 맞춰 정렬하면, 늦게 도착한 패킷도 원래 위치로 돌아갈 수 있다.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="3-2-DNS"><a href="#3-2-DNS" class="headerlink" title="3.2 DNS"></a>3.2 DNS</h2><p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Brower_8.png" alt="Brower_8"></p>
+<ul>
+<li>요청을 할 떄는, IP 주소를 통해 해당 서버 PC가 위치한 주소를 찾아가지만,</li>
+<li>IP 주소가 숫자로 되어 있어서, 일일히 기억하기가 힘듭니다.</li>
+<li>그래서 <code>DNS(Domain Name System)</code>을 도입했습니다.</li>
+<li>DNS를 도입함으로써, 사용자들은 200.200.200.2 같은 숫자로 해당 웹페이지를 접속하는 것이 아니라,<ul>
+<li>naver.com, google.com 같은 DNS에 등록된 Domain Name으로 검색할 수 있는 것입니다.</li>
+</ul>
+</li>
+<li>e.g. <ul>
+<li><code>클라이언트</code>가 <code>DNS 서버</code>에다가 <strong>도메인에 맞는 IP를 달라고 요청</strong>을 하면 </li>
+<li><code>DNS 서버</code>가 <strong>응답</strong>을 하고, <code>클라이언트</code>는 <strong>서버에 도메인으로 접속</strong>할 수 있다.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="3-3-TCP-3-way-handshake"><a href="#3-3-TCP-3-way-handshake" class="headerlink" title="3.3 TCP 3 way handshake"></a>3.3 TCP 3 way handshake</h2><p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Brower_9.png" alt="Brower_9"></p>
+<blockquote>
+<ul>
+<li><code>SYN(synchronize)</code> : 접속 요청</li>
+<li><code>ACK(acknowledge)</code> : 요청 수락</li>
+</ul>
+</blockquote>
+<ol>
+<li><p><code>클라이언트</code>에서 먼저 <strong>SYN 메시지를 서버에게 접속을 허락해달라고 요청</strong>한다.</p>
+</li>
+<li><p><code>서버</code>는 접속을 수락하고, </p>
+<ul>
+<li><strong>ACK 메시지를 클라이언트한테</strong> 보낼 때, </li>
+<li>서버도 접속을 허락해달라고 <strong>SYN 메시지와 함께 보낸다.</strong></li>
+</ul>
+</li>
+<li><p><code>클라이언트</code>가 접속을 수락하고 서버에서 <strong>ACK 메시지</strong>를 보낸다.</p>
+<ul>
+<li>참고로 요즘 최적화가 잘 되서 마지막 ACK를 보낼 때 데이터도 전송한다.</li>
+</ul>
+</li>
+<li><p><strong>3단계를 거쳐 연결이 되고나면 데이터를 전송</strong>한다.</p>
+</li>
+</ol>
+<p>위에 TCP 연결이 되었다고 연결이 된 게 아니라 <code>개념적으로 연결되어 있을 뿐</code>이다.<br>인터넷 망에 있는 수 많은 서버들이 연결되어 있는 건지 잘 모른다. </p>
+<hr>
+<h2 id="3-4-웹-브라우저-요청-흐름"><a href="#3-4-웹-브라우저-요청-흐름" class="headerlink" title="3.4 웹 브라우저 요청 흐름"></a>3.4 웹 브라우저 요청 흐름</h2><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Brower_10.png" alt="Brower_10" style="zoom:67%;" />
+
+<ol>
+<li><strong>URL을 입력</strong>한다. </li>
+<li><code>DNS 서버</code>로 <strong>IP를 찾아내고 생략된 PORT는 scheme로</strong> 찾아낸다. </li>
+<li><code>웹 브라우저</code>가 <strong>HTTP 요청 메시지가 생성</strong>된다.</li>
+</ol>
+<hr>
+<img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Brower_11.png" alt="Brower_11" style="zoom:67%;" />
+
+<ol start="4">
+<li><p><code>SOCKET 라이브러리</code>를 통해서 <code>TCP/IP</code>로 <strong>IP와 PORT 정보를 찾은 거</strong>를</p>
+<ul>
+<li><code>3 way handshake 방식</code>으로 서버랑 연결을 한다.</li>
+</ul>
+</li>
+<li><p><code>HTTP 요청 메시지</code>는 OS에 있는 <code>TCP/IP 계층</code>으로 전달한다.</p>
+</li>
+<li><p><code>TCP/IP 계층</code>에서 <code>HTTP 요청 메시지</code>를 패킷으로 감싼다.</p>
+</li>
+</ol>
+<hr>
+<img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Brower_12.png" alt="Brower_12" style="zoom:67%;" />
+
+<ol start="7">
+<li><code>웹 브라우저</code>가 만든 요청 <strong>패킷</strong>을<ul>
+<li><code>서버</code>에서 도착하면 <strong>패킷</strong>을 열어서</li>
+<li><strong>HTTP 요청 메시지</strong>를 확인해서 <code>서버</code>가 해석한다.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Brower_13.png" alt="Brower_13" style="zoom:67%;" />
+
+<ol start="8">
+<li><code>서버</code>가 <strong>HTTP 응답 메시지</strong>를 만들어서 <strong>TCP&#x2F;IP 패킷</strong>을 감싸서, <ul>
+<li><code>클라이언트</code>에게 도착하면 <strong>패킷</strong>을 열여서 <strong>HTTP 응답 메시지를 확인</strong>해서 <code>클라이언트</code>가 해석한다.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Brower_14.png" alt="Brower_14" style="zoom: 50%;" />
+
+<ol start="9">
+<li><code>웹 브라우저</code>가 <strong>HTML 렌더링</strong>을 해서, <code>클라이언트</code>가 <strong>HTML 결과</strong>를 볼 수 있다.</li>
+</ol>
+<hr>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://d2.naver.com/helloworld/59361">https://d2.naver.com/helloworld/59361</a></li>
+<li>인프런, 김영한, 모든 웹 개발자를 위한 HTTP</li>
+</ul>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/02/15/Hexo-404/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-02-27 12:53:06
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/%EC%A0%95%EB%B3%B4/" title="정보"> <b>#</b> 정보 </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/%EC%A0%95%EB%B3%B4/%EC%9B%90%EB%A6%AC/" title="원리"> <b>#</b> 원리 </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/%EC%9B%90%EB%A6%AC/" title="원리"> #원리 </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/02/28/Front-Start-HTML-Emmet/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%EC%9B%B9-%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80-%EB%8F%99%EC%9E%91-%EA%B3%BC%EC%A0%95"><span class="toc-text">1. 웹 브라우저 동작 과정</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-DOM"><span class="toc-text">1.1 DOM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-CSSOM"><span class="toc-text">1.2 CSSOM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-Render-Tree"><span class="toc-text">1.3 Render Tree</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%EC%9B%B9-%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80%EC%9D%98-%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C"><span class="toc-text">2. 웹 브라우저의 구성요소</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%EB%A0%8C%EB%8D%94%EB%A7%81-%EC%97%94%EC%A7%84"><span class="toc-text">2.1 렌더링 엔진</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-%EB%A0%8C%EB%8D%94%EB%A7%81-%EC%97%94%EC%A7%84-%EB%8F%99%EC%9E%91-%EA%B3%BC%EC%A0%95"><span class="toc-text">2.1.1 렌더링 엔진 동작 과정</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EC%9A%94%EC%B2%AD-%EA%B3%BC%EC%A0%95"><span class="toc-text">3. 네트워크 요청 과정</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%ED%8C%A8%ED%82%B7-packet"><span class="toc-text">3.1 패킷(packet)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-DNS"><span class="toc-text">3.2 DNS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-TCP-3-way-handshake"><span class="toc-text">3.3 TCP 3 way handshake</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-%EC%9B%B9-%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80-%EC%9A%94%EC%B2%AD-%ED%9D%90%EB%A6%84"><span class="toc-text">3.4 웹 브라우저 요청 흐름</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %EC%9A%A9%EC%96%B4-%20%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80%20%EB%8F%99%EC%9E%91%20%EC%9B%90%EB%A6%AC + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F02%2F27%2FTerminology-Brower%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/02/27/Terminology-Brower/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

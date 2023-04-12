@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Front-JS-Basic-15-데이터 호출(api, json, ajax, fetch, axios) 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Front-JS-Basic-15-데이터 호출(api, json, ajax, fetch, axios)</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-05 11:37:15
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/js/" title="JS"> <b>#</b> JS </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/js/basic/" title="Basic"> <b>#</b> Basic </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/js/" title="JS"> #JS </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-네트워크-기초-지식"><a href="#1-네트워크-기초-지식" class="headerlink" title="1. 네트워크 기초 지식"></a>1. 네트워크 기초 지식</h1><p>cf. <a target="_blank" rel="noopener" href="https://youtu.be/1ID6pfTViXo">코딩애플 - JSON (존슨) 은 자바스크립트 문법이 아닙니다</a></p>
+<h2 id="1-1-JSON"><a href="#1-1-JSON" class="headerlink" title="1.1 JSON"></a>1.1 JSON</h2><p>데이터를 텍스트 형태로만 보낸다면 굉장히 복잡합니다. 그래서 데이터를 담기 위한 깔끔한 형식이 필요합니다.</p>
+<h3 id="1-1-1-데이터-담는-형식"><a href="#1-1-1-데이터-담는-형식" class="headerlink" title="1.1.1 데이터 담는 형식"></a>1.1.1 데이터 담는 형식</h3><ul>
+<li>XML<ul>
+<li><code>&lt;데이터이름&gt;값&lt;/데이터이름&gt;</code><br><code>&lt;데이터이름&gt;값&lt;/데이터이름&gt;</code><br><code>&lt;데이터이름&gt;값&lt;/데이터이름&gt;</code></li>
+<li>2000년대 사용 방식</li>
+<li>작성하기가 불편</li>
+<li>용량이 불필요하게 컸음</li>
+</ul>
+</li>
+<li>CSV<ul>
+<li><code>Year, Brand, Model</code><br><code>1997, Ford, E350</code><br><code>2000, Mercury, Cougar</code></li>
+<li>표 형태로 만든 형식</li>
+<li>데이터베이스를 모방해 만든 방식이라 데이터베이스에 있는 데이터를 CSV로 변환이 쉬움</li>
+<li>표 안에 표를 집어넣은 형태인 고차원 형태를 표현하기 복잡</li>
+</ul>
+</li>
+<li>JSON<ul>
+<li><code>&#123;&#39;name&#39; : &#39;kim&#39;, &#39;age&#39; : 20 &#125;</code></li>
+<li>일반적으로 가장 많이 사용하는 형식</li>
+<li>2013년에 JavaScript 공식 문법에 편입</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="1-2-서버-Server-x3D-알바생"><a href="#1-2-서버-Server-x3D-알바생" class="headerlink" title="1.2 서버(Server) &#x3D; 알바생"></a>1.2 서버(Server) &#x3D; 알바생</h2><ul>
+<li><strong>요청을 받으면 데이터를 보내주는 기계</strong></li>
+<li>알바생을 영어로 Server라고 함.<ul>
+<li>(음식을) 서빙(Serving)한다 &#x3D; 무언가를 갖다준다.</li>
+<li>(컴퓨터) 서버(Server) &#x3D; 무언가를 갖다주는 컴퓨터</li>
+</ul>
+</li>
+<li>e.g. 웹서버 &#x3D; “웹툰 페이지 주세요“하면, 웹툰 페이지를 가져다주는 기계</li>
+<li>전문용어로는 <strong>클라이언트의 요청을 받으면 서비스, 데이터를 제공하는 컴퓨터 혹은 프로그램</strong></li>
+</ul>
+<hr>
+<h2 id="1-3-API-x3D-식당-메뉴판"><a href="#1-3-API-x3D-식당-메뉴판" class="headerlink" title="1.3 API &#x3D; 식당 메뉴판"></a>1.3 API &#x3D; 식당 메뉴판</h2><p><strong>API (Application Programming Interface)</strong> : 서로 다른 프로그램간에 소통할 수 있게 도와주는 통신 규약</p>
+<ul>
+<li>웹에서 사용하면 ‘<strong>서버와 고객간의 통신 규약</strong>‘</li>
+<li>풀어말하면 ‘<strong>서버에게 요청해서 데이터 가져오는 방법</strong>‘</li>
+<li>e.g. “<strong>누군가 &#x2F;write로 접속하면 write.html을 보내주세요</strong>“같은 건 서버의 API<ul>
+<li><code>write.html</code>을 보고싶으면 <code>/write</code>로 접속하라는 API를 정의</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="1-3-1-기본-HTTP-메서드-GET-POST"><a href="#1-3-1-기본-HTTP-메서드-GET-POST" class="headerlink" title="1.3.1 기본 HTTP 메서드 (GET, POST)"></a>1.3.1 기본 HTTP 메서드 (GET, POST)</h3><ul>
+<li><code>GET</code> : 데이터를 Read(조회)할 떄 사용</li>
+<li><code>POST</code> (BODY 포함)<ul>
+<li>새로운 정보를 Create(추가)하는데 사용</li>
+<li>Body에 새 데이터 정보를 실어서 보냄</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="1-3-2-GET-x3D-브라우저-주소창"><a href="#1-3-2-GET-x3D-브라우저-주소창" class="headerlink" title="1.3.2 GET &#x3D; 브라우저 주소창"></a>1.3.2 GET &#x3D; 브라우저 주소창</h3><p>사용자도 GET 요청 코드를 서버에게 보내야만 서버의 데이터를 볼 수 있습니다.<br>서버에 GET 요청 코드는 매일  많은사람들이 사용하고 있습니다.</p>
+<p>일반 사용자들은 <strong>브라우저라는 도구를 이용해서 주소창에서 GET 요청</strong>을 보냅니다.<br>또 직접 타이핑하지 않고, 개발자들이 각 버튼, 이미지 등의 클릭 요소에 GET 요청을 만들어 두었습니다.</p>
+<p>API는 항상 public할 필요는 없습니다.</p>
+<ul>
+<li><code>public API</code> : 누구나 사용가능한 공개 API</li>
+<li><code>private API</code> : 사내에서 몰래 쓰는 API</li>
+<li><code>partner API</code> : 미리 정해둔 놈만 쓰는 API</li>
+</ul>
+<p>모든 프로그램은 API를 가질 수 있습니다.</p>
+<ul>
+<li><code>Windows API</code> : 이거 쓰면 윈도우 운영체제 기능들 사용 가능</li>
+<li><code>Database 관리 프로그램 API</code> : 이거 쓰면 DB 입출력 기능들 사용 가능</li>
+<li><code>XX 프로그램 API</code> : 이거 쓰면 무슨무슨 기능들 사용 가능</li>
+</ul>
+<p>API로 만드는 비즈니스 모델</p>
+<ul>
+<li><code>Naver Cloud Platform</code> : 네이버 파파고 번역 API, Cloba Summary API 등 호출마다 API 요금 발생</li>
+<li>API 마켓 등에서도 판매</li>
+</ul>
+<hr>
+<h1 id="2-RSET-API"><a href="#2-RSET-API" class="headerlink" title="2. RSET API"></a>2. RSET API</h1><ul>
+<li><code>REST(Representational State Transfer)</code></li>
+<li>웹의 창시자(HTTP) 중의 한 사람인 Roy Fielding의 2000년 논문에 의해서 소개<ul>
+<li>HTTP 요청 시스템(GET, POST, PUT, DELETE)</li>
+<li>REST 원칙에 의해서 쓰면 인터넷 세상이 평화로워짐 (이라고 졸업논문씀)</li>
+</ul>
+</li>
+<li>“웹 API 짤 때 REST 원칙을 지켜서 짜면 좋다”고 하는 <strong>API 디자인 패턴</strong></li>
+<li>말 그대로 형식이기에 특정 기술에 제한받지 않음</li>
+<li>총 6개의 원칙이 존재</li>
+<li>cf. <a target="_blank" rel="noopener" href="https://youtu.be/RP_f5dMoHFc">그런 REST API로 괜찮은가</a></li>
+<li>cf. 옛날에는 SOAP라는 걸 사용했다고 함</li>
+</ul>
+<hr>
+<h2 id="2-1-REST-6-원칙"><a href="#2-1-REST-6-원칙" class="headerlink" title="2.1 REST 6 원칙"></a>2.1 REST 6 원칙</h2><h3 id="2-1-1-Uniform-Interface⭐"><a href="#2-1-1-Uniform-Interface⭐" class="headerlink" title="2.1.1 Uniform Interface⭐"></a>2.1.1 Uniform Interface⭐</h3><p><strong>인터페이스는 일관성이 있어야한다</strong></p>
+<ul>
+<li><strong>하나의 URL로는 하나의 데이터</strong>를 가져와야함 (하나를 가져오기 위한 두개의 URL을 만들지 말자)</li>
+<li><strong>간결하고 예측가능하게 짜세요</strong> (URL 하나를 알면 둘을 알게)</li>
+<li><strong>URL 이름짓기 관습을</strong> 잘 따라주세요</li>
+</ul>
+<blockquote>
+<p>💡 URI 와 URL</p>
+<ul>
+<li><code>URI</code> : <strong>자료를 넘버링하고 분류하고 지칭하는 방법</strong></li>
+<li><code>URL</code> : <strong>URL과 비슷하지만 조금 더 큰 의미</strong></li>
+</ul>
+</blockquote>
+<hr>
+<h3 id="2-1-2-Client-server-역할-구분"><a href="#2-1-2-Client-server-역할-구분" class="headerlink" title="2.1.2 Client-server 역할 구분"></a>2.1.2 Client-server 역할 구분</h3><p>고객들은 URL 하나만 알면, 서버에 있는 자료를 갖다쓸 수 있습니다.<br><strong>고객에게 서버역할을 맡기거나 고객에게 DB에 있는 자료를 직접 꺼내라고 하든지 그런 식으로 코드를 짜면 안된다</strong>.</p>
+<hr>
+<h3 id="2-1-3-Stateless"><a href="#2-1-3-Stateless" class="headerlink" title="2.1.3 Stateless"></a>2.1.3 Stateless</h3><p><strong>요청들은 각각 독립적으로 처리</strong>되어야 한다.</p>
+<ul>
+<li>요청1이 성공해야 요청2를 보내주고, <strong>요청간의 의존성이 존재하는 코드를 짜시면 안됩니다</strong>.</li>
+<li>다시 말해, <strong>요청하나 만으로 자료를 가져오기 충분하도록 요청에 필요한 모든 정보들을 실어 보내는게 좋다</strong></li>
+</ul>
+<hr>
+<h3 id="2-1-4-Cacheable"><a href="#2-1-4-Cacheable" class="headerlink" title="2.1.4 Cacheable"></a>2.1.4 Cacheable</h3><ul>
+<li><strong>요청을 통해 보내는 자료들은 캐싱이 가능해야 한다.</strong></li>
+<li><strong>캐싱가능하다고 표시하거나 캐싱 기간을 설정</strong>해주어야 한다</li>
+</ul>
+<blockquote>
+<p>💡 캐싱(Caching)</p>
+<p>네이버를 방문하면 브라우저는 자동으로 자주 사용하는 이미지 파일, CSS 파일 등을 하드에 저장해놓습니다.<br>e.g. 별로 바뀔일 없는 네이버 로고나 아이콘</p>
+<p><strong>하드에 저장해놓고 네이버 방문할 때 “네이버서버에 네이버 로고주세요~”라고 요청하지 않고 하드에서 불러옵니다</strong>.<br>이 행위를 <strong>캐싱</strong>이라고 합니다.</p>
+</blockquote>
+<hr>
+<h3 id="2-1-5-Layered-System"><a href="#2-1-5-Layered-System" class="headerlink" title="2.1.5 Layered System"></a>2.1.5 Layered System</h3><p><strong>여러개의 레이어를 거쳐서 요청을 처리하게 만들어도 된다</strong></p>
+<ul>
+<li>요청처리하는곳, DB에 저장하는곳 이런 여러가지 단계를 거쳐서 요청을 처리해도 된다.</li>
+</ul>
+<hr>
+<h3 id="2-1-6-Code-on-Demand"><a href="#2-1-6-Code-on-Demand" class="headerlink" title="2.1.6 Code on Demand"></a>2.1.6 Code on Demand</h3><p>서버는 <strong>고객에게 실제 실행가능한 코드를 전송</strong>해줄 수도 있습니다.</p>
+<hr>
+<h2 id="2-2-좋은-URL-이름짓기-관습"><a href="#2-2-좋은-URL-이름짓기-관습" class="headerlink" title="2.2 좋은 URL 이름짓기 관습"></a>2.2 좋은 URL 이름짓기 관습</h2><ul>
+<li>instagram.com&#x2F;explore&#x2F;tags&#x2F;kpop</li>
+<li>instagram.com&#x2F;explore&#x2F;tags&#x2F;food</li>
+<li>facebook.com&#x2F;natgeo&#x2F;photos</li>
+<li>facebook.com&#x2F;bbc&#x2F;photos</li>
+</ul>
+<p>위 URL은 좋은 API들입니다.<br>왜냐면 <code>facebook.com/bbc/photos</code> 이거만 봐도 BBC 뉴스 페북 계정의 사진첩인지 알 수 있습니다.</p>
+<p>정리하면 이런 특징을 가지고 있는데, 따라하면 됩니다.</p>
+<ul>
+<li>단어들을 <strong>동사보다는 명사 위주</strong>로 구성</li>
+<li>응용해서 <strong>다른 정보들을 쉽게 가져올 수 있을 정도로 일관성</strong> 있음</li>
+<li><strong>대충 봐도 어떤 정보가 들어올지 예측이 가능해야</strong> 함</li>
+<li>띄어쓰기는 <strong>언더바(_)대신 대시(-)기호</strong> 사용</li>
+<li><strong>파일 확장자 쓰지 말기</strong> (<code>.html</code> 이런거)</li>
+<li><strong>하위 문서들을 뜻할 땐 &#x2F; 기호를 사용</strong>함 (하위폴더같은 느낌)</li>
+</ul>
+<p>여러가지가 있습니다. 이것만 잘 지켜주시면 예쁜 서버 API들이 완성됩니다.</p>
+<hr>
+<h2 id="2-3-HTTP-메서드"><a href="#2-3-HTTP-메서드" class="headerlink" title="2.3 HTTP 메서드"></a>2.3 HTTP 메서드</h2><p>메서드들이 특정 용도에 제한되어 있지 않음. POST 하나로 데이터 읽고 수정하고 지우고 다 할 수 있지만,<br>각 요청의 의도에 맞게 <strong>RESTful하게 API를 만들기 위해서는 목적에 따라 구분해서 사용</strong>해야 함</p>
+<ul>
+<li><p><code>GET</code> : 데이터를 Read(조회)할 떄 사용</p>
+<ul>
+<li><strong>가져오다</strong>라는 뜻</li>
+</ul>
+</li>
+<li><p><code>POST</code> (BODY 포함)</p>
+<ul>
+<li>새로운 정보를 Create(추가)하는데 사용</li>
+<li>Body에 새 데이터 정보를 실어서 보냄</li>
+<li><strong>게시하다</strong>라는 뜻</li>
+</ul>
+</li>
+<li><p><code>PUT</code> (BODY 포함)</p>
+<ul>
+<li><strong>집어넣다</strong>라는 뜻</li>
+</ul>
+</li>
+<li><p><code>PATCH</code> (BODY 포함)</p>
+<ul>
+<li><strong>고치다</strong>라는 뜻</li>
+<li>데이터가 변경될 때, PUT 또는 PATCH를 사용해서 변경(Update)될 새 정보들을 Body에 실어서 보냄</li>
+<li>PUT과 PATCH는 쓰는 곳마다 다르지만,</li>
+<li>정석은<ul>
+<li>PUT은 정보를 통쟤로 변경할 떄</li>
+<li>PATCH는 일부 정보만 특정 방식으로 변경할 떄</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>DELETE</code> : 데이터 삭제 요청</p>
+</li>
+</ul>
+<hr>
+<h1 id="3-AJAX"><a href="#3-AJAX" class="headerlink" title="3. AJAX"></a>3. AJAX</h1><p><code>AJAX</code> &#x3D; 서버에 GET, POST 요청을 할 때 <strong>새로고침 없이</strong> 데이터를 주고받을 수 있게 도와주는 간단한 브라우저 기능</p>
+<ul>
+<li>사용자가 한 페이지 내에서 머무르면서, 필요한 데이터를 서버에서 받아와서, <strong>부분적으로만 업데이트</strong></li>
+<li>e.g. 새로고침 없이도 쇼핑몰 상품을 가져올 수도 있고, 새로고침 없이도 댓글을 서버로 전송 가능</li>
+<li>장점<ul>
+<li>웹페이지의 속도향상</li>
+<li>서버의 처리가 완료될 때까지 기다리지 않고 처리가 가능</li>
+<li>서버에서 Data만 전송하면 되므로 전체적인 코딩의 양이 줄어듬</li>
+<li>기존 웹에서는 불가능했던 다양한 UI를 가능</li>
+</ul>
+</li>
+<li>단점<ul>
+<li>히스토리 관리가 안됨</li>
+<li>페이지 이동없는 통신으로 인한 보안상의 문제 존재</li>
+<li>연속으로 데이터를 요청하면 서버 부하가 증가</li>
+<li>…</li>
+</ul>
+</li>
+</ul>
+<p>AJAX를 개념이라서 이를 구현하기 위한 다양한 라이브러리를 사용함</p>
+<ul>
+<li>XMLHttpRequest<ul>
+<li>1998년에 개발</li>
+<li>이벤트 기반</li>
+<li>초기 API 구현 때, 브라우저 간의 불일치가 존재</li>
+<li>브라우저간 불일치를 메꾸기 위해 jQuery 사용</li>
+<li>2005년, XMLHttpRequest API 방식이 공식적인 AJAX라는 이름을 가짐</li>
+<li>구글에서 AJAX를 이용해서 Gmail, Google Maps같은 서비스 등의 서비스를 만듬</li>
+<li>이것이 현재 널리 쓰이고 있는 <code>SPA(Single Page Application)</code>임</li>
+</ul>
+</li>
+<li>JQuery<ul>
+<li>2006년에 개발</li>
+<li>크로스 브라우징 이슈를 해결하고, DOM API를 쉽게 사용하기 위해 나옴</li>
+</ul>
+</li>
+<li>Fetch<ul>
+<li>JS 기본내장 API</li>
+<li>Promise 기반</li>
+<li>이미 잘 명세된 API가 제공됨으로써 브라우저간의 불일치가 없음</li>
+</ul>
+</li>
+<li>AXIOS, query 등 다양한 라이브러리 등이 존재</li>
+</ul>
+<hr>
+<h1 id="4-네트워크-통신-fetch-하는-법"><a href="#4-네트워크-통신-fetch-하는-법" class="headerlink" title="4. 네트워크 통신(fetch)하는 법"></a>4. 네트워크 통신(fetch)하는 법</h1><h2 id="4-1-기본-사용법"><a href="#4-1-기본-사용법" class="headerlink" title="4.1 기본 사용법"></a>4.1 기본 사용법</h2><ul>
+<li>cf. fetch : (어딘가에서 무언가를) 가지고 오다라는 의미</li>
+<li>fetch : 서버에서 데이터를 가져오는 것</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">fetch</span>(url, options)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">response</span>) =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;response:&quot;</span>, response))</span><br><span class="line">  .<span class="title function_">catch</span>(<span class="function">(<span class="params">error</span>) =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;error:&quot;</span>, error));</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>첫번째 인자로 <strong>URL</strong></li>
+<li>두번째 인자로 <strong>옵션 객체를 받고, Promise 타입의 객체를 반환</strong><ul>
+<li>반환된 객체에는, API 호출이 <ul>
+<li>성공했을 경우에는 <strong>응답(response) 객체</strong>를 resolve하고, </li>
+<li>실패했을 경우에는 <strong>예외(error) 객체</strong>를 reject</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>cf. <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API">MDN fetch</a></li>
+<li><strong>옵션(options) 객체</strong> : HTTP 방식(method), HTTP 요청 헤더(headers), HTTP 요청 전문(body) 등을 설정</li>
+<li><strong>응답(response) 객체</strong> :HTTP 응답 상태(status), HTTP 응답 헤더(headers), HTTP 응답 전문(body) 등을 읽어올 수 있음</li>
+</ul>
+<hr>
+<h2 id="4-2-가짜-데이터-준비"><a href="#4-2-가짜-데이터-준비" class="headerlink" title="4.2 가짜 데이터 준비"></a>4.2 가짜 데이터 준비</h2><p><code>JSONPlaceholder</code></p>
+<ul>
+<li><p>JSON 데이터를 가져올 API 서버가 필요하지만, </p>
+</li>
+<li><p>DB를 설치하고 스프링 또는 Node.js를 이용해 백엔드 환경을 구성하게 되면 엄청난 에너지 소모됨</p>
+</li>
+<li><p>그래서 웹 상에서 Github 같은 곳에 데이터를 저장해두거나 무료 가상 API 등을 제공해줌</p>
+</li>
+<li><p>그 <strong>무료 가상 REST API 서비스</strong> 중 하나가 JSONPlaceholder란 곳임</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://jsonplaceholder.typicode.com/">https://jsonplaceholder.typicode.com/</a></p>
+<ul>
+<li>가짜 데이터가 필요할 때마다 사용할 수 있는 무료 온라인 REST API</li>
+<li>6가지의 데이터 API 주소를 호출해서 데이터를 JSON으로 받아 볼 수 있다.</li>
+</ul>
+</li>
+<li><p>다음과 같이 JSONPlacehoder 주소에 리소스 접미어를 붙여주면, 가짜 데이터를 보내줌</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://jsonplaceholder.typicode.com/posts">https://jsonplaceholder.typicode.com/posts</a></li>
+<li><a target="_blank" rel="noopener" href="https://jsonplaceholder.typicode.com/comments">https://jsonplaceholder.typicode.com/comments</a></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="4-3-CORS-에러"><a href="#4-3-CORS-에러" class="headerlink" title="4.3 CORS 에러"></a>4.3 CORS 에러</h2><p><strong>CORS (Cross-Origin Resource Sharing, 교차 출처 리소스 공유)</strong> 에러</p>
+<ul>
+<li><code>Client</code> : localhost:3000 </li>
+<li><code>Server</code> : localhost:4000 (react 개발 서버)<ul>
+<li>origin이 다르다. 클라이언트에서 서버에서 데이터를 막 꺼내면 안됨</li>
+<li>origin이 다르다는 건 데이터를 다룰 떄, 조심해야 된다는 소리</li>
+<li>예를들어, naver.com, google.com의 origin이 다른데,</li>
+<li><strong>naver에서 google의 데이터를 꺼내가려고 하면 CORS 에러가 발생</strong>함</li>
+<li>그래서 웹 개발자는 origin이 다르면 무조건 막는 CORS를 숙지</li>
+<li>CORS를 풀려면, 서버에서 해결해야 함</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="4-4-실습"><a href="#4-4-실습" class="headerlink" title="4.4 실습"></a>4.4 실습</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;ko&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// **** fetch : 서버에서 데이터 받아오기</span></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// response : 받아온 데이터</span></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">// json() : body안에 json 문자열을 객체로 변환해주는 함수, promise를 return</span></span></span><br><span class="line"><span class="language-javascript">      <span class="title function_">fetch</span>(<span class="string">&#x27;https://jsonplaceholder.typicode.com/posts/1&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">        .<span class="title function_">then</span>(<span class="function">(<span class="params">response</span>) =&gt;</span> response.<span class="title function_">json</span>())</span></span><br><span class="line"><span class="language-javascript">        .<span class="title function_">then</span>(<span class="function">(<span class="params">json</span>) =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(json));</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>VSCode의 Live Server 확장 기능으로 켜서, </p>
+<ul>
+<li>콘솔 탭을 확인해보면, <strong>가짜 데이터 서버에서 데이터를 객체 형태로 가지고 온 것</strong>을 알 수 있습니다.</li>
+<li>네트워크 탭에 가서 새로고침 후 확인해보면, <strong>응답 상태가 200 ok로 데이터를 갖고 온 것</strong>을 알 수 있습니다.</li>
+</ul>
+<hr>
+<h1 id="5-AXIOS-라이브러리"><a href="#5-AXIOS-라이브러리" class="headerlink" title="5. AXIOS 라이브러리"></a>5. AXIOS 라이브러리</h1><p>JS에 기본 내장되어 있는 fetch api와 유사한 기능을 하지만 차이점이 몇가지 존재합니다.</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">fetch API</th>
+<th align="center">AXIOS API</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">설치 유무</td>
+<td align="center">모던 브라우저 기본 내장 API라 설치 필요X</td>
+<td align="center">추가적인 설치 필요</td>
+</tr>
+<tr>
+<td align="center">요청객체</td>
+<td align="center">url 없음</td>
+<td align="center">url 있음</td>
+</tr>
+<tr>
+<td align="center">XSRF</td>
+<td align="center">별도 보호 없음</td>
+<td align="center">보호해줌</td>
+</tr>
+<tr>
+<td align="center">속성</td>
+<td align="center">body 속성 사용</td>
+<td align="center">data 속성 사용</td>
+</tr>
+<tr>
+<td align="center">JSON 데이터 형식</td>
+<td align="center">.json()으로 json으로 변환해야 함</td>
+<td align="center">자동으로 JSON 형식으로 변환됨</td>
+</tr>
+<tr>
+<td align="center">HTTP 요청 가로채기</td>
+<td align="center">안됨</td>
+<td align="center">됨</td>
+</tr>
+<tr>
+<td align="center">브라우저 지원</td>
+<td align="center">크롬 42+, 파이어폭스 39+, Edge 14+, Safari 10.1+</td>
+<td align="center">좀 더 많은 브라우저 지원</td>
+</tr>
+<tr>
+<td align="center">등등…</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<p>그래서 간단한 예제를 테스트할 떄는 fetch API를 쓰고, 실제 개발할 떄는 AXIOS API를 씀</p>
+<ul>
+<li>cf. <a target="_blank" rel="noopener" href="https://axios-http.com/">https://axios-http.com/</a></li>
+</ul>
+<hr>
+<h2 id="5-1-설치"><a href="#5-1-설치" class="headerlink" title="5.1 설치"></a>5.1 설치</h2><ul>
+<li>cf. <a target="_blank" rel="noopener" href="https://axios-http.com/docs/intro">https://axios-http.com/docs/intro</a></li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 자신이 사용하는 패키지 매니저로 프로젝트에 추가</span></span><br><span class="line">npm install axios</span><br><span class="line">yarn add axios</span><br><span class="line"></span><br><span class="line"><span class="comment"># 설치하고 난 뒤 import axios from &#x27;axios&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>cdn으로도 사용 가능함</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/axios/dist/axios.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="5-2-HTTP-메서드-요청하는-법"><a href="#5-2-HTTP-메서드-요청하는-법" class="headerlink" title="5.2 HTTP 메서드 요청하는 법"></a>5.2 HTTP 메서드 요청하는 법</h2><p>Promise 기반 HTTP 비동기 통신 라이브러리로 HTTP 메서드를 전부 지원함</p>
+<ul>
+<li><code>axios.get(&quot;url&quot; [, cofnig])</code></li>
+<li><code>axios.post(&quot;url&quot; [, data[, config]])</code></li>
+<li><code>axios.put(&quot;url&quot; [, data[, config]])</code></li>
+<li><code>axios.patch(&quot;url&quot; [, data[, config]])</code></li>
+<li><code>axios.delete(&quot;url&quot; [, cofnig]);</code></li>
+</ul>
+<hr>
+<h2 id="5-3-사용법"><a href="#5-3-사용법" class="headerlink" title="5.3 사용법"></a>5.3 사용법</h2><h3 id="5-2-1-Promise를-이용한-기본-사용법"><a href="#5-2-1-Promise를-이용한-기본-사용법" class="headerlink" title="5.2.1 Promise를 이용한 기본 사용법"></a>5.2.1 Promise를 이용한 기본 사용법</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">&#x27;axios&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ID로 사용자 요청</span></span><br><span class="line">axios</span><br><span class="line">  .<span class="title function_">get</span>(<span class="string">&#x27;/user?ID=12345&#x27;</span>)</span><br><span class="line">  <span class="comment">// 응답(성공)</span></span><br><span class="line">  .<span class="title function_">then</span>(<span class="keyword">function</span>(<span class="params">response</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(response)</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="comment">// 응답(실패)</span></span><br><span class="line">  .<span class="title function_">catch</span>(<span class="keyword">function</span>(<span class="params">error</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(error)</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="comment">// 응답(항상 실행)</span></span><br><span class="line">  .<span class="title function_">then</span>(<span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="5-2-2-async-await를-이용한-사용법"><a href="#5-2-2-async-await를-이용한-사용법" class="headerlink" title="5.2.2 async await를 이용한 사용법"></a>5.2.2 async await를 이용한 사용법</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">getUser</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> response = <span class="keyword">await</span> axios.<span class="title function_">get</span>(<span class="string">&#x27;/user?ID=12345&#x27;</span>)</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(response)</span><br><span class="line">  &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">error</span>(error)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>추가로 인스턴스를 하나 생성해서 axios 기본 세팅을 할 수도 있다.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> instance = axios.<span class="title function_">create</span>(&#123;</span><br><span class="line">  <span class="attr">baseURL</span>: <span class="string">&#x27;https://some-domain.com/api/&#x27;</span>,</span><br><span class="line">  <span class="attr">headers</span>: &#123; <span class="string">&#x27;X-Custom-Header&#x27;</span>: <span class="string">&#x27;foobar&#x27;</span> &#125;,</span><br><span class="line">  <span class="attr">timeout</span>: <span class="number">1000</span>,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="5-4-실습"><a href="#5-4-실습" class="headerlink" title="5.4 실습"></a>5.4 실습</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://reqres.in/?fbclid=IwAR0hhe_cxVwzJHgrT6siWRQloSODOwDd2QQVlmpob3N0a6SyJXiYSVXd12U">reqres</a> 이라는 FakeServer를 사용함</li>
+<li>홈페이지에 POST 요청 중 LOGIN - SUCCESSFUL의 유저를 사용함</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;email&quot;</span><span class="punctuation">:</span> <span class="string">&quot;eve.holt@reqres.in&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;password&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cityslicka&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="5-4-1-POST"><a href="#5-4-1-POST" class="headerlink" title="5.4.1 POST"></a>5.4.1 POST</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;ko&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>AXIOS 연습<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/axios/dist/axios.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;email&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;email 입력하셈&quot;</span> <span class="attr">id</span>=<span class="string">&quot;email&quot;</span> <span class="attr">value</span>=<span class="string">&quot;&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;password&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;비밀번호 입력하셈&quot;</span> <span class="attr">id</span>=<span class="string">&quot;pw&quot;</span> <span class="attr">value</span>=<span class="string">&quot;&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;button&quot;</span> <span class="attr">onclick</span>=<span class="string">&quot;onLoggin()&quot;</span> <span class="attr">value</span>=<span class="string">&quot;로그인&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">function</span> <span class="title function_">onLoggin</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">const</span> email = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;email&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">const</span> password = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;pw&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">      </span></span><br><span class="line"><span class="language-javascript">      <span class="title function_">axios</span>(&#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">        <span class="attr">url</span>: <span class="string">&#x27;https://reqres.in/api/login&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">        <span class="attr">data</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">          <span class="attr">email</span>: email.<span class="property">value</span>,</span></span><br><span class="line"><span class="language-javascript">          <span class="attr">password</span>: password.<span class="property">value</span>,</span></span><br><span class="line"><span class="language-javascript">        &#125;,</span></span><br><span class="line"><span class="language-javascript">      &#125;)</span></span><br><span class="line"><span class="language-javascript">        .<span class="title function_">then</span>(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">          <span class="variable language_">console</span>.<span class="title function_">log</span>(res);</span></span><br><span class="line"><span class="language-javascript">        &#125;)</span></span><br><span class="line"><span class="language-javascript">        .<span class="title function_">catch</span>(<span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">          <span class="variable language_">console</span>.<span class="title function_">log</span>(error);</span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(error);</span></span><br><span class="line"><span class="language-javascript">        &#125;);</span></span><br><span class="line"><span class="language-javascript">    &#125;</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>VSCode의 Live Server 확장 기능으로 켜서, </p>
+<ul>
+<li>이메일 : <code>eve.holt@reqres.in</code>, 비번 : <code>cityslicka</code> 입력</li>
+<li>콘솔 탭을 확인해보면, <strong>가짜 데이터 서버에서 데이터를 객체 형태로 가지고 온 것</strong>을 알 수 있습니다.</li>
+<li>네트워크 탭에 가서 새로고침 후 확인해보면, <strong>응답 상태가 200 ok로 데이터를 갖고 온 것</strong>을 알 수 있습니다.</li>
+<li><a target="_blank" rel="noopener" href="https://reqres.in/?fbclid=IwAR0hhe_cxVwzJHgrT6siWRQloSODOwDd2QQVlmpob3N0a6SyJXiYSVXd12U">reqres</a> 가서 다른 요청 객체들도 참고</li>
+</ul>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/04/Front-JS-Basic-14-Asynchronous/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-05 11:37:15
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/js/" title="JS"> <b>#</b> JS </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/js/basic/" title="Basic"> <b>#</b> Basic </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/js/" title="JS"> #JS </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/05/Front-JS-Basic-18-SpreadRest/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%EA%B8%B0%EC%B4%88-%EC%A7%80%EC%8B%9D"><span class="toc-text">1. 네트워크 기초 지식</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-JSON"><span class="toc-text">1.1 JSON</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-1-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%8B%B4%EB%8A%94-%ED%98%95%EC%8B%9D"><span class="toc-text">1.1.1 데이터 담는 형식</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%EC%84%9C%EB%B2%84-Server-x3D-%EC%95%8C%EB%B0%94%EC%83%9D"><span class="toc-text">1.2 서버(Server) &#x3D; 알바생</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-API-x3D-%EC%8B%9D%EB%8B%B9-%EB%A9%94%EB%89%B4%ED%8C%90"><span class="toc-text">1.3 API &#x3D; 식당 메뉴판</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-1-%EA%B8%B0%EB%B3%B8-HTTP-%EB%A9%94%EC%84%9C%EB%93%9C-GET-POST"><span class="toc-text">1.3.1 기본 HTTP 메서드 (GET, POST)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-2-GET-x3D-%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80-%EC%A3%BC%EC%86%8C%EC%B0%BD"><span class="toc-text">1.3.2 GET &#x3D; 브라우저 주소창</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-RSET-API"><span class="toc-text">2. RSET API</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-REST-6-%EC%9B%90%EC%B9%99"><span class="toc-text">2.1 REST 6 원칙</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-Uniform-Interface%E2%AD%90"><span class="toc-text">2.1.1 Uniform Interface⭐</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-2-Client-server-%EC%97%AD%ED%95%A0-%EA%B5%AC%EB%B6%84"><span class="toc-text">2.1.2 Client-server 역할 구분</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-3-Stateless"><span class="toc-text">2.1.3 Stateless</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-4-Cacheable"><span class="toc-text">2.1.4 Cacheable</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-5-Layered-System"><span class="toc-text">2.1.5 Layered System</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-6-Code-on-Demand"><span class="toc-text">2.1.6 Code on Demand</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%EC%A2%8B%EC%9D%80-URL-%EC%9D%B4%EB%A6%84%EC%A7%93%EA%B8%B0-%EA%B4%80%EC%8A%B5"><span class="toc-text">2.2 좋은 URL 이름짓기 관습</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-HTTP-%EB%A9%94%EC%84%9C%EB%93%9C"><span class="toc-text">2.3 HTTP 메서드</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-AJAX"><span class="toc-text">3. AJAX</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-%ED%86%B5%EC%8B%A0-fetch-%ED%95%98%EB%8A%94-%EB%B2%95"><span class="toc-text">4. 네트워크 통신(fetch)하는 법</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%EA%B8%B0%EB%B3%B8-%EC%82%AC%EC%9A%A9%EB%B2%95"><span class="toc-text">4.1 기본 사용법</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%EA%B0%80%EC%A7%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A4%80%EB%B9%84"><span class="toc-text">4.2 가짜 데이터 준비</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-CORS-%EC%97%90%EB%9F%AC"><span class="toc-text">4.3 CORS 에러</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-%EC%8B%A4%EC%8A%B5"><span class="toc-text">4.4 실습</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-AXIOS-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC"><span class="toc-text">5. AXIOS 라이브러리</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-%EC%84%A4%EC%B9%98"><span class="toc-text">5.1 설치</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-HTTP-%EB%A9%94%EC%84%9C%EB%93%9C-%EC%9A%94%EC%B2%AD%ED%95%98%EB%8A%94-%EB%B2%95"><span class="toc-text">5.2 HTTP 메서드 요청하는 법</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-3-%EC%82%AC%EC%9A%A9%EB%B2%95"><span class="toc-text">5.3 사용법</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-1-Promise%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EA%B8%B0%EB%B3%B8-%EC%82%AC%EC%9A%A9%EB%B2%95"><span class="toc-text">5.2.1 Promise를 이용한 기본 사용법</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-2-async-await%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EC%82%AC%EC%9A%A9%EB%B2%95"><span class="toc-text">5.2.2 async await를 이용한 사용법</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-4-%EC%8B%A4%EC%8A%B5"><span class="toc-text">5.4 실습</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-1-POST"><span class="toc-text">5.4.1 POST</span></a></li></ol></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Front-JS-Basic-15-%EB%8D%B0%EC%9D%B4%ED%84%B0%20%ED%98%B8%EC%B6%9C(api%2C%20json%2C%20ajax%2C%20fetch%2C%20axios) + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F05%2FFront-JS-Basic-15-callAPI%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/05/Front-JS-Basic-15-callAPI/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

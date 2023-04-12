@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Start-CSS- 11 - CSS Comment(주석) 방법론 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Start-CSS- 11 - CSS Comment(주석) 방법론</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-03-01 14:00:55
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/html-css-js/" title="HTML-CSS-JS"> <b>#</b> HTML-CSS-JS </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/html-css-js/css/" title="CSS"> <b>#</b> CSS </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/css/" title="CSS"> #CSS </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-주석-comment"><a href="#1-주석-comment" class="headerlink" title="1. 주석(comment)"></a>1. 주석(comment)</h1><p>CSS에서 주석은 <code>/*</code>으로 시작하여 <code>*/</code> 끝나며, 이 구문안에 위치한 모든 CSS 코드는 웹 브라우저에서 해석되지 않습니다.<br>주석의 처음과 끝만 정확하다면, 그 안에서는 주석을 어떻게 사용하든 기본적으로 정해진 제약이나 규칙은 없습니다.</p>
+<hr>
+<h1 id="2-기본-사용"><a href="#2-기본-사용" class="headerlink" title="2. 기본 사용"></a>2. 기본 사용</h1><p><strong>주석 본연의 기능에 충실하고, 최대한 사용을 줄이는 것을 선호하는 사람</strong>이면,<br>보통 소스코드를 단독으로 관리하고 다른 사람이 열람하거나 수정할 일이 없다면,<br>본인이 이미 코드의 전체 구조를 잘 파악하고 있기 때문에, 별도로 주석을 달지 않지요.</p>
+<p>특정 구문을 비활성화하 하거나 자주 사용하지 않는 코드를 사용했을 때,<br>다음에도 쉽게 기능을 파악하기 위해 각주를 달아 놓는 정도입니다.</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* @import url(&#x27;css/normalize.css&#x27;); */</span></span><br><span class="line"><span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="attribute">margin</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">0</span>;</span><br><span class="line">  <span class="attribute">box-sizing</span>: cover; <span class="comment">/*Ie9 이상 배경 비율로 곽 채우기*/</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="3-대분류로-사용"><a href="#3-대분류로-사용" class="headerlink" title="3. 대분류로 사용"></a>3. 대분류로 사용</h1><p>개인이 쓰더라도 문서를 이루고 있는 구조를 쉽게 파악하기 위해 헤더 용도로 사용하는 케이스입니다.<br>클래스명을 직접 작성하지 않은 다른 사람도 어느 정도 주석을 통해,<br>작성자의 네이밍 패턴을 이해할 수 있기 때문에 많이 선호하는 방식입니다.</p>
+<p>사이트 구조, 글 쓰기 페이지, 글 읽기 페이지와 같이 <strong>큰 그룹의 헤더에 주석을 사용</strong>하고,<br>그룹 내의 영역 분할이나 버튼, 썸네일 같은 요소들은 줄 바꿈(개행)을 통해 구분하곤 합니다.</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 목록 */</span></span><br><span class="line"><span class="selector-class">.blog-list</span> &#123;...&#125;</span><br><span class="line"><span class="selector-class">.blog-list</span> &gt; <span class="selector-tag">figure</span> &#123;...&#125;</span><br><span class="line"><span class="selector-class">.blog-list</span> &gt; <span class="selector-tag">figure</span> <span class="selector-tag">figcaption</span> &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.blog-list-header</span> &#123;...&#125;</span><br><span class="line"><span class="selector-class">.blog-list-header</span> &gt; <span class="selector-tag">ul</span> &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.blog-list-content</span> &#123;...&#125;</span><br><span class="line"><span class="selector-class">.blog-list-content</span> &gt; <span class="selector-tag">dt</span> + <span class="selector-tag">dd</span> &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 읽기 */</span></span><br><span class="line"><span class="selector-class">.blog-read</span> &#123; ... &#125;</span><br><span class="line"><span class="selector-class">.blog-read</span> &gt; <span class="selector-tag">figure</span> &#123;...&#125;</span><br><span class="line"><span class="selector-class">.blog-read</span> &gt; <span class="selector-tag">figure</span> <span class="selector-tag">figcaption</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<p>선택자(클래스나 아이디)*의 이름을 의미있고 직관적으로 짓는 것이야 기본이지만,<br><strong>주석을 최소화</strong> 할 때는, <strong>더욱 네이밍에 신경</strong>을 써야 합니다.<br>주석보다는 선택자의 이름으로 그 역할과 의미를 파악하기 때문입니다.</p>
+<hr>
+<h1 id="4-소분류로-사용"><a href="#4-소분류로-사용" class="headerlink" title="4. 소분류로 사용"></a>4. 소분류로 사용</h1><p><strong>스타일시트를 여러 사람과 공유하는 경우</strong>나,<br><strong>선택자 이름을 압축해서 지은 경우</strong>, 각 코드 그룹의 역할을 더 명확하고 빠르게 알기 위해 코드 그룹의 역할별로 사용하기도 합니다.<br>선택자 이름을 압축하는 것은, HTML 문서에서 선택자를 모듈처럼 인라인으로 끼워넣을 때 주로 사용하는데,<br>이름의 의미가 불명확하기 때문에 주석으로 그 역할을 알려줍니다.</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Font Awesome 셋팅 */</span></span><br><span class="line"><span class="selector-class">.fa</span> &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 아이콘 스타일 */</span></span><br><span class="line"><span class="selector-class">.fa-default</span> &#123;...&#125;</span><br><span class="line"><span class="selector-class">.fa-spin</span> &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 버튼 정렬 */</span></span><br><span class="line"><span class="selector-class">.fa-fl</span> &#123;...&#125;</span><br><span class="line"><span class="selector-class">.fa-fr</span> &gt; <span class="selector-tag">input</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="5-서식화하여-사용"><a href="#5-서식화하여-사용" class="headerlink" title="5. 서식화하여 사용"></a>5. 서식화하여 사용</h1><p><strong>주석을 대분류, 중분류, 소분류</strong>로 나누어, <strong>스타일시트 문서 자체를 서식화</strong>하여 사용하기도 합니다.<br>많은 페이지와 요소들을 가지는 각종 CMS의 테마나 스킨에서 사용자의 편의를 고려할 때 많이 사용됩니다.<br><strong>각 분류에 쓰이는 주석의 모양은 다양</strong>합니다. 직접 모양을 만들어서 사용해도 좋습니다.<br>여기서는 흔히 만나게 되는 주석들을 소개해 봅니다.</p>
+<ul>
+<li><code>대분류</code> : 고유 사이트 스타일, 외부 플러그인 스타일 등</li>
+<li><code>중분류</code> : 대분류에 속한 요소들을 페이지나 메뉴, 미디어 쿼리 단위로 분류</li>
+<li><code>소분류</code> : 중분류에 속한 요소들을 역할별로 분류</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* ==========================================================================</span></span><br><span class="line"><span class="comment">   대분류용 주석</span></span><br><span class="line"><span class="comment">   ========================================================================== */</span></span><br><span class="line">   </span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 중분류용 주석</span></span><br><span class="line"><span class="comment"> * --------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 소분류용 주석 */</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="5-1-예시"><a href="#5-1-예시" class="headerlink" title="5.1 예시"></a>5.1 예시</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* ==========================================================================</span></span><br><span class="line"><span class="comment">   사이트 구조</span></span><br><span class="line"><span class="comment">   ========================================================================== */</span></span><br><span class="line"><span class="selector-tag">header</span> &#123;...&#125;</span><br><span class="line"><span class="selector-tag">aside</span></span><br><span class="line"><span class="selector-tag">footer</span> &#123;...&#125;</span><br><span class="line"><span class="selector-id">#container</span> &#123;...&#125;</span><br><span class="line"><span class="selector-tag">section</span><span class="selector-class">.promotion</span> &#123;...&#125;</span><br><span class="line"><span class="selector-tag">section</span><span class="selector-class">.widgets</span> &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 소개 페이지</span></span><br><span class="line"><span class="comment"> * --------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="selector-id">#page-about-us</span> &#123;...&#125;</span><br><span class="line"><span class="selector-id">#page-about-us</span><span class="selector-pseudo">:before</span>,</span><br><span class="line"><span class="selector-id">#page-about-us</span><span class="selector-pseudo">:after</span> &#123;...&#125; <span class="comment">/*floating*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 서브메뉴 */</span></span><br><span class="line"><span class="selector-tag">aside</span><span class="selector-class">.about-us</span> &#123;...&#125;</span><br><span class="line"><span class="selector-tag">aside</span><span class="selector-class">.about-us</span> &gt; <span class="selector-tag">ul</span> &#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 내 소개 */</span></span><br><span class="line"><span class="selector-tag">figure</span><span class="selector-class">.profile</span> &#123;...&#125;</span><br><span class="line"><span class="selector-tag">figure</span><span class="selector-class">.profile</span> &gt; <span class="selector-tag">img</span> &#123;...&#125;</span><br><span class="line"><span class="selector-tag">figure</span><span class="selector-class">.profile</span> &gt; <span class="selector-tag">figcaption</span> &#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="6-스타일시트-인덱싱하기"><a href="#6-스타일시트-인덱싱하기" class="headerlink" title="6. 스타일시트 인덱싱하기"></a>6. 스타일시트 인덱싱하기</h1><p>서식화 된 스타일시트에 목차를 추가해 전체적인 문서 구조를 파악할 수 있도록 인덱싱 할 수도 있습니다.<br>하지만, 문서가 수정되는 와중에 역할에 따라 순서를 바꿔야 하는 경우가 많으므로,<br><strong>최대한 작업이 완료된 후에 배포용도로 사용</strong>하는 것이 좋습니다.</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Table of Contents:</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 1.0 - 사이트 구조</span></span><br><span class="line"><span class="comment"> * 1.1 - 소개 페이지</span></span><br><span class="line"><span class="comment"> * 1.2 - 게시판</span></span><br><span class="line"><span class="comment"> * 2.0 - jQeury 플러그인</span></span><br><span class="line"><span class="comment"> * 3.0 - 미디어 쿼리</span></span><br><span class="line"><span class="comment"> * --------------------------------------------------------------------------</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* ==========================================================================</span></span><br><span class="line"><span class="comment">   1.0 사이트 구조</span></span><br><span class="line"><span class="comment">   ========================================================================== */</span></span><br><span class="line"><span class="selector-id">#page-about-us</span> &#123;...&#125;</span><br><span class="line"><span class="selector-id">#page-about-us</span><span class="selector-pseudo">:before</span>,</span><br><span class="line"><span class="selector-id">#page-about-us</span><span class="selector-pseudo">:after</span> &#123;...&#125; <span class="comment">/*floating*/</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="7-각주-달기"><a href="#7-각주-달기" class="headerlink" title="7. 각주 달기"></a>7. 각주 달기</h1><p>단일 선택자나 속성에 각주를 달 수도 있습니다.<br><strong>속성 하나하나의 역할과 의미를 정확히 알아야 하는 경우 사용</strong>되곤 하는데,<br>주로 웹 브라우저에 자체 정의된 User Agent 속성을 초기화하거나,<br>미리 제작된 CSS 코드의 역할을 분명히 알리기 위해 부연설명을 달 때 사용합니다.</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 1. 부모로부터 서체를 상속받지 못하는 브라우저를 해결.</span></span><br><span class="line"><span class="comment"> * 2. 부모로부터 글자 크기를 상속받지 못하는 브라우저를 해결.</span></span><br><span class="line"><span class="comment"> * 3. Firefox 4 이상, 사파리 5와 크롬에서 마진을 다르게 표현하는 문제 해결.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="selector-tag">button</span>, <span class="selector-tag">input</span>, select, <span class="selector-tag">textarea</span> &#123;</span><br><span class="line">    <span class="attribute">font-family</span>: inherit; <span class="comment">/* 1 */</span></span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">100%</span>; <span class="comment">/* 2 */</span></span><br><span class="line">    <span class="attribute">margin</span>: <span class="number">0</span>; <span class="comment">/* 3 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="8-마치며"><a href="#8-마치며" class="headerlink" title="8. 마치며"></a>8. 마치며</h2><p>주석을 효율적으로 잘 사용하여 스타일시트 문서를 예쁘게 관리하세요.<br><strong>무엇이든 과하면 안 좋은 법, 문서 자체를 치장하기 보다는 기능적인 면을 잘 살려서 사용</strong>한다면,<br>보는 사람 쓰는 사람 모두에게 기분 좋은 코드가 되겠죠.</p>
+<p>한편, <a target="_blank" rel="noopener" href="http://necolas.github.com/normalize.css/">Normalize</a>나 <a target="_blank" rel="noopener" href="http://html5boilerplate.com/">HTML Boiler Plate</a>와 같은 초기화 소스의 스타일시트는 원리 이해를 돕고자 주석이 본래 소스보다 더 많이 사용되기도 합니다. 만일 소스 파일의 주석이 거슬리거나 파일 다이어트를 즐기는 사람은 <a target="_blank" rel="noopener" href="http://dean.edwards.name/packer/">스크립트 압축 사이트</a>에서 주석 및 공백을 제거한 후, Adobe Dream Weaver의 자동 소스 포맷팅 기능을 통해 다시 보기좋은 상태로 정렬할 수 있습니다.</p>
+<hr>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://beautifulcss.com/archives/296">Beautiful CSS » CSS 주석문 활용하기</a></li>
+</ul>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/03/01/Front-Start-CSS-10-Convention/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-03-01 14:00:55
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/html-css-js/" title="HTML-CSS-JS"> <b>#</b> HTML-CSS-JS </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/html-css-js/css/" title="CSS"> <b>#</b> CSS </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/css/" title="CSS"> #CSS </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/03/01/Front-Start-HTML-WAI-ARIA/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%EC%A3%BC%EC%84%9D-comment"><span class="toc-text">1. 주석(comment)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%EA%B8%B0%EB%B3%B8-%EC%82%AC%EC%9A%A9"><span class="toc-text">2. 기본 사용</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%EB%8C%80%EB%B6%84%EB%A5%98%EB%A1%9C-%EC%82%AC%EC%9A%A9"><span class="toc-text">3. 대분류로 사용</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%EC%86%8C%EB%B6%84%EB%A5%98%EB%A1%9C-%EC%82%AC%EC%9A%A9"><span class="toc-text">4. 소분류로 사용</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%EC%84%9C%EC%8B%9D%ED%99%94%ED%95%98%EC%97%AC-%EC%82%AC%EC%9A%A9"><span class="toc-text">5. 서식화하여 사용</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-%EC%98%88%EC%8B%9C"><span class="toc-text">5.1 예시</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%EC%8A%A4%ED%83%80%EC%9D%BC%EC%8B%9C%ED%8A%B8-%EC%9D%B8%EB%8D%B1%EC%8B%B1%ED%95%98%EA%B8%B0"><span class="toc-text">6. 스타일시트 인덱싱하기</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-%EA%B0%81%EC%A3%BC-%EB%8B%AC%EA%B8%B0"><span class="toc-text">7. 각주 달기</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%EB%A7%88%EC%B9%98%EB%A9%B0"><span class="toc-text">8. 마치며</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Start-CSS-%2011%20-%20CSS%20Comment(%EC%A3%BC%EC%84%9D)%20%EB%B0%A9%EB%B2%95%EB%A1%A0 + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F03%2F01%2FFront-Start-CSS-11-Comment%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/03/01/Front-Start-CSS-11-Comment/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

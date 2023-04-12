@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Front-TS-Basic-08-제너릭 (일반적인, 포괄적인) 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Front-TS-Basic-08-제너릭 (일반적인, 포괄적인)</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-08 17:36:18
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/ts/" title="TS"> <b>#</b> TS </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/ts/basic/" title="Basic"> <b>#</b> Basic </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/ts/" title="TS"> #TS </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-제너릭이-필요한-이유"><a href="#1-제너릭이-필요한-이유" class="headerlink" title="1. 제너릭이 필요한 이유"></a>1. 제너릭이 필요한 이유</h1><ul>
+<li>cf. generate &#x3D; 발생, 만들다</li>
+<li>cf. general &#x3D; 일반[보편]적인</li>
+<li>cf. generic &#x3D; 포괄적인, 이름이 붙지 않은 채 판매되는</li>
+</ul>
+<p>함수에 파라미터를 입력할 떄, 타입을 입력할 수도 있습니다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// array 입력하면 첫 자료 return 해주는 함수</span></span><br><span class="line"><span class="keyword">function</span> 함수(<span class="attr">x</span>: <span class="built_in">unknown</span>[]) &#123;</span><br><span class="line">  <span class="keyword">return</span> x[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a = 함수([<span class="number">4</span>, <span class="number">2</span>]);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a); <span class="comment">// 4 -&gt; 숫자 타입이 아니라 unknownx타입</span></span><br></pre></td></tr></table></figure>
+
+<p>마우스로 a의 타입을 확인해보면 숫자타입이 아니라 unknown타입입니다.<br>중요한 점은 <strong>타입스크립트는 타입을 알아서 변경해주지 않습니다.</strong></p>
+<ul>
+<li>숫자가 return 되면 “number 타입”,</li>
+<li>문자가 return 되면 “string 타입”이라고 안해줌</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> 함수(<span class="attr">x</span>: <span class="built_in">unknown</span>[]) &#123;</span><br><span class="line">  <span class="keyword">return</span> x[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a = 함수([<span class="number">4</span>, <span class="number">2</span>]);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a + <span class="number">1</span>); <span class="comment">// unknownx타입에 숫자 연산을 해줘서 에러</span></span><br></pre></td></tr></table></figure>
+
+<p>그래서 a는 사람이 보기에 분명히 숫자가 맞지만, 아직 타입은 unknown 타입이니까 에러가 납니다.</p>
+<p>그래서 함수에 <code>불확실한 unknown, any, union</code>타입을 입력하면,<br>나오는 값도 <strong>unknown, any, union 타입</strong> 이라, 이것때문에 일어나는 문제들이 있습니다.</p>
+<ul>
+<li>e.g. 함수가 10을 return 하는데 타입이 unknown 이라서 맘대로 조작못할 때</li>
+</ul>
+<p>해결책은</p>
+<ol>
+<li>narrowing 잘해서 해결하기 (귀찮음)</li>
+<li>타입을 파라미터로 함수에 미리 입력하는 방법<ul>
+<li>이렇게 하면, 원하는 곳에 가변적으로 타입지정 가능</li>
+<li>이를 <code>제너릭(generic)</code>이라 부름</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h1 id="2-제너릭-Generic"><a href="#2-제너릭-Generic" class="headerlink" title="2. 제너릭 (Generic)"></a>2. 제너릭 (Generic)</h1><p>함수에 <code>&lt;&gt;</code>를 입력하면 <strong>파라미터를 또 입력</strong>할 수 있습니다.</p>
+<ul>
+<li>여기 안에는 타입만 입력해야 합니다.</li>
+<li>즉, <code>제너릭 === 타입파라미터</code> 문법입니다.</li>
+<li><strong>클래스나 함수, 인터페이스를 다양한 타입으로 재사용</strong></li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  2. 함수( x : number[] ) :number &#123; &#125;</span></span><br><span class="line"><span class="keyword">function</span> 함수&lt;<span class="title class_">MyType</span>&gt;(<span class="attr">x</span>: <span class="title class_">MyType</span>[]): <span class="title class_">MyType</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> x[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1. 이제 number라고 입력하면 MyType에 number가 들어감</span></span><br><span class="line"><span class="keyword">let</span> a = 함수&lt;<span class="built_in">number</span>&gt;([<span class="number">4</span>, <span class="number">2</span>]);</span><br><span class="line"><span class="keyword">let</span> b = 함수&lt;<span class="built_in">string</span>&gt;([<span class="string">&#x27;kim&#x27;</span>, <span class="string">&#x27;park&#x27;</span>]);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Generic을 쓰면 개발자가 정한 타입을 return 값으로 뱉는 함수를 제작 가능</strong></li>
+<li>타입파라미터는 자유롭게 작명 가능, 보통 <code>&lt;T&gt;</code>이런걸로 많이 작명함</li>
+<li><strong>일반 함수파라미터 처럼 2개 이상 넣기도 가능</strong></li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> 함수&lt;<span class="title class_">MyType</span>&gt;(<span class="attr">x</span>: <span class="title class_">MyType</span>[]): <span class="title class_">MyType</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> x[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a = 함수([<span class="number">4</span>, <span class="number">2</span>]); <span class="comment">// a = 4</span></span><br><span class="line"><span class="keyword">let</span> b = 함수([<span class="string">&#x27;kim&#x27;</span>, <span class="string">&#x27;park&#x27;</span>]); <span class="comment">// b = kim</span></span><br></pre></td></tr></table></figure>
+
+<p>위 코드처럼, 함수 사용시 꼭 &lt;&gt; 안써도 알아서 기본 타입을 유추해서 집어넣어줍니다</p>
+<hr>
+<h1 id="3-인터페이스의-제너릭"><a href="#3-인터페이스의-제너릭" class="headerlink" title="3. 인터페이스의 제너릭"></a>3. 인터페이스의 제너릭</h1><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Mobile</span>&lt;T&gt; &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">price</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="attr">option</span>: T; <span class="comment">// option을 제너릭 타입으로 받음</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">m1</span>: <span class="title class_">Mobile</span>&lt;<span class="built_in">object</span>&gt; = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;아이폰 14&#x27;</span>,</span><br><span class="line">  <span class="attr">price</span>: <span class="number">100</span>,</span><br><span class="line">  <span class="comment">// 객체 형태로</span></span><br><span class="line">  <span class="attr">option</span>: &#123;</span><br><span class="line">    <span class="attr">color</span>: <span class="string">&#x27;white&#x27;</span>,</span><br><span class="line">    <span class="attr">coupon</span>: <span class="literal">false</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">m2</span>: <span class="title class_">Mobile</span>&lt;<span class="built_in">string</span>&gt; = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;갤럭시 22&#x27;</span>,</span><br><span class="line">  <span class="attr">price</span>: <span class="number">200</span>,</span><br><span class="line">  <span class="attr">option</span>: <span class="string">&#x27;good&#x27;</span>, <span class="comment">// 문자 형태로</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="4-제너릭-타입-제한"><a href="#4-제너릭-타입-제한" class="headerlink" title="4. 제너릭 타입 제한"></a>4. 제너릭 타입 제한</h1><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> 함수&lt;<span class="title class_">MyType</span>&gt;(<span class="attr">x</span>: <span class="title class_">MyType</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> x - <span class="number">1</span>; <span class="comment">// x 타입이 불확실하니까 에러</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// The left-hand side of an arithmetic operation must be of type &#x27;any&#x27;, &#x27;number&#x27;,</span></span><br><span class="line">  <span class="comment">// &#x27;bigint&#x27; or an enum type.ts(2362)</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a = 함수&lt;<span class="built_in">number</span>&gt;(<span class="number">100</span>);</span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;MyType&gt;</code>이라는 곳에 <strong>number타입 말고도 다른 타입을 집어넣을 수도 있어서</strong><br>미리 숫자(- 1) 연산을 미리 방지해줍니다.</p>
+<p>narrowing를 이용해서 타입을 제한해도 되나,<br>MyType에 집어넣을 수 있는 타입을 미리 제한하는 것도 하나의 해결책입니다.</p>
+<hr>
+<h2 id="4-1-Type-constraints-제약조건-extends"><a href="#4-1-Type-constraints-제약조건-extends" class="headerlink" title="4.1 Type constraints(제약조건) : extends"></a>4.1 Type constraints(제약조건) : extends</h2><p><code>extends</code> 문법을 쓰면 <strong>넣을 수 있는 타입을 제한</strong>할 수 있습니다.<br>그래서 <code>MyType extends number</code>라고 쓰면, number타입만 받겠다는 의미입니다.</p>
+<p><code>interface</code> 문법에 쓰는 <code>extends</code>와는 살짝 다른 느낌입니다.</p>
+<ul>
+<li>interface의 <code>extends</code> : 복사</li>
+<li>generic의 <code>extends</code> : number와 비슷한 속성을 가지고 있는지 if 문으로 체크</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MyType이 우측에 있는 속성을 가지고 있는지 제한, number인지 체크</span></span><br><span class="line"><span class="keyword">function</span> 함수&lt;<span class="title class_">MyType</span> <span class="keyword">extends</span> <span class="built_in">number</span>&gt;(<span class="attr">x</span>: <span class="title class_">MyType</span>) &#123;</span><br><span class="line">  <span class="comment">// return 타입지정을 안한 이유는 `숫자 - 숫자`를 했으니 알아서 number 타입이 됨</span></span><br><span class="line">  <span class="keyword">return</span> x - <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a = 함수&lt;<span class="built_in">number</span>&gt;(<span class="number">100</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a); <span class="comment">// 99</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="5-커스텀-타입도-제한-가능"><a href="#5-커스텀-타입도-제한-가능" class="headerlink" title="5. 커스텀 타입도 제한 가능"></a>5. 커스텀 타입도 제한 가능</h1><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> 함수&lt;<span class="title class_">MyType</span>&gt;(<span class="attr">x</span>: <span class="title class_">MyType</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> x.<span class="property">length</span>; <span class="comment">// 2. 에러 : length 조작을 일단 방지</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1. string을 집어넣었지만 나중에 number타입을 실수로 집어넣으면?</span></span><br><span class="line"><span class="keyword">let</span> a = 함수&lt;<span class="built_in">string</span>&gt;(<span class="string">&#x27;hello&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>그래서 <code>extend</code>로 이를 제한해주면 됩니다. <code>interface</code>로 만들어둔 타입을 <code>extends</code>해봅시다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 커스텀 타입으로도 타입파라미터 제한 가능</span></span><br><span class="line"><span class="keyword">interface</span> lengthCheck &#123;</span><br><span class="line">  <span class="attr">length</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// MyType이 lengthCheck 속성을 가지고 있는지 체크</span></span><br><span class="line"><span class="keyword">function</span> 함수&lt;<span class="title class_">MyType</span> <span class="keyword">extends</span> lengthCheck&gt;(<span class="attr">x</span>: <span class="title class_">MyType</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> x.<span class="property">length</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a = 함수&lt;<span class="built_in">string</span>&gt;(<span class="string">&#x27;hello&#x27;</span>); <span class="comment">// 가능</span></span><br><span class="line"><span class="keyword">let</span> b = 함수&lt;<span class="built_in">number</span>&gt;(<span class="number">1234</span>); <span class="comment">// 에러</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="6-예제"><a href="#6-예제" class="headerlink" title="6. 예제"></a>6. 예제</h1><p>문자를 집어넣으면 문자의 개수, array를 집어넣으면 array안의 자료 개수를 콘솔창에 출력해주는 함수</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> 함수&lt;<span class="title class_">MyType</span> <span class="keyword">extends</span> <span class="built_in">string</span> | <span class="built_in">string</span>[]&gt;(<span class="attr">x</span>: <span class="title class_">MyType</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(x.<span class="property">length</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">함수&lt;<span class="built_in">string</span>&gt;(<span class="string">&#x27;hello&#x27;</span>); <span class="comment">// 5</span></span><br><span class="line">함수&lt;<span class="built_in">string</span>[]&gt;([<span class="string">&#x27;kim&#x27;</span>, <span class="string">&#x27;park&#x27;</span>]); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/08/Front-TS-Basic-07-Class/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-08 17:36:18
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/ts/" title="TS"> <b>#</b> TS </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/ts/basic/" title="Basic"> <b>#</b> Basic </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/ts/" title="TS"> #TS </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/09/Front-TS-Basic-09-UtilityType/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%EC%A0%9C%EB%84%88%EB%A6%AD%EC%9D%B4-%ED%95%84%EC%9A%94%ED%95%9C-%EC%9D%B4%EC%9C%A0"><span class="toc-text">1. 제너릭이 필요한 이유</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%EC%A0%9C%EB%84%88%EB%A6%AD-Generic"><span class="toc-text">2. 제너릭 (Generic)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4%EC%9D%98-%EC%A0%9C%EB%84%88%EB%A6%AD"><span class="toc-text">3. 인터페이스의 제너릭</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%EC%A0%9C%EB%84%88%EB%A6%AD-%ED%83%80%EC%9E%85-%EC%A0%9C%ED%95%9C"><span class="toc-text">4. 제너릭 타입 제한</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-Type-constraints-%EC%A0%9C%EC%95%BD%EC%A1%B0%EA%B1%B4-extends"><span class="toc-text">4.1 Type constraints(제약조건) : extends</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%EC%BB%A4%EC%8A%A4%ED%85%80-%ED%83%80%EC%9E%85%EB%8F%84-%EC%A0%9C%ED%95%9C-%EA%B0%80%EB%8A%A5"><span class="toc-text">5. 커스텀 타입도 제한 가능</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%EC%98%88%EC%A0%9C"><span class="toc-text">6. 예제</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Front-TS-Basic-08-%EC%A0%9C%EB%84%88%EB%A6%AD%20(%EC%9D%BC%EB%B0%98%EC%A0%81%EC%9D%B8%2C%20%ED%8F%AC%EA%B4%84%EC%A0%81%EC%9D%B8) + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F08%2FFront-TS-Basic-08-Generics%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/08/Front-TS-Basic-08-Generics/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

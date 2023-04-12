@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Front-JS-Basic-01-소개 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Front-JS-Basic-01-소개</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2022-12-20 16:09:01
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/js/" title="JS"> <b>#</b> JS </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/js/basic/" title="Basic"> <b>#</b> Basic </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/js/" title="JS"> #JS </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-JavaScript란"><a href="#1-JavaScript란" class="headerlink" title="1. JavaScript란?"></a>1. JavaScript란?</h1><p>JavaScript &#x3D; HTML을 동적으로 조작하기 위한 언어</p>
+<hr>
+<h1 id="2-JavaScript의-역사"><a href="#2-JavaScript의-역사" class="headerlink" title="2. JavaScript의 역사"></a>2. JavaScript의 역사</h1><p>1989년 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%ED%8C%80_%EB%B2%84%EB%84%88%EC%8A%A4%EB%A6%AC">팀 버너스리</a>가 최초의 브라우저를 개발했습니다. (HTML 설계 및 구현, HTTP 프로토콜, URL 창시)</p>
+<p>1990년대 중반, 웹 브라우저 시장의 약 90%를 장악하던 넷스케이프 커뮤니케이션즈(이하 넷스케이프)</p>
+<ul>
+<li>이 당시 웹은 HTML로만 이루어져 정적인 기능만 제공 (링크만 존재하는 워드 느낌)</li>
+<li>로직의 필요성을 느낀 넷 스케이프 사는 프로그래밍 언어를 브라우저에 내장하기로 결정</li>
+</ul>
+<p>넷 스케이프에서 일하던 <a target="_blank" rel="noopener" href="https://ko.wikipedia.org/wiki/%EB%B8%8C%EB%A0%8C%EB%8D%98_%EC%95%84%EC%9D%B4%ED%81%AC">브렌던 아이크</a>가 웹 브라우저인 네비게이터2.0에 <strong>스킴</strong>이라는 프로그래밍 언어를 내장하려다,<br>스캄이 맘에 안들어서 10일만에 <code>모카(Mocha)</code>라는 언어를 창시하고 네비게이터2.0에 탑재함.</p>
+<ul>
+<li>그 해 9월, Mocha를 <code>LiveScript</code>로 이름 변경</li>
+<li>Java가 큰 인기를 끌자, <strong>단순히 마케팅 효과를 얻기 위해</strong> 이름을 <code>JavaScript</code>로 변경</li>
+<li>즉, JavasScript는 10일 만에 개발되었다. 그래서 현재까지 기능을 보완하는 식으로 발전해오고 있다.</li>
+</ul>
+<p>이후 웹 페이지 동작을 향상시키는 경량의 프로그래밍 언어가 인기를 끌자,<br>Microsoft사 에서 IE 3.0에서 동작하는 ‘JScript’라는 매우 비슷한 언어를 만들었고,<br>다양한 브라우저들이 JS 문법을 만듭니다.</p>
+<p>이렇게 되자 브라우저 간의 호환성(크로스 브라우징) 문제가 발생해 표준화의 필요성이 대두되었습니다.<br>이를 위해 1996년 11월, 넷스케이프 사는 ECMA 인터네셔널에 자바스크립트의 표준화를 요청합니다.</p>
+<blockquote>
+<p>💡 ECMA 인터네셔널 (Ecma International) : 정보 통신 시스템을 표준화하는 비영리 협회</p>
+</blockquote>
+<p>1997년 7월, JS의 표준화 초판이 완성되었고 <strong>2015년도부터 매해 새로운 문법이 추가되어 배포</strong>되고 있습니다.<br>ECMA Script는 ECMA 인터내셔널에서 정의한 ECMA-262 기술 규격을 토대로 만든 표준 스크립트 프로그래밍 언어</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.ecma-international.org/">ECMA 인터내셔널</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/tc39/proposals">ECMAScript 버전별 특징</a></li>
+</ul>
+<hr>
+<h1 id="3-JavaScript-버전"><a href="#3-JavaScript-버전" class="headerlink" title="3. JavaScript 버전"></a>3. JavaScript 버전</h1><p>ES6 이전까지의 문법은 여러 불편함이 존재했는데,<br>ES2015 (ES6, 2015년)부터 불편함을 해결해주는 문법들이 대거 추가되어 가독성과 유지보수성이 향상되었습니다.</p>
+<p>그래서 ES6+ 이상의 버전들을 <code>모던 JavaScript</code>라고 부릅니다.</p>
+<hr>
+<h2 id="3-1-버전별-주요-개념"><a href="#3-1-버전별-주요-개념" class="headerlink" title="3.1 버전별 주요 개념"></a>3.1 버전별 주요 개념</h2><ol>
+<li><code>ES1 (1997)</code> : 초판</li>
+<li><code>ES2 (1998)</code> : ISO&#x2F;IEC 16262 국제 표준</li>
+<li><code>ES3 (1999)</code> : 정규 표현식, <code>try...catch</code></li>
+<li><code>ES5 (2009)</code><ul>
+<li>HTML5와 함께 출현한 표준안</li>
+<li>JSON</li>
+<li>strict mode</li>
+<li>접근자 프로퍼티</li>
+<li>프로퍼티 어트리뷰트 제어</li>
+<li>향상된 배열 조작 기능(forEach map, filter, reduce, some, every)</li>
+</ul>
+</li>
+<li><code>ES6 (2015), ECMAScript</code><ul>
+<li>let&#x2F;const</li>
+<li>클래스</li>
+<li>화살표 함수</li>
+<li>템플릿 리터럴</li>
+<li>디스트릭처링 할당</li>
+<li>스프레드 문법</li>
+<li>rest 파라미터 심벌</li>
+<li>프로미스</li>
+<li>Map&#x2F;Set, 이터러블</li>
+<li><code>for...of</code></li>
+<li>제너레이터</li>
+<li>Proxy</li>
+<li>모듈 import&#x2F;export</li>
+</ul>
+</li>
+<li><code>ES7 (2016)</code><ul>
+<li>지수(<code>**</code>)연산자</li>
+<li><code>Array.prototype.includes</code></li>
+<li><code>String.prototype.includes</code></li>
+</ul>
+</li>
+<li><code>ES8 (2017)</code><ul>
+<li>async&#x2F;await</li>
+<li>Object 정적 메서드(<code>Object.values</code>, <code>Object.entries</code>, <code>Object.getOwnPropertyDescriptors</code>)</li>
+</ul>
+</li>
+<li><code>ES9 (2018)</code><ul>
+<li>Object rest&#x2F;spread 프로퍼티</li>
+<li><code>Promise.prototype.finally</code>, <code>async generator</code>, <code>for await...of</code></li>
+</ul>
+</li>
+<li><code>ES10 (2019)</code><ul>
+<li><code>Object.fromEntries</code></li>
+<li>Array.prototype.flat, Array.prototype.flatMap, optional catch binding</li>
+</ul>
+</li>
+<li><code>ES11 (2020)</code><ul>
+<li><code>String.prototype.matchAll</code>, <code>BigInt, globalThis</code>, <code>Promise.allSettled</code></li>
+<li>null 병합 연산자, 옵셔널 체이닝 연산자, <code>for...in enumeration order</code></li>
+</ul>
+</li>
+</ol>
+<p>cf.</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.ecma-international.org/">ECMA 인터내셔널</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/tc39/proposals">ECMAScript 버전별 특징</a></li>
+</ul>
+<hr>
+<h1 id="4-JavaScript-Runtime-실행-방법"><a href="#4-JavaScript-Runtime-실행-방법" class="headerlink" title="4. JavaScript Runtime (실행 방법)"></a>4. JavaScript Runtime (실행 방법)</h1><p>JavaScript 언어가 실행될 수 있는 환경을 <code>JavaScript runtime</code>이라고 부릅니다.<br>자바스크립트는 다양한 환경 등에서 실행이 가능한데, 브라우저와 Node.js이 대표적입니다.</p>
+<hr>
+<h2 id="4-1-Browser"><a href="#4-1-Browser" class="headerlink" title="4.1 Browser"></a>4.1 Browser</h2><p>브라우저 마다 각기 다른 자바스크립트 엔진이 존재하며, 종류는 다음과 같습니다.</p>
+<ul>
+<li><code>V8 (Google Chrome, Opera, Edge)</code><ul>
+<li>2008년 등장한 구글의 V8 엔진은 가장 빠른 성능을 자랑</li>
+<li>Node.js, Chrome 브라우저 등에서 사용</li>
+<li><a target="_blank" rel="noopener" href="https://v8.dev/">v8 공식사이트</a>, C++로 구성</li>
+</ul>
+</li>
+<li><code>spidermonkey (Firefox)</code> <ul>
+<li>넷스케이프 사에 의해 개발이 된 최초의 자바스크립트 엔진</li>
+<li>Mozilla Firefox에서 사용</li>
+</ul>
+</li>
+<li><code>JavaScript Core (IOS, Safari)</code><ul>
+<li>애플이 사파리를 위해 개발한 엔진</li>
+<li>Nitro 라고도 부름</li>
+</ul>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://kangax.github.io/compat-table/es6/">브라우저별 ES6 지원현황</a></p>
+<p>대부분의 브라우저에서 ES6를 지원하지만, Internet Explorer는 지원하지 않습니다.<br>22년 6월 15일 Explorer 지원이 중단되므로 사실상 거의 다 된다고 보면 됩니다.</p>
+<hr>
+<h2 id="4-2-Node-js"><a href="#4-2-Node-js" class="headerlink" title="4.2 Node.js"></a>4.2 Node.js</h2><p>Node.js는 구글 V8엔진으로 빌드되어, 브라우저 이외의 환경에서도 JS를 동작하게 해주는 Runtime입니다.</p>
+<ul>
+<li>주로 서버 측 개발을 하는데 사용</li>
+<li>라이언 달(Ryan Dahl)의 ‘비동기로 작업을 처리할 수 없을까?’ 라는 발상에서부터 개발되어 2009년 세상에 공개<ul>
+<li>라이언 달은 현재 Deno 런타임 환경 개발</li>
+</ul>
+</li>
+<li>서버 사이드 에플리케이션 개발에 필요한 모듈이나 HTTP, 파일 시스템과 같은 내장 API를 제공<ul>
+<li>모듈의 설치, 업데이트, 제거, 수정 등의 작업을 자동 관리해 주는 기능을 가진 툴을 <strong>Package Manager</strong>라고 부름</li>
+<li>Node.js의 package manager로는 <strong>npm</strong>, <strong>yarn</strong>이 존재</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://nodejs.org/en/">Nodejs 공식사이트</a></li>
+</ul>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2022/12/15/Roadmap-Front/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2022-12-20 16:09:01
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/js/" title="JS"> <b>#</b> JS </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/js/basic/" title="Basic"> <b>#</b> Basic </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/js/" title="JS"> #JS </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2022/12/20/Front-JS-Basic-02-Variable/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-JavaScript%EB%9E%80"><span class="toc-text">1. JavaScript란?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-JavaScript%EC%9D%98-%EC%97%AD%EC%82%AC"><span class="toc-text">2. JavaScript의 역사</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-JavaScript-%EB%B2%84%EC%A0%84"><span class="toc-text">3. JavaScript 버전</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%EB%B2%84%EC%A0%84%EB%B3%84-%EC%A3%BC%EC%9A%94-%EA%B0%9C%EB%85%90"><span class="toc-text">3.1 버전별 주요 개념</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-JavaScript-Runtime-%EC%8B%A4%ED%96%89-%EB%B0%A9%EB%B2%95"><span class="toc-text">4. JavaScript Runtime (실행 방법)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-Browser"><span class="toc-text">4.1 Browser</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-Node-js"><span class="toc-text">4.2 Node.js</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Front-JS-Basic-01-%EC%86%8C%EA%B0%9C + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2022%2F12%2F20%2FFront-JS-Basic-01-Introduce%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2022/12/20/Front-JS-Basic-01-Introduce/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

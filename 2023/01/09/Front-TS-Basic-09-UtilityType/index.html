@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Front-TS-Basic-09-Type-유틸리티 타입 (Utility Type) 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Front-TS-Basic-09-Type-유틸리티 타입 (Utility Type)</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-09 02:26:18
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/ts/" title="TS"> <b>#</b> TS </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/ts/basic/" title="Basic"> <b>#</b> Basic </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/ts/" title="TS"> #TS </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-keyof"><a href="#1-keyof" class="headerlink" title="1. keyof"></a>1. keyof</h1><p>유니온 타입을 사용한 것과 동일한 결과를 변수에 넣을 수 있음</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">age</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="attr">gender</span>: <span class="string">&#x27;m&#x27;</span> | <span class="string">&#x27;f&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// User 인터페이스의 키 값중 하나를 불러올 때  사용</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">UserKey</span> = keyof <span class="title class_">User</span>; <span class="comment">// &#x27;id&#x27; | &#x27;name&#x27; | &#x27;age&#x27; | &#x27;gender&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">uk</span>: <span class="title class_">UserKey</span> = <span class="string">&#x27;id&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 다음처럼 없는 값을 넣으면 에러가 납니다.</span></span><br><span class="line"><span class="comment">// const uk: UserKey = &#x27;&#x27;;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="2-partial-lt-T-gt"><a href="#2-partial-lt-T-gt" class="headerlink" title="2. partial&lt;T&gt;"></a>2. partial<code>&lt;T&gt;</code></h1><p>다음 코드처럼 인터페이스에 선언한 속성 값들 중 일부 속성만 넣으면 에러납니다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">age</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="attr">gender</span>: <span class="string">&#x27;m&#x27;</span> | <span class="string">&#x27;f&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 인터페이스에 선언한 속성 값들 중 일부 속성만 넣음</span></span><br><span class="line"><span class="comment">// 💥 Error : age, gender 속성이 없음</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">admin</span>: <span class="title class_">User</span> = &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;메시&#x27;</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>partial은 속성을 모두 <code>Optional(선택적인)</code> 값으로 바꿔줍니다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">age</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="attr">gender</span>: <span class="string">&#x27;m&#x27;</span> | <span class="string">&#x27;f&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// partial : 다 선택적인 속성으로 바꿔줌</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">admin</span>: <span class="title class_">Partial</span>&lt;<span class="title class_">User</span>&gt; = &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;메시&#x27;</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="3-required-lt-T-gt"><a href="#3-required-lt-T-gt" class="headerlink" title="3. required&lt;T&gt;"></a>3. required<code>&lt;T&gt;</code></h1><p><code>required</code>는 반대로 <strong>모든 속성 값들을 필수 값으로</strong> 만들어줍니다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  age?: <span class="built_in">number</span>; <span class="comment">// age 속성은 선택적인 값</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Required : 모든 속성이 필수여야 함</span></span><br><span class="line"><span class="comment">// 💥 Error : age 속성이 정의안됨</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">admin</span>: <span class="title class_">Required</span>&lt;<span class="title class_">User</span>&gt; = &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;메시&#x27;</span>,</span><br><span class="line">  <span class="comment">// age: 30,</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>age를 선언해주면 에러가 사라집니다.</p>
+<hr>
+<h1 id="4-readonly-lt-T-gt"><a href="#4-readonly-lt-T-gt" class="headerlink" title="4. readonly&lt;T&gt;"></a>4. readonly<code>&lt;T&gt;</code></h1><ul>
+<li><code>readonly</code>는 말 그대로 <strong>읽기 전용으로 바꾸는 것</strong></li>
+<li>선언만 가능하고, 수정을 할 수 없음</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  age?: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Readonly : 읽을 수만 있음</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">admin</span>: <span class="title class_">Readonly</span>&lt;<span class="title class_">User</span>&gt; = &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="number">1</span>,</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;메시&#x27;</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="attr">admin</span>: id = <span class="number">4</span>; <span class="comment">// 💥 Error : 수정못함</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="5-record-lt-K-T-gt"><a href="#5-record-lt-K-T-gt" class="headerlink" title="5. record&lt;K,T&gt;"></a>5. record<code>&lt;K,T&gt;</code></h1><ul>
+<li><code>record</code>는 key와 value 값에 어떤 내용을 할당할 수 있는지 명확하게 할 때 사용</li>
+<li>K는 키이고, T는 요소</li>
+</ul>
+<p>다음처럼 과목별 점수를 담는 객체를 선언하면 복잡합니다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Score</span> &#123;</span><br><span class="line">  <span class="string">&#x27;1&#x27;</span>: <span class="string">&#x27;A&#x27;</span> | <span class="string">&#x27;B&#x27;</span> | <span class="string">&#x27;C&#x27;</span> | <span class="string">&#x27;D&#x27;</span>;</span><br><span class="line">  <span class="string">&#x27;2&#x27;</span>: <span class="string">&#x27;A&#x27;</span> | <span class="string">&#x27;B&#x27;</span> | <span class="string">&#x27;C&#x27;</span> | <span class="string">&#x27;D&#x27;</span>;</span><br><span class="line">  <span class="string">&#x27;3&#x27;</span>: <span class="string">&#x27;A&#x27;</span> | <span class="string">&#x27;B&#x27;</span> | <span class="string">&#x27;C&#x27;</span> | <span class="string">&#x27;D&#x27;</span>;</span><br><span class="line">  <span class="string">&#x27;4&#x27;</span>: <span class="string">&#x27;A&#x27;</span> | <span class="string">&#x27;B&#x27;</span> | <span class="string">&#x27;C&#x27;</span> | <span class="string">&#x27;D&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">score</span>: <span class="title class_">Score</span> = &#123;</span><br><span class="line">  <span class="number">1</span>: <span class="string">&#x27;A&#x27;</span>,</span><br><span class="line">  <span class="number">2</span>: <span class="string">&#x27;C&#x27;</span>,</span><br><span class="line">  <span class="number">3</span>: <span class="string">&#x27;B&#x27;</span>,</span><br><span class="line">  <span class="number">4</span>: <span class="string">&#x27;D&#x27;</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>Record를 이용하면 쉽게 표현할 수 있습니다. Record <strong>앞에는 키</strong>, <strong>뒤에는 요소</strong>가 들어갑니다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1,2,3,4라는 키값에는 A,B,C,D라는 요소가 들어갈 수 있음</span></span><br><span class="line"><span class="keyword">const</span> <span class="attr">score</span>: <span class="title class_">Record</span>&lt;<span class="string">&#x27;1&#x27;</span> | <span class="string">&#x27;2&#x27;</span> | <span class="string">&#x27;3&#x27;</span> | <span class="string">&#x27;4&#x27;</span>, <span class="string">&#x27;A&#x27;</span> | <span class="string">&#x27;B&#x27;</span> | <span class="string">&#x27;C&#x27;</span> | <span class="string">&#x27;D&#x27;</span>&gt; = &#123;</span><br><span class="line">  <span class="number">1</span>: <span class="string">&#x27;A&#x27;</span>,</span><br><span class="line">  <span class="number">2</span>: <span class="string">&#x27;C&#x27;</span>,</span><br><span class="line">  <span class="number">3</span>: <span class="string">&#x27;B&#x27;</span>,</span><br><span class="line">  <span class="number">4</span>: <span class="string">&#x27;D&#x27;</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>따로 변수를 만들어서 넣어두면 좀 더 편하게 사용할 수 있습니다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Grade</span> = <span class="string">&#x27;1&#x27;</span> | <span class="string">&#x27;2&#x27;</span> | <span class="string">&#x27;3&#x27;</span> | <span class="string">&#x27;4&#x27;</span>;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Score</span> = <span class="string">&#x27;A&#x27;</span> | <span class="string">&#x27;B&#x27;</span> | <span class="string">&#x27;C&#x27;</span> | <span class="string">&#x27;D&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">score</span>: <span class="title class_">Record</span>&lt;<span class="title class_">Grade</span>, <span class="title class_">Score</span>&gt; = &#123;</span><br><span class="line">  <span class="number">1</span>: <span class="string">&#x27;A&#x27;</span>,</span><br><span class="line">  <span class="number">2</span>: <span class="string">&#x27;C&#x27;</span>,</span><br><span class="line">  <span class="number">3</span>: <span class="string">&#x27;B&#x27;</span>,</span><br><span class="line">  <span class="number">4</span>: <span class="string">&#x27;D&#x27;</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>조금 더 확장해서 user객체를 받아서 이 객체가 올바른 값을 갖고 있는 지를 확인해주는 isValid라는 함수를 만든다고 합시다.</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">age</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// user 객체가 올바른 값을 가지는지 체크</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">isValid</span>(<span class="params">user: User</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="attr">result</span>: <span class="title class_">Record</span>&lt;keyof <span class="title class_">User</span>, <span class="built_in">boolean</span>&gt; = &#123;</span><br><span class="line">    <span class="attr">id</span>: user.<span class="property">id</span> &gt; <span class="number">0</span>,</span><br><span class="line">    <span class="attr">name</span>: user.<span class="property">name</span> !== <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">    <span class="attr">age</span>: user.<span class="property">age</span> &gt; <span class="number">0</span>,</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>isValid 안의 result 객체의 키값에는 id, name, age가 들어갑니다.<br>이 키값은 User 인터페이스의 key값과 같기 때문에 <strong>keyof User</strong>로 간단하게 사용할 수 있습니다.</p>
+<hr>
+<h1 id="6-pick-lt-T-K-gt"><a href="#6-pick-lt-T-K-gt" class="headerlink" title="6. pick&lt;T,K&gt;"></a>6. pick<code>&lt;T,K&gt;</code></h1><ul>
+<li><strong>T 타입에서 K 속성만 골라서 사용</strong></li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">age</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="attr">gender</span>: <span class="string">&#x27;M&#x27;</span> | <span class="string">&#x27;W&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// USer 인터페이스에서 id, name 속성만 사용할 떄 pick</span></span><br><span class="line"><span class="keyword">const</span> <span class="attr">admin</span>: <span class="title class_">Pick</span>&lt;<span class="title class_">User</span>, <span class="string">&#x27;id&#x27;</span> | <span class="string">&#x27;name&#x27;</span>&gt; = &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;메시&#x27;</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="7-omit-lt-T-K-gt"><a href="#7-omit-lt-T-K-gt" class="headerlink" title="7. omit&lt;T,K&gt;"></a>7. omit<code>&lt;T,K&gt;</code></h1><ul>
+<li>pick과 반대로 <strong>T 타입에서 K 프로퍼티만 제외하고 사용할 수 있게 해 주는 키워드</strong></li>
+<li>위 예제를 반대로 id와 name 대신 age와 gender로 바꾸고 Pick을 Omit로 바꿔주면 동일하게 동작</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">age</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="attr">gender</span>: <span class="string">&#x27;M&#x27;</span> | <span class="string">&#x27;W&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// USer 인터페이스에서 age, gender 속성를 제외하고 사용할 떄 omit</span></span><br><span class="line"><span class="keyword">const</span> <span class="attr">admin</span>: <span class="title class_">Omit</span>&lt;<span class="title class_">User</span>, <span class="string">&#x27;age&#x27;</span> | <span class="string">&#x27;gender&#x27;</span>&gt; = &#123;</span><br><span class="line">  <span class="attr">id</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;메시&#x27;</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="8-exclude-lt-T1-T2-gt"><a href="#8-exclude-lt-T1-T2-gt" class="headerlink" title="8. exclude&lt;T1,T2&gt;"></a>8. exclude<code>&lt;T1,T2&gt;</code></h1><ul>
+<li><strong>T1 타입에서 T2 타입을 제외하고 사용할 수 있게 해 주는 키워드</strong></li>
+<li>omit과 다른 점은 <code>omit</code>은 <strong>프로퍼티를 제외</strong>하는 것이고, <code>exclude</code>는 <strong>타입을 제외</strong></li>
+<li>즉, T1타입에서 T2타입과 겹치는 것들을 제거하는 것</li>
+</ul>
+<p>만약 T1 타입에서 number랑 string을 제외한 타입을 T2에 넣고 싶다면…</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="variable constant_">T1</span> = <span class="built_in">string</span> | <span class="built_in">number</span> | <span class="built_in">boolean</span>;</span><br><span class="line"><span class="keyword">type</span> <span class="variable constant_">T2</span> = <span class="title class_">Exclude</span>&lt;<span class="variable constant_">T1</span>, <span class="built_in">number</span> | <span class="built_in">string</span>&gt;; <span class="comment">// T1 타입에서 number랑 string을 제외한 타입</span></span><br><span class="line"><span class="comment">// T2에 마우스를 올려보면, boolean 타입만 할당 가능</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="9-nonnullable-lt-T-gt"><a href="#9-nonnullable-lt-T-gt" class="headerlink" title="9. nonnullable&lt;T&gt;"></a>9. nonnullable<code>&lt;T&gt;</code></h1><ul>
+<li><strong>null을 제외한 타입을 생성하는 키워드</strong></li>
+<li>이름만 보면 null만 제외하는 것처럼 보일 수 있는데, undefined도 같이 제거합니다.</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="variable constant_">T1</span> = <span class="built_in">string</span> | <span class="literal">null</span> | <span class="literal">undefined</span> | <span class="built_in">void</span>;</span><br><span class="line"><span class="keyword">type</span> <span class="variable constant_">T2</span> = <span class="title class_">NonNullable</span>&lt;<span class="variable constant_">T1</span>&gt;; <span class="comment">// null과 undefined를 제거한 타입</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="참고"><a href="#참고" class="headerlink" title="[참고]"></a>[참고]</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://youtu.be/IeXZo-JXJjc">코딩앙마 - TypeScript #8 유틸리티 타입 Utility Types</a></li>
+</ul>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/08/Front-TS-Basic-08-Generics/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-09 02:26:18
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/ts/" title="TS"> <b>#</b> TS </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/ts/basic/" title="Basic"> <b>#</b> Basic </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/ts/" title="TS"> #TS </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/10/Front-TS-Basic-10-Module/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-keyof"><span class="toc-text">1. keyof</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-partial-lt-T-gt"><span class="toc-text">2. partial&lt;T&gt;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-required-lt-T-gt"><span class="toc-text">3. required&lt;T&gt;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-readonly-lt-T-gt"><span class="toc-text">4. readonly&lt;T&gt;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-record-lt-K-T-gt"><span class="toc-text">5. record&lt;K,T&gt;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-pick-lt-T-K-gt"><span class="toc-text">6. pick&lt;T,K&gt;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-omit-lt-T-K-gt"><span class="toc-text">7. omit&lt;T,K&gt;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-exclude-lt-T1-T2-gt"><span class="toc-text">8. exclude&lt;T1,T2&gt;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-nonnullable-lt-T-gt"><span class="toc-text">9. nonnullable&lt;T&gt;</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%EC%B0%B8%EA%B3%A0"><span class="toc-text">[참고]</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Front-TS-Basic-09-Type-%EC%9C%A0%ED%8B%B8%EB%A6%AC%ED%8B%B0%20%ED%83%80%EC%9E%85%20(Utility%20Type) + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F09%2FFront-TS-Basic-09-UtilityType%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/09/Front-TS-Basic-09-UtilityType/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

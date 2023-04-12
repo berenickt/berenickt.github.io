@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      CS-JS-DataAlgo-04-연결리스트(Linked List) 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">CS-JS-DataAlgo-04-연결리스트(Linked List)</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-11 06:27:22
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/cs-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="CS-자료구조-알고리즘"> <b>#</b> CS-자료구조-알고리즘 </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/cs-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/js-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="JS-자료구조-알고리즘"> <b>#</b> JS-자료구조-알고리즘 </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/js-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="JS-자료구조-알고리즘"> #JS-자료구조-알고리즘 </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-Linked-List"><a href="#1-Linked-List" class="headerlink" title="1. Linked List"></a>1. Linked List</h1><p>추가와 삭제가 반복되는 로직이라면 어떻게 해야될까? </p>
+<ul>
+<li>배열을 이용하면 시간복잡도가 굉장히 커져 권장되지 않습니다.</li>
+<li>배열은 탐색이 많을 떄 유용한 자료구조이다.</li>
+</ul>
+<p>추가와 삭제가 많을 떄 유용한 자료구조는 <code>연결 리스트</code>이다.</p>
+<ul>
+<li>연결 리스트는 <strong>각 요소를 포인터로 연결하여 관리</strong>하는 선형 자료구조다.</li>
+<li>각 요소는 <code>노드(Node)</code>라고 부르며 <code>데이터 영역</code>과 <code>포인터 영역</code>으로 구성된다.</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_4_1.png" alt="Data Structure_4_1"></p>
+<hr>
+<h2 id="1-2-배열과-차이점"><a href="#1-2-배열과-차이점" class="headerlink" title="1.2 배열과 차이점"></a>1.2 배열과 차이점</h2><h3 id="1-2-1-메모리-차이"><a href="#1-2-1-메모리-차이" class="headerlink" title="1.2.1 메모리 차이"></a>1.2.1 메모리 차이</h3><ul>
+<li><code>배열</code>은 순차적인 데이터가 들어가기에 메모리 영역을 연속적으로 사용</li>
+<li><code>연결 리스트</code>는 순차적이지 않기에 각 데이터가 퍼져있음<ul>
+<li>퍼져있는 메모리의 영역을 알기 위해 포인터를 사용</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_4_2.png" alt="Data Structure_4_2"></p>
+<h3 id="1-2-2-배열-요소-추가-및-삭제"><a href="#1-2-2-배열-요소-추가-및-삭제" class="headerlink" title="1.2.2 배열 요소 추가 및 삭제"></a>1.2.2 배열 요소 추가 및 삭제</h3><p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_4_3.png" alt="Data Structure_4_3"></p>
+<h3 id="1-2-3-연결-리스트-요소-추가-및-삭제"><a href="#1-2-3-연결-리스트-요소-추가-및-삭제" class="headerlink" title="1.2.3 연결 리스트 요소 추가 및 삭제"></a>1.2.3 연결 리스트 요소 추가 및 삭제</h3><p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_4_4.png" alt="Data Structure_4_4"></p>
+<hr>
+<h1 id="2-연결-리스트-Singly-Linked-List"><a href="#2-연결-리스트-Singly-Linked-List" class="headerlink" title="2. 연결 리스트(Singly Linked List)"></a>2. 연결 리스트(Singly Linked List)</h1><ul>
+<li><strong>Head에서 Tail까지 단방향</strong>으로 이어지는 연결 리스트</li>
+<li>가장 단순한 형태인 연결리스트</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_4_5.png" alt="Data Structure_4_5"></p>
+<hr>
+<h2 id="2-1-요소-찾기"><a href="#2-1-요소-찾기" class="headerlink" title="2.1 요소 찾기"></a>2.1 요소 찾기</h2><p>‘4’를 찾는다면?</p>
+<ol>
+<li><strong>HEAD 포인터를 찾는다.</strong></li>
+<li><strong>HEAD 포인터를 참고하여, 다음 요소인 HEAD를 찾습니다.</strong></li>
+<li><strong>그 요소가 찾는 4인지 확인하고, 아니라면 포인터 영역을 통해 다음 요소로 넘어갑니다.</strong></li>
+<li><strong>2~3번을 반복</strong></li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_4_6.png" alt="Data Structure_4_6"></p>
+<hr>
+<h2 id="2-2-요소-추가"><a href="#2-2-요소-추가" class="headerlink" title="2.2 요소 추가"></a>2.2 요소 추가</h2><p>‘3’을 1과 4 데이터 중간에 추가한다면?</p>
+<ol>
+<li>3의 포인터 영역을 4를 가르킨다.</li>
+<li>2의 포인터 영역을 3을 가르킨다.</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_4_7.png" alt="Data Structure_4_7"></p>
+<hr>
+<h2 id="2-3-요소-삭제"><a href="#2-3-요소-삭제" class="headerlink" title="2.3 요소 삭제"></a>2.3 요소 삭제</h2><p>‘2’를 삭제한다면?</p>
+<ol>
+<li>삭제할 요소의 이전 포인터 영역을 삭제할 요소의 다음 데이터 영역을 가르키게 한다.</li>
+<li>삭제할 요소를 메모리 상에서 지운다.</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_4_8.png" alt="Data Structure_4_8"></p>
+<hr>
+<h1 id="3-이중-연결-리스트-Doubly-Linked-List"><a href="#3-이중-연결-리스트-Doubly-Linked-List" class="headerlink" title="3. 이중 연결 리스트(Doubly Linked List)"></a>3. 이중 연결 리스트(Doubly Linked List)</h1><ul>
+<li><strong>양방향으로 이어지는 연결 리스트</strong></li>
+<li><strong>포인터가 2개</strong>가 존재</li>
+<li>Singly Linked List보다 자료구조의 크기가 조금 더 크다.</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_4_9.png" alt="Data Structure_4_9"></p>
+<hr>
+<h2 id="3-1-요소-추가"><a href="#3-1-요소-추가" class="headerlink" title="3.1 요소 추가"></a>3.1 요소 추가</h2><p>‘3’을 2와 4 중간에 추가한다면?</p>
+<p>(1) <strong>추가할 요소의 다음 노드를 4를 가르키게 한다.</strong></p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_4_10.png" alt="Data Structure_4_10"></p>
+<p>(2) <strong>2의 다음 노드를 추가할 요소를 가르키게 한다.</strong></p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_4_11.png" alt="Data Structure_4_11"></p>
+<p>(3) <strong>4의 이전 노드를 추가할 요소를 가르키게 한다.</strong></p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_4_12.png" alt="Data Structure_4_12"></p>
+<p>(4) <strong>추가할 요소의 이전 노드를 2를 가르키게 한다.</strong></p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_4_13.png" alt="Data Structure_4_13"></p>
+<hr>
+<h2 id="3-2-요소-삭제"><a href="#3-2-요소-삭제" class="headerlink" title="3.2 요소 삭제"></a>3.2 요소 삭제</h2><p>‘2’를 삭제한다면?</p>
+<p>(1) <strong>삭제할 요소의 이전 노드를 삭제할 요소의 다음을 가르키게 한다.</strong></p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_4_14.png" alt="Data Structure_4_14"></p>
+<p>(2) <strong>삭제할 요소의 다음의 이전 노드를 삭제할 요소의 이전을 가르키게 한다.</strong></p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_4_15.png" alt="Data Structure_4_15"></p>
+<p>(3) <strong>삭제할 요소를 메모리 상에서 지운다.</strong></p>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_4_16.png" alt="Data Structure_4_16"></p>
+<hr>
+<h1 id="4-환형-연결리스트-Circular-Linked-List"><a href="#4-환형-연결리스트-Circular-Linked-List" class="headerlink" title="4. 환형 연결리스트(Circular Linked List)"></a>4. 환형 연결리스트(Circular Linked List)</h1><ul>
+<li>Singly 혹은 Doubly Linked List에서 <strong>Tail이 Head로 연결</strong>되는 연결리스트</li>
+<li>메모리를 아껴쓸 수 있다. </li>
+<li>원형 큐 등을 만들때도 사용된다.</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/Data%20Structure_4_17.png" alt="Data Structure_4_17"></p>
+<hr>
+<h1 id="5-구현"><a href="#5-구현" class="headerlink" title="5. 구현"></a>5. 구현</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Node</span> &#123;</span><br><span class="line">  <span class="comment">// 생성자: new 키워드로 객체를 생성할때 자동으로 호출되는 함수</span></span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">value</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">value</span> = value; <span class="comment">// 값</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">next</span> = <span class="literal">null</span>; <span class="comment">// 포인터</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SinglyLinkedList</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">head</span> = <span class="literal">null</span>; <span class="comment">// head 포인터</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">tail</span> = <span class="literal">null</span>; <span class="comment">// tail 포인터</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 📝 해당하는 값 찾기</span></span><br><span class="line">  <span class="title function_">find</span>(<span class="params">value</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> currNode = <span class="variable language_">this</span>.<span class="property">head</span>; <span class="comment">// 입력받은 연결리스트의 Head 포인터 가져오기</span></span><br><span class="line">    <span class="comment">// 입력한 값을 찾을 때까지 다음 노드로 순회</span></span><br><span class="line">    <span class="keyword">while</span> (currNode.<span class="property">value</span> !== value) &#123;</span><br><span class="line">      currNode = currNode.<span class="property">next</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> currNode; <span class="comment">// 값을 찾으면 해당 노드를 반환</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 📝 끝에 추가</span></span><br><span class="line">  <span class="title function_">append</span>(<span class="params">newValue</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> newNode = <span class="keyword">new</span> <span class="title class_">Node</span>(newValue); <span class="comment">// 입력받은 값으로 노드 생성</span></span><br><span class="line">    <span class="comment">// 헤드가 비어있다면</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">head</span> === <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="comment">// head와 tail에 생성한 노드를 가리킴</span></span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">head</span> = newNode;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">tail</span> = newNode;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// 값이 존재하면, 다음 노드로 생성한 노드를 가리킴</span></span><br><span class="line">      <span class="comment">// tail은 생성한 노드를 가리킴</span></span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">tail</span>.<span class="property">next</span> = newNode;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">tail</span> = newNode;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 📝 중간에 추가</span></span><br><span class="line">  <span class="title function_">insert</span>(<span class="params">node, newValue</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> newNode = <span class="keyword">new</span> <span class="title class_">Node</span>(newValue); <span class="comment">// 입력받은 값으로 노드 생성</span></span><br><span class="line">    newNode.<span class="property">next</span> = node.<span class="property">next</span>; <span class="comment">// (생성한 노드의 다음)을 (입력받은 노드의 다음)을 가리킴</span></span><br><span class="line">    node.<span class="property">next</span> = newNode; <span class="comment">// (입력받은 노드의 다음)을 (새로 생성한 노드)를 가리킴</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 📝 삭제</span></span><br><span class="line">  <span class="title function_">remove</span>(<span class="params">value</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> prevNode = <span class="variable language_">this</span>.<span class="property">head</span>; <span class="comment">// 입력받은 연결리스트의 Head 포인터 가져오기</span></span><br><span class="line">    <span class="comment">// 입력한 값을 찾을 때까지 다음 노드로 순회</span></span><br><span class="line">    <span class="keyword">while</span> (prevNode.<span class="property">next</span>.<span class="property">value</span> !== value) &#123;</span><br><span class="line">      prevNode = prevNode.<span class="property">next</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 값을 찾고 다음이 null이 아니라면</span></span><br><span class="line">    <span class="keyword">if</span> (prevNode.<span class="property">next</span> !== <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="comment">// (이전 노드의 다음)을 (다음의 다음)을 가리킴</span></span><br><span class="line">      <span class="comment">// 그러면 중간 노드가 아무 노드를 가리키고 있지 않기 때문에 GC에 의해 메모리 상에서 삭제</span></span><br><span class="line">      prevNode.<span class="property">next</span> = prevNode.<span class="property">next</span>.<span class="property">next</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 📝 출력</span></span><br><span class="line">  <span class="title function_">display</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> currNode = <span class="variable language_">this</span>.<span class="property">head</span>;</span><br><span class="line">    <span class="keyword">let</span> displayString = <span class="string">&#x27;[&#x27;</span>;</span><br><span class="line">    <span class="keyword">while</span> (currNode !== <span class="literal">null</span>) &#123;</span><br><span class="line">      displayString += <span class="string">`<span class="subst">$&#123;currNode.value&#125;</span>, `</span>;</span><br><span class="line">      currNode = currNode.<span class="property">next</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    displayString = displayString.<span class="title function_">substr</span>(<span class="number">0</span>, displayString.<span class="property">length</span> - <span class="number">2</span>);</span><br><span class="line">    displayString += <span class="string">&#x27;]&#x27;</span>;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(displayString);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> linkedList = <span class="keyword">new</span> <span class="title class_">SinglyLinkedList</span>();</span><br><span class="line">linkedList.<span class="title function_">append</span>(<span class="number">1</span>);</span><br><span class="line">linkedList.<span class="title function_">append</span>(<span class="number">2</span>);</span><br><span class="line">linkedList.<span class="title function_">append</span>(<span class="number">3</span>);</span><br><span class="line">linkedList.<span class="title function_">append</span>(<span class="number">5</span>);</span><br><span class="line">linkedList.<span class="title function_">display</span>(); <span class="comment">// [1, 2, 3, 5]</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(linkedList.<span class="title function_">find</span>(<span class="number">3</span>));</span><br><span class="line"><span class="comment">// Node &#123; value: 3, next: Node &#123; value: 5, next: null &#125; &#125;</span></span><br><span class="line"></span><br><span class="line">linkedList.<span class="title function_">remove</span>(<span class="number">3</span>);</span><br><span class="line">linkedList.<span class="title function_">display</span>(); <span class="comment">// [1, 2, 5]</span></span><br><span class="line">linkedList.<span class="title function_">insert</span>(linkedList.<span class="title function_">find</span>(<span class="number">2</span>), <span class="number">10</span>);</span><br><span class="line">linkedList.<span class="title function_">display</span>(); <span class="comment">// [1, 2, 10, 5]</span></span><br></pre></td></tr></table></figure>
+
+<p>코딩 테스트에서 연결리스트를 직접 구현하는 경우는 많지 않습니다. 배열을 사용하면 되기 때문이죠.</p>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/11/CS-JS-DataAlgo-03/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-11 06:27:22
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/cs-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="CS-자료구조-알고리즘"> <b>#</b> CS-자료구조-알고리즘 </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/cs-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/js-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="JS-자료구조-알고리즘"> <b>#</b> JS-자료구조-알고리즘 </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/js-%EC%9E%90%EB%A3%8C%EA%B5%AC%EC%A1%B0-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/" title="JS-자료구조-알고리즘"> #JS-자료구조-알고리즘 </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/11/CS-JS-DataAlgo-05/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Linked-List"><span class="toc-text">1. Linked List</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%EB%B0%B0%EC%97%B4%EA%B3%BC-%EC%B0%A8%EC%9D%B4%EC%A0%90"><span class="toc-text">1.2 배열과 차이점</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-1-%EB%A9%94%EB%AA%A8%EB%A6%AC-%EC%B0%A8%EC%9D%B4"><span class="toc-text">1.2.1 메모리 차이</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-2-%EB%B0%B0%EC%97%B4-%EC%9A%94%EC%86%8C-%EC%B6%94%EA%B0%80-%EB%B0%8F-%EC%82%AD%EC%A0%9C"><span class="toc-text">1.2.2 배열 요소 추가 및 삭제</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-3-%EC%97%B0%EA%B2%B0-%EB%A6%AC%EC%8A%A4%ED%8A%B8-%EC%9A%94%EC%86%8C-%EC%B6%94%EA%B0%80-%EB%B0%8F-%EC%82%AD%EC%A0%9C"><span class="toc-text">1.2.3 연결 리스트 요소 추가 및 삭제</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%EC%97%B0%EA%B2%B0-%EB%A6%AC%EC%8A%A4%ED%8A%B8-Singly-Linked-List"><span class="toc-text">2. 연결 리스트(Singly Linked List)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%EC%9A%94%EC%86%8C-%EC%B0%BE%EA%B8%B0"><span class="toc-text">2.1 요소 찾기</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%EC%9A%94%EC%86%8C-%EC%B6%94%EA%B0%80"><span class="toc-text">2.2 요소 추가</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%EC%9A%94%EC%86%8C-%EC%82%AD%EC%A0%9C"><span class="toc-text">2.3 요소 삭제</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%EC%9D%B4%EC%A4%91-%EC%97%B0%EA%B2%B0-%EB%A6%AC%EC%8A%A4%ED%8A%B8-Doubly-Linked-List"><span class="toc-text">3. 이중 연결 리스트(Doubly Linked List)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%EC%9A%94%EC%86%8C-%EC%B6%94%EA%B0%80"><span class="toc-text">3.1 요소 추가</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%EC%9A%94%EC%86%8C-%EC%82%AD%EC%A0%9C"><span class="toc-text">3.2 요소 삭제</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%ED%99%98%ED%98%95-%EC%97%B0%EA%B2%B0%EB%A6%AC%EC%8A%A4%ED%8A%B8-Circular-Linked-List"><span class="toc-text">4. 환형 연결리스트(Circular Linked List)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%EA%B5%AC%ED%98%84"><span class="toc-text">5. 구현</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + CS-JS-DataAlgo-04-%EC%97%B0%EA%B2%B0%EB%A6%AC%EC%8A%A4%ED%8A%B8(Linked%20List) + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F11%2FCS-JS-DataAlgo-04%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/11/CS-JS-DataAlgo-04/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

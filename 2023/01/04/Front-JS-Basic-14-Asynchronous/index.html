@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Front-JS-Basic-14-asynchronous(비동기) - 작성중 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Front-JS-Basic-14-asynchronous(비동기) - 작성중</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-04 12:37:14
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/js/" title="JS"> <b>#</b> JS </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/js/basic/" title="Basic"> <b>#</b> Basic </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/js/" title="JS"> #JS </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-자바스크립트-실행-순서-콜스택"><a href="#1-자바스크립트-실행-순서-콜스택" class="headerlink" title="1. 자바스크립트 실행 순서(콜스택)"></a>1. 자바스크립트 실행 순서(콜스택)</h1><p>JS를 동작하는 환경이라면 항상 JavaScript Engine이 포함되어 있습니다<br>작성한 코드를 JavaScript Engine이 한 줄씩 읽고 번역하고 실행합니다.</p>
+<ul>
+<li><code>동기화</code> &#x3D; 특정 작업 사이에 <strong>일정한 간격을 두고 작업이 발생하도록 시간 간격을 조정</strong>하는 것<ul>
+<li>한가지 동, 기약할 기, 될 화</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">a</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// 📝 반환되기 전에 오래걸리는 for이 있다면, 최종결과값이 반환되는데 오래걸림</span></span><br><span class="line">  <span class="comment">// 📝 이렇게 함수끼리 긴밀하게 연결된 경우를 &#x27;동기화&#x27;라고 말함</span></span><br><span class="line">  <span class="comment">// 📝 JavaScript는 기본적으로 동기적으로 수행됨</span></span><br><span class="line">  <span class="comment">// for (let i = 0; i &lt; 100000; i++);</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">b</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">a</span>() + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">c</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">b</span>() + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;시작했다!&#x27;</span>);</span><br><span class="line"><span class="comment">// c -&gt; b -&gt; a 순으로 호출되고, Call Stack에 이 순서대로 저장됨</span></span><br><span class="line"><span class="comment">// Call Stack에서 반환될 때는 반대로, a -&gt; b -&gt; c순으로 반환됨</span></span><br><span class="line"><span class="keyword">const</span> result = <span class="title function_">c</span>(); <span class="comment">// 3</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(result);</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/js-14-1.png" alt="js-14-1"></p>
+<ul>
+<li><code>Memory Heap</code> : 소스코드에서 <strong>객체를 동적으로 생성하면, Memory Heap에 생성</strong></li>
+<li><code>Call Stack</code> : <strong>함수 실행 순서를 기억</strong><ul>
+<li>전역에서 C를 호출하면, C가 <code>Call Stack</code>에 들어오고,</li>
+<li>C에서 B를 호출하고, B에서도 A를 호출하면, C→B→A 순서대로 <code>Call Stack</code>에 들어옴</li>
+</ul>
+</li>
+</ul>
+<p>JS는 <code>동기적(synchronous)</code>으로 동작합니다. 호이스팅이 된 후로 코드가 작성된 순서에 따라 한 줄씩 동기적으로 실행된다.</p>
+<hr>
+<h1 id="2-Callback"><a href="#2-Callback" class="headerlink" title="2. Callback"></a>2. Callback</h1><h2 id="2-1-콜백-함수"><a href="#2-1-콜백-함수" class="headerlink" title="2.1 콜백 함수"></a>2.1 콜백 함수</h2><ul>
+<li>정의 : 함수에 파라미터로 들어가는 함수</li>
+<li>용도 : 순차적으로 실행하고 싶을 떄 사용</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;.button&#x27;</span>).<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// addEventListener : 함수 안에 function()이 콜백함수</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// 1초 뒤 실행하는 함수 setTimeout 안에 function() 역시 콜백함수</span></span><br><span class="line">&#125;, <span class="number">1000</span>);</span><br></pre></td></tr></table></figure>
+
+<p>콜백 함수를 만드는 방법</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">first</span>(<span class="params">파라미터</span>) &#123;</span><br><span class="line">  파라미터();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">seceond</span>(<span class="params"></span>) &#123;&#125;</span><br><span class="line"><span class="title function_">first</span>(seceond);</span><br></pre></td></tr></table></figure>
+
+<p>이제는 단순히 콜백함수를 만드는 건 쓸모가 없습니다. 특정 코드를 순차적으로 정하고 싶을 떄만 사용합니다.</p>
+<hr>
+<h2 id="2-2-JavaScript-Runtime-환경"><a href="#2-2-JavaScript-Runtime-환경" class="headerlink" title="2.2 JavaScript Runtime 환경"></a>2.2 JavaScript Runtime 환경</h2><p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/js-14-2.png" alt="js-14-2"></p>
+<p><strong>JS 언어 자체는 동기적으로 동작</strong>하지만, JavaScript Runtime 환경(&#x3D;호스트 환경)에서 제공해주는 다양한 API들이 있습니다.<br>브라우저라면, Web API, Node라면 Node API 등이 있습니다. </p>
+<p><strong>API들은 비동기적으로 동작</strong>하기 떄문에(&#x3D;멀티 쓰레드환경으로 동작하기 떄문에)<br>다양한 일들을 <strong>동시다발적으로 처리</strong>(&#x3D;비동기화)할 수 있습니다.</p>
+<p>예를 들어, 다른 웹 서버에 네트워크 통신을 주고받을 수 있는 fetch와 setTimeout API도 비동기적입니다.</p>
+<p>가령 3초 뒤에 실행하고 싶어서 <code>setTimeout:(Test, 3000);</code>이라고 가정해봅시다.<br>그리고 타이머가 가동되는 동안 다른 코드를 하나씩 끝내놓고,<br>타이머가 끝나면 setTimeout은 던져놓은 <code>callback 함수</code>를 <code>Task Queue</code>라는 곳에 전달해줍니다.</p>
+<p>그러면 <code>Event Loop</code>라는 녀석이 <code>Call Stack</code>과 <code>Task Queue</code>를 감시하면서 <code>Call Stack</code>이 비어있다면,<br><code>Task Queue</code> 작업을 <code>Call Stack</code>으로 전달합니다. 그리고 <code>Call Stack</code>에서 <code>callback 함수</code>를 수행하는 것이죠.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">execute</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;1&#x27;</span>);</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;2&#x27;</span>), <span class="number">3000</span>);</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;3&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">execute</span>(); <span class="comment">// 1, 3이 출력되고 3초 뒤에 2가 출력</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-3-예제"><a href="#2-3-예제" class="headerlink" title="2.3 예제"></a>2.3 예제</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// **** JS는 동기적(synchronous)으로 동작</span></span><br><span class="line"><span class="comment">// - 호이스팅이 된 이후부터 코드가 작성된 순서에 맞춰서 하나하나씩 동기적으로 실행됩니다.</span></span><br><span class="line"><span class="comment">// - 호이스팅: var, function같은 선언들이 제일 위로 올라가는 것</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;1&#x27;</span>);</span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;2&#x27;</span>), <span class="number">1000</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;3&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 동기적(Synchronous) callback</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">printImmediately</span>(<span class="params">print</span>) &#123;</span><br><span class="line">  <span class="title function_">print</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">printImmediately</span>(<span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;hello&#x27;</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 비동기적(Asynchronous) callback</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">printWithDelay</span>(<span class="params">print, timeout</span>) &#123;</span><br><span class="line">  <span class="built_in">setTimeout</span>(print, timeout);</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">printWithDelay</span>(<span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;async callback&#x27;</span>), <span class="number">2000</span>);</span><br></pre></td></tr></table></figure>
+
+<p>콘솔창에는</p>
+<blockquote>
+<p>1 → 3 → hello →  2 →  async callback</p>
+<ul>
+<li>hello 는 콜백이지만 동기적으로 호출</li>
+<li>2와 async callback이 비동기적으로 호출<ul>
+<li>이런 콜백함수를 계속 묶어나가서 쌓이게 되는 것을 콜백 지옥이라고 표현</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="2-4-Callback-Hell"><a href="#2-4-Callback-Hell" class="headerlink" title="2.4 Callback Hell"></a>2.4 Callback Hell</h2><p>단순한 코드를 작성할 때는 위와 같이 전통적인 방식으로 콜백 함수를 통해 비동기 처리를 해도 큰 문제가 발생하지 않습니다.<br>하지만, <strong>콜백 함수를 중첩해서 연쇄적으로 호출해야하는 복잡한 코드</strong>의 경우,<br><strong>계속되는 들여쓰기 때문에 코드 가독성이 현저하게 떨어지게</strong> 됩니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">UserStorage</span> &#123;</span><br><span class="line">  <span class="title function_">loginUser</span>(<span class="params">id, password, onSuccess, onError</span>) &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> ((id === <span class="string">&#x27;ellie&#x27;</span> &amp;&amp; password === <span class="string">&#x27;dream&#x27;</span>) || (id === <span class="string">&#x27;coder&#x27;</span> &amp;&amp; password === <span class="string">&#x27;academy&#x27;</span>)) &#123;</span><br><span class="line">        <span class="title function_">onSuccess</span>(id);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="title function_">onError</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;not found&#x27;</span>));</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;, <span class="number">2000</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">getRoles</span>(<span class="params">user, onSuccess, onError</span>) &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (user === <span class="string">&#x27;ellie&#x27;</span>) &#123;</span><br><span class="line">        <span class="title function_">onSuccess</span>(&#123; <span class="attr">name</span>: <span class="string">&#x27;ellie&#x27;</span>, <span class="attr">role</span>: <span class="string">&#x27;admin&#x27;</span> &#125;);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="title function_">onError</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;no access&#x27;</span>));</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;, <span class="number">1000</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// class를 만들어 id, password를 입력받음</span></span><br><span class="line"><span class="keyword">const</span> userStorage = <span class="keyword">new</span> <span class="title class_">UserStorage</span>();</span><br><span class="line"><span class="keyword">const</span> id = <span class="title function_">prompt</span>(<span class="string">&#x27;enter your id&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> password = <span class="title function_">prompt</span>(<span class="string">&#x27;enter your passrod&#x27;</span>);</span><br><span class="line"></span><br><span class="line">userStorage.<span class="title function_">loginUser</span>(id, password, <span class="function">(<span class="params">user</span>) =&gt;</span> &#123; <span class="comment">// 로그인 성공시 실행</span></span><br><span class="line">  userStorage.<span class="title function_">getRoles</span>( <span class="comment">// 로그인 성공하면 유저 역할 요청해서 받기</span></span><br><span class="line">    user, <span class="comment">// 유저 데이터 받고</span></span><br><span class="line">    <span class="function">(<span class="params">userWithRole</span>) =&gt;</span> &#123; <span class="comment">// 이것을 처리하는 콜백 하나</span></span><br><span class="line">      <span class="title function_">alert</span>(<span class="string">`Hello <span class="subst">$&#123;userWithRole.name&#125;</span>, you have a <span class="subst">$&#123;userWithRole.role&#125;</span> role`</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function">(<span class="params">error</span>) =&gt;</span> &#123; <span class="comment">// 에러 시 처리할 콜백</span></span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(error);</span><br><span class="line">    &#125;</span><br><span class="line">  );</span><br><span class="line">  <span class="function">(<span class="params">error</span>) =&gt;</span> &#123; <span class="comment">// 로그인 실패시 실행</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(error);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>JS 개발자들 사이에서 소위 <a target="_blank" rel="noopener" href="http://callbackhell.com/">콜백 지옥</a>이라고 불리는 이 문제를 해결하기 위해 여러가지 방법들이 논의되었고,<br>그 중 하나가 Promise 입니다. 계속 괄호를 타고 안으로 들어가서 이를 <code>Callback Hell (콜백지옥)</code>이라고 부릅니다.</p>
+<hr>
+<h1 id="3-Promise"><a href="#3-Promise" class="headerlink" title="3. Promise"></a>3. Promise</h1><p>프로미스는 무겁고 오래 걸리는 일이 있다면, 코드 내부에서 좀 더 비동기적으로 처리할 수 있게 도와줍니다.<br><strong>일이 끝나면 원하는 일을 하게 해준다</strong>고 <code>약속(promise)</code>을 합니다.</p>
+<blockquote>
+<p>현실세계의 예</p>
+<ul>
+<li>어떤 사람이 강의를 미리 만들겠다고 함</li>
+<li>학생이 강의가 완성되지 않았지만, Promise로 미리 수업에 등록함</li>
+<li>나중에 강의가 완성되면, 강의가 완료되었다고 학생에게 이메일을 전송</li>
+</ul>
+<p>이것이 가능한 이유는 Promise 객체를 사용했기 때문</p>
+</blockquote>
+<p><code>Promise Object</code>는 자바스크립트 내장 객체입니다. 프로미스는 2가지의 개념을 중심으로 이해하시면 됩니다.</p>
+<ol>
+<li><code>State</code>: 주어진 일을 수행하는 중인지 이미 끝난상태인지 확인하는 것</li>
+<li>producer(정보 제공자)&#x2F;consumer (정보 소비자) 차이 이해를 하는 것</li>
+</ol>
+<blockquote>
+<p>일단 new Promise()로 생성된 변수를 콘솔창에 출력해보시면 현재 상태를 알 수 있습니다.</p>
+<ul>
+<li>Promise를 수행중일 때 -&gt; <code>pending(대기)</code>상태</li>
+<li>pending 상태가 정상적으로 끝나면 -&gt; <code>fulfilled(이행)</code>상태</li>
+<li>파일을 찾을 수 없거나 네트워크에 문제가 생기면 -&gt; <code>rejected(거부)</code>상태</li>
+</ul>
+<p>이렇게 프로미스 오브젝트들은 3개 상태가 있습니다. 그리고 성공을 실패나 대기상태로 다시 되돌릴 순 없습니다.</p>
+<p>cf. <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">MDN Promise</a></p>
+</blockquote>
+<hr>
+<h2 id="3-1-기본-사용법"><a href="#3-1-기본-사용법" class="headerlink" title="3.1 기본 사용법"></a>3.1 기본 사용법</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> 프로미스 = <span class="keyword">new</span> <span class="title class_">Promise</span>(); <span class="comment">// Promise 객체 생성</span></span><br><span class="line"></span><br><span class="line">프로미스</span><br><span class="line">  .<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// 프로미스가 성공일 경우 실행할 코드</span></span><br><span class="line">  &#125;)</span><br><span class="line">  .<span class="title function_">catch</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// 프로미스가 실패일 경우 실행할 코드</span></span><br><span class="line">  &#125;)</span><br><span class="line">  .<span class="title function_">finally</span>(<span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">  	<span class="comment">// 프로미스가 성공/실패와 상관 없이 어떤 기능을 마지막으로 실행하고 싶을 때</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><code>new Promise()</code> 문법으로 프로미스라는 변수 오브젝트를 하나 생성하면,<br>프로미스라는 변수에다가 <code>then()</code>을 붙여서 실행가능합니다.<br>코드가 실행이 실패했을 경우엔 <code>catch()</code> 함수 내의 코드를 실행시켜줍니다.</p>
+<p><code>Promise</code>를 를 쉽게 정의하면, <strong>성공&amp;실패 판정 기계</strong>입니다.</p>
+<hr>
+<h2 id="3-2-Producer"><a href="#3-2-Producer" class="headerlink" title="3.2 Producer"></a>3.2 Producer</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> promise = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// network 통신, read files 등의 haeavy work를 수행</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;doing something...&#x27;</span>);</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="title function_">resolve</span>(<span class="string">&#x27;ellie&#x27;</span>), <span class="number">2000</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>new 키워드를 통해 promise 객체를 만들 수 있다.</p>
+<ul>
+<li><code>resolve 함수</code> : 기능을 <strong>정상적으로 수행해서 마지막에 최종 데이터를 전달</strong></li>
+<li><code>reject 함수</code> : 기능을 <strong>수행하다가 중간에 문제가 생기면 호출</strong></li>
+<li><code>&lt;pending&gt;</code> : 판정 대기중</li>
+</ul>
+<p>promise가 만들어지는 순간 excutor가 실행됨</p>
+<ul>
+<li>만약 네트워크 요청을 사용자가 요구했을 때만 해야하는 경우라면 (e.g. 버튼을 눌렀을 때 네트워크 요청) </li>
+<li>위 코드처럼 작성했을 때는 사용자가 요청하지 않았는데 불필요한 통신이 일어날 수 있음</li>
+</ul>
+<p><strong>프로미스가 생성된 순간 executor라는 callback 함수가 바로 실행되기 때문에 이 점에 유의하면서 코드를 작성해야 한다</strong></p>
+<hr>
+<h2 id="3-3-Consumers"><a href="#3-3-Consumers" class="headerlink" title="3.3 Consumers"></a>3.3 Consumers</h2><h3 id="3-3-1-resolve-then"><a href="#3-3-1-resolve-then" class="headerlink" title="3.3.1 resolve - then"></a>3.3.1 resolve - then</h3><ul>
+<li><strong>promise 내부에서 기능이 정상적으로 수행</strong>되고 <strong>마지막에 최종 데이터를 전달</strong>하려고 resolve 함수 호출함</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> promise = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;예를 들어, network 통신, read files 등의 무거운 작업를 수행...&#x27;</span>);</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="title function_">resolve</span>(<span class="string">&#x27;메시&#x27;</span>), <span class="number">2000</span>); <span class="comment">// resolve가 &#x27;메시&#x27;라는 값을 전달</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 프로미스가 정상적으로 수행되면</span></span><br><span class="line"><span class="comment">// 마지막에 resolve라는 콜백함수를 통해 전달된 값이 value로 들어옴</span></span><br><span class="line">promise</span><br><span class="line">  <span class="comment">// 프로미스가 성공일 경우 실행할 코드</span></span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">value</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(value);</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="comment">// 프로미스가 실패일 경우 실행할 코드</span></span><br><span class="line">  .<span class="title function_">catch</span>(<span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(error);</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="comment">// 프로미스가 성공/실패와 상관 없이 어떤 기능을 마지막으로 실행하고 싶을 때</span></span><br><span class="line">  .<span class="title function_">finally</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;finally&#x27;</span>);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-3-2-reject-catch"><a href="#3-3-2-reject-catch" class="headerlink" title="3.3.2 reject - catch"></a>3.3.2 reject - catch</h3><ul>
+<li><strong>promise 내부에서 실행되는 일이 실패</strong>하였을 때는 reject를 호출함</li>
+<li>보통 error 오브젝트로 값을 전달함</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> promise = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;예를 들어, network 통신, read files 등의 무거운 작업를 수행...&#x27;</span>);</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;no network&#x27;</span>)), <span class="number">2000</span>); <span class="comment">// reject로 변경하면 uncaught error가 발생</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// catch를 사용해서 에러 발생시 어떻게 처리할 건지에 대한 콜백함수를 등록</span></span><br><span class="line">promise</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">value</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(value);</span><br><span class="line">  &#125;)</span><br><span class="line">  .<span class="title function_">catch</span>(<span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(error);</span><br><span class="line">  &#125;)</span><br><span class="line">  .<span class="title function_">finally</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;finally&#x27;</span>);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-4-Promise-축약-버전"><a href="#3-4-Promise-축약-버전" class="headerlink" title="3.4 Promise 축약 버전"></a>3.4 Promise 축약 버전</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">fetchEgg</span>(<span class="params">chicken</span>) &#123;</span><br><span class="line">  <span class="comment">// new Promise((resolve, reject)) 축약 버전</span></span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">resolve</span>(<span class="string">`<span class="subst">$&#123;chicken&#125;</span> =&gt; 🥚`</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">fryEgg</span>(<span class="params">egg</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">resolve</span>(<span class="string">`<span class="subst">$&#123;egg&#125;</span> =&gt; 🍳`</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getChicken</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// 여기서 에러가 발생했다고 가정</span></span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;치킨을 가지고 올 수 없음!&#x27;</span>));</span><br><span class="line">  <span class="comment">// return Promise.resolve(`🪴 =&gt; 🐓`);</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// getChicken을 가져온다면</span></span><br><span class="line"><span class="title function_">getChicken</span>()</span><br><span class="line">  .<span class="title function_">catch</span>(<span class="function">() =&gt;</span> <span class="string">&#x27;🐔&#x27;</span>) <span class="comment">// 에러가 발생했다면, 🐔를 리턴</span></span><br><span class="line">  .<span class="title function_">then</span>(fetchEgg) <span class="comment">// getChicken이 다 수행되었다면,</span></span><br><span class="line">  .<span class="title function_">then</span>(fryEgg) <span class="comment">// fetchEgg이 다 수행되었다면,</span></span><br><span class="line">  .<span class="title function_">then</span>(<span class="variable language_">console</span>.<span class="property">log</span>); <span class="comment">// 🐔 =&gt; 🥚 =&gt; 🍳</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-5-Promise-chaining"><a href="#3-5-Promise-chaining" class="headerlink" title="3.5 Promise chaining"></a>3.5 Promise chaining</h2><p>then은 값을 전달할 수도 있고 promise를 전달 할 수도 있음!!</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fetchNumber = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="title function_">resolve</span>(<span class="number">1</span>), <span class="number">1000</span>);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">fetchNumber <span class="comment">// 1</span></span><br><span class="line">  .<span class="title function_">then</span>(<span class="function"><span class="params">num</span> =&gt;</span> num * <span class="number">2</span>) <span class="comment">// 2</span></span><br><span class="line">  .<span class="title function_">then</span>(<span class="function"><span class="params">num</span> =&gt;</span> num * <span class="number">3</span>) <span class="comment">// 6</span></span><br><span class="line">  .<span class="title function_">then</span>(<span class="function"><span class="params">num</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="title function_">resolve</span>(num-<span class="number">1</span>), <span class="number">1000</span>); <span class="comment">// 5</span></span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;)</span><br><span class="line">.<span class="title function_">then</span>(<span class="function"><span class="params">num</span> =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(num)); <span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-6-Error-Handling"><a href="#3-6-Error-Handling" class="headerlink" title="3.6 Error Handling"></a>3.6 Error Handling</h2><h3 id="3-6-1-정상적인-경우-모두-resolve-인-경우"><a href="#3-6-1-정상적인-경우-모두-resolve-인-경우" class="headerlink" title="3.6.1 정상적인 경우(모두 resolve 인 경우)"></a>3.6.1 정상적인 경우(모두 resolve 인 경우)</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">getHen</span> = (<span class="params"></span>) =&gt;</span><br><span class="line">  <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="title function_">resolve</span>(<span class="string">&#x27;🐔&#x27;</span>), <span class="number">1000</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">getEgg</span> = hen =&gt; </span><br><span class="line">  <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">   <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="title function_">resolve</span>(<span class="string">`<span class="subst">$&#123;hen&#125;</span> =&gt; 🥚`</span>), <span class="number">1000</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">cook</span> = egg =&gt; </span><br><span class="line">  <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">   <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="title function_">resolve</span>(<span class="string">`<span class="subst">$&#123;egg&#125;</span> =&gt; 🍳`</span>), <span class="number">1000</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line"><span class="title function_">getHen</span>()</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function"><span class="params">hen</span> =&gt;</span> <span class="title function_">getEgg</span>(hen))</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function"><span class="params">egg</span> =&gt;</span> <span class="title function_">cook</span>(egg))</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function"><span class="params">meal</span> =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(meal));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 결과는 🐔 =&gt; 🥚 =&gt; 🍳</span></span><br><span class="line"><span class="comment">// 콜백함수를 전달할 때 받아오는 값이 하나이고 다음 함수를 바로 호출하는 경우에는 </span></span><br><span class="line"><span class="comment">// 다음처럼 조금 더 생략하여 사용 가능</span></span><br><span class="line"><span class="title function_">getHen</span>()</span><br><span class="line">  .<span class="title function_">then</span>(getEgg)</span><br><span class="line">  .<span class="title function_">then</span>(cook)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="variable language_">console</span>.<span class="property">log</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-6-2-에러가-포함된-경우-reject-가-포함된-경우"><a href="#3-6-2-에러가-포함된-경우-reject-가-포함된-경우" class="headerlink" title="3.6.2 에러가 포함된 경우(reject 가 포함된 경우)"></a>3.6.2 에러가 포함된 경우(reject 가 포함된 경우)</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">getHen</span> = (<span class="params"></span>) =&gt;</span><br><span class="line">  <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="title function_">resolve</span>(<span class="string">&#x27;🐔&#x27;</span>), <span class="number">1000</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">getEgg</span> = hen =&gt; </span><br><span class="line">  <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">   <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">`error! <span class="subst">$&#123;hen&#125;</span> =&gt; 🥚`</span>)), <span class="number">1000</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">cook</span> = egg =&gt; </span><br><span class="line">  <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">   <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="title function_">resolve</span>(<span class="string">`<span class="subst">$&#123;egg&#125;</span> =&gt; 🍳`</span>), <span class="number">1000</span>);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line"><span class="title function_">getHen</span>()</span><br><span class="line">  .<span class="title function_">then</span>(getEgg)</span><br><span class="line">  .<span class="title function_">catch</span>(<span class="function"><span class="params">error</span> =&gt;</span> &#123;<span class="keyword">return</span> <span class="string">&#x27;🥖&#x27;</span>&#125;)</span><br><span class="line">  .<span class="title function_">then</span>(cook)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="variable language_">console</span>.<span class="property">log</span>)</span><br><span class="line">  .<span class="title function_">catch</span>(<span class="variable language_">console</span>.<span class="property">log</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 결과는 🥖 =&gt; 🍳</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-7-Promise-API-병렬-처리"><a href="#3-7-Promise-API-병렬-처리" class="headerlink" title="3.7 Promise API (병렬 처리)"></a>3.7 Promise API (병렬 처리)</h2><p>Promise  API를 사용하면 코드를 더 가독성 좋게 작성할 수 있다.</p>
+<h3 id="3-7-1-Promise-all"><a href="#3-7-1-Promise-all" class="headerlink" title="3.7.1 Promise.all"></a>3.7.1 Promise.all</h3><p>Promise 배열을 전달하게 되면 모든 Promise들이 병렬적으로 다 받을 때까지 모아줌</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">delay</span>(<span class="params">ms</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> <span class="built_in">setTimeout</span>(resolve, ms));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">getApple</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">delay</span>(<span class="number">1000</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="string">&#x27;🍎&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">getBanana</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">delay</span>(<span class="number">1000</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="string">&#x27;🍌&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">pickAllFruits</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// Promise.all : 병렬적으로 한번에 모든 Promise들을 실행</span></span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">all</span>([<span class="title function_">getApple</span>(), <span class="title function_">getBanana</span>()])</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function"><span class="params">fruits</span> =&gt;</span> fruits.<span class="title function_">join</span>(<span class="string">&#x27; + &#x27;</span>));</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">pickAllFruits</span>().<span class="title function_">then</span>(<span class="variable language_">console</span>.<span class="property">log</span>); <span class="comment">// 결과는 🍎 + 🍌</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-7-2-Promise-race"><a href="#3-7-2-Promise-race" class="headerlink" title="3.7.2 Promise.race"></a>3.7.2 Promise.race</h3><p>가장 먼저 처리되는 프로미스의 결과(혹은 에러)를 반환한다</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">delay</span>(<span class="params">ms</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> <span class="built_in">setTimeout</span>(resolve, ms));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">getApple</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">delay</span>(<span class="number">1000</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="string">&#x27;🍎&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">getBanana</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">delay</span>(<span class="number">2000</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="string">&#x27;🍌&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">pickOnlyOne</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// Promise.race : 주어진 Promise중에 제일 빨리 수행된것을 출력</span></span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">race</span>([<span class="title function_">getApple</span>(), <span class="title function_">getBanana</span>()])</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">pickOnlyOne</span>().<span class="title function_">then</span>(<span class="variable language_">console</span>.<span class="property">log</span>); <span class="comment">// 결과는 🍎</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="3-7-3-정리"><a href="#3-7-3-정리" class="headerlink" title="3.7.3 정리"></a>3.7.3 정리</h3><ul>
+<li><code>Promise.all</code> : 병렬적으로 한번에 모든 Promise들을 실행<ul>
+<li>Promise 배열을 전달하게 되면 모든 Promise들이 병렬적으로 다 받을 때까지 모아줌</li>
+</ul>
+</li>
+<li><code>Promise.race</code> : 주어진 Promise중에 제일 빨리 수행된것을 출력<ul>
+<li>가장 먼저 처리되는 프로미스의 결과(혹은 에러)를 반환</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getBanana</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="title function_">resolve</span>(<span class="string">&#x27;🍌&#x27;</span>), <span class="number">1000</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getApple</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="title function_">resolve</span>(<span class="string">&#x27;🍎&#x27;</span>), <span class="number">3000</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getOrange</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;no orange&#x27;</span>)); <span class="comment">// 에러가 발생하면</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// **** 바나나과 사과를 같이 가지고 오기</span></span><br><span class="line"><span class="comment">// 바나나 갖고오는데 1초, 사과 갖고오는데 3초, 총 4초 뒤에 바나나, 사과 출력</span></span><br><span class="line"><span class="title function_">getBanana</span>()</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">banana</span>) =&gt;</span></span><br><span class="line">    <span class="title function_">getApple</span>() <span class="comment">//</span></span><br><span class="line">      .<span class="title function_">then</span>(<span class="function">(<span class="params">apple</span>) =&gt;</span> [banana, apple])</span><br><span class="line">  )</span><br><span class="line">  .<span class="title function_">then</span>(<span class="variable language_">console</span>.<span class="property">log</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 📝 Promise.all : 병렬적으로 한번에 모든 Promise들을 실행!</span></span><br><span class="line"><span class="title class_">Promise</span>.<span class="title function_">all</span>([<span class="title function_">getBanana</span>(), <span class="title function_">getApple</span>()]) <span class="comment">// 1초 뒤 바나나, 3초 뒤 사과가 병렬 수행</span></span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">fruits</span>) =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;all&#x27;</span>, fruits)); <span class="comment">// 총 3초 뒤에 바나나, 사과 출력</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 📝 Promise.race : 주어진 Promise중에 제일 빨리 수행된것이 이김!</span></span><br><span class="line"><span class="title class_">Promise</span>.<span class="title function_">race</span>([<span class="title function_">getBanana</span>(), <span class="title function_">getApple</span>()]) <span class="comment">//</span></span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">fruit</span>) =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;race&#x27;</span>, fruit)); <span class="comment">// 먼저 출력되는 1초 뒤 바나나가 출력</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Promise</span>.<span class="title function_">all</span>([<span class="title function_">getBanana</span>(), <span class="title function_">getApple</span>(), <span class="title function_">getOrange</span>()])</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">fruits</span>) =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;all-error&#x27;</span>, fruits)) <span class="comment">// 모두 완료되야 실행됨</span></span><br><span class="line">  .<span class="title function_">catch</span>(<span class="variable language_">console</span>.<span class="property">log</span>);</span><br><span class="line"></span><br><span class="line"><span class="title class_">Promise</span>.<span class="title function_">allSettled</span>([<span class="title function_">getBanana</span>(), <span class="title function_">getApple</span>(), <span class="title function_">getOrange</span>()])</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">fruits</span>) =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;all-settle&#x27;</span>, fruits)) <span class="comment">// 성공, 실패를 둘 다 배열로 묶어서 리턴</span></span><br><span class="line">  .<span class="title function_">catch</span>(<span class="variable language_">console</span>.<span class="property">log</span>);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="4-async-x2F-await"><a href="#4-async-x2F-await" class="headerlink" title="4. async &#x2F; await"></a>4. async &#x2F; await</h1><p>프로미스의 장점은 Callback함수를 사용하지 않고, 좀 더 깔끔하게 사용할 수 있다는 장점이 있습니다.<br>그런데 <code>.then</code>으로 연결되어 있어서 <strong>가독성이 떨어집니다</strong>.<br>그래서 <strong>비동기적인 코드를 동기적인</strong>(&#x3D;절차적인) 형태로 사용할 수 있는 방법이 <code>async, await</code>입니다.</p>
+<ul>
+<li>Promise 위에 더 간편한 API를 제공</li>
+<li>기존에 존재하는 것 위에 간편하게 쓸 수 있는 API를 제공하는 것을 syntactic sugar라고 부름 <ul>
+<li>e.g. class</li>
+</ul>
+</li>
+<li>cf. <code>async(어싱크, 비동기), await(어웨잇, 기다려)</code></li>
+</ul>
+<p>최근에는 Promise를 이용해서 계속해서 메서드 체이닝하는 코딩 스타일은<br>JS의 <code>async/await</code> 키워드를 사용하는 방식으로 대체되고 있는 추세입니다.</p>
+<hr>
+<h2 id="4-1-async"><a href="#4-1-async" class="headerlink" title="4.1 async"></a>4.1 async</h2><h3 id="4-1-1-기본-사용법"><a href="#4-1-1-기본-사용법" class="headerlink" title="4.1.1 기본 사용법"></a>4.1.1 기본 사용법</h3><p><strong>async 키워드를 쓰면 Promise 오브젝트가 자동생성</strong>됩니다. 근데 <strong>async 키워드는 function 선언 앞에만 붙일 수 있습니다</strong>.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> 어려운연산() &#123; <span class="comment">// async을 지정해주면 Promise를 리턴하는 함수로 만들어줌</span></span><br><span class="line">  <span class="number">1</span> + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>그럼 이 함수 자체가 Promise가 되어버립니다. 그래서 <strong>이 함수를 실행할 때 뒤에 then을 붙일 수 있습니다. Promise니까요.</strong><br>(cf. 함수를 실행하면 그 자리에 Promise 인스턴스(new Promise() 로 만든 오브젝트)가 남습니다. )</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> 더하기() &#123;</span><br><span class="line">  <span class="number">1</span> + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">더하기().<span class="title function_">then</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;더하기 성공&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>그럼 이제 Promise 만들 때 했던거 처럼, <code>then</code>을 붙여서 <code>더하기()</code>함수가 성공한 뒤에 뭔가를 실행시킬 수 있습니다. </p>
+<hr>
+<h3 id="4-1-2-예제"><a href="#4-1-2-예제" class="headerlink" title="4.1.2 예제"></a>4.1.2 예제</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// **** Promise 사용하는 경우</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">fetchUser</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 네트워크에서 2초 걸리는 연산...</span></span><br><span class="line">    <span class="title function_">resolve</span>(<span class="string">&#x27;메시&#x27;</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> user = <span class="title function_">fetchUser</span>();</span><br><span class="line">user.<span class="title function_">then</span>(<span class="variable language_">console</span>.<span class="property">log</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// --------------------------------------------</span></span><br><span class="line"><span class="comment">// **** Async &amp; Await 사용하는 경우 : 가독성 ^</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">fetchUser</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// 네트워크에서 2초 걸리는 연산...</span></span><br><span class="line">  <span class="keyword">return</span> <span class="string">&#x27;메시&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> user = <span class="title function_">fetchUser</span>();</span><br><span class="line">user.<span class="title function_">then</span>(<span class="variable language_">console</span>.<span class="property">log</span>);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-2-await"><a href="#4-2-await" class="headerlink" title="4.2 await"></a>4.2 await</h2><h3 id="4-2-1-기본-사용법"><a href="#4-2-1-기본-사용법" class="headerlink" title="4.2.1 기본 사용법"></a>4.2.1 기본 사용법</h3><p><code>async</code> 키워드를 쓴 함수 안에서는 <code>await</code>을 사용가능합니다.<br><code>await</code>은 그냥 <code>프로미스.then() 대체품</code>으로 생각하시면 됩니다. 하지만 <strong>then보다 훨씬 문법이 간단합니다.</strong> </p>
+<p>어떤 function 안에서 어려운 연산을 실행한 뒤에 성공&#x2F;실패를 판정해주는 <strong>Promise를 만들려면</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// **** async / then 사용</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> 더하기() &#123;</span><br><span class="line">  <span class="keyword">let</span> 어려운연산 = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">성공, 실패</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> 결과 = <span class="number">1</span> + <span class="number">1</span>;</span><br><span class="line">    성공();</span><br><span class="line">  &#125;);</span><br><span class="line">  어려운연산.<span class="title function_">then</span>(); <span class="comment">// (1) 여기 부분이</span></span><br><span class="line">&#125;</span><br><span class="line">더하기();</span><br><span class="line"></span><br><span class="line"><span class="comment">// ----------------------------------------------</span></span><br><span class="line"><span class="comment">// **** async / awit 사용</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> 더하기() &#123;</span><br><span class="line">  <span class="keyword">let</span> 어려운연산 = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">성공, 실패</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> 결과 = <span class="number">1</span> + <span class="number">1</span>;</span><br><span class="line">    성공();</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">let</span> 결과 = <span class="keyword">await</span> 어려운연산; <span class="comment">// (2) 이렇게 바뀜</span></span><br><span class="line">  <span class="comment">// 어려운연산 Promise를 기다린 다음에 완료되면 결과를 변수에 담아라</span></span><br><span class="line">&#125;</span><br><span class="line">더하기();</span><br></pre></td></tr></table></figure>
+
+<p>이렇게하시면 됩니다. (혹은 Promise 만들기 귀찮으면 어려운연산을 함수로 만든 후 async를 쓰시면 됩니다)</p>
+<hr>
+<h3 id="4-2-2-예제"><a href="#4-2-2-예제" class="headerlink" title="4.2.2 예제"></a>4.2.2 예제</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getBanana</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="title function_">resolve</span>(<span class="string">&#x27;🍌&#x27;</span>), <span class="number">1000</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getApple</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="title function_">resolve</span>(<span class="string">&#x27;🍎&#x27;</span>), <span class="number">3000</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getOrange</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(<span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;no orange&#x27;</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// **** 바나나과 사과를 같이 가지고 오기</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">fetchFruits</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> banana = <span class="keyword">await</span> <span class="title function_">getBanana</span>(); <span class="comment">// getBanana() 값을 받아올 떄까지 기다림(await)</span></span><br><span class="line">  <span class="keyword">const</span> apple = <span class="keyword">await</span> <span class="title function_">getApple</span>(); <span class="comment">// getApple() 값을 받아올 떄까지 기다림(await)</span></span><br><span class="line">  <span class="keyword">return</span> [banana, apple];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">fetchFruits</span>() <span class="comment">//</span></span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">fruits</span>) =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(fruits)); <span class="comment">// 4초 뒤 [ &#x27;🍌&#x27;, &#x27;🍎&#x27; ] 출력</span></span><br></pre></td></tr></table></figure>
+
+<p>위 코드의 경우, <strong>getApple 함수와 getBanana 함수의 연관성이 없음</strong>에도,<br><strong>각 1초와 3초씩 총 4초를 기다려야 하는 상황</strong>이 발생합니다. 이는 <strong>비효율적이므로, 코드 개선이 필요</strong>합니다.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 원래 코드 -&gt; 각 1초씩 총 2초를 기다려야 함</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">pickFruits</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> banana = <span class="keyword">await</span> <span class="title function_">getBanana</span>();</span><br><span class="line">  <span class="keyword">const</span> apple = <span class="keyword">await</span> <span class="title function_">getApple</span>();</span><br><span class="line">  <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;apple&#125;</span> + <span class="subst">$&#123;banana&#125;</span>`</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ------------------------------------------------------------------</span></span><br><span class="line"><span class="comment">// 개선된 코드 -&gt; 병렬적으로 실행되어 1초만 기다리면 됨</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">fetchFruits</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> bananaPromise = <span class="title function_">getBanana</span>();</span><br><span class="line">  <span class="keyword">const</span> applePromise = <span class="title function_">getApple</span>();</span><br><span class="line">  <span class="keyword">const</span> banana = <span class="keyword">await</span> bananaPromise;</span><br><span class="line">  <span class="keyword">const</span> apple = <span class="keyword">await</span> applePromise;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;apple&#125;</span> + <span class="subst">$&#123;banana&#125;</span>`</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>applePromise</code>와 <code>bananaPromise</code>는 만들자마자 각자 실행이 되므로, 둘 중 어느 것이 끝날 때까지 기다릴 필요가 없는 것!</p>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/04/Front-JS-Basic-13-This/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-04 12:37:14
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/js/" title="JS"> <b>#</b> JS </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/js/basic/" title="Basic"> <b>#</b> Basic </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/js/" title="JS"> #JS </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/05/Front-JS-Basic-15-callAPI/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%8B%A4%ED%96%89-%EC%88%9C%EC%84%9C-%EC%BD%9C%EC%8A%A4%ED%83%9D"><span class="toc-text">1. 자바스크립트 실행 순서(콜스택)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Callback"><span class="toc-text">2. Callback</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%EC%BD%9C%EB%B0%B1-%ED%95%A8%EC%88%98"><span class="toc-text">2.1 콜백 함수</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-JavaScript-Runtime-%ED%99%98%EA%B2%BD"><span class="toc-text">2.2 JavaScript Runtime 환경</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%EC%98%88%EC%A0%9C"><span class="toc-text">2.3 예제</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-Callback-Hell"><span class="toc-text">2.4 Callback Hell</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-Promise"><span class="toc-text">3. Promise</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%EA%B8%B0%EB%B3%B8-%EC%82%AC%EC%9A%A9%EB%B2%95"><span class="toc-text">3.1 기본 사용법</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-Producer"><span class="toc-text">3.2 Producer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-Consumers"><span class="toc-text">3.3 Consumers</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-1-resolve-then"><span class="toc-text">3.3.1 resolve - then</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-2-reject-catch"><span class="toc-text">3.3.2 reject - catch</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-Promise-%EC%B6%95%EC%95%BD-%EB%B2%84%EC%A0%84"><span class="toc-text">3.4 Promise 축약 버전</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-5-Promise-chaining"><span class="toc-text">3.5 Promise chaining</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-6-Error-Handling"><span class="toc-text">3.6 Error Handling</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-1-%EC%A0%95%EC%83%81%EC%A0%81%EC%9D%B8-%EA%B2%BD%EC%9A%B0-%EB%AA%A8%EB%91%90-resolve-%EC%9D%B8-%EA%B2%BD%EC%9A%B0"><span class="toc-text">3.6.1 정상적인 경우(모두 resolve 인 경우)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-2-%EC%97%90%EB%9F%AC%EA%B0%80-%ED%8F%AC%ED%95%A8%EB%90%9C-%EA%B2%BD%EC%9A%B0-reject-%EA%B0%80-%ED%8F%AC%ED%95%A8%EB%90%9C-%EA%B2%BD%EC%9A%B0"><span class="toc-text">3.6.2 에러가 포함된 경우(reject 가 포함된 경우)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-7-Promise-API-%EB%B3%91%EB%A0%AC-%EC%B2%98%EB%A6%AC"><span class="toc-text">3.7 Promise API (병렬 처리)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-7-1-Promise-all"><span class="toc-text">3.7.1 Promise.all</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-7-2-Promise-race"><span class="toc-text">3.7.2 Promise.race</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-7-3-%EC%A0%95%EB%A6%AC"><span class="toc-text">3.7.3 정리</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-async-x2F-await"><span class="toc-text">4. async &#x2F; await</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-async"><span class="toc-text">4.1 async</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-1-%EA%B8%B0%EB%B3%B8-%EC%82%AC%EC%9A%A9%EB%B2%95"><span class="toc-text">4.1.1 기본 사용법</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-2-%EC%98%88%EC%A0%9C"><span class="toc-text">4.1.2 예제</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-await"><span class="toc-text">4.2 await</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-1-%EA%B8%B0%EB%B3%B8-%EC%82%AC%EC%9A%A9%EB%B2%95"><span class="toc-text">4.2.1 기본 사용법</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-2-%EC%98%88%EC%A0%9C"><span class="toc-text">4.2.2 예제</span></a></li></ol></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Front-JS-Basic-14-asynchronous(%EB%B9%84%EB%8F%99%EA%B8%B0)%20-%20%EC%9E%91%EC%84%B1%EC%A4%91 + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F04%2FFront-JS-Basic-14-Asynchronous%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/04/Front-JS-Basic-14-Asynchronous/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

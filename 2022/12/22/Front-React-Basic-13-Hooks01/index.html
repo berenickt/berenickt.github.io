@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Front-React-Basic-13-Hooks - Basic Hooks (useState, useEffect) 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Front-React-Basic-13-Hooks - Basic Hooks (useState, useEffect)</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2022-12-22 13:09:13
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/react/" title="React"> <b>#</b> React </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/react/basic/" title="Basic"> <b>#</b> Basic </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/react/" title="React"> #React </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-Hooks-x3D-컴포넌트-인생에-간섭하는-함수"><a href="#1-Hooks-x3D-컴포넌트-인생에-간섭하는-함수" class="headerlink" title="1. Hooks &#x3D; 컴포넌트 인생에 간섭하는 함수"></a>1. Hooks &#x3D; 컴포넌트 인생에 간섭하는 함수</h1><p>Hooks는 버전 16.8부터 React 요소로 새로 추가됨<br>왜 도입되었냐면? 기존의 클래스형 컴포넌트들은 복잡해지면 이해하기 어려워짐</p>
+<ul>
+<li>“<strong>Detail 컴포넌트 등장 전에</strong> 이것좀 해줘”</li>
+<li>“<strong>Detail 컴포넌트 사라지기 전에</strong> 이것좀 해줘”</li>
+<li>“<strong>Detail 컴포넌트 업데이트 되고나서</strong> 이것좀 해줘”</li>
+</ul>
+<p>이렇게 코드좀 실행해달라고 간섭할 수 있는데, 간섭은 <code>갈고리(Hooks)</code>를 달아서 합니다. 그래서 저걸 <strong>Lifecycle hook</strong>이라고 부름</p>
+<hr>
+<h1 id="2-과거-클래스형-컴포넌트-Lifecycle-hook-쓰는-법"><a href="#2-과거-클래스형-컴포넌트-Lifecycle-hook-쓰는-법" class="headerlink" title="2. 과거 클래스형 컴포넌트 Lifecycle hook 쓰는 법"></a>2. 과거 클래스형 컴포넌트 Lifecycle hook 쓰는 법</h1><ul>
+<li>옛날에는 안에 함수명을 저렇게 써주면 각각 특정 Lifecycle에서 코드를 실행할 수 있었습니다.</li>
+<li>현재는 권장되는 방식이 아님</li>
+</ul>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Detail2</span> <span class="keyword">extends</span> <span class="title class_ inherited__">React.Component</span> &#123;</span><br><span class="line">  <span class="title function_">componentDidMount</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// Detail2 컴포넌트가 로드되고나서 실행할 코드</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">componentDidUpdate</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// Detail2 컴포넌트가 업데이트 되고나서 실행할 코드</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">componentWillUnmount</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="comment">// Detail2 컴포넌트가 삭제되기전에 실행할 코드</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="3-useState-Hook"><a href="#3-useState-Hook" class="headerlink" title="3. useState Hook"></a>3. useState Hook</h1><ul>
+<li><p><a target="_blank" rel="noopener" href="https://reactjs.org/docs/hooks-state.html">Using the State Hook</a></p>
+</li>
+<li><p><code>state</code> &#x3D; 컴포넌트의 상태</p>
+<ul>
+<li>e.g. 시계라는 컴포넌트가 있다면?<ul>
+<li>현재 시간</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>기본적인 Hook으로, <code>함수형 컴포넌트</code>에서도 가변적인 상태를 지닐 수 있게 해줌</p>
+</li>
+</ul>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span>, &#123; useState &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>; <span class="comment">// useState 불러오기</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">const</span> <span class="title function_">Counter</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="comment">// [변하는 초기값을 담을 변수, 왼쪽초기값의 변경을 도와주는 함수]  = useState(초기값 설정);</span></span><br><span class="line">  <span class="keyword">const</span> [value, setValue] = <span class="title function_">useState</span>(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">p</span>&gt;</span>현재 카운터 값은 &#123;value&#125;입니다.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;()</span> =&gt;</span> setValue(value + 1)&#125;&gt;+1<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;()</span> =&gt;</span> setValue(value - 1)&#125;&gt;-1<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="4-useEffect-Hook"><a href="#4-useEffect-Hook" class="headerlink" title="4. useEffect Hook"></a>4. useEffect Hook</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://reactjs.org/docs/hooks-effect.html">Using the Effect Hook</a></li>
+<li><code>useEffect</code> &#x3D; 리액트 <strong>컴포넌트가 렌더링될 때마다 특정 작업을 수행하도록 설정</strong>할 수 있는 Hook</li>
+<li>useEffect 안에 적은 코드는 HTML 렌더링 이후에 동작</li>
+<li>시간이 오래 걸리는 작업이 있다면? <strong>useEffect에 넣어두기!</strong><ul>
+<li>useEffect 안에 적으면 HTML 보여주고 나서 시간이 오래 걸리는 작업 실행</li>
+<li>조금이라도 HTML 렌더링이 빠른 사이트를 원하면, useEffect 안에 넣어놓기</li>
+</ul>
+</li>
+<li>React 만든사람이 이 함수를 useEffect라고 작명한 이유<ul>
+<li>함수안에 코드짤 때 <strong>함수의 핵심기능 외에 쓸데없는 기능</strong>들을 프로그래밍 용어로 <code>side effect</code>라고 부름</li>
+<li>useEffect도 컴포넌트의 핵심 기능은 HTML 렌더링이라 <strong>그거 외의 쓸데없는 기능들은 useEffect 안에</strong> 적으라는 소리</li>
+<li>오래걸리는 반복연산, 서버에서 데이터가져오는 작업, 타이머다는거 이런건 useEffect 안에 많이 적기</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;useState, useEffect&#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Detail</span>(<span class="params"></span>)&#123;</span><br><span class="line">  <span class="title function_">useEffect</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">    <span class="comment">// 여기적은 코드는 컴포넌트 로드 &amp; 업데이트 마다 실행됨</span></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-1-useEffect-2가지-형태"><a href="#4-1-useEffect-2가지-형태" class="headerlink" title="4.1 useEffect 2가지 형태"></a>4.1 useEffect 2가지 형태</h2><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 함수의 인자로 콜백함수만 받는 경우</span></span><br><span class="line"><span class="comment">// - 컴포넌트가 렌더링 될때 마다 실행</span></span><br><span class="line"><span class="comment">// - 컴포넌트가 맨 처음 화면에 렌더링 &amp; 다시 렌더링될 떄</span></span><br><span class="line"><span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 작업</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 함수의 인자로 (콜백함수, 배열)을 받는 경우</span></span><br><span class="line"><span class="comment">// - (1) 컴포넌트가 맨 처음 화면 렌더링될 떄 실행</span></span><br><span class="line"><span class="comment">// - (2) 배열 요소 안에 있는 value값이 바뀔 떄 실행</span></span><br><span class="line"><span class="comment">// - 2번쨰 배열 요소로 빈 배열[]을 전달하면, (1)만 실행됨</span></span><br><span class="line"><span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 작업</span></span><br><span class="line">&#125;, [value]);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-2-Clean-Up-정리-작업"><a href="#4-2-Clean-Up-정리-작업" class="headerlink" title="4.2 Clean Up (정리 작업)"></a>4.2 Clean Up (정리 작업)</h2><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 작업</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 예를 들어, 등록한 리스너를 제거해주는 작업을 여기서 함</span></span><br><span class="line">    <span class="comment">// 작업 정리</span></span><br><span class="line">  &#125;;</span><br><span class="line">&#125;, []);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-3-예제1-useEffect-사용"><a href="#4-3-예제1-useEffect-사용" class="headerlink" title="4.3 예제1 : useEffect 사용"></a>4.3 예제1 : useEffect 사용</h2><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span>, &#123; useState, useEffect &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">App</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> [count, setCount] = <span class="title function_">useState</span>(<span class="number">1</span>);</span><br><span class="line">  <span class="keyword">const</span> [name, setName] = <span class="title function_">useState</span>(<span class="string">&#x27;&#x27;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">handleCountUpdate</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">    <span class="title function_">setCount</span>(count + <span class="number">1</span>);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">handleInputChange</span> = (<span class="params">e</span>) =&gt; &#123;</span><br><span class="line">    <span class="title function_">setName</span>(e.<span class="property">target</span>.<span class="property">value</span>);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// // 렌더링마다 매번 실행 - 렌더링 이후</span></span><br><span class="line">  <span class="comment">// useEffect(() =&gt; &#123;</span></span><br><span class="line">  <span class="comment">//   console.log(&#x27;렌더링&#x27;);</span></span><br><span class="line">  <span class="comment">// &#125;);</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// // 마운트 + [count]가 변경될 떄만 useEffect 실행</span></span><br><span class="line">  <span class="comment">// useEffect(() =&gt; &#123;</span></span><br><span class="line">  <span class="comment">//   console.log(&#x27;🍉count 변화&#x27;);</span></span><br><span class="line">  <span class="comment">// &#125;, [count]);</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// // 마운트 + [name]이 변경될 떄만 useEffect 실행</span></span><br><span class="line">  <span class="comment">// useEffect(() =&gt; &#123;</span></span><br><span class="line">  <span class="comment">//   console.log(&#x27;🍊name 변화&#x27;);</span></span><br><span class="line">  <span class="comment">// &#125;, [name]);</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 맨 처음 렌더링될 떄만 실행</span></span><br><span class="line">  <span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;마운팅&#x27;</span>);</span><br><span class="line">  &#125;, []);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;handleCountUpdate&#125;</span>&gt;</span>업데이트<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">span</span>&gt;</span>count : &#123;count&#125; <span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">br</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&#x27;text&#x27;</span> <span class="attr">value</span>=<span class="string">&#123;name&#125;</span> <span class="attr">onChange</span>=<span class="string">&#123;handleInputChange&#125;</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">span</span>&gt;</span>name : &#123;name&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">App</span>;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-4-예제2-useEffect-amp-Clean-Up"><a href="#4-4-예제2-useEffect-amp-Clean-Up" class="headerlink" title="4.4 예제2 : useEffect &amp; Clean Up"></a>4.4 예제2 : useEffect &amp; Clean Up</h2><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span>, &#123; useState, useEffect &#125; <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">App</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> [showTimer, setShowTimer] = <span class="title function_">useState</span>(<span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      &#123;showTimer &amp;&amp; <span class="tag">&lt;<span class="name">Timer</span> /&gt;</span>&#125;</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">button</span> <span class="attr">onClick</span>=<span class="string">&#123;()</span> =&gt;</span> setShowTimer(!showTimer)&#125;&gt;Toggle Timer<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">Timer</span> = (<span class="params">props</span>) =&gt; &#123;</span><br><span class="line">  <span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> timer = <span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;타이머 돌아가는중&#x27;</span>);</span><br><span class="line">    &#125;, <span class="number">1000</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 정리 작업</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">clearInterval</span>(timer);</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;타이머가 종료되었습니다.&#x27;</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;, []);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">span</span>&gt;</span>타이머를 시작합니다. 콘솔 확인하세요.<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">App</span>;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="참고-공식문서"><a href="#참고-공식문서" class="headerlink" title="[참고] 공식문서"></a>[참고] 공식문서</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://reactjs.org/docs/hooks-intro.html">Introduction to Hooks</a></li>
+<li><a target="_blank" rel="noopener" href="https://reactjs.org/docs/hooks-reference.html">Hooks Reference</a></li>
+</ul>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2022/12/22/Front-React-Basic-12-rendering06/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2022-12-22 13:09:13
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/react/" title="React"> <b>#</b> React </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/react/basic/" title="Basic"> <b>#</b> Basic </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/react/" title="React"> #React </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2022/12/22/Front-React-Basic-14-Hooks02/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Hooks-x3D-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EC%9D%B8%EC%83%9D%EC%97%90-%EA%B0%84%EC%84%AD%ED%95%98%EB%8A%94-%ED%95%A8%EC%88%98"><span class="toc-text">1. Hooks &#x3D; 컴포넌트 인생에 간섭하는 함수</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%EA%B3%BC%EA%B1%B0-%ED%81%B4%EB%9E%98%EC%8A%A4%ED%98%95-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-Lifecycle-hook-%EC%93%B0%EB%8A%94-%EB%B2%95"><span class="toc-text">2. 과거 클래스형 컴포넌트 Lifecycle hook 쓰는 법</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-useState-Hook"><span class="toc-text">3. useState Hook</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-useEffect-Hook"><span class="toc-text">4. useEffect Hook</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-useEffect-2%EA%B0%80%EC%A7%80-%ED%98%95%ED%83%9C"><span class="toc-text">4.1 useEffect 2가지 형태</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-Clean-Up-%EC%A0%95%EB%A6%AC-%EC%9E%91%EC%97%85"><span class="toc-text">4.2 Clean Up (정리 작업)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3-%EC%98%88%EC%A0%9C1-useEffect-%EC%82%AC%EC%9A%A9"><span class="toc-text">4.3 예제1 : useEffect 사용</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4-%EC%98%88%EC%A0%9C2-useEffect-amp-Clean-Up"><span class="toc-text">4.4 예제2 : useEffect &amp; Clean Up</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%EC%B0%B8%EA%B3%A0-%EA%B3%B5%EC%8B%9D%EB%AC%B8%EC%84%9C"><span class="toc-text">[참고] 공식문서</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Front-React-Basic-13-Hooks%20-%20Basic%20Hooks%20(useState%2C%20useEffect) + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2022%2F12%2F22%2FFront-React-Basic-13-Hooks01%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2022/12/22/Front-React-Basic-13-Hooks01/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

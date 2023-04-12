@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Start-CSS-05 - 애니메이션 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Start-CSS-05 - 애니메이션</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-02-06 17:35:55
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/html-css-js/" title="HTML-CSS-JS"> <b>#</b> HTML-CSS-JS </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/html-css-js/css/" title="CSS"> <b>#</b> CSS </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/css/" title="CSS"> #CSS </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-애니메이션이란"><a href="#1-애니메이션이란" class="headerlink" title="1. 애니메이션이란?"></a>1. 애니메이션이란?</h1><p><code>animation</code>이란 HTML <code>요소에 적용된 CSS 스타일이 다른 값으로 부드럽게 변하는 것</code>을 말합니다. 애니메이션을 제대로 이해하기 위해 간단하게 애니메이션 기법에 대해 알아보겠습니다. 웹(Web)에서는 애니메이션을 구현하는 기술적 부분에서 크게 2가지로 구분할 수 있습니다.</p>
+<ul>
+<li><p><code>frame by frame 방식</code></p>
+<ul>
+<li><code>여러 개의 프레임을 하나로 묶어서</code> 애니메이션을 만들어내는 기술적인 방법</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/CSS_5_1.png" alt="CSS_5_1"></p>
+<ul>
+<li><p><code>keyframe 방식</code></p>
+<ul>
+<li><code>시작점과 끝점의 애니메이션만 지정</code>하고, 그 사이의 과정은 생략하더라도 자연스럽게 이어줌</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/CSS_5_2.png" alt="CSS_5_2"></p>
+<p>구현의 편리함 때문에 <code>CSS에서는 애니메이션 기법을 구현</code>할 떄, <code>keyframe 방식</code>으로 애니메이션으로 구현합니다.<br>애니메이션을 공부할 떄, 가장 중요한 것은 <code>키프레임(keyframe) 룰</code>을 지정하고 사용하는 법을 배우는 것이 핵심입니다.<br>그 외 애니메이션 관련 속성들은 트랜지션과 이름도 일부 비슷하고, 역할도 비슷합니다.</p>
+<hr>
+<h1 id="2-애니메이션-속성-1"><a href="#2-애니메이션-속성-1" class="headerlink" title="2. 애니메이션 속성 - 1"></a>2. 애니메이션 속성 - 1</h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;ko&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;IE=edge&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>애니메이션(Animation)<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.box</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">width</span>: <span class="number">100px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">height</span>: <span class="number">100px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">background-color</span>: red;</span></span><br><span class="line"><span class="language-css">        <span class="comment">/* 📝 animation-name : 애니메이션을 적용할 키프레임 이름 정의 */</span></span></span><br><span class="line"><span class="language-css">        <span class="attribute">animation-name</span>: move;</span></span><br><span class="line"><span class="language-css">        <span class="comment">/* 📝 animation-duration : 애니메이션이 진행되는 시간을 정의 */</span></span></span><br><span class="line"><span class="language-css">        <span class="attribute">animation-duration</span>: <span class="number">3s</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">      <span class="comment">/* @keyframes : 애니메이션의 움직임을 정의 */</span></span></span><br><span class="line"><span class="language-css">      <span class="comment">/* keyframe뒤에는 고유한 이름(식별자) 지정 */</span></span></span><br><span class="line"><span class="language-css">      <span class="keyword">@keyframes</span> move &#123;</span></span><br><span class="line"><span class="language-css">        <span class="comment">/* &#x27;키프레임 룰&#x27; 또는 &#x27;키프레임 규칙&#x27;이라 부름 */</span></span></span><br><span class="line"><span class="language-css">        <span class="comment">/* 시작점 */</span></span></span><br><span class="line"><span class="language-css">        <span class="selector-tag">from</span> &#123;</span></span><br><span class="line"><span class="language-css">          <span class="attribute">margin-left</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="language-css">        &#125;</span></span><br><span class="line"><span class="language-css">        <span class="comment">/* 종료지점 */</span></span></span><br><span class="line"><span class="language-css">        <span class="selector-tag">to</span> &#123;</span></span><br><span class="line"><span class="language-css">          <span class="attribute">margin-left</span>: <span class="number">300px</span>;</span></span><br><span class="line"><span class="language-css">        &#125;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-1-animation-name"><a href="#2-1-animation-name" class="headerlink" title="2.1 animation-name"></a>2.1 animation-name</h2><p>animation-name 속성은 특정 요소에서 적용할 키 프레임명을 지정합니다. 예를 들어, bgchange라는 이름의 키 프레임을 지정하고 싶다면 다음과 같이 작성합니다.</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">animation-name</span> : bgchange;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-2-animation-duration"><a href="#2-2-animation-duration" class="headerlink" title="2.2 animation-duration"></a>2.2 animation-duration</h2><p>animation-duration 속성은 애니메이션을 지속할 시간을 설정합니다. 속성값으로는 초(s)나 밀리초(ms) 단위의 시간을 넣으면 됩니다.</p>
+<hr>
+<h2 id="2-3-animation-delay"><a href="#2-3-animation-delay" class="headerlink" title="2.3 animation-delay"></a>2.3 animation-delay</h2><p>animation-delay 속성을 사용하면 애니메이션 실행을 지연할 수 있습니다. 속성값으로는 초나 밀리초 단위의 시간을 넣으면 됩니다. 예를 들어, 다음 코드를 실행하면 애니메이션을 3초 뒤에 실행합니다.</p>
+<hr>
+<h1 id="3-애니메이션-속성-2"><a href="#3-애니메이션-속성-2" class="headerlink" title="3. 애니메이션 속성 - 2"></a>3. 애니메이션 속성 - 2</h1><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;ko&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;X-UA-Compatible&quot;</span> <span class="attr">content</span>=<span class="string">&quot;IE=edge&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>애니메이션(Animation)<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="selector-class">.box</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">width</span>: <span class="number">100px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">height</span>: <span class="number">100px</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">background-color</span>: red;</span></span><br><span class="line"><span class="language-css">        <span class="comment">/* 📝 animation-name : 애니메이션을 적용할 키프레임 이름 정의 */</span></span></span><br><span class="line"><span class="language-css">        <span class="attribute">animation-name</span>: move;</span></span><br><span class="line"><span class="language-css">        <span class="comment">/* 📝 animation-duration : 애니메이션이 진행되는 시간을 정의 */</span></span></span><br><span class="line"><span class="language-css">        <span class="attribute">animation-duration</span>: <span class="number">3s</span>;</span></span><br><span class="line"><span class="language-css">        <span class="comment">/* 📝 animation-fill-mode : 애니메이션 종료 후의 동작 상태를 정의 */</span></span></span><br><span class="line"><span class="language-css">        <span class="comment">/* none, forwards, backwards, both 값 사용 */</span></span></span><br><span class="line"><span class="language-css">        <span class="comment">/* forwards는 애니메이션 종료 시점의 상태를 유지 */</span></span></span><br><span class="line"><span class="language-css">        <span class="attribute">animation-fill-mode</span>: forwards;</span></span><br><span class="line"><span class="language-css">        <span class="comment">/* 📝 animation-iteration-count : 애니메이션의 반복 횟수 정의 */</span></span></span><br><span class="line"><span class="language-css">        <span class="comment">/* 숫자나 infinite 값 사용 */</span></span></span><br><span class="line"><span class="language-css">        <span class="attribute">animation-iteration-count</span>: infinite;</span></span><br><span class="line"><span class="language-css">        <span class="comment">/* 📝 animation-direction : 애니메이션의 진행 방향을 지정 */</span></span></span><br><span class="line"><span class="language-css">        <span class="comment">/* normal(기본값), reverse, alternate, alternate-reverse 값 사용 */</span></span></span><br><span class="line"><span class="language-css">        <span class="comment">/* alternate : 순방향 -&gt; 역방향 -&gt; 순방향 -&gt; 역방향 -&gt; ..., 가장 자주 사용 */</span></span></span><br><span class="line"><span class="language-css">        <span class="comment">/* 순방향 : 키프레임의 0% -&gt; 100%방향으로 흘러감, normal */</span></span></span><br><span class="line"><span class="language-css">        <span class="comment">/* 역방향 : 키프레임의 100% -&gt; 0%방향으로 흘러감, revesre */</span></span></span><br><span class="line"><span class="language-css">        <span class="attribute">animation-direction</span>: alternate;</span></span><br><span class="line"><span class="language-css">        <span class="comment">/* 📝 animation-timing-function : 애니메이션의 진행 속도를 지정하는 속성 */</span></span></span><br><span class="line"><span class="language-css">        <span class="comment">/* easy(기본값), linear(일정하게 동작)  */</span></span></span><br><span class="line"><span class="language-css">        <span class="attribute">animation-timing-function</span>: linear;</span></span><br><span class="line"><span class="language-css">        <span class="comment">/* 📝 animation-delay : 애니메이션의 지연 시간을 지정하는 속성 */</span></span></span><br><span class="line"><span class="language-css">        <span class="attribute">animation-delay</span>: <span class="number">2s</span>;</span></span><br><span class="line"><span class="language-css">        <span class="comment">/* 📝 animation-play-state : 애니메이션의 진행 상태를 지정하는 속성 */</span></span></span><br><span class="line"><span class="language-css">        <span class="comment">/* paused(멈춤), running(진행, 기본값) */</span></span></span><br><span class="line"><span class="language-css">        <span class="attribute">animation-play-state</span>: running;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">      <span class="comment">/* 📝 @keyframes : 애니메이션의 움직임을 정의 */</span></span></span><br><span class="line"><span class="language-css">      <span class="comment">/* keyframe뒤에는 고유한 이름(식별자) 지정 */</span></span></span><br><span class="line"><span class="language-css">      <span class="keyword">@keyframes</span> move &#123;</span></span><br><span class="line"><span class="language-css">        <span class="comment">/* from 대신 사용 가능, 시작점 */</span></span></span><br><span class="line"><span class="language-css">        <span class="number">0%</span> &#123;</span></span><br><span class="line"><span class="language-css">          <span class="attribute">margin-left</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="language-css">        &#125;</span></span><br><span class="line"><span class="language-css">        <span class="comment">/* 시작과 종료 사이에 오는 특정 시점들은 무조건 %로만 가능  */</span></span></span><br><span class="line"><span class="language-css">        <span class="number">30%</span> &#123;</span></span><br><span class="line"><span class="language-css">        &#125;</span></span><br><span class="line"><span class="language-css">        <span class="number">50%</span> &#123;</span></span><br><span class="line"><span class="language-css">        &#125;</span></span><br><span class="line"><span class="language-css">        <span class="comment">/* to 대신 사용 가능, 종료지점 */</span></span></span><br><span class="line"><span class="language-css">        <span class="number">100%</span> &#123;</span></span><br><span class="line"><span class="language-css">          <span class="attribute">margin-left</span>: <span class="number">300px</span>;</span></span><br><span class="line"><span class="language-css">        &#125;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-1-animation-fill-mode"><a href="#3-1-animation-fill-mode" class="headerlink" title="3.1 animation-fill-mode"></a>3.1 animation-fill-mode</h2><p>애니메이션이 끝나도 원래 상태로 돌아가지 않고 애니메이션이 종료된 시점의 상태를 유지하길 원할 수도 있습니다. animation-fill-mode 속성은 애니메이션이 실행되기 전과 후의 스타일을 지정합니다. 사용할 수 있는 속성값은 다음 표와 같습니다.</p>
+<table>
+<thead>
+<tr>
+<th align="center">속성값</th>
+<th align="center">상태</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">none</td>
+<td align="center">실행 전</td>
+<td>시작 시점(0%, from)의 스타일을 적용하지 않고 대기합니다.</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">실행 후</td>
+<td>실행되기 전의 스타일 적용 상태로 돌아갑니다.</td>
+</tr>
+<tr>
+<td align="center">forwards</td>
+<td align="center">실행 전</td>
+<td>시작 시점(0%, from)의 스타일을 적용하지 않고 대기합니다.</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">실행 후</td>
+<td>키 프레임에 정의된 종료 시점(100%, to)의 스타일을 적용하고 대기합니다.</td>
+</tr>
+<tr>
+<td align="center">backwards</td>
+<td align="center">실행 전</td>
+<td>키 프레임에 정의된 시작 시점(0%, from)의 스타일을 적용하고 대기합니다.</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">실행 후</td>
+<td>실행되기 전의 스타일 적용 상태로 돌아갑니다.</td>
+</tr>
+<tr>
+<td align="center">both</td>
+<td align="center">실행 전</td>
+<td>키 프레임에 정의된 시작 시점(0%, from)의 스타일을 적용하고 대기합니다.</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="center">실행 후</td>
+<td>키 프레임에 정의된 종료 시점(100%, to)의 스타일을 적용하고 대기합니다.</td>
+</tr>
+</tbody></table>
+<p>animation-fill-mode 속성은 대부분 애니메이션이 종료된 후에 상태 유지를 목적으로 사용하기 때문에 forwards 속성값을 가장 많이 사용합니다.</p>
+<hr>
+<h2 id="3-2-animation-iterator-count"><a href="#3-2-animation-iterator-count" class="headerlink" title="3.2 animation-iterator-count"></a>3.2 animation-iterator-count</h2><p>애니메이션은 기본으로 1회 실행하고 종료됩니다. 이때 animation-iterator-count 속성을 사용하면 실행 횟수를 조절할 수 있습니다.</p>
+<hr>
+<h2 id="3-4-animation-play-state"><a href="#3-4-animation-play-state" class="headerlink" title="3.4 animation-play-state"></a>3.4 animation-play-state</h2><p>animation-play-state 속성은 애니메이션의 재생 상태를 지정합니다. 속성값으로는 다음 키워드를 사용할 수 있습니다.</p>
+<table>
+<thead>
+<tr>
+<th align="center">속성 값</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>paused</code></td>
+<td>애니메이션의 실행을 일시 정지합니다.</td>
+</tr>
+<tr>
+<td align="center"><code>running</code></td>
+<td>애니메이션을 실행합니다.</td>
+</tr>
+</tbody></table>
+<p>전환 효과 속성과 다르게 애니메이션 속성은 실행 도중에 일시 정지하거나 일시 정지했다가 다시  재생할 수 있습니다. 하지만 이렇게 작업하려면 순수 HTML과 CSS 코드만으로는 불가능하고 자바스크립트도 함께 사용해야 합니다.</p>
+<hr>
+<h2 id="3-5-animation-direction"><a href="#3-5-animation-direction" class="headerlink" title="3.5 animation-direction"></a>3.5 animation-direction</h2><p>animation-direction 속성은 애니메이션의 진행 방향을 지정합니다.</p>
+<table>
+<thead>
+<tr>
+<th align="center">속성 값</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>normal</code></td>
+<td>애니메이션의 진행 방향을 키 프레임에 정의된 시간 순서대로 진행합니다(to → from).</td>
+</tr>
+<tr>
+<td align="center"><code>reverse</code></td>
+<td>애니메이션의 진행 방향을 키 프레임에 정의된 시간 순서의 역으로 진행합니다(from → to).</td>
+</tr>
+<tr>
+<td align="center"><code>alternate</code></td>
+<td>애니메이션이 1회 이상 실행될 경우 홀수 번째는 normal로, 짝수 번째는 reverse로 진행합니다.</td>
+</tr>
+<tr>
+<td align="center"><code>alternate-reverse</code></td>
+<td>애니메이션이 1회 이상 실행될 경우 홀수 번째는 reverse로, 짝수 번째는 normal로 진행합니다.</td>
+</tr>
+</tbody></table>
+<p>애니메이션은 키 프레임에 정의한 순서대로 진행됩니다. 그런데 키 프레임을 어떠한 이유로 건드리지 못할 때, 애니메이션의 진행 방향은 수정하고 싶다면 animation-direction 속성을 사용합니다.</p>
+<p>예를 들어, 다음처럼 속성을 정의하면 애니메이션의 진행 방향이 from(100%)에서 to(0%), 즉 키 프레임의 역순이 됩니다.</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">animation-direction</span> : reverse;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>💡 animation-timing-function 속성</p>
+<p>이 속성은 애니메이션의 속도를 지정할 때 사용합니다. 작동 방식이 transition-timing-function 속성과 똑같아서 여기서는 자세한 설명을 생략합니다. <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation-timing-function%EC%9D%84">https://developer.mozilla.org/en-US/docs/Web/CSS/animation-timing-function을</a> 참고해 주세요.</p>
+</blockquote>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/02/06/Front-Start-CSS-04-Transition/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-02-06 17:35:55
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/html-css-js/" title="HTML-CSS-JS"> <b>#</b> HTML-CSS-JS </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/html-css-js/css/" title="CSS"> <b>#</b> CSS </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/css/" title="CSS"> #CSS </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/02/06/Front-Start-CSS-06-Transform/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98%EC%9D%B4%EB%9E%80"><span class="toc-text">1. 애니메이션이란?</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98-%EC%86%8D%EC%84%B1-1"><span class="toc-text">2. 애니메이션 속성 - 1</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-animation-name"><span class="toc-text">2.1 animation-name</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-animation-duration"><span class="toc-text">2.2 animation-duration</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-animation-delay"><span class="toc-text">2.3 animation-delay</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98-%EC%86%8D%EC%84%B1-2"><span class="toc-text">3. 애니메이션 속성 - 2</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-animation-fill-mode"><span class="toc-text">3.1 animation-fill-mode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-animation-iterator-count"><span class="toc-text">3.2 animation-iterator-count</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-animation-play-state"><span class="toc-text">3.4 animation-play-state</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-5-animation-direction"><span class="toc-text">3.5 animation-direction</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Start-CSS-05%20-%20%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98 + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F02%2F06%2FFront-Start-CSS-05-Animation%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/02/06/Front-Start-CSS-05-Animation/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      웹 접근성과 WAI-ARIA 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">웹 접근성과 WAI-ARIA</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-03-01 14:23:55
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/html-css-js/" title="HTML-CSS-JS"> <b>#</b> HTML-CSS-JS </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/html-css-js/html/" title="HTML"> <b>#</b> HTML </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/html/" title="HTML"> #HTML </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-웹-접근성"><a href="#1-웹-접근성" class="headerlink" title="1. 웹 접근성"></a>1. 웹 접근성</h1><p>웹 접근성이란 시각장애인들이 웹 페이지를 원활하게 이용할 수 있도록 알려주는 가이드라인이라고 생각하면 됩니다.<br>대표적으로 input 과 label 이 있는데요.</p>
+<ul>
+<li>일반 사람들은 별다른 설명 없이 input, button, a 등등의 태그만 있어도 어느정도 이용할 수 있지만, </li>
+<li><strong>시각장애인들</strong>은 직접 클릭할 수도 없이, <strong>탭 같은 걸로 각 요소를 이동</strong>하는 수밖에 없습니다.<ul>
+<li>따라서 탭을 눌렀을 때, <strong>초점이 어느 순서로 이동</strong>하는지, </li>
+<li><strong>초점이 잡혔을 때의 안내 메시지</strong>가 제대로 나오는지 여부는 굉장히 중요합니다.</li>
+</ul>
+</li>
+</ul>
+<p>이런 설정들을 HTML native 요소만으로는 처리하기 어렵기 때문에, W3C 는 <code>WAI-ARIA</code> 라는 걸 정의했습니다.</p>
+<hr>
+<h1 id="2-WAI-ARIA"><a href="#2-WAI-ARIA" class="headerlink" title="2. WAI-ARIA"></a>2. WAI-ARIA</h1><p><code>WAI-ARIA (Web Accessibility Initiative – Accessible Rich Internet Applications)</code></p>
+<ul>
+<li>W3C 에서 정의한 기술로 웹 접근성을 위해 지원되는 여러 가지 특성들을 의미합니다.</li>
+<li>일반 사용자가 보기에 정상인 화면들도 HTML 요소에 따라서 <ul>
+<li><strong>스크린 리더 등의 보조기기에서 제대로 읽히지 않을 수 있습니다</strong>.</li>
+</ul>
+</li>
+<li>이를 개선하기 위해 웹 애플리케이션에 역할(Role), 속성(Property), 상태(State) 정보를 추가할 수 있습니다.</li>
+</ul>
+<hr>
+<h2 id="2-1-Role"><a href="#2-1-Role" class="headerlink" title="2.1 Role"></a>2.1 Role</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- role example --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">li</span> <span class="attr">role</span>=<span class="string">&quot;menuitem&quot;</span>&gt;</span>Open file…<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>HTML 요소의 역할을 정의</strong><ul>
+<li>일반적으로는 HTML native 요소만으로 이를 처리하는게 가장 이상적입니다.</li>
+<li>버튼은 button, 링크는 a, 체크박스는 input checkbox 등등 이미 존재하는 요소들로도 충분히 표현할 수 있습니다.</li>
+</ul>
+</li>
+<li>But, 이미지에 버튼 클릭 이벤트를 준다던가 <ul>
+<li>좀더 세세하고 다양한 설정이 하고 싶을 때는 native 요소만으로 부족할 수 있습니다.</li>
+<li>이럴 때 <code>role</code> 을 사용해서 <strong>해당 요소들의 역할을 명시</strong>합니다.</li>
+</ul>
+</li>
+</ul>
+<p>Role 의 종류는 W3C WAI ARIA 의 <a target="_blank" rel="noopener" href="https://www.w3.org/TR/wai-aria/#roles_categorization">5.3 Categorization of Roles</a> 에서 확인할 수 있습니다.</p>
+<hr>
+<h2 id="2-2-State-and-Property"><a href="#2-2-State-and-Property" class="headerlink" title="2.2 State and Property"></a>2.2 State and Property</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- property state example 1 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">li</span> <span class="attr">role</span>=<span class="string">&quot;checkbox&quot;</span> <span class="attr">aria-checked</span>=<span class="string">&quot;true&quot;</span>&gt;</span>체크박스 아이템<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- property state example 2 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">role</span>=<span class="string">&quot;alert&quot;</span> <span class="attr">aria-live</span>=<span class="string">&quot;assertive&quot;</span>&gt;</span>올바르지 않은 입력입니다.<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>속성 (Property)</code>는 <strong>해당 요소의 특징이나 상황을 정의</strong>하며 <code>aria-</code> 라는 접두사를 사용합니다.</li>
+<li><code>상태 (State)</code>는 <strong>요소의 현재 상태</strong>를 나타냅니다.</li>
+</ul>
+<hr>
+<h1 id="3-ARIA-속성들"><a href="#3-ARIA-속성들" class="headerlink" title="3. ARIA 속성들"></a>3. ARIA 속성들</h1><h2 id="3-1-role-x3D-”checkbox”-aria-checked-x3D-”true”"><a href="#3-1-role-x3D-”checkbox”-aria-checked-x3D-”true”" class="headerlink" title="3.1. role&#x3D;”checkbox” aria-checked&#x3D;”true”"></a>3.1. role&#x3D;”checkbox” aria-checked&#x3D;”true”</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">role</span>=<span class="string">&quot;checkbox&quot;</span> <span class="attr">aria-checked</span>=<span class="string">&quot;false&quot;</span> <span class="attr">tabindex</span>=<span class="string">&quot;0&quot;</span> <span class="attr">aria-labelledby</span>=<span class="string">&quot;chk1-label&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">label</span> <span class="attr">id</span>=<span class="string">&quot;chk1-label&quot;</span>&gt;</span>Remember my preferences<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- native 요소로 사용할 수 있는 경우 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;checkbox&quot;</span> <span class="attr">id</span>=<span class="string">&quot;chk1-label&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;chk1-label&quot;</span>&gt;</span>Remember my preferences<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>특정 요소에 체크박스 역할을 부여</strong></li>
+<li><code>aria-checked</code> 를 사용해서 체크 여부를 판단</li>
+<li>focus 되지 않는 요소일 경우 <code>tabindex</code> 를 사용하기도 함</li>
+<li>가능하면 <strong>HTML native checkbox를 사용하는게 권장</strong>되지만, <strong>사용할 수 없는 경우에 ARIA 속성</strong>을 사용</li>
+<li>cf. <a target="_blank" rel="noopener" href="https://www.w3.org/TR/wai-aria-practices/examples/checkbox/checkbox-1/checkbox-1.html">w3c - Checkbox Example</a></li>
+<li>cf. <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/checkbox_role">ARIA: checkbox role</a></li>
+</ul>
+<hr>
+<h2 id="3-2-aria-label-aria-labelledby-aria-describedby"><a href="#3-2-aria-label-aria-labelledby-aria-describedby" class="headerlink" title="3.2. aria-label, aria-labelledby, aria-describedby"></a>3.2. aria-label, aria-labelledby, aria-describedby</h2><ul>
+<li>특정 요소를 설명하는 데 사용되는 ARIA 속성들</li>
+<li>cf. <a target="_blank" rel="noopener" href="https://developers.google.com/web/fundamentals/accessibility/semantics-aria/aria-labels-and-relationships?hl=ko">ARIA Label</a></li>
+</ul>
+<hr>
+<h3 id="3-2-1-aria-label"><a href="#3-2-1-aria-label" class="headerlink" title="3.2.1 aria-label"></a>3.2.1 aria-label</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">aria-label</span>=<span class="string">&quot;menu&quot;</span> <span class="attr">class</span>=<span class="string">&quot;button&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Label 목적을 위한 속성</li>
+<li>특정 요소에 대한 설명을 그대로 적습니다.</li>
+<li>텍스트 대신 그래픽을 사용하는 경우처럼 추가 설명이 필요한 경우 사용할 수 있습니다.</li>
+</ul>
+<hr>
+<h3 id="3-2-2-aria-labelledby"><a href="#3-2-2-aria-labelledby" class="headerlink" title="3.2.2 aria-labelledby"></a>3.2.2 aria-labelledby</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">&quot;rg-label&quot;</span>&gt;</span>음료수 옵션<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">role</span>=<span class="string">&quot;radiogroup&quot;</span> <span class="attr">aria-labelledby</span>=<span class="string">&quot;rg-label&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>aria-label</code> 은 <strong>어떤 요소에 대한 설명을 직접 적는</strong> 반면,</li>
+<li><code>aria-labelledby</code> 은 <strong>다른 요소의 ID 값을 매칭</strong>시킵니다.</li>
+<li><code>aria-labelledby</code> 은 Label 자체를 재정의하기 때문에 <ul>
+<li>다른 모든 Label 속성들, <code>aria-label</code> 또는 HTML native label 과 함께 쓰여도 </li>
+<li>항상 <code>aria-labelledby</code> 을 <strong>우선</strong>합니다.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="3-2-3-aria-describedby"><a href="#3-2-3-aria-describedby" class="headerlink" title="3.2.3 aria-describedby"></a>3.2.3 aria-describedby</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;pw&quot;</span>&gt;</span>Password:<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;password&quot;</span> <span class="attr">id</span>=<span class="string">&quot;pw&quot;</span> <span class="attr">aria-describedby</span>=<span class="string">&quot;pw-help&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;pw-help&quot;</span>&gt;</span>비밀번호는 12 자 이상으로 이루어져야 합니다<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>aria-labelledby</code> 와 같은 방식으로 다른 요소의 ID 를 매칭하여 현재 요소에 대한 설명을 나타냅니다.</li>
+<li>둘의 사용법과 쓰임새가 굉장히 비슷하여 헷갈릴 수도 있지만 다른 목적으로 사용됩니다.</li>
+<li>위 예시 코드에서처럼 <code>label</code> 태그와 함께 사용할 수 있습니다.</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-describedby_attribute">MDN Web Docs - Using the aria-describedby attribute</a>에는 다음과 같이 나와있습니다.</p>
+<blockquote>
+<p>This is very similar to aria-labelledby: a label describes the essence of an object, while a description provides more information that the user might need.</p>
+<p><code>label</code> 관련 속성들과의 가장 큰 차이점은 Label 이 요소의 필수 설명이라면<br> <code>aria-describedby</code> 은 어디까지나 부연 설명</p>
+</blockquote>
+<hr>
+<h2 id="3-3-aria-live"><a href="#3-3-aria-live" class="headerlink" title="3.3. aria-live"></a>3.3. aria-live</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">name</span>=<span class="string">&quot;email&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">role</span>=<span class="string">&quot;alert&quot;</span> <span class="attr">aria-live</span>=<span class="string">&quot;assertive&quot;</span>&gt;</span>이메일 형식이 올바르지 않습니다.<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>JavaScript 를 사용하면 페이지를 새로 로드하지 않고 일부만 동적으로 변경하는게 가능</li>
+<li>But 동적인 변경은 페이지를 볼 수 있는 사용자들은 알 수 있지만, 시각 장애인들은 알아채기 어렵습니다.</li>
+<li>그래서 이런 동적인 (실시간) 변경들을 알려줄 수 있는 <code>aria-live</code> 라는 속성이 제공</li>
+<li>cf. <a target="_blank" rel="noopener" href="https://developer.mozilla.org/ko/docs/Web/Accessibility/ARIA/ARIA_Live_Regions">ARIA live regions</a></li>
+<li>cf. <a target="_blank" rel="noopener" href="https://developers.google.com/web/fundamentals/accessibility/semantics-aria/hiding-and-updating-content?hl=ko">콘텐츠 숨기기 및 업데이트</a></li>
+</ul>
+<p>회원가입 또는 로그인 페이지에서 사용하는 <code>Email Input</code>은 </p>
+<ul>
+<li>실시간으로 <strong>Email 형식 검사를 하여 올바른 형식이 아니면 빨간색 에러 메시지를 사용자에게 노출</strong>합니다.</li>
+<li>페이지를 볼 수 있는 사용자는 그 정보를 실시간으로 확인할 수 있지만, </li>
+<li><strong>시각장애인은 에러 메시지가 노출되었다는 사실을 모를 수 있습니다</strong>.<ul>
+<li>이럴 때 <code>role=&quot;alert&quot;</code> 로 <strong>경고 역할을 갖고 있는 요소</strong>를 만들고, </li>
+<li><strong>실시간 변화를 감지해서 알려주는</strong> <code>aria-live</code> 속성을 추가할 수 있습니다.</li>
+</ul>
+</li>
+</ul>
+<p><code>aria-live</code> 의 값으로는 다음 값들이 올 수 있습니다.</p>
+<ul>
+<li><code>off (default)</code></li>
+<li><code>polite</code> : 현재 진행중인 음성 또는 타이핑 이후에 알림</li>
+<li><code>assertive</code> : 현재 진행중인 알림을 중단하고 즉시 알림<ul>
+<li><code>assertive</code> 값은 사용자의 현재 작업을 방해할 수 있기 때문에 신중하게 적용해야 합니다.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="3-4-role-x3D-”alert”"><a href="#3-4-role-x3D-”alert”" class="headerlink" title="3.4. role&#x3D;”alert”"></a>3.4. role&#x3D;”alert”</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/Alert_Role">ARIA: alert role</a></li>
+</ul>
+<p><code>alert</code> 역할은 사용자에게 동적인 변화를 알려줄 때 사용합니다.</p>
+<p>스크린 리더는 <code>alert</code> 역할이 붙은 요소가 업데이트 되면 바로 읽기 시작합니다.</p>
+<p><code>role=&quot;alert&quot;</code> 로 설정한다는 건 <code>aria-live=&quot;assertive&quot; aria-atomic=&quot;true&quot;</code> 와 동일합니다.</p>
+<hr>
+<h2 id="3-5-role-x3D-”timer”"><a href="#3-5-role-x3D-”timer”" class="headerlink" title="3.5. role&#x3D;”timer”"></a>3.5. role&#x3D;”timer”</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/timer_role">ARIA: timer role</a></li>
+<li>현재 요소가 timer로 사용되고 있다는 걸 의미</li>
+<li>초를 계속 세주려면 <code>aria-live</code> 속성을 켜주면 되지만,<ul>
+<li>1초마다 계속 컨텐츠가 갱신되기 때문에 알림이 부자연스럽게 계속 끊기는 이슈가 존재</li>
+</ul>
+</li>
+<li>만약 timer 에 초점이 잡혔을 때의 남은 시간만 읽어주길 바란다면 <code>role=&quot;timer&quot;</code> 설정만 추가</li>
+</ul>
+<hr>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://www.w3.org/WAI/fundamentals/accessibility-intro/ko">W3C - 웹 접근성이란?</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.biew.co.kr/entry/WAI-ARIA-%EC%9B%B9%ED%8D%BC%EB%B8%94%EB%A6%AC%EC%8B%B1">WAI-ARIA 웹퍼블리싱</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.w3.org/TR/wai-aria">W3C - WAI ARIA</a></li>
+<li><a target="_blank" rel="noopener" href="https://bcp0109.tistory.com/348">웹 접근성과 WAI-ARIA :: 뱀귤 블로그 (tistory.com)</a></li>
+</ul>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/03/01/Front-Start-CSS-11-Comment/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-03-01 14:23:55
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/html-css-js/" title="HTML-CSS-JS"> <b>#</b> HTML-CSS-JS </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/html-css-js/html/" title="HTML"> <b>#</b> HTML </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/html/" title="HTML"> #HTML </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/03/04/Link-Collection/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%EC%9B%B9-%EC%A0%91%EA%B7%BC%EC%84%B1"><span class="toc-text">1. 웹 접근성</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-WAI-ARIA"><span class="toc-text">2. WAI-ARIA</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-Role"><span class="toc-text">2.1 Role</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-State-and-Property"><span class="toc-text">2.2 State and Property</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-ARIA-%EC%86%8D%EC%84%B1%EB%93%A4"><span class="toc-text">3. ARIA 속성들</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-role-x3D-%E2%80%9Dcheckbox%E2%80%9D-aria-checked-x3D-%E2%80%9Dtrue%E2%80%9D"><span class="toc-text">3.1. role&#x3D;”checkbox” aria-checked&#x3D;”true”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-aria-label-aria-labelledby-aria-describedby"><span class="toc-text">3.2. aria-label, aria-labelledby, aria-describedby</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-1-aria-label"><span class="toc-text">3.2.1 aria-label</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-2-aria-labelledby"><span class="toc-text">3.2.2 aria-labelledby</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-3-aria-describedby"><span class="toc-text">3.2.3 aria-describedby</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-aria-live"><span class="toc-text">3.3. aria-live</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4-role-x3D-%E2%80%9Dalert%E2%80%9D"><span class="toc-text">3.4. role&#x3D;”alert”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-5-role-x3D-%E2%80%9Dtimer%E2%80%9D"><span class="toc-text">3.5. role&#x3D;”timer”</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Reference"><span class="toc-text">Reference</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %EC%9B%B9%20%EC%A0%91%EA%B7%BC%EC%84%B1%EA%B3%BC%20WAI-ARIA + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F03%2F01%2FFront-Start-HTML-WAI-ARIA%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/03/01/Front-Start-HTML-WAI-ARIA/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

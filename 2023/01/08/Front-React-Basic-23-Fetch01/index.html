@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Front-React-Basic-23-Data Fetching 라이브러리 - REST API 기반 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Front-React-Basic-23-Data Fetching 라이브러리 - REST API 기반</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-01-08 10:09:21
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/react/" title="React"> <b>#</b> React </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/react/basic/" title="Basic"> <b>#</b> Basic </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/react/" title="React"> #React </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-Data-Fetching-라이브러리-종류"><a href="#1-Data-Fetching-라이브러리-종류" class="headerlink" title="1. Data Fetching 라이브러리 종류"></a>1. Data Fetching 라이브러리 종류</h1><ul>
+<li>JS에서 기본 제공하는 fetch</li>
+<li>REST 라이브러리<ul>
+<li><a target="_blank" rel="noopener" href="https://swr.vercel.app/">SWR 공식 사이트</a>✔️</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/TanStack/query">React Query - TanStack Query 공식 사이트</a>✔️</li>
+<li><a target="_blank" rel="noopener" href="https://axios-http.com/docs/intro">Axios 공식 사이트</a></li>
+<li><a target="_blank" rel="noopener" href="https://redux-toolkit.js.org/rtk-query/overview">RTK Query 공식 사이트</a></li>
+</ul>
+</li>
+<li>GraphQL 라이브러리<ul>
+<li><a target="_blank" rel="noopener" href="https://www.apollographql.com/">Apollo 공식 사이트</a>✔️</li>
+<li><a target="_blank" rel="noopener" href="https://relay.dev/">Relay 공식 사이트</a></li>
+<li><a target="_blank" rel="noopener" href="https://formidable.com/open-source/urql/">urql 공식 사이트</a></li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="2-API"><a href="#2-API" class="headerlink" title="2. API"></a>2. API</h1><ul>
+<li><strong>API (Application Programming Interface)</strong> : 서로 다른 프로그램간에 소통할 수 있게 도와주는 통신 규약<ul>
+<li>웹에서 사용하면 ‘<strong>서버와 고객간의 통신 규약</strong>‘</li>
+<li>풀어말하면 ‘<strong>서버에게 요청해서 데이터 가져오는 방법</strong>‘</li>
+</ul>
+</li>
+<li>e.g. “<strong>누군가 &#x2F;write로 접속하면 write.html을 보내주세요</strong>“같은 건 서버의 API<ul>
+<li><code>write.html</code>을 보고싶으면 <code>/write</code>로 접속하라는 API를 정의</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>💡 서버(Server) &#x3D; 알바생</p>
+<ul>
+<li><strong>요청을 받으면 데이터를 보내주는 기계</strong></li>
+<li>알바생을 영어로 Server라고 함.<ul>
+<li>(음식을) 서빙(Serving)한다 &#x3D; 무언가를 갖다준다.</li>
+<li>(컴퓨터) 서버(Server) &#x3D; 무언가를 갖다주는 컴퓨터</li>
+</ul>
+</li>
+<li>e.g. 웹서버 &#x3D; “웹툰 페이지 주세요“하면, 웹툰 페이지를 가져다주는 기계</li>
+<li>전문용어로는 클라이언트의 요청을 받으면 서비스, 데이터를 제공하는 컴퓨터 혹은 프로그램</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>💡 GET 요청 &#x3D; 읽기 요청</p>
+<ul>
+<li>무언가 읽는 요청</li>
+<li>e.g. 브라우저 주소창에 URL 입력란이 GET 요청하는 곳임<ul>
+<li>브라우저 주소창에 웹툰 주소창을 치면, 서버는 웹툰 페이지를 가져다줌</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr>
+<h1 id="3-RSET-API란"><a href="#3-RSET-API란" class="headerlink" title="3. RSET API란?"></a>3. RSET API란?</h1><ul>
+<li><code>REST(Representational State Transfer)</code></li>
+<li>웹의 창시자(HTTP) 중의 한 사람인 Roy Fielding의 2000년 논문에 의해서 소개<ul>
+<li>HTTP 요청 시스템(GET, POST, PUT, DELETE)</li>
+<li>REST 원칙에 의해서 쓰면 인터넷 세상이 평화로워짐 (이라고 졸업논문씀)</li>
+</ul>
+</li>
+<li>“웹 API 짤 때 REST 원칙을 지켜서 짜면 좋다”고 하는 <strong>API 디자인 패턴</strong></li>
+<li>말 그대로 형식이기에 특정 기술에 제한받지 않음</li>
+<li>총 6개의 원칙이 존재</li>
+<li>cf. <a target="_blank" rel="noopener" href="https://youtu.be/RP_f5dMoHFc">그런 REST API로 괜찮은가</a></li>
+<li>cf. 옛날에는 SOAP라는 걸 사용했다고 함</li>
+</ul>
+<hr>
+<h2 id="3-1-REST-6-원칙"><a href="#3-1-REST-6-원칙" class="headerlink" title="3.1 REST 6 원칙"></a>3.1 REST 6 원칙</h2><h3 id="3-1-1-Uniform-Interface⭐"><a href="#3-1-1-Uniform-Interface⭐" class="headerlink" title="3.1.1 Uniform Interface⭐"></a>3.1.1 Uniform Interface⭐</h3><p><strong>인터페이스는 일관성이 있어야한다</strong></p>
+<ul>
+<li><strong>하나의 URL로는 하나의 데이터</strong>를 가져와야함 (하나를 가져오기 위한 두개의 URL을 만들지 말자)</li>
+<li><strong>간결하고 예측가능하게 짜세요</strong> (URL 하나를 알면 둘을 알게)</li>
+<li><strong>URL 이름짓기 관습을</strong> 잘 따라주세요</li>
+</ul>
+<blockquote>
+<p>💡 URI 와 URL</p>
+<ul>
+<li><code>URI</code> : <strong>자료를 넘버링하고 분류하고 지칭하는 방법</strong></li>
+<li><code>URL</code> : <strong>URL과 비슷하지만 조금 더 큰 의미</strong></li>
+</ul>
+</blockquote>
+<hr>
+<h3 id="3-1-2-Client-server-역할-구분"><a href="#3-1-2-Client-server-역할-구분" class="headerlink" title="3.1.2 Client-server 역할 구분"></a>3.1.2 Client-server 역할 구분</h3><p>고객들은 URL 하나만 알면, 서버에 있는 자료를 갖다쓸 수 있습니다.<br><strong>고객에게 서버역할을 맡기거나 고객에게 DB에 있는 자료를 직접 꺼내라고 하든지 그런 식으로 코드를 짜면 안된다</strong>.</p>
+<hr>
+<h3 id="3-1-3-Stateless"><a href="#3-1-3-Stateless" class="headerlink" title="3.1.3 Stateless"></a>3.1.3 Stateless</h3><p><strong>요청들은 각각 독립적으로 처리</strong>되어야 한다.</p>
+<ul>
+<li>요청1이 성공해야 요청2를 보내주고, <strong>요청간의 의존성이 존재하는 코드를 짜시면 안됩니다</strong>.</li>
+<li>다시 말해, <strong>요청하나 만으로 자료를 가져오기 충분하도록 요청에 필요한 모든 정보들을 실어 보내는게 좋다</strong></li>
+</ul>
+<hr>
+<h3 id="3-1-4-Cacheable"><a href="#3-1-4-Cacheable" class="headerlink" title="3.1.4 Cacheable"></a>3.1.4 Cacheable</h3><ul>
+<li><strong>요청을 통해 보내는 자료들은 캐싱이 가능해야 한다.</strong></li>
+<li><strong>캐싱가능하다고 표시하거나 캐싱 기간을 설정</strong>해주어야 한다</li>
+</ul>
+<blockquote>
+<p>💡 캐싱(Caching)</p>
+<p>네이버를 방문하면 브라우저는 자동으로 자주 사용하는 이미지 파일, CSS 파일 등을 하드에 저장해놓습니다.<br>e.g. 별로 바뀔일 없는 네이버 로고나 아이콘</p>
+<p><strong>하드에 저장해놓고 네이버 방문할 때 “네이버서버에 네이버 로고주세요~”라고 요청하지 않고 하드에서 불러옵니다</strong>.<br>이 행위를 <strong>캐싱</strong>이라고 합니다.</p>
+</blockquote>
+<hr>
+<h3 id="3-1-5-Layered-System"><a href="#3-1-5-Layered-System" class="headerlink" title="3.1.5 Layered System"></a>3.1.5 Layered System</h3><p><strong>여러개의 레이어를 거쳐서 요청을 처리하게 만들어도 된다</strong></p>
+<ul>
+<li>요청처리하는곳, DB에 저장하는곳 이런 여러가지 단계를 거쳐서 요청을 처리해도 된다.</li>
+</ul>
+<hr>
+<h3 id="3-1-6-Code-on-Demand"><a href="#3-1-6-Code-on-Demand" class="headerlink" title="3.1.6 Code on Demand"></a>3.1.6 Code on Demand</h3><p>서버는 <strong>고객에게 실제 실행가능한 코드를 전송</strong>해줄 수도 있습니다.</p>
+<hr>
+<h2 id="3-2-좋은-URL-이름짓기-관습"><a href="#3-2-좋은-URL-이름짓기-관습" class="headerlink" title="3.2 좋은 URL 이름짓기 관습"></a>3.2 좋은 URL 이름짓기 관습</h2><ul>
+<li>instagram.com&#x2F;explore&#x2F;tags&#x2F;kpop</li>
+<li>instagram.com&#x2F;explore&#x2F;tags&#x2F;food</li>
+<li>facebook.com&#x2F;natgeo&#x2F;photos</li>
+<li>facebook.com&#x2F;bbc&#x2F;photos</li>
+</ul>
+<p>위 URL은 좋은 API들입니다.<br>왜냐면 <code>facebook.com/bbc/photos</code> 이거만 봐도 BBC 뉴스 페북 계정의 사진첩인지 알 수 있습니다.</p>
+<p>정리하면 이런 특징을 가지고 있는데, 따라하면 됩니다.</p>
+<ul>
+<li>단어들을 <strong>동사보다는 명사 위주</strong>로 구성</li>
+<li>응용해서 <strong>다른 정보들을 쉽게 가져올 수 있을 정도로 일관성</strong> 있음</li>
+<li><strong>대충 봐도 어떤 정보가 들어올지 예측이 가능해야</strong> 함</li>
+<li>띄어쓰기는 <strong>언더바(_)대신 대시(-)기호</strong> 사용</li>
+<li><strong>파일 확장자 쓰지 말기</strong> (<code>.html</code> 이런거)</li>
+<li><strong>하위 문서들을 뜻할 땐 &#x2F; 기호를 사용</strong>함 (하위폴더같은 느낌)</li>
+</ul>
+<p>여러가지가 있습니다. 이것만 잘 지켜주시면 예쁜 서버 API들이 완성됩니다.</p>
+<hr>
+<h2 id="3-3-HTTP-메서드"><a href="#3-3-HTTP-메서드" class="headerlink" title="3.3 HTTP 메서드"></a>3.3 HTTP 메서드</h2><p>메서드들이 특정 용도에 제한되어 있지 않음. POST 하나로 데이터 읽고 수정하고 지우고 다 할 수 있지만,<br>각 요청의 의도에 맞게 <strong>RESTful하게 API를 만들기 위해서는 목적에 따라 구분해서 사용</strong>해야 함</p>
+<ul>
+<li><code>GET</code> : 데이터를 Read(조회)할 떄 사용</li>
+<li><code>POST</code> (BODY 포함)<ul>
+<li>새로운 정보를 Create(추가)하는데 사용</li>
+<li>Body에 새 데이터 정보를 실어서 보냄</li>
+</ul>
+</li>
+<li><code>PUT</code> (BODY 포함)</li>
+<li><code>PATCH</code> (BODY 포함)<ul>
+<li>데이터가 변경될 때, PUT 또는 PATCH를 사용해서 변경(Update)될 새 정보들을 Body에 실어서 보냄</li>
+<li>PUT과 PATCH는 쓰는 곳마다 다르지만,</li>
+<li>정석은<ul>
+<li>PUT은 정보를 통쟤로 변경할 떄</li>
+<li>PATCH는 일부 정보만 특정 방식으로 변경할 떄</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>DELETE</code> : 데이터 삭제 요청</li>
+</ul>
+<hr>
+<h1 id="3-SWR"><a href="#3-SWR" class="headerlink" title="3. SWR"></a>3. SWR</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://swr.vercel.app/ko">https://swr.vercel.app/ko</a></li>
+</ul>
+<hr>
+<h1 id="4-React-Query"><a href="#4-React-Query" class="headerlink" title="4. React Query"></a>4. React Query</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://tanstack.com/query/v4/?from=reactQueryV3&original=https://react-query-v3.tanstack.com/">https://tanstack.com/query/v4/?from=reactQueryV3&amp;original=https://react-query-v3.tanstack.com/</a></li>
+</ul>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/01/05/Front-JS-Basic-22-babelWebpack/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-01-08 10:09:21
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/react/" title="React"> <b>#</b> React </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/react/basic/" title="Basic"> <b>#</b> Basic </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/react/" title="React"> #React </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/01/08/Front-React-Basic-25-TDD/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Data-Fetching-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-%EC%A2%85%EB%A5%98"><span class="toc-text">1. Data Fetching 라이브러리 종류</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-API"><span class="toc-text">2. API</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-RSET-API%EB%9E%80"><span class="toc-text">3. RSET API란?</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-REST-6-%EC%9B%90%EC%B9%99"><span class="toc-text">3.1 REST 6 원칙</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-1-Uniform-Interface%E2%AD%90"><span class="toc-text">3.1.1 Uniform Interface⭐</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-2-Client-server-%EC%97%AD%ED%95%A0-%EA%B5%AC%EB%B6%84"><span class="toc-text">3.1.2 Client-server 역할 구분</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-3-Stateless"><span class="toc-text">3.1.3 Stateless</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-4-Cacheable"><span class="toc-text">3.1.4 Cacheable</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-5-Layered-System"><span class="toc-text">3.1.5 Layered System</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-6-Code-on-Demand"><span class="toc-text">3.1.6 Code on Demand</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%EC%A2%8B%EC%9D%80-URL-%EC%9D%B4%EB%A6%84%EC%A7%93%EA%B8%B0-%EA%B4%80%EC%8A%B5"><span class="toc-text">3.2 좋은 URL 이름짓기 관습</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3-HTTP-%EB%A9%94%EC%84%9C%EB%93%9C"><span class="toc-text">3.3 HTTP 메서드</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-SWR"><span class="toc-text">3. SWR</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-React-Query"><span class="toc-text">4. React Query</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Front-React-Basic-23-Data%20Fetching%20%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC%20-%20REST%20API%20%EA%B8%B0%EB%B0%98 + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F01%2F08%2FFront-React-Basic-23-Fetch01%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/01/08/Front-React-Basic-23-Fetch01/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>

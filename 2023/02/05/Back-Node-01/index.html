@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="ko" color-mode="light">
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Berenickt" />
+  <meta name="description" content="Front-end 공부 중..." />
+  
+  
+  <title>
+    
+      Back-Node-01-Intro 
+      
+      
+      |
+    
+     Berenickt&#39;s Blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.ico">
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Berenickt</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories">
+          <a href="/categories">카테고리</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags">
+          <a href="/tags">태그</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives">
+          <a href="/archives">날짜별</a>
+        </li>
+      
+        <li class="nav-item" data-path="/wisesaying">
+          <a href="/wisesaying">명언</a>
+        </li>
+      
+        <li class="nav-item" data-path="/philosophy">
+          <a href="/philosophy">철학</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about">
+          <a href="/about">소개</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Back-Node-01-Intro</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-02-05 19:10:15
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/node/" title="Node"> <b>#</b> Node </a>
+        </span>
+        
+        <span class="span--category">
+          <a href="/categories/node/basic/" title="Basic"> <b>#</b> Basic </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/node/" title="Node"> #Node </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-Node-js란"><a href="#1-Node-js란" class="headerlink" title="1. Node.js란"></a>1. Node.js란</h1><blockquote>
+<p>Node.js는 Chrom V8 JavaScript 엔진으로 빌드된 JavaScript 런타임</p>
+</blockquote>
+<ul>
+<li><code>런타임</code> : 특정 언어로 개발된 프로그램을 해석하고 실행할 수 있는 환경<ul>
+<li>프로그래밍 넝어가 구동되는 환경</li>
+</ul>
+</li>
+<li><code>JavaScript 런타임</code> : JS로 된 프로그램을 해석하고 실행할 수 있는 환경</li>
+<li><code>Chrom V8 JavaScript 엔진</code><ul>
+<li>Node.js가 등장하기 전 JS는 브라우저에서만 동작</li>
+<li>2008년 구글이 크롬 브라우저를 출시</li>
+<li>크롬 브라우저를 만들면서 V8엔진을 개발했고, 이로 인해 JS 실행 속도가 대폭 개선됨</li>
+</ul>
+</li>
+<li><code>Node.js</code>는 브라우저 밖에서도 JS를 실행할려고 V8엔진을 이용해 만든 것</li>
+</ul>
+<hr>
+<h1 id="2-Node-js의-특징"><a href="#2-Node-js의-특징" class="headerlink" title="2. Node.js의 특징"></a>2. Node.js의 특징</h1><blockquote>
+<p>첫 번쨰 예시</p>
+<ul>
+<li>스레드(Thread)라는 사람이 라면집 개업</li>
+<li>혼자 장사함</li>
+<li>손님이 주문하면, 요리를 다 할 떄까지 주문을 못받음</li>
+</ul>
+<p>두 번째 예시</p>
+<ul>
+<li>여러 명의 직원(Thread)을 뽑음</li>
+<li>장사가 안되면, 직원(Thread)이 놈</li>
+</ul>
+<p>세 번쨰 예시</p>
+<ul>
+<li>첫 번쨰 예시에서 스레드(Thread)가</li>
+<li>논블로킹(Non-blocking) 기계를 샀음 </li>
+<li>논블로킹 기계가 손님 주문을 받음</li>
+<li>스레드는 요리만 함</li>
+</ul>
+</blockquote>
+<p><strong>프로그래밍 언어마다 차이가 있지만, 위 3가지 방식 중 한 가지 형태로 실행</strong>됩니다.</p>
+<ul>
+<li>두 번쨰 예시<ul>
+<li>가지고 있는 자원이 많은 경우</li>
+<li>e.g. Java</li>
+</ul>
+</li>
+<li>세 번쨰 예시<ul>
+<li>가지고 있는 자원이 한정적이고 최대한 효율적이여 햐는 경우</li>
+<li>e.g. Node</li>
+<li>Node는 가볍고, 효율적이고, 높은 성능처리를 위해</li>
+<li>논블로킹I&#x2F;O , 싱글 스레드, 이벤트 루프라는 특징을 가집니다.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="2-1-논블로킹-Non-blocking-I-x2F-O"><a href="#2-1-논블로킹-Non-blocking-I-x2F-O" class="headerlink" title="2.1 논블로킹(Non-blocking) I&#x2F;O"></a>2.1 논블로킹(Non-blocking) I&#x2F;O</h2><p>프로그래밍 언어별로 처리하는 방식은 크게 2가지가 있습니다.</p>
+<ul>
+<li><strong>여러 개의 작업을동시에 처리</strong>할 수 있는 언어</li>
+<li><strong>한 번에 하나의 작업만 처리</strong>할 수 있는 언어 (e.g. JavaScript)</li>
+</ul>
+<hr>
+<p>그렇지만 I&#x2F;O 작업의 경우 JS도 동시처리할 수 있습니다.</p>
+<ul>
+<li>e.g. 파일 읽기&#x2F;쓰기같은 파일 시스템 처리</li>
+<li>e.g. DB로 데이터를 전송&#x2F;조회같은 네트워크 요청</li>
+</ul>
+<blockquote>
+<p>cf. I&#x2F;O 작업 &#x3D; 입력(input)과 출력(output)의 줄임말</p>
+</blockquote>
+<h3 id="2-1-1-블로킹-Blocking"><a href="#2-1-1-블로킹-Blocking" class="headerlink" title="2.1.1 블로킹(Blocking)"></a>2.1.1 블로킹(Blocking)</h3><ul>
+<li>함수를 호출하면 호출된 함수가 <strong>작업을 마칠 떄까지 제어권을 돌려주지 않고 함수가 종료될 떄까지 대기</strong>하는 방식</li>
+<li>함수가 완전히 종료되기 전까지는 <strong>다른 작업을 진행하지 못하고 기다리는 것</strong></li>
+<li><strong>동기적 I&#x2F;O</strong></li>
+<li>파일 쓰기가 완료될 떄까지 프로그램이 다음 코드를 실행하지 않고, <ul>
+<li>대기하기 때문에 파일을 쓰는 동안 CPU가 사용되지 않아 비효율적</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="2-1-2-논블로킹-Non-blocking"><a href="#2-1-2-논블로킹-Non-blocking" class="headerlink" title="2.1.2 논블로킹(Non-blocking)"></a>2.1.2 논블로킹(Non-blocking)</h3><ul>
+<li>함수를 호출하면 호출된 함수에게 <strong>바로 제어권을 넘겨서 다른 작업을 바로 진행</strong>할 수 있도록 하는 방식</li>
+<li>함수를 호출되어 실행되는 중에도 <strong>다른 작업을 진행 가능</strong></li>
+<li><strong>비동기적 I&#x2F;O</strong></li>
+<li>파일 쓰기를 요청한 후 다른 작업을 할 수 있어서 좀 더 효율적</li>
+</ul>
+<p>“논 블로킹이 좋다, 블로킹이 좋다”의 개념이 아니라<br>어떤 경우에는 블로킹 작업을 해야하고, 어떤 경우엔 논블로킹 작업을 해야할 떄도 있습니다.</p>
+<hr>
+<h2 id="2-2-싱글-스레드-Single-Thread"><a href="#2-2-싱글-스레드-Single-Thread" class="headerlink" title="2.2 싱글 스레드(Single Thread)"></a>2.2 싱글 스레드(Single Thread)</h2><ul>
+<li><code>싱글 스레드</code> &#x3D; 스레드를 하나만 사용해, <strong>하나의 작업만 수행</strong><ul>
+<li>즉, 동시에 하나의 작업만 처리할 수 있다는 뜻</li>
+<li>e.g. Node</li>
+</ul>
+</li>
+<li>JS같은 싱글 스레드 언어는 작성된 프로그램이 순차적으로 실행되고, 여러 작업을 동시처리X</li>
+<li>반대로, <code>멀티 스레드</code> &#x3D; 스레드를 여러 개를 두어서 <strong>동시에 여러 작업을 수행</strong><ul>
+<li>e.g. Java</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="2-2-1-프로세스"><a href="#2-2-1-프로세스" class="headerlink" title="2.2.1 프로세스"></a>2.2.1 프로세스</h3><ul>
+<li>컴퓨터는 <code>프로세스</code>라는 작업 단위를 두고 프로세스를 통해 작업을 처리합니다.</li>
+<li>Node.js를 포함한 여러 프로그램들은 <strong>개별적인 프로세스</strong>로,<ul>
+<li>리소스(CPU, 메모리, 저장공간 등)을 할당받아서 실행됩니다.</li>
+</ul>
+</li>
+<li><code>스레드(Theard)</code>는 프로세스 안에서 작업을 처리하기 위해 실행되는 흐름의 단위</li>
+<li><strong>하나의 프로세스는 여러 개의 스레드를 생성해 여러 작업을 동시에 처리</strong>할 수 있습니다.</li>
+</ul>
+<hr>
+<h3 id="2-2-2-싱글-스레드-vs-멀티-스레드-장단점"><a href="#2-2-2-싱글-스레드-vs-멀티-스레드-장단점" class="headerlink" title="2.2.2 싱글 스레드 vs 멀티 스레드 장단점"></a>2.2.2 싱글 스레드 vs 멀티 스레드 장단점</h3><ul>
+<li>멀티 스레드<ul>
+<li>장점 : 동시에 여러 작업을 수행해 성능이 좋음</li>
+<li>단점 : 많은 자원이 필요하고, 자원이 제대로 사용되지 않는 비효율이 생길 수 있음</li>
+</ul>
+</li>
+<li>싱글 스레드<ul>
+<li>장점 : <ul>
+<li>Node.js는 싱글 스레드의 약저을 극복하기 위해 논블로킹을 사용하여</li>
+<li>파일 쓰기, 네트워크를 통한 DB 처리 등의 작업을 하는 동안 컴퓨터가 쉬지않고,</li>
+<li>다른 작업을 하도록 해서 적은 자원으로 효율아 좋음</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="2-3-이벤트-루프"><a href="#2-3-이벤트-루프" class="headerlink" title="2.3 이벤트 루프"></a>2.3 이벤트 루프</h2><p>Node.js는 V8 JS 엔진과 libuv, llhttp, c-ares,OpenSSL, zlib라는 라이브러리로 구성되어 있습니다.</p>
+<ul>
+<li>이 중 libuv는 이벤트 루프를 통해 JS가 가진 싱글 스레드의 약점을 극복하고</li>
+<li>효율적인 작업을 처리하도록 고안되었습니다.</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/berenickt/image-server/main/img/js-14-2.png" alt="js-14-2"></p>
+<hr>
+<h1 id="3-NPM"><a href="#3-NPM" class="headerlink" title="3. NPM"></a>3. NPM</h1><p>NPM은 Node Package Manager로 Node.js 기반으로 개발된 수많은 JS 패키지(라이브러리)가 등록되어 있어<br>개발자들이 쉽게 설치하고, 운영할 수 있도록 해주는 Node.js 패키지 관리자입니다.</p>
+</div>
+    
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/02/04/DevOps-docker01-intro/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
+      </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-02-05 19:10:15
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/node/" title="Node"> <b>#</b> Node </a>
+          </span>
+          
+          <span class="span--category">
+            <a href="/categories/node/basic/" title="Basic"> <b>#</b> Basic </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/node/" title="Node"> #Node </a>
+          </span>
+          
+        </span>
+        
+      </div>
+      <div class="post-foot-prev">
+        
+        <a href="/2023/02/06/CheatSheet-JS-DataAlgo-Ref/" target="_self">
+          <span> 다음 </span>
+          <i class="iconfont icon-chevronright"></i>
+        </a>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Node-js%EB%9E%80"><span class="toc-text">1. Node.js란</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-Node-js%EC%9D%98-%ED%8A%B9%EC%A7%95"><span class="toc-text">2. Node.js의 특징</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%EB%85%BC%EB%B8%94%EB%A1%9C%ED%82%B9-Non-blocking-I-x2F-O"><span class="toc-text">2.1 논블로킹(Non-blocking) I&#x2F;O</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-%EB%B8%94%EB%A1%9C%ED%82%B9-Blocking"><span class="toc-text">2.1.1 블로킹(Blocking)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-2-%EB%85%BC%EB%B8%94%EB%A1%9C%ED%82%B9-Non-blocking"><span class="toc-text">2.1.2 논블로킹(Non-blocking)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%EC%8B%B1%EA%B8%80-%EC%8A%A4%EB%A0%88%EB%93%9C-Single-Thread"><span class="toc-text">2.2 싱글 스레드(Single Thread)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-1-%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4"><span class="toc-text">2.2.1 프로세스</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-2-%EC%8B%B1%EA%B8%80-%EC%8A%A4%EB%A0%88%EB%93%9C-vs-%EB%A9%80%ED%8B%B0-%EC%8A%A4%EB%A0%88%EB%93%9C-%EC%9E%A5%EB%8B%A8%EC%A0%90"><span class="toc-text">2.2.2 싱글 스레드 vs 멀티 스레드 장단점</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%A3%A8%ED%94%84"><span class="toc-text">2.3 이벤트 루프</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-NPM"><span class="toc-text">3. NPM</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+ 
+  <div class="footer">
+    <div class="social">
+      <ul>
+        
+          <li>
+            <a title="github" target="_blank" rel="noopener" href="https://github.com/berenickt">
+              <i class="iconfont icon-github"></i>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+    
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/berenickt">Copyright © 2023 SeungWoo</a>
+            
+        </div>
+        
+      
+        <div class="footer-more">
+          
+            <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+            
+        </div>
+        
+          
+  </div></div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+ 
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="검색어 입력하세용...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>첫 번째 검색, 인덱스 파일을 불러오고 있습니다. 잠시 후 …<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>검색어를 찾을 수 없습니다. 검색어를 바꿔 보세요<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+ 
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+ 
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Back-Node-01-Intro + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F02%2F05%2FBack-Node-01%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/02/05/Back-Node-01/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>
