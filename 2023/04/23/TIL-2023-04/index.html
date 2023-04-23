@@ -142,7 +142,7 @@
     <div class="post-attach">
       <span class="post-pubtime">
         <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
-        2023-04-14 16:05:06
+        2023-04-23 21:47:06
       </span>
       
       <span class="post-categories">
@@ -371,21 +371,109 @@
 </ul>
 <hr>
 <h1 id="3주"><a href="#3주" class="headerlink" title="3주"></a>3주</h1><h2 id="2023-x2F-04-x2F-17"><a href="#2023-x2F-04-x2F-17" class="headerlink" title="2023&#x2F;04&#x2F;17"></a>2023&#x2F;04&#x2F;17</h2><ul>
-<li></li>
+<li>refreshToken 구조이해 및 마이크로 서비스의 이해<ul>
+<li><code>AccessToken</code>은 <strong>1~2시간 정도의 짧은 만료 기한</strong>을 가지고 있고,</li>
+<li><code>RefreshToken</code>은 <strong>2주~1개월 정도의 긴 만료 기한</strong>을 가지고 있습니다.</li>
+<li><code>로컬/세션 스토리지</code>의 경우 <strong>보안에 취약</strong>하기 때문에 토큰을 취급할 때에는 사용하지 않고</li>
+<li><code>쿠키</code>에 <strong>RefreshToken</strong>을 담아서 받아오게 됩니다.<ul>
+<li><code>쿠키</code>는 <code>로컬/세션 스토리지</code>와 달리 백엔드와 연동이 가능함</li>
 </ul>
-<h2 id="2023-x2F-04-x2F-18"><a href="#2023-x2F-04-x2F-18" class="headerlink" title="2023&#x2F;04&#x2F;18"></a>2023&#x2F;04&#x2F;18</h2><ul>
-<li></li>
+</li>
+<li>쿠키의 secure &#x2F; httpOnly 옵션</li>
 </ul>
-<h2 id="2023-x2F-04-x2F-19"><a href="#2023-x2F-04-x2F-19" class="headerlink" title="2023&#x2F;04&#x2F;19"></a>2023&#x2F;04&#x2F;19</h2><ul>
-<li></li>
+</li>
+<li>마이크로 서비스 아키텍쳐 (Micro Service Architecture)</li>
+<li>Observable과 fromPromise<ul>
+<li>새로고침시 토큰 유지하는 방법</li>
 </ul>
-<h2 id="2023-x2F-04-x2F-20"><a href="#2023-x2F-04-x2F-20" class="headerlink" title="2023&#x2F;04&#x2F;20"></a>2023&#x2F;04&#x2F;20</h2><ul>
-<li></li>
+</li>
+<li>Observable<ul>
+<li>apollo-client의 flatmap</li>
 </ul>
-<h2 id="2023-x2F-04-x2F-21"><a href="#2023-x2F-04-x2F-21" class="headerlink" title="2023&#x2F;04&#x2F;21"></a>2023&#x2F;04&#x2F;21</h2><ul>
-<li><hr>
 </li>
 </ul>
+<h2 id="2023-x2F-04-x2F-18"><a href="#2023-x2F-04-x2F-18" class="headerlink" title="2023&#x2F;04&#x2F;18"></a>2023&#x2F;04&#x2F;18</h2><ul>
+<li>메모이제이션(Memoization) : useCallback(),useMemo()</li>
+<li>컴포넌트 단위에서의 메모이제이션 : React.memo</li>
+<li>map과 memo의 관계<ul>
+<li>key값을 uuid로 설정시 문제점</li>
+</ul>
+</li>
+<li>Call-Tree로 이해하는 Critical Rendering Path<ul>
+<li>CRP(Critical Rendering Path)</li>
+<li>Reflow(Layout)와 Repaint(Paint)</li>
+<li>prefetch(프리페치)</li>
+<li>preload(프리로드)</li>
+</ul>
+</li>
+</ul>
+<h2 id="2023-x2F-04-x2F-19"><a href="#2023-x2F-04-x2F-19" class="headerlink" title="2023&#x2F;04&#x2F;19"></a>2023&#x2F;04&#x2F;19</h2><ul>
+<li>이미지 임시 URL<ul>
+<li>이미지 미리보기 (임시 URL 생성)</li>
+<li>readAsDataURL()</li>
+</ul>
+</li>
+<li>Promise.all 을 사용한 다중 이미지 업로드</li>
+<li>이미지 성능 높이기<ul>
+<li><code>LazyLoad</code><ul>
+<li><strong>페이지를 읽어주는 시점에 중요하지 않은 리소스 로딩을 추후에 하는 기술</strong></li>
+<li>e.g. <strong>스크롤이 내려가면서 이미지가 필요한 때가 되면 로드</strong></li>
+<li>e.g. 이미지가 10장이 넘는 페이지가 있다고 가정할 때 이미지를 모두 다 로드가 될 때까지 기다리면,<ul>
+<li>페이지의 로딩을 길어지게 될 것입니다.</li>
+<li>하지만, 맨 위의 화면에 보이는 이미지만 로드를 한 후에,</li>
+<li>스크롤을 내리면서 이미지가 보여져야 할 때마다 이미지를 로드한다면, 데이터의 낭비를 막을 수 있습니다!</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>PreLoad</code><ul>
+<li><strong>페이지를 읽어줄 때 미리 리소스를 받아놓는 기술</strong></li>
+<li>e.g. 이미지가 10장이 넘는 페이지가 있다고 가정<ul>
+<li><code>LazyLoad</code>의 경우에는 <strong>필요할 때마다 데이터를 로드하는 방법</strong>이라면,</li>
+<li><code>PreLoad</code>의 경우에는 <strong>모든 데이터들을 미리 로드해놓고 대기하는 방식</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://pagespeed.web.dev/">PageSpeed Insights (web.dev)</a></li>
+<li>이미지 라이브러리 (React-lazy-load, React-dropzone, react-avator-editor, ant-design)</li>
+<li><a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/wappalyzer-technology-pro/gppongmhjkpfnbhagpmjfkannfbllamg?hl=ko">Wappalyzer - Technology profiler - Chrome 웹 스토어 (google.com)</a> :<ul>
+<li>다른 사이트가 무슨 기술로 만들어졌는지 보여주는 도구</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://www.codenary.co.kr/company/list">기업으로 검색 | 코드너리 (codenary.co.kr)</a><ul>
+<li>기업들이 쓰는 기술 확인</li>
+</ul>
+</li>
+</ul>
+<h2 id="2023-x2F-04-x2F-20"><a href="#2023-x2F-04-x2F-20" class="headerlink" title="2023&#x2F;04&#x2F;20"></a>2023&#x2F;04&#x2F;20</h2><ul>
+<li>Optimistic-UI (옵티미스틱 UI, 낙관적 UI)</li>
+<li>OG - OpenGraph<ul>
+<li><code>scraping(스크래핑, 긁는다)</code><ul>
+<li><strong>1번 가져오기</strong></li>
+<li>특정 사이트의 한 페이지를 쭉 긁어와 1번 가져오는 것을 의미</li>
+<li>cf. 스크래핑 라이브러리 : cheerio</li>
+</ul>
+</li>
+<li><code>crawling(크롤링, 헤엄치다)</code><ul>
+<li><strong>일정 주기로 계속 가져오기</strong></li>
+<li>특정 사이트에서 돌아다니며, <strong>버튼을 클릭해 여러 페이지를 가지고 오는 것</strong>을 의미</li>
+<li>즉, <strong>여러번의 스크래핑을 한 것</strong>이 <code>크롤링</code>이라고 생각하시면 됩니다.</li>
+<li>cf, 크롤링 라이브러리 : puppeteer</li>
+</ul>
+</li>
+<li>메타 태그와 OpenGraph</li>
+</ul>
+</li>
+<li>SSR의 이해 : 서버사이드 렌더링이 필요한 이유<ul>
+<li>OG태그에서의 서버사이드 렌더링</li>
+<li>SEO(Search Engine Optimization) 검색 엔진 최적화</li>
+</ul>
+</li>
+</ul>
+<hr>
 <h1 id="4주"><a href="#4주" class="headerlink" title="4주"></a>4주</h1><h2 id="2023-x2F-04-x2F-24"><a href="#2023-x2F-04-x2F-24" class="headerlink" title="2023&#x2F;04&#x2F;24"></a>2023&#x2F;04&#x2F;24</h2><ul>
 <li></li>
 </ul>
@@ -415,7 +503,7 @@
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
-          2023-04-14 16:05:06
+          2023-04-23 21:47:06
         </span>
         
         <span class="post-categories">
@@ -455,7 +543,7 @@
     <div class="title">목차</div>
     <div class="catalog-content">
       
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%EC%A3%BC"><span class="toc-text">1주</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-03"><span class="toc-text">2023&#x2F;04&#x2F;03</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-04"><span class="toc-text">2023&#x2F;04&#x2F;04</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-05"><span class="toc-text">2023&#x2F;04&#x2F;05</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-06"><span class="toc-text">2023&#x2F;04&#x2F;06</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-07"><span class="toc-text">2023&#x2F;04&#x2F;07</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%EC%A3%BC"><span class="toc-text">2주</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-10"><span class="toc-text">2023&#x2F;04&#x2F;10</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-11"><span class="toc-text">2023&#x2F;04&#x2F;11</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-12"><span class="toc-text">2023&#x2F;04&#x2F;12</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-13"><span class="toc-text">2023&#x2F;04&#x2F;13</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-14"><span class="toc-text">2023&#x2F;04&#x2F;14</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3%EC%A3%BC"><span class="toc-text">3주</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-17"><span class="toc-text">2023&#x2F;04&#x2F;17</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-18"><span class="toc-text">2023&#x2F;04&#x2F;18</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-19"><span class="toc-text">2023&#x2F;04&#x2F;19</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-20"><span class="toc-text">2023&#x2F;04&#x2F;20</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-21"><span class="toc-text">2023&#x2F;04&#x2F;21</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4%EC%A3%BC"><span class="toc-text">4주</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-24"><span class="toc-text">2023&#x2F;04&#x2F;24</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-25"><span class="toc-text">2023&#x2F;04&#x2F;25</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-26"><span class="toc-text">2023&#x2F;04&#x2F;26</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-27"><span class="toc-text">2023&#x2F;04&#x2F;27</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-28"><span class="toc-text">2023&#x2F;04&#x2F;28</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%EC%A3%BC"><span class="toc-text">1주</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-03"><span class="toc-text">2023&#x2F;04&#x2F;03</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-04"><span class="toc-text">2023&#x2F;04&#x2F;04</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-05"><span class="toc-text">2023&#x2F;04&#x2F;05</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-06"><span class="toc-text">2023&#x2F;04&#x2F;06</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-07"><span class="toc-text">2023&#x2F;04&#x2F;07</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%EC%A3%BC"><span class="toc-text">2주</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-10"><span class="toc-text">2023&#x2F;04&#x2F;10</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-11"><span class="toc-text">2023&#x2F;04&#x2F;11</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-12"><span class="toc-text">2023&#x2F;04&#x2F;12</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-13"><span class="toc-text">2023&#x2F;04&#x2F;13</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-14"><span class="toc-text">2023&#x2F;04&#x2F;14</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3%EC%A3%BC"><span class="toc-text">3주</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-17"><span class="toc-text">2023&#x2F;04&#x2F;17</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-18"><span class="toc-text">2023&#x2F;04&#x2F;18</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-19"><span class="toc-text">2023&#x2F;04&#x2F;19</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-20"><span class="toc-text">2023&#x2F;04&#x2F;20</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4%EC%A3%BC"><span class="toc-text">4주</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-24"><span class="toc-text">2023&#x2F;04&#x2F;24</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-25"><span class="toc-text">2023&#x2F;04&#x2F;25</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-26"><span class="toc-text">2023&#x2F;04&#x2F;26</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-27"><span class="toc-text">2023&#x2F;04&#x2F;27</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2023-x2F-04-x2F-28"><span class="toc-text">2023&#x2F;04&#x2F;28</span></a></li></ol></li></ol>
       
     </div>
   </div>
@@ -728,12 +816,12 @@
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + TIL(Today%20I%20Learned)%20-%202023%EB%85%84%204%EC%9B%94 + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F04%2F14%2FTIL-2023-04%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + TIL(Today%20I%20Learned)%20-%202023%EB%85%84%204%EC%9B%94 + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F04%2F23%2FTIL-2023-04%2F + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
         
-          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/04/14/TIL-2023-04/" target="_blank" title="Facebook">
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/04/23/TIL-2023-04/" target="_blank" title="Facebook">
             <i class="iconfont icon-facebooksquare"></i>
           </a>
         
