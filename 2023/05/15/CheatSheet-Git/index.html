@@ -142,7 +142,7 @@
     <div class="post-attach">
       <span class="post-pubtime">
         <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
-        2022-12-14 16:10:15
+        2023-05-15 13:10:15
       </span>
       
       <span class="post-categories">
@@ -232,16 +232,26 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 태그 추가</span></span><br><span class="line">$ git tag [태그이름]           </span><br><span class="line">$ git tag [태그이름] [커밋번호]  <span class="comment"># 특정 해쉬에 태그 추가</span></span><br><span class="line">$ git tag -a [태그이름] [커밋번호] <span class="comment"># 특정 해쉬에 annotated 태그 추가</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 태그 조회</span></span><br><span class="line">$ git tag</span><br><span class="line">$ git tag -l <span class="string">&#x27;v1.*&#x27;</span>  <span class="comment"># 와일드카드 패턴으로 검색조회</span></span><br><span class="line">$ git show [태그이름]  <span class="comment"># 특정 태그 조회</span></span><br><span class="line">$ git show-ref --tags  <span class="comment"># 해쉬값과 태그 조회</span></span><br></pre></td></tr></table></figure>
 
 <hr>
-<h1 id="11-git-blame"><a href="#11-git-blame" class="headerlink" title="11. git blame"></a>11. git blame</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># git 프로젝트에서 어떤 코드를 누가 수정했는지, 어떤 commit으로 수정이 되었는지 궁금할 때</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># 해당 파일에 대한 모든 수정 내역</span></span><br><span class="line">$ git blame &lt;파일명&gt;</span><br><span class="line"> </span><br><span class="line"><span class="comment"># author name과 timestamp는 출력하지 않음.</span></span><br><span class="line">$ git blame -s &lt;파일명&gt;</span><br><span class="line"> </span><br><span class="line"><span class="comment"># description과 수정사항을 보여줌</span></span><br><span class="line">$ git show &lt;커밋번호&gt;</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 파일내용을 start부터 end 라인까지의 수정 내역만 보여줌</span></span><br><span class="line">$ git blame -L &lt;start,end&gt; &lt;파일명&gt;</span><br></pre></td></tr></table></figure></div>
+<h1 id="11-git-blame"><a href="#11-git-blame" class="headerlink" title="11. git blame"></a>11. git blame</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># git 프로젝트에서 어떤 코드를 누가 수정했는지, 어떤 commit으로 수정이 되었는지 궁금할 때</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># 해당 파일에 대한 모든 수정 내역</span></span><br><span class="line">$ git blame &lt;파일명&gt;</span><br><span class="line"> </span><br><span class="line"><span class="comment"># author name과 timestamp는 출력하지 않음.</span></span><br><span class="line">$ git blame -s &lt;파일명&gt;</span><br><span class="line"> </span><br><span class="line"><span class="comment"># description과 수정사항을 보여줌</span></span><br><span class="line">$ git show &lt;커밋번호&gt;</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 파일내용을 start부터 end 라인까지의 수정 내역만 보여줌</span></span><br><span class="line">$ git blame -L &lt;start,end&gt; &lt;파일명&gt;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="12-기타"><a href="#12-기타" class="headerlink" title="12. 기타"></a>12. 기타</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -b <span class="string">&quot;MCB-##-task-name&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 이 전에 작업하고 있던 것들을 git add . git commit -m ...</span></span><br><span class="line">$ git checkout main</span><br><span class="line">$ git pull origin main</span><br><span class="line">$ git checkout MDB-브랜치명</span><br><span class="line">$ git merge main</span><br></pre></td></tr></table></figure>
+
+</div>
     
     <div class="prev-or-next">
       <div class="post-foot-next">
+        
+        <a href="/2023/05/12/TIL-2023-04/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
         
       </div>
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
-          2022-12-14 16:10:15
+          2023-05-15 13:10:15
         </span>
         
         <span class="post-categories">
@@ -269,11 +279,6 @@
       </div>
       <div class="post-foot-prev">
         
-        <a href="/2022/12/14/CheatSheet-Linux/" target="_self">
-          <span> 다음 </span>
-          <i class="iconfont icon-chevronright"></i>
-        </a>
-        
       </div>
     </div>
     
@@ -286,7 +291,7 @@
     <div class="title">목차</div>
     <div class="catalog-content">
       
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-git-%EC%B4%88%EA%B8%B0-%EC%84%A4%EC%A0%95"><span class="toc-text">1. git 초기 설정</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-git-%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%95"><span class="toc-text">2. git 스테이징</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-git-%EC%BB%A4%EB%B0%8B"><span class="toc-text">3. git 커밋</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-git-%EC%9D%B4%EB%A0%A5-%ED%99%95%EC%9D%B8"><span class="toc-text">4. git 이력 확인</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%EC%9B%90%EA%B2%A9-%EC%A0%80%EC%9E%A5%EC%86%8C"><span class="toc-text">5. 원격 저장소</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%EC%A0%80%EC%9E%A5%EC%86%8C-%ED%8C%8C%EC%9D%BC-%EC%82%AD%EC%A0%9C"><span class="toc-text">6. 저장소 파일 삭제</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-git-branch"><span class="toc-text">7. git branch</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-git-cherry-pick"><span class="toc-text">8. git cherry-pick</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-git-stash"><span class="toc-text">9. git stash</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-git-tag"><span class="toc-text">10. git tag</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11-git-blame"><span class="toc-text">11. git blame</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-git-%EC%B4%88%EA%B8%B0-%EC%84%A4%EC%A0%95"><span class="toc-text">1. git 초기 설정</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-git-%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%95"><span class="toc-text">2. git 스테이징</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-git-%EC%BB%A4%EB%B0%8B"><span class="toc-text">3. git 커밋</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-git-%EC%9D%B4%EB%A0%A5-%ED%99%95%EC%9D%B8"><span class="toc-text">4. git 이력 확인</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%EC%9B%90%EA%B2%A9-%EC%A0%80%EC%9E%A5%EC%86%8C"><span class="toc-text">5. 원격 저장소</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%EC%A0%80%EC%9E%A5%EC%86%8C-%ED%8C%8C%EC%9D%BC-%EC%82%AD%EC%A0%9C"><span class="toc-text">6. 저장소 파일 삭제</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-git-branch"><span class="toc-text">7. git branch</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-git-cherry-pick"><span class="toc-text">8. git cherry-pick</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-git-stash"><span class="toc-text">9. git stash</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-git-tag"><span class="toc-text">10. git tag</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11-git-blame"><span class="toc-text">11. git blame</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#12-%EA%B8%B0%ED%83%80"><span class="toc-text">12. 기타</span></a></li></ol>
       
     </div>
   </div>
@@ -559,12 +564,12 @@
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + CheatSheet-Git-%EB%AA%85%EB%A0%B9%EC%96%B4%20%EC%A0%95%EB%A6%AC + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2022%2F12%2F14%2FCheatSheet-Git%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + CheatSheet-Git-%EB%AA%85%EB%A0%B9%EC%96%B4%20%EC%A0%95%EB%A6%AC + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F05%2F15%2FCheatSheet-Git%2F + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
         
-          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2022/12/14/CheatSheet-Git/" target="_blank" title="Facebook">
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/05/15/CheatSheet-Git/" target="_blank" title="Facebook">
             <i class="iconfont icon-facebooksquare"></i>
           </a>
         
