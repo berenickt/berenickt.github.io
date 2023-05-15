@@ -237,6 +237,15 @@
 <hr>
 <h1 id="12-기타"><a href="#12-기타" class="headerlink" title="12. 기타"></a>12. 기타</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ git checkout -b <span class="string">&quot;MCB-##-task-name&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 이 전에 작업하고 있던 것들을 git add . git commit -m ...</span></span><br><span class="line">$ git checkout main</span><br><span class="line">$ git pull origin main</span><br><span class="line">$ git checkout MDB-브랜치명</span><br><span class="line">$ git merge main</span><br></pre></td></tr></table></figure>
 
+<hr>
+<h1 id="13-커밋메시지-규칙"><a href="#13-커밋메시지-규칙" class="headerlink" title="13. 커밋메시지 규칙"></a>13. 커밋메시지 규칙</h1><ul>
+<li>Feat : 새로운 기능 추가</li>
+<li>Fix : 버그 수정</li>
+<li>Style : 코드 양식 변경</li>
+<li>Refactor : 코드 리팩토링</li>
+<li>Test : 테스트 코드 수정</li>
+<li>Docs : 문서 수정</li>
+</ul>
 </div>
     
     <div class="prev-or-next">
@@ -291,7 +300,7 @@
     <div class="title">목차</div>
     <div class="catalog-content">
       
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-git-%EC%B4%88%EA%B8%B0-%EC%84%A4%EC%A0%95"><span class="toc-text">1. git 초기 설정</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-git-%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%95"><span class="toc-text">2. git 스테이징</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-git-%EC%BB%A4%EB%B0%8B"><span class="toc-text">3. git 커밋</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-git-%EC%9D%B4%EB%A0%A5-%ED%99%95%EC%9D%B8"><span class="toc-text">4. git 이력 확인</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%EC%9B%90%EA%B2%A9-%EC%A0%80%EC%9E%A5%EC%86%8C"><span class="toc-text">5. 원격 저장소</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%EC%A0%80%EC%9E%A5%EC%86%8C-%ED%8C%8C%EC%9D%BC-%EC%82%AD%EC%A0%9C"><span class="toc-text">6. 저장소 파일 삭제</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-git-branch"><span class="toc-text">7. git branch</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-git-cherry-pick"><span class="toc-text">8. git cherry-pick</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-git-stash"><span class="toc-text">9. git stash</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-git-tag"><span class="toc-text">10. git tag</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11-git-blame"><span class="toc-text">11. git blame</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#12-%EA%B8%B0%ED%83%80"><span class="toc-text">12. 기타</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-git-%EC%B4%88%EA%B8%B0-%EC%84%A4%EC%A0%95"><span class="toc-text">1. git 초기 설정</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-git-%EC%8A%A4%ED%85%8C%EC%9D%B4%EC%A7%95"><span class="toc-text">2. git 스테이징</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-git-%EC%BB%A4%EB%B0%8B"><span class="toc-text">3. git 커밋</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-git-%EC%9D%B4%EB%A0%A5-%ED%99%95%EC%9D%B8"><span class="toc-text">4. git 이력 확인</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%EC%9B%90%EA%B2%A9-%EC%A0%80%EC%9E%A5%EC%86%8C"><span class="toc-text">5. 원격 저장소</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%EC%A0%80%EC%9E%A5%EC%86%8C-%ED%8C%8C%EC%9D%BC-%EC%82%AD%EC%A0%9C"><span class="toc-text">6. 저장소 파일 삭제</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-git-branch"><span class="toc-text">7. git branch</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-git-cherry-pick"><span class="toc-text">8. git cherry-pick</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-git-stash"><span class="toc-text">9. git stash</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-git-tag"><span class="toc-text">10. git tag</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11-git-blame"><span class="toc-text">11. git blame</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#12-%EA%B8%B0%ED%83%80"><span class="toc-text">12. 기타</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#13-%EC%BB%A4%EB%B0%8B%EB%A9%94%EC%8B%9C%EC%A7%80-%EA%B7%9C%EC%B9%99"><span class="toc-text">13. 커밋메시지 규칙</span></a></li></ol>
       
     </div>
   </div>
