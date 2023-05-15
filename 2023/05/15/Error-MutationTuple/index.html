@@ -7,10 +7,13 @@
   <meta name="author" content="Berenickt" />
   <meta name="description" content="Front-end 공부 중..." />
   
-    <meta name="robots" content="noindex" />
-  
   
   <title>
+    
+      Error-Next-GraphQL-MutationTuple&lt;any, OperationVariables, DefaultContext, ApolloCache&lt;any&gt;&gt;형식 
+      
+      
+      |
     
      Berenickt&#39;s Blog
   </title>
@@ -109,151 +112,131 @@
 
 
 
-      <div class="flex-container"><div class="container index">
-  <div class="post-list">
-    <!-- 遍历渲染文章 -->
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Error-Next-GraphQL-MutationTuple<any, OperationVariables, DefaultContext, ApolloCache<any>>형식</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-05-15 20:48:15
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/error/" title="Error"> <b>#</b> Error </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/error/" title="Error"> #Error </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-TS-오타-에러"><a href="#1-TS-오타-에러" class="headerlink" title="1. TS : {} 오타 에러"></a>1. TS : {} 오타 에러</h1><figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span> <span class="title function_">MyMemo</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// **** PlayGround</span></span><br><span class="line">  <span class="keyword">const</span> &#123; data &#125; = <span class="title function_">useQuery</span>(<span class="variable constant_">FETCH_POST_MEMOS</span>)</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 💥 에러) </span></span><br><span class="line">  <span class="comment">// MutationTuple&lt;any, OperationVariables, DefaultContext, ApolloCache&lt;any&gt;&gt;&#x27; 형식에</span></span><br><span class="line">  <span class="comment">// &#x27;deletePostMemo&#x27; 속성이 없습니다.</span></span><br><span class="line">  <span class="comment">// 해결 -&gt; &#123;&#125;를 []로 고치기 (오타)</span></span><br><span class="line">  <span class="comment">// const &#123;deletePostMemo&#125; = useMutation(DELETE_POST_MEMO)</span></span><br><span class="line">  <span class="keyword">const</span> &#123;deletePostMemo&#125; = <span class="title function_">useMutation</span>(<span class="variable constant_">DELETE_POST_MEMO</span>)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// **** 저장된 메모 단일 삭제</span></span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">onClickDeleteMemo</span> = <span class="keyword">async</span> (<span class="params">event: MouseEvent&lt;HTMLButtonElement&gt;</span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">await</span> <span class="title function_">deletePostMemo</span>(&#123;</span><br><span class="line">        <span class="attr">variables</span>: &#123;</span><br><span class="line">          <span class="attr">memoId</span>: event.<span class="property">currentTarget</span>.<span class="property">id</span>,</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">refetchQueries</span>: [&#123; <span class="attr">query</span>: <span class="variable constant_">FETCH_POST_MEMOS</span> &#125;],</span><br><span class="line">      &#125;)</span><br><span class="line">      <span class="title class_">Modal</span>.<span class="title function_">success</span>(&#123; <span class="attr">content</span>: <span class="string">&#x27;메모가 삭제되었습니다.&#x27;</span> &#125;)</span><br><span class="line">    &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">      <span class="keyword">if</span> (error <span class="keyword">instanceof</span> <span class="title class_">Error</span>) <span class="title class_">Modal</span>.<span class="title function_">error</span>(&#123; <span class="attr">content</span>: error.<span class="property">message</span> &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// prettier-ignore</span></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">MyMemoUI</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">      <span class="attr">data</span>=<span class="string">&#123;data&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">      <span class="attr">onClickDeleteMemo</span>=<span class="string">&#123;onClickDeleteMemo&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">    /&gt;</span></span></span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</div>
     
-      <div class="post-item" title="Start-CSS-07 - Flexbox 레이아웃">
-        <div class="time-m-d">2023-02-06</div>
-        <div class="title">
-          <a href="/2023/02/06/Front-Start-CSS-07-Flexible-Layout/">
-            
-              
-                <span>Start-CSS-07 - Flexbox 레이아웃</span>
-              
-            
-          </a>
-        </div>
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/05/15/CheatSheet-Git/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
       </div>
-    
-      <div class="post-item" title="Start-CSS-06 - Transform(변화)">
-        <div class="time-m-d">2023-02-06</div>
-        <div class="title">
-          <a href="/2023/02/06/Front-Start-CSS-06-Transform/">
-            
-              
-                <span>Start-CSS-06 - Transform(변화)</span>
-              
-            
-          </a>
-        </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-05-15 20:48:15
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/error/" title="Error"> <b>#</b> Error </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/error/" title="Error"> #Error </a>
+          </span>
+          
+        </span>
+        
       </div>
-    
-      <div class="post-item" title="Start-CSS-05 - 애니메이션">
-        <div class="time-m-d">2023-02-06</div>
-        <div class="title">
-          <a href="/2023/02/06/Front-Start-CSS-05-Animation/">
-            
-              
-                <span>Start-CSS-05 - 애니메이션</span>
-              
-            
-          </a>
-        </div>
+      <div class="post-foot-prev">
+        
       </div>
-    
-      <div class="post-item" title="Start-CSS-04 - Transition(전환)">
-        <div class="time-m-d">2023-02-06</div>
-        <div class="title">
-          <a href="/2023/02/06/Front-Start-CSS-04-Transition/">
-            
-              
-                <span>Start-CSS-04 - Transition(전환)</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="Start-CSS-03 - Position, Float 레이아웃">
-        <div class="time-m-d">2023-02-06</div>
-        <div class="title">
-          <a href="/2023/02/06/Front-Start-CSS-03-Position-Float/">
-            
-              
-                <span>Start-CSS-03 - Position, Float 레이아웃</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="Start-CSS-02 - BEM 방법론과 자주 사용하는 속성">
-        <div class="time-m-d">2023-02-06</div>
-        <div class="title">
-          <a href="/2023/02/06/Front-Start-CSS-02-BEM-attribute/">
-            
-              
-                <span>Start-CSS-02 - BEM 방법론과 자주 사용하는 속성</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="Start-CSS-01-선택자 - CSS Diner 1~32">
-        <div class="time-m-d">2023-02-06</div>
-        <div class="title">
-          <a href="/2023/02/06/Front-Start-CSS-01-Selector/">
-            
-              
-                <span>Start-CSS-01-선택자 - CSS Diner 1~32</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="Start-HTML 자주 쓰이는 태그 간단 정리">
-        <div class="time-m-d">2023-02-06</div>
-        <div class="title">
-          <a href="/2023/02/06/Front-Start-HTML/">
-            
-              
-                <span>Start-HTML 자주 쓰이는 태그 간단 정리</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="CheatSheet-JS-DataAlgo-Ref">
-        <div class="time-m-d">2023-02-06</div>
-        <div class="title">
-          <a href="/2023/02/06/CheatSheet-JS-DataAlgo-Ref/">
-            
-              
-                <span>CheatSheet-JS-DataAlgo-Ref</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="Back-Node-01-Intro">
-        <div class="time-m-d">2023-02-05</div>
-        <div class="title">
-          <a href="/2023/02/05/Back-Node-01/">
-            
-              
-                <span>Back-Node-01-Intro</span>
-              
-            
-          </a>
-        </div>
-      </div>
+    </div>
     
   </div>
-  <nav class="post-navigation">
-    
-      <a href="/page/2/"><i class="iconfont icon-angleleft"></i></a>
-    
-    <span class="page-num">3 / 16</span>
-    
-      <a href="/page/4/"><i class="iconfont icon-angleright"></i></a>
-    
-  </nav>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-TS-%EC%98%A4%ED%83%80-%EC%97%90%EB%9F%AC"><span class="toc-text">1. TS : {} 오타 에러</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
 </div>
+
  
   <div class="footer">
     <div class="social">
@@ -499,6 +482,24 @@
 
 
  
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Error-Next-GraphQL-MutationTuple%3Cany%2C%20OperationVariables%2C%20DefaultContext%2C%20ApolloCache%3Cany%3E%3E%ED%98%95%EC%8B%9D + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F05%2F15%2FError-MutationTuple%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/05/15/Error-MutationTuple/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
   
   
 <script src="/js/shares.js"></script>
