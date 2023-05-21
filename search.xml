@@ -5,8 +5,8 @@
     
     <entry>
       <title>Error-React does not recognize the &#39;myExercise&#39; prop on a DOM element.</title>
-      <link href="/2023/05/21/Error-MutationTuple2/"/>
-      <url>/2023/05/21/Error-MutationTuple2/</url>
+      <link href="/2023/05/21/Error-React-props-DOM/"/>
+      <url>/2023/05/21/Error-React-props-DOM/</url>
       
         <content type="html"><![CDATA[<h1 id="1-에러-메시지"><a href="#1-에러-메시지" class="headerlink" title="1. 에러 메시지"></a>1. 에러 메시지</h1><blockquote><p>Warning : React does not recognize the “isChecked” prop on a DOM element.<br>If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase “ischecked” instead.<br>If you accidentally passed it from a parent component, remove it from the DOM element.</p><p>React가 DOM 요소에서 ‘isChecked’ prop을 인식하지 못합니다.<br>의도적으로 DOM에 사용자 지정 특성으로 표시하려면 대신 소문자 ‘체크됨’으로 철자를 입력합니다.<br>상위 구성 요소에서 실수로 전달한 경우 DOM 요소에서 해당 구성 요소를 제거합니다.</p></blockquote><p>경고창은 뜨지만 기능은 잘 동작한다. 그렇지만 props를 DOM element에 직접 전달하지 말라는 경고창으로,<br>컴포넌트에 props를 넘겨야지, DOM 요소에 props를 넘기면 안된다.</p><p>해결 방법은 <strong>DOM 요소에 props를 넘긴 부분이 있는지 찾아서 제거</strong>해준다.</p>]]></content>
       
