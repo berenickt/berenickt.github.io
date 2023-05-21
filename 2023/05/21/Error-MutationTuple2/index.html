@@ -7,10 +7,13 @@
   <meta name="author" content="Berenickt" />
   <meta name="description" content="Front-end 공부 중..." />
   
-    <meta name="robots" content="noindex" />
-  
   
   <title>
+    
+      Error-React does not recognize the &#39;myExercise&#39; prop on a DOM element. 
+      
+      
+      |
     
      Berenickt&#39;s Blog
   </title>
@@ -109,151 +112,143 @@
 
 
 
-      <div class="flex-container"><div class="container index">
-  <div class="post-list">
-    <!-- 遍历渲染文章 -->
+      <div class="flex-container"> <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+   <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+      
+<!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+<div class="container post-details" id="post-details">
+  <div class="post-content">
+    <div class="post-title">Error-React does not recognize the 'myExercise' prop on a DOM element.</div>
+    <div class="post-attach">
+      <span class="post-pubtime">
+        <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+        2023-05-21 20:47:15
+      </span>
+      
+      <span class="post-categories">
+        <i class="iconfont icon-bookmark" title="카테고리"></i>
+        
+        <span class="span--category">
+          <a href="/categories/error/" title="Error"> <b>#</b> Error </a>
+        </span>
+        
+      </span>
+      
+      <span class="post-tags">
+        <i class="iconfont icon-tags mr-10" title="태그"></i>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/react/" title="React"> #React </a>
+        </span>
+        
+        <span class="span--tag mr-8">
+          <a href="/tags/error/" title="Error"> #Error </a>
+        </span>
+        
+      </span>
+      
+    </div>
+    <div class="markdown-body"><h1 id="1-에러-메시지"><a href="#1-에러-메시지" class="headerlink" title="1. 에러 메시지"></a>1. 에러 메시지</h1><blockquote>
+<p>Warning : React does not recognize the “isChecked” prop on a DOM element.<br>If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase “ischecked” instead.<br>If you accidentally passed it from a parent component, remove it from the DOM element.</p>
+<p>React가 DOM 요소에서 ‘isChecked’ prop을 인식하지 못합니다.<br>의도적으로 DOM에 사용자 지정 특성으로 표시하려면 대신 소문자 ‘체크됨’으로 철자를 입력합니다.<br>상위 구성 요소에서 실수로 전달한 경우 DOM 요소에서 해당 구성 요소를 제거합니다.</p>
+</blockquote>
+<p>경고창은 뜨지만 기능은 잘 동작한다. 그렇지만 props를 DOM element에 직접 전달하지 말라는 경고창으로,<br>컴포넌트에 props를 넘겨야지, DOM 요소에 props를 넘기면 안된다.</p>
+<p>해결 방법은 <strong>DOM 요소에 props를 넘긴 부분이 있는지 찾아서 제거</strong>해준다.</p>
+</div>
     
-      <div class="post-item" title="영어 학습방법 잡다한 것 정리 - 작성중">
-        <div class="time-m-d">2022-12-21</div>
-        <div class="title">
-          <a href="/2022/12/21/En-Info-02/">
-            
-              
-                <span>영어 학습방법 잡다한 것 정리 - 작성중</span>
-              
-            
-          </a>
-        </div>
+    <div class="prev-or-next">
+      <div class="post-foot-next">
+        
+        <a href="/2023/05/15/Error-MutationTuple/" target="_self">
+          <i class="iconfont icon-chevronleft"></i>
+          <span> 이전 </span>
+        </a>
+        
       </div>
-    
-      <div class="post-item" title="En-Grammar-11-현재 시제, 과거 시제, 현재 완료 시제">
-        <div class="time-m-d">2022-12-21</div>
-        <div class="title">
-          <a href="/2022/12/21/En-Grammar-11/">
-            
-              
-                <span>En-Grammar-11-현재 시제, 과거 시제, 현재 완료 시제</span>
-              
-            
-          </a>
-        </div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="업데이트 시간"></i>
+          2023-05-21 20:47:15
+        </span>
+        
+        <span class="post-categories">
+          <i class="iconfont icon-bookmark" title="카테고리"></i>
+          
+          <span class="span--category">
+            <a href="/categories/error/" title="Error"> <b>#</b> Error </a>
+          </span>
+          
+        </span>
+        
+        <span class="post-tags">
+          <i class="iconfont icon-tags mr-10" title="태그"></i>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/react/" title="React"> #React </a>
+          </span>
+          
+          <span class="span--tag mr-8">
+            <a href="/tags/error/" title="Error"> #Error </a>
+          </span>
+          
+        </span>
+        
       </div>
-    
-      <div class="post-item" title="En-Info-01-영어의 역사">
-        <div class="time-m-d">2022-12-21</div>
-        <div class="title">
-          <a href="/2022/12/21/En-Info-01/">
-            
-              
-                <span>En-Info-01-영어의 역사</span>
-              
-            
-          </a>
-        </div>
+      <div class="post-foot-prev">
+        
       </div>
-    
-      <div class="post-item" title="En-Grammar-10-원형 부정사 (Bare Infinitive)">
-        <div class="time-m-d">2022-12-21</div>
-        <div class="title">
-          <a href="/2022/12/21/En-Grammar-10/">
-            
-              
-                <span>En-Grammar-10-원형 부정사 (Bare Infinitive)</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="En-Grammar-09-to V(to 부정사) 그리고 V-ing(동명사)">
-        <div class="time-m-d">2022-12-21</div>
-        <div class="title">
-          <a href="/2022/12/21/En-Grammar-09/">
-            
-              
-                <span>En-Grammar-09-to V(to 부정사) 그리고 V-ing(동명사)</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="En-Grammar-08-to 부정사(to V)">
-        <div class="time-m-d">2022-12-21</div>
-        <div class="title">
-          <a href="/2022/12/21/En-Grammar-08/">
-            
-              
-                <span>En-Grammar-08-to 부정사(to V)</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="En-Grammar-07-V-ing 그리고 V-ed">
-        <div class="time-m-d">2022-12-21</div>
-        <div class="title">
-          <a href="/2022/12/21/En-Grammar-07/">
-            
-              
-                <span>En-Grammar-07-V-ing 그리고 V-ed</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="En-Grammar-06-영어 수식의 어순">
-        <div class="time-m-d">2022-12-21</div>
-        <div class="title">
-          <a href="/2022/12/21/En-Grammar-06/">
-            
-              
-                <span>En-Grammar-06-영어 수식의 어순</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="En-Grammar-05-다양한 연결 동사(Linking Verb)">
-        <div class="time-m-d">2022-12-21</div>
-        <div class="title">
-          <a href="/2022/12/21/En-Grammar-05/">
-            
-              
-                <span>En-Grammar-05-다양한 연결 동사(Linking Verb)</span>
-              
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="En-Grammar-04-be 동사의 개념">
-        <div class="time-m-d">2022-12-21</div>
-        <div class="title">
-          <a href="/2022/12/21/En-Grammar-04/">
-            
-              
-                <span>En-Grammar-04-be 동사의 개념</span>
-              
-            
-          </a>
-        </div>
-      </div>
+    </div>
     
   </div>
-  <nav class="post-navigation">
-    
-      <a href="/page/14/"><i class="iconfont icon-angleleft"></i></a>
-    
-    <span class="page-num">15 / 16</span>
-    
-      <a href="/page/16/"><i class="iconfont icon-angleright"></i></a>
-    
-  </nav>
+  
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">목차</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%EC%97%90%EB%9F%AC-%EB%A9%94%EC%8B%9C%EC%A7%80"><span class="toc-text">1. 에러 메시지</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+ 
+  <script
+    src="https://utteranc.es/client.js"
+    repo="berenickt/berenickt.github.io"
+    issue-term="pathname"
+    theme="github-dark"
+    crossorigin="anonymous"
+    async
+  ></script>
 </div>
+
  
   <div class="footer">
     <div class="social">
@@ -499,6 +494,24 @@
 
 
  
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Error-React%20does%20not%20recognize%20the%20'myExercise'%20prop%20on%20a%20DOM%20element. + '&url=' + https%3A%2F%2Fberenickt.github.io%2F2023%2F05%2F21%2FError-MutationTuple2%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=https://berenickt.github.io/2023/05/21/Error-MutationTuple2/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
   
   
 <script src="/js/shares.js"></script>
